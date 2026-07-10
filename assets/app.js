@@ -124,7 +124,7 @@ const showError = () => {
 
 const loadDigest = async () => {
   try {
-    const response = await fetch("content/issues.json", { cache: "no-cache" });
+    const response = await fetch("content/issues.json?v=20260710-1", { cache: "no-store" });
     if (!response.ok) throw new Error("Issue data unavailable");
     const data = await response.json();
     const requestedId = new URLSearchParams(window.location.search).get("issue");
