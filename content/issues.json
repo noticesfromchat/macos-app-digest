@@ -1,0 +1,83 @@
+{
+  "issues": [
+    {
+      "id": "2026-07-10",
+      "number": "001",
+      "label": "Demo edition",
+      "date": "July 10, 2026",
+      "readingMinutes": 5,
+      "title": "Three Mac utilities worth a closer look",
+      "dek": "A launcher you can trust, a focused place for fleeting thoughts and a text expander built for repetition.",
+      "intro": [
+        "Welcome to the first web edition of Mac App Digest. This sample issue uses three apps you have been exploring recently to show how each Friday’s digest can read and feel.",
+        "The format is intentionally compact: a clear reason each app matters, enough context to decide whether it fits and a direct path to learn more. Future issues can drop into the same structure and remain available through the archive below."
+      ],
+      "apps": [
+        {
+          "name": "Alfred",
+          "category": "Launcher",
+          "tagline": "The mature Mac launcher that keeps earning its place.",
+          "body": [
+            "Alfred turns a keyboard shortcut into a fast route to apps, files, web searches and repeatable workflows. Its appeal is less about novelty than accumulated polish: the basics are quick and predictable while the Powerpack leaves room to build deeper automations.",
+            "For anyone who has tried a newer launcher and found the edges too rough, Alfred remains a useful benchmark. It is the kind of utility that can disappear into daily muscle memory."
+          ],
+          "verdictLabel": "Best for",
+          "verdict": "Mac users who value reliability, file search and a large workflow ecosystem over chasing the newest interface.",
+          "url": "https://www.alfredapp.com/"
+        },
+        {
+          "name": "Tot",
+          "category": "Scratchpad",
+          "tagline": "Seven small spaces for thoughts that do not need a filing system yet.",
+          "body": [
+            "Tot is deliberately constrained: a handful of color-coded notes, fast access and very little organizational overhead. That makes it especially good for temporary text, copied fragments and ideas that need somewhere to sit before they become real notes.",
+            "The limitation is also the opportunity. Paired with a simple archive workflow, Tot can remain a clean capture layer while a system such as Obsidian holds the durable record."
+          ],
+          "verdictLabel": "Best for",
+          "verdict": "People who want a calm scratchpad beside their real notes app, not another knowledge-management project.",
+          "url": "https://tot.rocks/"
+        },
+        {
+          "name": "Rocket Typist",
+          "category": "Text expansion",
+          "tagline": "Reusable snippets without the weight of a sprawling automation suite.",
+          "body": [
+            "Rocket Typist stores recurring text and expands it from abbreviations as you type. It covers the practical center of text expansion: signatures, standard replies, dates and longer blocks that are tedious to reproduce accurately.",
+            "Its cross-device direction makes it more interesting for people whose snippets need to follow them beyond one Mac. As with any expander, the real test is whether its editing, permissions and memory footprint stay out of the way."
+          ],
+          "verdictLabel": "Worth testing if",
+          "verdict": "You want a dedicated snippet manager with Mac, iPhone and iPad support but do not need a full automation platform.",
+          "url": "https://witt-software.com/rockettypist/"
+        }
+      ],
+      "closing": "This is demonstration copy for the site’s first issue. Once the finished digest is ready, its text can replace this sample without changing the design or archive structure."
+    },
+    {
+      "id": "welcome",
+      "number": "000",
+      "label": "From the editor",
+      "date": "July 10, 2026",
+      "readingMinutes": 2,
+      "title": "Welcome to Mac App Digest",
+      "dek": "A short weekly field guide for finding Mac apps that are genuinely useful.",
+      "intro": [
+        "There are more interesting Mac apps than anyone can reasonably track. Mac App Digest is a small weekly filter: a few utilities, thoughtful context and a clear sense of who each app is actually for.",
+        "The website keeps the latest edition easy to read while giving older issues a permanent home. Each issue has its own shareable link, works well on a phone and remains available without an attachment."
+      ],
+      "apps": [
+        {
+          "name": "The format",
+          "category": "About",
+          "tagline": "Short enough to finish, useful enough to save.",
+          "body": [
+            "Each edition focuses on a small group of apps rather than an exhaustive list. The goal is to explain what makes them interesting, where they fit and any tradeoffs worth knowing before you install them."
+          ],
+          "verdictLabel": "The promise",
+          "verdict": "A clean read with no attachment hunting and an archive that gets more useful every week.",
+          "url": "https://github.com/noticesfromchat/macos-app-digest"
+        }
+      ],
+      "closing": "Thanks for reading. The newest issue will always be waiting on the home page."
+    }
+  ]
+}

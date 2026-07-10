@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Mac App Digest — a short weekly field guide to useful macOS apps."
+    />
+    <meta name="theme-color" content="#f4f1e9" />
+    <title>Mac App Digest</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/styles.css" />
+    <script defer src="assets/app.js"></script>
+  </head>
+  <body>
+    <div class="reading-progress" aria-hidden="true"><span></span></div>
+
+    <header class="site-header">
+      <a class="brand" href="./" aria-label="Mac App Digest home">
+        <span class="brand-mark" aria-hidden="true">
+          <i></i><i></i><i></i>
+        </span>
+        <span>Mac App Digest</span>
+      </a>
+      <nav class="header-actions" aria-label="Site controls">
+        <a href="#archive">Archive</a>
+        <button class="icon-button" id="theme-toggle" type="button" aria-label="Use dark appearance">
+          <span class="theme-icon" aria-hidden="true">◐</span>
+        </button>
+      </nav>
+    </header>
+
+    <main>
+      <article id="issue" class="issue-shell" aria-live="polite">
+        <header class="issue-hero">
+          <div class="issue-kicker" id="issue-kicker">Loading this week’s issue…</div>
+          <h1 id="issue-title">Mac App Digest</h1>
+          <p class="issue-dek" id="issue-dek"></p>
+          <div class="issue-meta" id="issue-meta"></div>
+        </header>
+
+        <div class="reading-layout">
+          <aside class="reading-tools" aria-label="Reading controls">
+            <span>Text size</span>
+            <div class="size-controls">
+              <button type="button" data-font="down" aria-label="Decrease text size">A−</button>
+              <button type="button" data-font="up" aria-label="Increase text size">A+</button>
+            </div>
+            <button class="copy-button" id="copy-link" type="button">Copy issue link</button>
+          </aside>
+
+          <div class="issue-body">
+            <section class="intro" id="issue-intro"></section>
+            <div class="app-list" id="app-list"></div>
+            <footer class="issue-closing" id="issue-closing"></footer>
+          </div>
+        </div>
+      </article>
+
+      <section class="archive" id="archive" aria-labelledby="archive-title">
+        <div class="archive-heading">
+          <div>
+            <p class="section-label">Back issues</p>
+            <h2 id="archive-title">The archive</h2>
+          </div>
+          <p>Every edition in one quiet place.</p>
+        </div>
+        <div class="archive-list" id="archive-list"></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>Mac App Digest</p>
+      <p>A short weekly field guide to useful macOS apps.</p>
+    </footer>
+
+    <noscript>
+      <p class="noscript">JavaScript is required to load the digest archive.</p>
+    </noscript>
+  </body>
+</html>
