@@ -1,2 +1,1 @@
-# macos-app-digest
-A weekly digest of macOS apps.
+# macOS App Digest
