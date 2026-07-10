@@ -75,16 +75,20 @@ const renderIssue = (issue, allIssues) => {
     .map(
       (app, index) => `
         <section class="app-entry">
-          <div class="app-number">Pick ${String(index + 1).padStart(2, "0")} · ${escapeHtml(app.category)}</div>
+          <div class="app-number">Item ${String(index + 1).padStart(2, "0")} · ${escapeHtml(app.category)}</div>
           <h2>${escapeHtml(app.name)}</h2>
           <p class="app-tagline">${escapeHtml(app.tagline)}</p>
           ${app.body.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("")}
-          <div class="app-verdict">
-            <strong>${escapeHtml(app.verdictLabel)}</strong>
-            <span>${escapeHtml(app.verdict)}</span>
-          </div>
+          ${app.why ? `<p><strong>Why it matters:</strong> ${escapeHtml(app.why)}</p>` : ""}
+          ${app.caveat ? `<p><strong>Caveat:</strong> ${escapeHtml(app.caveat)}</p>` : ""}
+          ${app.verdict ? `
+            <div class="app-verdict">
+              <strong>${escapeHtml(app.verdictLabel)}</strong>
+              <span>${escapeHtml(app.verdict)}</span>
+            </div>
+          ` : ""}
           <a class="app-link" href="${escapeHtml(app.url)}" target="_blank" rel="noreferrer">
-            Visit ${escapeHtml(app.name)} <span aria-hidden="true">↗</span>
+            ${escapeHtml(app.linkLabel || `Visit ${app.name}`)} <span aria-hidden="true">↗</span>
           </a>
         </section>
       `,
