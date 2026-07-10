@@ -3,54 +3,138 @@
     {
       "id": "2026-07-10",
       "number": "001",
-      "label": "Demo edition",
+      "label": "Weekly edition",
       "date": "July 10, 2026",
-      "readingMinutes": 5,
-      "title": "Three Mac utilities worth a closer look",
-      "dek": "A launcher you can trust, a focused place for fleeting thoughts and a text expander built for repetition.",
+      "readingMinutes": 9,
+      "title": "Mac utility week: remote displays, calmer audio and a Dock that stays put",
+      "dek": "Ten useful Mac developments, led by a polished remote display app and a cluster of small utilities that solve very specific annoyances.",
       "intro": [
-        "Welcome to the first web edition of Mac App Digest. This sample issue uses three apps you have been exploring recently to show how each Friday’s digest can read and feel.",
-        "The format is intentionally compact: a clear reason each app matters, enough context to decide whether it fits and a direct path to learn more. Future issues can drop into the same structure and remain available through the archive below."
+        "The first proper edition of Mac App Digest leans into the best kind of Mac software: focused tools that fix one recurring frustration without asking you to rebuild your workflow.",
+        "This week’s list includes new and recently surfaced indie apps, one notable consumer AI update and a quick platform watch. Each item includes the reason it may be useful plus the tradeoff worth knowing before you install it."
       ],
       "apps": [
         {
-          "name": "Alfred",
-          "category": "Launcher",
-          "tagline": "The mature Mac launcher that keeps earning its place.",
+          "name": "Mirage",
+          "category": "Remote display",
+          "tagline": "Stream a Mac window or full desktop to another Apple device.",
           "body": [
-            "Alfred turns a keyboard shortcut into a fast route to apps, files, web searches and repeatable workflows. Its appeal is less about novelty than accumulated polish: the basics are quick and predictable while the Powerpack leaves room to build deeper automations.",
-            "For anyone who has tried a newer launcher and found the edges too rough, Alfred remains a useful benchmark. It is the kind of utility that can disappear into daily muscle memory."
+            "Mirage can send individual Mac apps, a complete desktop or a secondary display to an iPhone, iPad, Vision Pro or another Mac. It supports hardware-accelerated video, dynamic ProMotion frame rates and Apple Pencil input, with remote connections protected by media encryption."
           ],
-          "verdictLabel": "Best for",
-          "verdict": "Mac users who value reliability, file search and a large workflow ecosystem over chasing the newest interface.",
-          "url": "https://www.alfredapp.com/"
+          "why": "It is a much more flexible idea than basic screen mirroring, especially if you want to place one Mac app on an iPad or reach a headless Mac from another room.",
+          "caveat": "The receiving app needs the free Mirage Host on the Mac. Streaming up to eight windows and some remote-access features require Pro.",
+          "url": "https://mirage.ethanlipnik.com/",
+          "linkLabel": "Explore Mirage"
         },
         {
-          "name": "Tot",
-          "category": "Scratchpad",
-          "tagline": "Seven small spaces for thoughts that do not need a filing system yet.",
+          "name": "DockFreeze",
+          "category": "Desktop utility",
+          "tagline": "Stop the Dock from wandering across multiple displays.",
           "body": [
-            "Tot is deliberately constrained: a handful of color-coded notes, fast access and very little organizational overhead. That makes it especially good for temporary text, copied fragments and ideas that need somewhere to sit before they become real notes.",
-            "The limitation is also the opportunity. Paired with a simple archive workflow, Tot can remain a clean capture layer while a system such as Obsidian holds the durable record."
+            "DockFreeze is a lightweight menu bar app that locks the macOS Dock to the display you choose. Its entire job is preventing the Dock from jumping to another monitor when the pointer hits the bottom edge."
           ],
-          "verdictLabel": "Best for",
-          "verdict": "People who want a calm scratchpad beside their real notes app, not another knowledge-management project.",
-          "url": "https://tot.rocks/"
+          "why": "Multi-monitor users get a permanent fix for a small but surprisingly persistent macOS irritation.",
+          "caveat": "This is intentionally a single-purpose utility. If your Dock already behaves, there is nothing else here to justify installing it.",
+          "url": "https://gilelach.com/",
+          "linkLabel": "Visit DockFreeze"
         },
         {
-          "name": "Rocket Typist",
-          "category": "Text expansion",
-          "tagline": "Reusable snippets without the weight of a sprawling automation suite.",
+          "name": "Auto Ducking",
+          "category": "Audio",
+          "tagline": "Lower background audio automatically when your microphone turns on.",
           "body": [
-            "Rocket Typist stores recurring text and expands it from abbreviations as you type. It covers the practical center of text expansion: signatures, standard replies, dates and longer blocks that are tedious to reproduce accurately.",
-            "Its cross-device direction makes it more interesting for people whose snippets need to follow them beyond one Mac. As with any expander, the real test is whether its editing, permissions and memory footprint stay out of the way."
+            "Auto Ducking watches for microphone activity, lowers music, video or ambient audio to a level you choose, then restores the previous volume when the microphone is no longer in use. It is designed for calls, dictation, recording and voice-based AI tools."
           ],
-          "verdictLabel": "Worth testing if",
-          "verdict": "You want a dedicated snippet manager with Mac, iPhone and iPad support but do not need a full automation platform.",
-          "url": "https://witt-software.com/rockettypist/"
+          "why": "It removes the repeated pause-and-resume step from the growing number of Mac workflows that use a microphone throughout the day.",
+          "caveat": "It includes a seven-day trial, so continued use is paid. Test it with your particular audio and microphone apps before committing.",
+          "url": "https://indieappcatalog.com/app/2999",
+          "linkLabel": "View Auto Ducking"
+        },
+        {
+          "name": "Docomments",
+          "category": "File organization",
+          "tagline": "Attach Markdown notes directly to Mac files and folders.",
+          "body": [
+            "Docomments adds a floating note to any file or folder. Notes support Markdown, save into the file’s metadata, appear in Finder’s Get Info window and remain searchable through Spotlight. Files can be added by drag and drop, a global shortcut or Finder Services."
+          ],
+          "why": "It creates a lightweight layer for change notes, context and reminders without renaming files or maintaining a separate database.",
+          "caveat": "Because the comments rely on file metadata, test whether they survive the cloud sync, archive or transfer tools you use most often.",
+          "url": "https://docomments.app/",
+          "linkLabel": "Visit Docomments"
+        },
+        {
+          "name": "Mailway",
+          "category": "Email utility",
+          "tagline": "Route every mailto link to the right email app or webmail service.",
+          "body": [
+            "Mailway becomes the Mac’s default email handler, then redirects mailto links according to rules for the recipient, domain or subdomain. That makes it possible to send work addresses to one account and personal addresses to another without changing defaults first."
+          ],
+          "why": "It solves a real problem for anyone who splits email between Gmail, another webmail account and native Mac apps.",
+          "caveat": "Routing is automatic rather than a chooser that appears after every click. Good rules are essential, and Mailway must be set as the default email app.",
+          "url": "https://sindresorhus.com/apps/macos",
+          "linkLabel": "Find Mailway"
+        },
+        {
+          "name": "Mobile Builds",
+          "category": "Developer tool",
+          "tagline": "Track Xcode Cloud builds without living in a browser tab.",
+          "body": [
+            "Mobile Builds surfaces Xcode Cloud continuous-integration status, history, analytics and failure notifications on macOS and iOS. It is aimed at making build health understandable at a glance while developers stay inside their normal workflow."
+          ],
+          "why": "Independent Apple developers can see failed builds sooner and spend less time digging through the Xcode Cloud interface.",
+          "caveat": "Its value is tightly tied to Xcode Cloud. Developers using GitHub Actions, Bitrise or another CI service should skip it.",
+          "url": "https://mobilebuilds.app/",
+          "linkLabel": "Visit Mobile Builds"
+        },
+        {
+          "name": "Gemini Spark for Mac",
+          "category": "Consumer AI",
+          "tagline": "Google’s Mac assistant is beginning to act on files and connected apps.",
+          "body": [
+            "Google is bringing Spark into the Gemini app for macOS with access to explicitly shared local files, real-time topic tracking, third-party app connections and support for Model Context Protocol integrations. The pitch moves Gemini beyond a chat window toward multi-step desktop work."
+          ],
+          "why": "A native Mac agent that can work with local files and external tools could become more useful than another shortcut to a chatbot.",
+          "caveat": "Spark is still a beta and initial availability is limited to Google AI Ultra subscribers in selected countries.",
+          "url": "https://www.t3.com/tech/apps/gemini-spark-ai-is-now-on-mac-and-this-is-how-it-can-help-your-life",
+          "linkLabel": "Read about Gemini Spark"
+        },
+        {
+          "name": "SonicFlow",
+          "category": "Open source",
+          "tagline": "Independent volume sliders for every app producing audio.",
+          "body": [
+            "SonicFlow is a free, open-source per-app volume mixer for macOS. It provides separate sliders for apps such as Music, Zoom and Chrome, plus automatic ducking when someone speaks on a call. The developer says it uses under one percent CPU and includes no telemetry."
+          ],
+          "why": "Per-app audio control remains a conspicuous Mac omission, and SonicFlow packages the missing feature into a clean native panel.",
+          "caveat": "The current release is version 0.1. Treat it as promising early software and verify stability with your own audio setup.",
+          "url": "https://altuzar.github.io/sonicflow/",
+          "linkLabel": "View SonicFlow"
+        },
+        {
+          "name": "Dockspace",
+          "category": "Dock customization",
+          "tagline": "Put widgets, previews and controls directly into the Mac Dock.",
+          "body": [
+            "Dockspace extends the Dock with app previews, animations, music controls, calendars and other widgets. It is a visual, interaction-heavy alternative to utilities that simply rearrange or replace Dock icons."
+          ],
+          "why": "It treats the Dock as usable screen space rather than a static launcher, which could be handy on large displays.",
+          "caveat": "Dock customization apps can overlap or conflict. Test it without other Dock modifiers running before deciding whether it belongs in your setup.",
+          "url": "https://getdockspace.app/",
+          "linkLabel": "Visit Dockspace"
+        },
+        {
+          "name": "macOS 27 beta 3",
+          "category": "Platform watch",
+          "tagline": "The next Mac release reaches its third developer beta.",
+          "body": [
+            "Apple released macOS 27 beta 3 on July 6 alongside Xcode 27 beta 3 and the fourth macOS 26.6 beta. For app developers, this is another checkpoint for testing compatibility with the next generation of macOS before the wider public beta."
+          ],
+          "why": "The beta cycle determines when indie apps can safely adopt new platform features and when everyday users can expect compatibility work to accelerate.",
+          "caveat": "This remains developer beta software. It does not belong on a production Mac that you rely on every day.",
+          "url": "https://developer.apple.com/news/releases/",
+          "linkLabel": "See Apple’s releases"
         }
       ],
-      "closing": "This is demonstration copy for the site’s first issue. Once the finished digest is ready, its text can replace this sample without changing the design or archive structure."
+      "closing": "That’s the week. The archive will keep this edition available while next Friday’s issue takes over the home page."
     },
     {
       "id": "welcome",
