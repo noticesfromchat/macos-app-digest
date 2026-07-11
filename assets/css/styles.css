@@ -392,3 +392,67 @@ a {
 .note li + li {
   margin-top: 8px;
 }
+
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  padding-top: 18px;
+}
+
+.tag {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface-strong);
+  color: var(--muted);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1;
+  padding: 8px 10px;
+  text-transform: lowercase;
+}
+
+.tag:hover,
+.tag[aria-pressed="true"] {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.tag-filter {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  margin: -22px 0 36px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 650;
+}
+
+.tag-filter[data-active="true"] {
+  display: flex;
+}
+
+.tag-filter strong {
+  color: var(--text);
+}
+
+.tag-filter button {
+  margin-left: auto;
+  border: 0;
+  background: transparent;
+  color: var(--accent);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+}
+
+.app-card[hidden] {
+  display: none;
+}
