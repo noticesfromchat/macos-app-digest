@@ -17,7 +17,7 @@
       "apps": [
         {
           "name": "Cotypist",
-          "description": "A local Apple Silicon autocomplete layer that predicts your next words inside everyday Mac apps.",
+          "description": "A local Apple Silicon autocomplete layer that predicts the next words inside everyday Mac apps.",
           "bestFor": "Writers, operators and prompt-heavy users who want AI assistance without leaving the text field.",
           "homepage": "https://cotypist.app/",
           "category": "New Discoveries",
@@ -62,7 +62,7 @@
         },
         {
           "name": "Glaze by Raycast",
-          "description": "A Mac-first AI app builder that turns plain-language requests into desktop apps that live on your machine.",
+          "description": "A Mac-first AI app builder that turns plain-language requests into desktop apps that run locally on the Mac.",
           "bestFor": "Raycast users and automation-minded teams who want tiny internal tools without starting a full coding project.",
           "homepage": "https://www.glaze.app/",
           "category": "Trending",
