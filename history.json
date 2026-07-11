@@ -1,0 +1,83 @@
+{
+  "updated": "2026-07-10",
+  "issues": [
+    {
+      "id": "2026-07-10",
+      "number": "001",
+      "title": "macOS App Digest — July 10, 2026",
+      "url": "issues/2026-07-10.html",
+      "apps": [
+        {
+          "name": "Mirage",
+          "description": "Stream a Mac window, full desktop or secondary display to another Apple device.",
+          "bestFor": "Power users who want flexible second-screen and remote-display workflows.",
+          "homepage": "https://mirage.ethanlipnik.com/",
+          "firstFeatured": "2026-07-10"
+        },
+        {
+          "name": "DockFreeze",
+          "description": "Lock the macOS Dock to one display so it stops jumping around multi-monitor setups.",
+          "bestFor": "Anyone running multiple displays who wants one tiny fix for Dock behavior.",
+          "homepage": "https://gilelach.com/",
+          "firstFeatured": "2026-07-10"
+        },
+        {
+          "name": "Docomments",
+          "description": "Attach Markdown notes to files and folders using Finder metadata that remains Spotlight-searchable.",
+          "bestFor": "People who need lightweight context notes without maintaining a separate file database.",
+          "homepage": "https://docomments.app/",
+          "firstFeatured": "2026-07-10"
+        },
+        {
+          "name": "SonicFlow",
+          "description": "A free open-source per-app volume mixer for macOS with separate sliders for active audio sources.",
+          "bestFor": "Users who miss Windows-style app audio controls on the Mac.",
+          "homepage": "https://altuzar.github.io/sonicflow/",
+          "firstFeatured": "2026-07-10"
+        },
+        {
+          "name": "Dockspace",
+          "description": "Add previews, widgets and controls directly to the Dock.",
+          "bestFor": "Large-display users who want the Dock to become active workspace instead of a static launcher.",
+          "homepage": "https://getdockspace.app/",
+          "firstFeatured": "2026-07-10"
+        },
+        {
+          "name": "Mailway",
+          "description": "Route mailto links to the right native app or webmail account using recipient and domain rules.",
+          "bestFor": "People splitting work and personal email across multiple clients.",
+          "homepage": "https://sindresorhus.com/apps/macos",
+          "firstFeatured": "2026-07-10"
+        },
+        {
+          "name": "Auto Ducking",
+          "description": "Automatically lowers background audio whenever your microphone becomes active.",
+          "bestFor": "Calls, dictation, recording and voice-first AI workflows.",
+          "homepage": "https://indieappcatalog.com/app/2999",
+          "firstFeatured": "2026-07-10"
+        },
+        {
+          "name": "Gemini Spark for Mac",
+          "description": "Google's Mac assistant is beginning to act on shared local files and connected apps.",
+          "bestFor": "Users tracking the move from chatbot shortcuts toward desktop agents.",
+          "homepage": "https://www.t3.com/tech/apps/gemini-spark-ai-is-now-on-mac-and-this-is-how-it-can-help-your-life",
+          "firstFeatured": "2026-07-10"
+        },
+        {
+          "name": "Mobile Builds",
+          "description": "Track Xcode Cloud build status, history and failures from a focused Mac and iOS app.",
+          "bestFor": "Apple developers who want build awareness outside the browser.",
+          "homepage": "https://mobilebuilds.app/",
+          "firstFeatured": "2026-07-10"
+        },
+        {
+          "name": "macOS 27 beta 3",
+          "description": "Platform update checkpoint for developers testing compatibility.",
+          "bestFor": "Apple developers tracking platform readiness.",
+          "homepage": "https://developer.apple.com/news/releases/",
+          "firstFeatured": "2026-07-10"
+        }
+      ]
+    }
+  ]
+}
