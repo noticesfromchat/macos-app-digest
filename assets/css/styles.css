@@ -8,10 +8,29 @@
   --line: #d2d2d7;
   --accent: #0066cc;
   --accent-soft: #e8f1ff;
+  --note-text: #2f4f7f;
+  --header-bg: rgba(245, 245, 247, 0.86);
+  --header-line: rgba(210, 210, 215, 0.72);
   --shadow: 0 18px 60px rgba(0, 0, 0, 0.08);
   --radius: 8px;
   --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
   --display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #101114;
+  --surface: #191b20;
+  --surface-strong: #20232a;
+  --text: #f5f5f7;
+  --muted: #aaaeb7;
+  --line: #343841;
+  --accent: #67a8ff;
+  --accent-soft: #16283f;
+  --note-text: #c7daf7;
+  --header-bg: rgba(16, 17, 20, 0.86);
+  --header-line: rgba(52, 56, 65, 0.78);
+  --shadow: 0 18px 60px rgba(0, 0, 0, 0.34);
 }
 
 * {
@@ -44,8 +63,8 @@ a {
   justify-content: space-between;
   min-height: 64px;
   padding: 0 clamp(20px, 5vw, 72px);
-  border-bottom: 1px solid rgba(210, 210, 215, 0.72);
-  background: rgba(245, 245, 247, 0.86);
+  border-bottom: 1px solid var(--header-line);
+  background: var(--header-bg);
   backdrop-filter: blur(20px);
 }
 
@@ -81,6 +100,32 @@ a {
 .site-header nav a:hover,
 .site-header nav a[aria-current="page"] {
   color: var(--text);
+}
+
+.theme-toggle {
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  gap: 7px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 650;
+}
+
+.theme-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.theme-toggle span:first-child {
+  width: 1em;
+  text-align: center;
 }
 
 .issue,
@@ -238,7 +283,7 @@ a {
 .note p {
   max-width: 760px;
   margin: 12px 0 0;
-  color: #2f4f7f;
+  color: var(--note-text);
 }
 
 .archive-page {
@@ -341,7 +386,7 @@ a {
   max-width: 760px;
   margin: 16px 0 0;
   padding-left: 20px;
-  color: #2f4f7f;
+  color: var(--note-text);
 }
 
 .note li + li {
