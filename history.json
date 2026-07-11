@@ -22,7 +22,13 @@
           "homepage": "https://cotypist.app/",
           "category": "New Discoveries",
           "source": "Mac Power Users #854 and official homepage",
-          "firstFeatured": "2026-07-10"
+          "firstFeatured": "2026-07-10",
+          "tags": [
+            "writing",
+            "ai",
+            "local",
+            "productivity"
+          ]
         },
         {
           "name": "Choclift",
@@ -31,7 +37,13 @@
           "homepage": "https://choclift.com/",
           "category": "New Discoveries",
           "source": "Mac Power Users #854 and official homepage",
-          "firstFeatured": "2026-07-10"
+          "firstFeatured": "2026-07-10",
+          "tags": [
+            "launcher",
+            "shortcuts",
+            "ios",
+            "productivity"
+          ]
         },
         {
           "name": "Menu Drop",
@@ -40,7 +52,13 @@
           "homepage": "https://sindresorhus.com/menu-drop",
           "category": "New Discoveries",
           "source": "Mac Power Users #854 and official homepage",
-          "firstFeatured": "2026-07-10"
+          "firstFeatured": "2026-07-10",
+          "tags": [
+            "menubar",
+            "airdrop",
+            "files",
+            "utility"
+          ]
         },
         {
           "name": "Glaze by Raycast",
@@ -49,7 +67,13 @@
           "homepage": "https://www.glaze.app/",
           "category": "Trending",
           "source": "Product Hunt, Raycast and official homepage",
-          "firstFeatured": "2026-07-10"
+          "firstFeatured": "2026-07-10",
+          "tags": [
+            "ai",
+            "automation",
+            "developer",
+            "productivity"
+          ]
         },
         {
           "name": "MacNotch",
@@ -58,7 +82,13 @@
           "homepage": "https://macnotch.io/",
           "category": "Trending",
           "source": "Product Hunt and official homepage",
-          "firstFeatured": "2026-07-10"
+          "firstFeatured": "2026-07-10",
+          "tags": [
+            "notch",
+            "menubar",
+            "dashboard",
+            "productivity"
+          ]
         },
         {
           "name": "AgentPeek",
@@ -67,7 +97,13 @@
           "homepage": "https://agentpeek.app/",
           "category": "Trending",
           "source": "Product Hunt and official homepage",
-          "firstFeatured": "2026-07-10"
+          "firstFeatured": "2026-07-10",
+          "tags": [
+            "ai",
+            "developer",
+            "menubar",
+            "local"
+          ]
         },
         {
           "name": "Shortcuts Playground",
@@ -76,7 +112,13 @@
           "homepage": "https://github.com/viticci/shortcuts-playground-plugin",
           "category": "AI & Automation",
           "source": "MacStories and GitHub",
-          "firstFeatured": "2026-07-10"
+          "firstFeatured": "2026-07-10",
+          "tags": [
+            "automation",
+            "shortcuts",
+            "ai",
+            "open-source"
+          ]
         },
         {
           "name": "SmartClipboard",
@@ -85,7 +127,13 @@
           "homepage": "https://github.com/saihgupr/SmartClipboard",
           "category": "AI & Automation",
           "source": "GitHub search and repository",
-          "firstFeatured": "2026-07-10"
+          "firstFeatured": "2026-07-10",
+          "tags": [
+            "clipboard",
+            "ai",
+            "menubar",
+            "open-source"
+          ]
         },
         {
           "name": "Wispr Flow",
@@ -94,7 +142,13 @@
           "homepage": "https://wisprflow.ai/",
           "category": "AI & Automation",
           "source": "Mac Power Users #854 and official homepage",
-          "firstFeatured": "2026-07-10"
+          "firstFeatured": "2026-07-10",
+          "tags": [
+            "dictation",
+            "ai",
+            "writing",
+            "productivity"
+          ]
         }
       ]
     }
