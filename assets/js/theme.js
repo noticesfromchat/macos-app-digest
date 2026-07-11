@@ -8,12 +8,17 @@ const layoutFixes = document.createElement("style");
 layoutFixes.textContent = `
   .app-card .tag {
     margin-top: 0;
+    transition:
+      color 180ms ease,
+      border-color 180ms ease,
+      background-color 180ms ease;
   }
 
   .app-card h3 a {
     margin-top: 0;
     color: var(--text);
     text-decoration: none;
+    transition: color 180ms ease;
   }
 
   .app-card h3 a:hover {
@@ -67,7 +72,9 @@ layoutFixes.textContent = `
   @media (prefers-reduced-motion: reduce) {
     .app-card,
     .feature-card,
-    .archive-card {
+    .archive-card,
+    .app-card h3 a,
+    .app-card .tag {
       transition: none;
     }
 
