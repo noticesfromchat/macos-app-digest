@@ -3,85 +3,149 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="Mac App Digest — a short weekly field guide to useful macOS apps."
-    />
-    <meta name="theme-color" content="#f4f1e9" />
-    <title>Mac App Digest</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="assets/styles.css?v=20260710-1" />
-    <script defer src="assets/app.js?v=20260710-1"></script>
+    <meta name="description" content="A premium weekly macOS app digest for experienced Mac users." />
+    <meta name="theme-color" content="#f5f5f7" />
+    <link rel="canonical" href="https://noticesfromchat.github.io/macos-app-digest/" />
+    <title>macOS App Digest</title>
+    <link rel="stylesheet" href="assets/css/styles.css?v=20260710-2" />
   </head>
   <body>
-    <div class="reading-progress" aria-hidden="true"><span></span></div>
-
     <header class="site-header">
-      <a class="brand" href="./" aria-label="Mac App Digest home">
-        <span class="brand-mark" aria-hidden="true">
-          <i></i><i></i><i></i>
-        </span>
-        <span>Mac App Digest</span>
+      <a class="brand" href="../" aria-label="macOS App Digest home">
+        <span class="brand-icon" aria-hidden="true">🍎</span>
+        <span>macOS App Digest</span>
       </a>
-      <nav class="header-actions" aria-label="Site controls">
-        <a href="#archive">Archive</a>
-        <button class="icon-button" id="theme-toggle" type="button" aria-label="Use dark appearance">
-          <span class="theme-icon" aria-hidden="true">◐</span>
-        </button>
+      <nav aria-label="Primary navigation">
+        <a href="../archive.html">Archive</a>
       </nav>
     </header>
-
     <main>
-      <article id="issue" class="issue-shell" aria-live="polite">
-        <header class="issue-hero">
-          <div class="issue-kicker" id="issue-kicker">Loading this week’s issue…</div>
-          <h1 id="issue-title">Mac App Digest</h1>
-          <p class="issue-dek" id="issue-dek"></p>
-          <div class="issue-meta" id="issue-meta"></div>
+      <article class="issue">
+        <header class="hero">
+          <p class="eyebrow">Weekly edition · Issue 001</p>
+          <h1>🍎 macOS App Digest</h1>
+          <p class="date">July 10, 2026</p>
+          <p class="dek">A launcher you can trust, calmer audio during voice work and a few single-purpose Mac utilities worth a closer look.</p>
+          <div class="hero-actions">
+            <a class="button" href="issues/2026-07-10.html">Permanent issue link</a>
+            <a class="button secondary" href="archive.html">View archive</a>
+          </div>
         </header>
 
-        <div class="reading-layout">
-          <aside class="reading-tools" aria-label="Reading controls">
-            <span>Text size</span>
-            <div class="size-controls">
-              <button type="button" data-font="down" aria-label="Decrease text size">A−</button>
-              <button type="button" data-font="up" aria-label="Increase text size">A+</button>
+        <section id="new-discoveries" class="section">
+          <div class="section-heading">
+            <p class="eyebrow">New Discoveries</p>
+            <h2>Fresh finds with a real use case</h2>
+          </div>
+          <div class="grid">
+          <article class="card app-card">
+            <div>
+              <h3>Mirage</h3>
+              <p>Stream a Mac window, full desktop or secondary display to another Apple device.</p>
             </div>
-            <button class="copy-button" id="copy-link" type="button">Copy issue link</button>
-          </aside>
+            <p class="best-for"><strong>Best for:</strong> Power users who want flexible second-screen and remote-display workflows.</p>
+            <a href="https://mirage.ethanlipnik.com/" target="_blank" rel="noreferrer">Homepage</a>
+          </article>
 
-          <div class="issue-body">
-            <section class="intro" id="issue-intro"></section>
-            <div class="app-list" id="app-list"></div>
-            <footer class="issue-closing" id="issue-closing"></footer>
+          <article class="card app-card">
+            <div>
+              <h3>DockFreeze</h3>
+              <p>Lock the macOS Dock to one display so it stops jumping around multi-monitor setups.</p>
+            </div>
+            <p class="best-for"><strong>Best for:</strong> Anyone running multiple displays who wants one tiny fix for Dock behavior.</p>
+            <a href="https://gilelach.com/" target="_blank" rel="noreferrer">Homepage</a>
+          </article>
+
+          <article class="card app-card">
+            <div>
+              <h3>Docomments</h3>
+              <p>Attach Markdown notes to files and folders using Finder metadata that remains Spotlight-searchable.</p>
+            </div>
+            <p class="best-for"><strong>Best for:</strong> People who need lightweight context notes without maintaining a separate file database.</p>
+            <a href="https://docomments.app/" target="_blank" rel="noreferrer">Homepage</a>
+          </article>
           </div>
-        </div>
+        </section>
+
+        <section class="section">
+          <div class="section-heading">
+            <p class="eyebrow">Trending</p>
+            <h2>Apps power users are likely to talk about</h2>
+          </div>
+          <div class="grid">
+          <article class="card app-card">
+            <div>
+              <h3>SonicFlow</h3>
+              <p>A free open-source per-app volume mixer for macOS with separate sliders for active audio sources.</p>
+            </div>
+            <p class="best-for"><strong>Best for:</strong> Users who miss Windows-style app audio controls on the Mac.</p>
+            <a href="https://altuzar.github.io/sonicflow/" target="_blank" rel="noreferrer">Homepage</a>
+          </article>
+
+          <article class="card app-card">
+            <div>
+              <h3>Dockspace</h3>
+              <p>Add previews, widgets and controls directly to the Dock.</p>
+            </div>
+            <p class="best-for"><strong>Best for:</strong> Large-display users who want the Dock to become active workspace instead of a static launcher.</p>
+            <a href="https://getdockspace.app/" target="_blank" rel="noreferrer">Homepage</a>
+          </article>
+
+          <article class="card app-card">
+            <div>
+              <h3>Mailway</h3>
+              <p>Route mailto links to the right native app or webmail account using recipient and domain rules.</p>
+            </div>
+            <p class="best-for"><strong>Best for:</strong> People splitting work and personal email across multiple clients.</p>
+            <a href="https://sindresorhus.com/apps/macos" target="_blank" rel="noreferrer">Homepage</a>
+          </article>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-heading">
+            <p class="eyebrow">AI &amp; Automation</p>
+            <h2>Utilities for faster, more automatic Mac work</h2>
+          </div>
+          <div class="grid">
+          <article class="card app-card">
+            <div>
+              <h3>Auto Ducking</h3>
+              <p>Automatically lowers background audio whenever your microphone becomes active.</p>
+            </div>
+            <p class="best-for"><strong>Best for:</strong> Calls, dictation, recording and voice-first AI workflows.</p>
+            <a href="https://indieappcatalog.com/app/2999" target="_blank" rel="noreferrer">Homepage</a>
+          </article>
+
+          <article class="card app-card">
+            <div>
+              <h3>Gemini Spark for Mac</h3>
+              <p>Google&#039;s Mac assistant is beginning to act on shared local files and connected apps.</p>
+            </div>
+            <p class="best-for"><strong>Best for:</strong> Users tracking the move from chatbot shortcuts toward desktop agents.</p>
+            <a href="https://www.t3.com/tech/apps/gemini-spark-ai-is-now-on-mac-and-this-is-how-it-can-help-your-life" target="_blank" rel="noreferrer">Homepage</a>
+          </article>
+
+          <article class="card app-card">
+            <div>
+              <h3>Mobile Builds</h3>
+              <p>Track Xcode Cloud build status, history and failures from a focused Mac and iOS app.</p>
+            </div>
+            <p class="best-for"><strong>Best for:</strong> Apple developers who want build awareness outside the browser.</p>
+            <a href="https://mobilebuilds.app/" target="_blank" rel="noreferrer">Homepage</a>
+          </article>
+          </div>
+        </section>
+
+        <section class="note">
+          <h2>Editor’s Note</h2>
+          <p>This first edition has been reorganized into the new digest format. Future Friday issues will add verified video, reading and deal sections when there is enough worthwhile material.</p>
+        </section>
       </article>
-
-      <section class="archive" id="archive" aria-labelledby="archive-title">
-        <div class="archive-heading">
-          <div>
-            <p class="section-label">Back issues</p>
-            <h2 id="archive-title">The archive</h2>
-          </div>
-          <p>Every edition in one quiet place.</p>
-        </div>
-        <div class="archive-list" id="archive-list"></div>
-      </section>
     </main>
-
-    <footer class="site-footer">
-      <p>Mac App Digest</p>
-      <p>A short weekly field guide to useful macOS apps.</p>
+        <footer class="site-footer">
+      <p>Published by macOS App Digest.</p>
+      <p><a href="https://github.com/noticesfromchat/macos-app-digest">GitHub</a></p>
     </footer>
-
-    <noscript>
-      <p class="noscript">JavaScript is required to load the digest archive.</p>
-    </noscript>
   </body>
 </html>
