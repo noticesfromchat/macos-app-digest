@@ -26,6 +26,47 @@ layoutFixes.textContent = `
       min-height: 52px;
     }
   }
+
+  @media (hover: hover) and (pointer: fine) {
+    .app-card,
+    .feature-card,
+    .archive-card {
+      transition:
+        transform 180ms ease,
+        box-shadow 180ms ease,
+        border-color 180ms ease;
+      transform-origin: center bottom;
+      will-change: transform;
+    }
+
+    .app-card:hover,
+    .feature-card:hover,
+    .archive-card:hover {
+      transform: translateY(-5px) rotate(-0.25deg);
+      border-color: color-mix(in srgb, var(--accent) 42%, var(--line));
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.14);
+    }
+
+    :root[data-theme="dark"] .app-card:hover,
+    :root[data-theme="dark"] .feature-card:hover,
+    :root[data-theme="dark"] .archive-card:hover {
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.48);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .app-card,
+    .feature-card,
+    .archive-card {
+      transition: none;
+    }
+
+    .app-card:hover,
+    .feature-card:hover,
+    .archive-card:hover {
+      transform: none;
+    }
+  }
 `;
 document.head.appendChild(layoutFixes);
 
