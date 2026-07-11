@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Mac apps tagged local, listed alphabetically from macOS App Digest." />
+    <meta name="theme-color" content="#f5f5f7" />
+    <script>
+      (() => {
+        const saved = localStorage.getItem("macos-digest-theme");
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.dataset.theme = saved || (prefersDark ? "dark" : "light");
+      })();
+    </script>
+    <link rel="canonical" href="https://noticesfromchat.github.io/macos-app-digest/tags/local.html" />
+    <title>local apps · macOS App Digest</title>
+    <link rel="stylesheet" href="../assets/css/styles.css?v=20260710-6" />
+    <script defer src="../assets/js/theme.js?v=20260710-6"></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="../" aria-label="macOS App Digest home">
+        <span class="brand-icon" aria-hidden="true">🍎</span>
+        <span>macOS App Digest</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="../archive.html">Archive</a>
+        <button class="theme-toggle" type="button" aria-label="Switch to dark mode" data-theme-toggle>
+          <span data-theme-icon aria-hidden="true">☾</span>
+          <span data-theme-label>Dark</span>
+        </button>
+      </nav>
+    </header>
+    <main>
+      <section class="archive-page tag-page">
+        <p class="eyebrow">Tag</p>
+        <h1>local</h1>
+        <p class="dek">2 apps tagged local, listed alphabetically.</p>
+        <div class="tag-results">
+          <article class="card tag-result">
+            <div class="tag-result__meta">Trending · Issue 001</div>
+            <h2>AgentPeek</h2>
+            <p>Shows live Claude Code, Codex, Cursor and other coding-agent sessions from the Mac notch or menu bar.</p>
+            <p><strong>Best for:</strong> Developers running multiple local AI agents who need prompt approvals, token usage and dev servers at a glance.</p>
+            <div class="tag-list" aria-label="App tags">
+              <a class="tag" href="ai.html">ai</a>
+              <a class="tag" href="developer.html">developer</a>
+              <a class="tag" href="menubar.html">menubar</a>
+              <a class="tag" href="local.html">local</a>
+            </div>
+            <div class="tag-result__links">
+              <a class="button secondary" href="../issues/2026-07-10.html">Read issue</a>
+              <a class="button" href="https://agentpeek.app/">Homepage</a>
+            </div>
+          </article>
+
+          <article class="card tag-result">
+            <div class="tag-result__meta">New Discoveries · Issue 001</div>
+            <h2>Cotypist</h2>
+            <p>A local Apple Silicon autocomplete layer that predicts your next words inside everyday Mac apps.</p>
+            <p><strong>Best for:</strong> Writers, operators and prompt-heavy users who want AI assistance without leaving the text field.</p>
+            <div class="tag-list" aria-label="App tags">
+              <a class="tag" href="writing.html">writing</a>
+              <a class="tag" href="ai.html">ai</a>
+              <a class="tag" href="local.html">local</a>
+              <a class="tag" href="productivity.html">productivity</a>
+            </div>
+            <div class="tag-result__links">
+              <a class="button secondary" href="../issues/2026-07-10.html">Read issue</a>
+              <a class="button" href="https://cotypist.app/">Homepage</a>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <p>Published by macOS App Digest.</p>
+      <p><a href="https://github.com/noticesfromchat/macos-app-digest">GitHub</a></p>
+    </footer>
+  </body>
+</html>
