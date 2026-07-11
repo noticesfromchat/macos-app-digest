@@ -2,6 +2,8 @@
 
 A premium weekly macOS app digest for experienced Mac users.
 
+Live site: https://noticesfromchat.github.io/macos-app-digest/
+
 ## Publishing Model
 
 The site is hosted with GitHub Pages from the `main` branch.
