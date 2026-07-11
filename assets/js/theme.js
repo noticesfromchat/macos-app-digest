@@ -82,6 +82,27 @@ layoutFixes.textContent = `
     }
   }
 
+  @media (hover: none) and (pointer: coarse) {
+    .app-card {
+      transition:
+        transform 240ms ease,
+        box-shadow 240ms ease,
+        border-color 240ms ease;
+      transform-origin: center center;
+      will-change: transform;
+    }
+
+    .app-card.is-in-view {
+      transform: translateY(-3px) scale(1.012);
+      border-color: color-mix(in srgb, var(--accent) 34%, var(--line));
+      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.12);
+    }
+
+    :root[data-theme="dark"] .app-card.is-in-view {
+      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.38);
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .app-card,
     .feature-card,
@@ -93,7 +114,8 @@ layoutFixes.textContent = `
 
     .app-card:hover,
     .feature-card:hover,
-    .archive-card:hover {
+    .archive-card:hover,
+    .app-card.is-in-view {
       transform: none;
     }
   }
@@ -142,8 +164,31 @@ const linkReadingTitles = () => {
   });
 };
 
+const enableMobileCardReactions = () => {
+  const isTouchDevice = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!isTouchDevice || reduceMotion || !("IntersectionObserver" in window)) return;
+
+  const cards = document.querySelectorAll(".app-card");
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        entry.target.classList.toggle("is-in-view", entry.isIntersecting);
+      });
+    },
+    {
+      root: null,
+      rootMargin: "-28% 0px -28% 0px",
+      threshold: 0.2,
+    }
+  );
+
+  cards.forEach((card) => observer.observe(card));
+};
+
 linkAppNames();
 linkReadingTitles();
+enableMobileCardReactions();
 
 const applyTheme = (theme) => {
   root.dataset.theme = theme;
