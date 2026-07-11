@@ -1,18 +1,8 @@
 # macOS App Digest
 
-A premium weekly macOS app digest for experienced Mac users.
+A premium weekly macOS app digest for experienced Mac users. This is an AI-based digest for my personal use. 
 
 Live site: https://noticesfromchat.github.io/macos-app-digest/
-
-## Publishing Model
-
-The site is hosted with GitHub Pages from the `main` branch.
-
-- `index.html` always mirrors the latest issue.
-- `archive.html` links to every permanent issue.
-- `issues/YYYY-MM-DD.html` stores each issue permanently.
-- `history.json` records featured apps so future issues avoid repeats.
-- `assets/css/`, `assets/images/` and `assets/icons/` hold site assets.
 
 ## Weekly Editorial Brief
 
@@ -24,7 +14,7 @@ Prioritize usefulness, community excitement, polish, active development and uniq
 
 ## Issue Layout
 
-Each issue should include:
+Each issue includes:
 
 - New Discoveries: three apps
 - Trending: three apps
@@ -32,5 +22,3 @@ Each issue should include:
 - Deals & Bundles: up to three only when genuinely worthwhile
 - Video of the Week: one relevant YouTube recommendation
 - Weekend Reading: three actual articles, not software recommendations
-
-Verify homepage and article links before publishing. Omit weak optional sections instead of padding the issue.
