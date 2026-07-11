@@ -16,8 +16,14 @@ layoutFixes.textContent = `
 
   @media (min-width: 821px) {
     .app-card:has(.best-for) .tag-list {
-      min-height: 66px;
+      height: 86px;
+      min-height: 86px;
       align-content: flex-start;
+      overflow: visible;
+    }
+
+    .app-card:has(.best-for) .source-line {
+      min-height: 52px;
     }
   }
 `;
