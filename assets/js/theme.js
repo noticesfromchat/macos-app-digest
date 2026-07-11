@@ -10,6 +10,16 @@ layoutFixes.textContent = `
     margin-top: 0;
   }
 
+  .app-card h3 a {
+    margin-top: 0;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .app-card h3 a:hover {
+    color: var(--accent);
+  }
+
   .archive-page:not(.tag-page) {
     padding-top: 40px;
   }
@@ -69,6 +79,30 @@ layoutFixes.textContent = `
   }
 `;
 document.head.appendChild(layoutFixes);
+
+const linkAppNames = () => {
+  document.querySelectorAll(".app-card:has(.best-for)").forEach((card) => {
+    const heading = card.querySelector("h3");
+    const homepageLink = Array.from(card.children).find(
+      (element) => element.matches?.("a") && !element.classList.contains("tag")
+    );
+
+    if (!heading || !homepageLink || heading.querySelector("a")) return;
+
+    const titleLink = document.createElement("a");
+    titleLink.href = homepageLink.href;
+    titleLink.textContent = heading.textContent;
+
+    if (homepageLink.target) titleLink.target = homepageLink.target;
+    if (homepageLink.rel) titleLink.rel = homepageLink.rel;
+
+    heading.textContent = "";
+    heading.appendChild(titleLink);
+    homepageLink.remove();
+  });
+};
+
+linkAppNames();
 
 const applyTheme = (theme) => {
   root.dataset.theme = theme;
