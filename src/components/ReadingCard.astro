@@ -1,0 +1,11 @@
+---
+import type { Reading } from '../data/site';
+const { reading } = Astro.props as { reading: Reading };
+---
+<article class="card app-card reading-card">
+  <div>
+    <h3><a href={reading.url} target="_blank" rel="noreferrer">{reading.title}</a></h3>
+    <p class="reading-source"><strong>{reading.publication}</strong></p>
+    <p class="reading-description">{reading.description}</p>
+  </div>
+</article>
