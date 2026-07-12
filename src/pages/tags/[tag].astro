@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AppCard from '../../components/AppCard.astro';
+import { allApps, allTags } from '../../data/site';
+
+export function getStaticPaths() {
+  return allTags.map((tag) => ({
+    params: { tag },
+    props: {
+      tag,
+      apps: allApps.filter((app) => app.tags.includes(tag))
+    }
+  }));
+}
+
+const { tag, apps } = Astro.props;
+const title = tag.charAt(0).toUpperCase() + tag.slice(1);
+---
+<BaseLayout
+  title={`${title} Mac Apps — App Waypoint`}
+  description={`Browse Mac apps tagged ${title}.`}
+>
+  <section class="archive-page tag-page">
+    <p class="eyebrow">Browse by tag</p>
+    <h1>{title}</h1>
+    <p class="dek">Mac apps selected for their relevance to {title.toLowerCase()} workflows.</p>
+    <div class="grid">
+      {apps.map((app) => <AppCard app={app} />)}
+    </div>
+  </section>
+</BaseLayout>
