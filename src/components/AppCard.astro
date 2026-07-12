@@ -1,0 +1,15 @@
+---
+import type { App } from '../data/site';
+const { app } = Astro.props as { app: App };
+---
+<article class="card app-card">
+  <div class="app-summary">
+    <h3><a href={app.homepage} target="_blank" rel="noreferrer">{app.name}</a></h3>
+    <p>{app.description}</p>
+  </div>
+  <p class="best-for"><strong>Best for:</strong> {app.bestFor}</p>
+  <div class="tag-list" aria-label="App tags">
+    {app.tags.map((tag) => <a class="tag" href={`/tags/${tag}.html`}>{tag}</a>)}
+  </div>
+  <p class="source-line"><strong>Source:</strong> {app.source}</p>
+</article>
