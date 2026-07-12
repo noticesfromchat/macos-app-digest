@@ -1,0 +1,61 @@
+---
+import '../styles/global.css';
+const {
+  title = 'App Waypoint',
+  description = 'A weekly waypoint for Mac apps.',
+  current = ''
+} = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#f5f5f7" />
+    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
+    <title>{title}</title>
+    <script is:inline>
+      (() => {
+        const saved = localStorage.getItem('app-waypoint-theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.dataset.theme = saved || (prefersDark ? 'dark' : 'light');
+      })();
+    </script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="App Waypoint home">
+        <span class="brand-icon" aria-hidden="true">🍎</span>
+        <span>macOS App Digest</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="/archive.html" aria-current={current === 'archive' ? 'page' : undefined}>Archive</a>
+        <button class="theme-toggle" type="button" aria-label="Switch theme" data-theme-toggle>
+          <span data-theme-icon aria-hidden="true">☾</span>
+          <span data-theme-label>Dark</span>
+        </button>
+      </nav>
+    </header>
+    <main><slot /></main>
+    <footer class="site-footer">
+      <p>Published by macOS App Digest.</p>
+      <p><a href="https://github.com/noticesfromchat/macos-app-digest">GitHub</a></p>
+    </footer>
+    <script is:inline>
+      const root = document.documentElement;
+      const toggle = document.querySelector('[data-theme-toggle]');
+      const icon = document.querySelector('[data-theme-icon]');
+      const label = document.querySelector('[data-theme-label]');
+      const applyTheme = (theme) => {
+        root.dataset.theme = theme;
+        localStorage.setItem('app-waypoint-theme', theme);
+        const dark = theme === 'dark';
+        if (icon) icon.textContent = dark ? '☀' : '☾';
+        if (label) label.textContent = dark ? 'Light' : 'Dark';
+      };
+      applyTheme(root.dataset.theme || 'light');
+      toggle?.addEventListener('click', () => applyTheme(root.dataset.theme === 'dark' ? 'light' : 'dark'));
+    </script>
+  </body>
+</html>

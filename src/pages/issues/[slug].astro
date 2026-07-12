@@ -1,0 +1,22 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import IssuePage from '../../components/IssuePage.astro';
+
+export async function getStaticPaths() {
+  const issues = await getCollection('issues');
+  const apps = await getCollection('apps');
+  return issues.map((issue) => ({
+    params: { slug: issue.data.slug },
+    props: { issue, apps }
+  }));
+}
+
+const { issue, apps } = Astro.props;
+---
+<BaseLayout
+  title={`macOS App Digest — ${issue.data.date}`}
+  description={`Issue ${issue.data.number} of macOS App Digest.`}
+>
+  <IssuePage issue={issue.data} appEntries={apps} />
+</BaseLayout>

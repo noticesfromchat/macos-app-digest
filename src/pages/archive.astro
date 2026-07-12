@@ -1,0 +1,23 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const issues = [...await getCollection('issues')].sort((a, b) => b.data.slug.localeCompare(a.data.slug));
+---
+<BaseLayout title="macOS App Digest Archive" description="Browse past macOS App Digest issues." current="archive">
+  <section class="archive-page">
+    <p class="eyebrow">All Issues</p>
+    <h1>🍎 macOS App Digest Archive</h1>
+    <p class="dek">Browse every published issue of macOS App Digest.</p>
+
+    <div class="archive-list">
+      {issues.map((issue) => (
+        <a class="archive-card" href={`/issues/${issue.data.slug}.html`}>
+          <span>Issue {issue.data.number}</span>
+          <strong>{issue.data.date}</strong>
+          <em>{issue.data.dek}</em>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

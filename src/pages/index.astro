@@ -1,0 +1,12 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import IssuePage from '../components/IssuePage.astro';
+
+const issues = await getCollection('issues');
+const apps = await getCollection('apps');
+const latestIssue = [...issues].sort((a, b) => b.data.slug.localeCompare(a.data.slug))[0];
+---
+<BaseLayout title="macOS App Digest" description={latestIssue.data.dek}>
+  <IssuePage homepage={true} issue={latestIssue.data} appEntries={apps} />
+</BaseLayout>
