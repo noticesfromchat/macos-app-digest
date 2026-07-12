@@ -116,6 +116,7 @@ layoutFixes.textContent = `
     :root[data-theme="dark"] .app-card:hover,
     :root[data-theme="dark"] .feature-card:hover,
     :root[data-theme="dark"] .archive-card:hover {
+      border-color: #6b6f76;
       box-shadow: 0 24px 70px rgba(0, 0, 0, 0.36);
     }
   }
@@ -137,6 +138,7 @@ layoutFixes.textContent = `
     }
 
     :root[data-theme="dark"] .app-card.is-in-view {
+      border-color: #6b6f76;
       box-shadow: 0 18px 48px rgba(0, 0, 0, 0.28);
     }
   }
