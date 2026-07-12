@@ -1,7 +1,5 @@
 const root = document.documentElement;
 const toggle = document.querySelector("[data-theme-toggle]");
-const icon = document.querySelector("[data-theme-icon]");
-const label = document.querySelector("[data-theme-label]");
 const metaTheme = document.querySelector('meta[name="theme-color"]');
 
 const layoutFixes = document.createElement("style");
@@ -16,6 +14,42 @@ layoutFixes.textContent = `
     --header-bg: rgba(36, 37, 40, 0.9);
     --header-line: rgba(74, 78, 86, 0.82);
     --shadow: 0 18px 60px rgba(0, 0, 0, 0.26);
+  }
+
+  .theme-toggle {
+    width: 40px;
+    height: 40px;
+    min-height: 40px;
+    padding: 0;
+    justify-content: center;
+    gap: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    color: var(--muted);
+    appearance: none;
+    transition: color 180ms ease;
+  }
+
+  .theme-toggle:hover,
+  .theme-toggle:focus-visible {
+    border-color: transparent;
+    background: transparent;
+    color: var(--text);
+  }
+
+  .theme-toggle:focus-visible {
+    outline: 2px solid var(--line);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  .theme-toggle svg {
+    display: block;
+    width: 20px;
+    height: 20px;
+    stroke: currentColor;
   }
 
   .app-card .tag {
@@ -148,7 +182,8 @@ layoutFixes.textContent = `
     .feature-card,
     .archive-card,
     .app-card h3 a,
-    .app-card .tag {
+    .app-card .tag,
+    .theme-toggle {
       transition: none;
     }
 
@@ -161,6 +196,25 @@ layoutFixes.textContent = `
   }
 `;
 document.head.appendChild(layoutFixes);
+
+const icons = {
+  moon: `
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/>
+    </svg>`,
+  sun: `
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2"/>
+      <path d="M12 20v2"/>
+      <path d="m4.93 4.93 1.42 1.42"/>
+      <path d="m17.66 17.66 1.41 1.41"/>
+      <path d="M2 12h2"/>
+      <path d="M20 12h2"/>
+      <path d="m6.34 17.66-1.41 1.41"/>
+      <path d="m19.07 4.93-1.41 1.41"/>
+    </svg>`,
+};
 
 const moveCardLinkToTitle = (card, link) => {
   const heading = card.querySelector("h3");
@@ -234,9 +288,13 @@ const applyTheme = (theme) => {
   root.dataset.theme = theme;
   localStorage.setItem("macos-digest-theme", theme);
   const isDark = theme === "dark";
-  if (toggle) toggle.setAttribute("aria-label", isDark ? "Switch to light mode" : "Switch to dark mode");
-  if (icon) icon.textContent = isDark ? "☀" : "☾";
-  if (label) label.textContent = isDark ? "Light" : "Dark";
+
+  if (toggle) {
+    toggle.setAttribute("aria-label", isDark ? "Switch to light mode" : "Switch to dark mode");
+    toggle.setAttribute("title", isDark ? "Switch to light mode" : "Switch to dark mode");
+    toggle.innerHTML = isDark ? icons.sun : icons.moon;
+  }
+
   if (metaTheme) metaTheme.setAttribute("content", isDark ? "#242528" : "#f5f5f7");
 };
 
