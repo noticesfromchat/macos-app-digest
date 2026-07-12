@@ -1,5 +1,10 @@
 ---
-import type { Reading } from '../data/site';
+type Reading = {
+  title: string;
+  publication: string;
+  description: string;
+  url: string;
+};
 const { reading } = Astro.props as { reading: Reading };
 ---
 <article class="card app-card reading-card">
