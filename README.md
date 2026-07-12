@@ -1,24 +1,57 @@
-# macOS App Digest
+# App Waypoint
 
-A premium weekly macOS app digest for experienced Mac users. This is an AI-based digest for my personal use. 
+App Waypoint is a curated weekly publication for experienced macOS users. It highlights high-quality Mac apps, productivity tools, automation utilities, AI software, and selected articles and videos.
 
-Live site: https://noticesfromchat.github.io/macos-app-digest/
+Live site: https://appwaypoint.netlify.app/
 
-## Weekly Editorial Brief
+## Architecture
 
-Every Friday, research and publish one issue for power users who care about productivity, automation, AI, menu bar utilities, Finder enhancements, window management, clipboard managers, writing tools, developer tools, open source software, local AI, note taking and file management.
+App Waypoint is built with Astro and deployed by Netlify.
 
-Use multiple sources including Reddit, Product Hunt, YouTube, Mac podcasts, MacStories, 512 Pixels, The Sweet Setup, 9to5Mac, MacRumors, AppleInsider, The Verge Apple coverage, GitHub trending and notable indie developers.
+```text
+Markdown content
+→ Astro content collections and components
+→ Static site build
+→ Netlify deployment
+```
 
-Prioritize usefulness, community excitement, polish, active development and unique functionality. Do not recommend the same app repeatedly unless there is a major update, redesign, sale, feature launch or renewed community interest.
+GitHub stores the source repository. Netlify is the production hosting platform. GitHub Pages is deprecated and must not be used.
 
-## Issue Layout
+## Content
 
-Each issue includes:
+- Apps: `src/content/apps/*.md`
+- Issues: `src/content/issues/*.md`
+- Shared components: `src/components/`
+- Shared layouts: `src/layouts/`
+- Shared styles: `src/styles/`
 
-- New Discoveries: three apps
-- Trending: three apps
-- AI & Automation: three apps
-- Deals & Bundles: up to three only when genuinely worthwhile
-- Video of the Week: one relevant YouTube recommendation
-- Weekend Reading: three actual articles, not software recommendations
+Each app exists once. Issues reference app IDs rather than duplicating app data. Astro generates the homepage, issue pages, archive, and tag pages.
+
+## Publishing
+
+Before publishing, read:
+
+- `AGENTS.md`
+- `docs/STYLE_GUIDE.md`
+- `docs/ISSUE_TEMPLATE.md`
+
+Required checks:
+
+```bash
+npm install
+npm run validate
+npm run build
+```
+
+Publishing workflow:
+
+1. Create or reuse app Markdown files.
+2. Create one issue Markdown file.
+3. Run validation and the Astro build.
+4. Commit to a feature branch.
+5. Open a pull request.
+6. Review the Netlify Deploy Preview.
+7. Merge into `main` after approval.
+8. Netlify deploys `main` to production automatically.
+
+Do not edit generated HTML or use the retired GitHub Pages workflow.
