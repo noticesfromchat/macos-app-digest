@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { issue } from '../data/site';
+---
+<BaseLayout title="macOS App Digest Archive" description="Browse past macOS App Digest issues." current="archive">
+  <section class="archive-page">
+    <p class="eyebrow">All Issues</p>
+    <h1>🍎 macOS App Digest Archive</h1>
+    <p class="dek">Browse every published issue of macOS App Digest.</p>
+
+    <div class="archive-list">
+      <a class="archive-card" href={`/issues/${issue.slug}.html`}>
+        <span>Issue {issue.number}</span>
+        <strong>{issue.date}</strong>
+        <em>{issue.dek}</em>
+      </a>
+    </div>
+  </section>
+</BaseLayout>
