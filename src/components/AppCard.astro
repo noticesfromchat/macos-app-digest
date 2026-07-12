@@ -1,5 +1,6 @@
 ---
-import type { App } from '../data/site';
+import type { CollectionEntry } from 'astro:content';
+type App = CollectionEntry<'apps'>['data'];
 const { app } = Astro.props as { app: App };
 ---
 <article class="card app-card">
