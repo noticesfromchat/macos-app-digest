@@ -4,10 +4,12 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "validate": "node scripts/validate-content.mjs",
+    "build": "npm run validate && astro build",
     "preview": "astro preview"
   },
   "dependencies": {
-    "astro": "^5.13.0"
+    "astro": "^5.13.0",
+    "yaml": "^2.8.1"
   }
 }
