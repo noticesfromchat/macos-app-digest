@@ -34,15 +34,22 @@ layoutFixes.textContent = `
 
   :root[data-theme="dark"] .app-card .tag {
     background: #3a3d43;
-    color: #d0d3d8;
+    color: #c6c9ce;
   }
 
   .app-card .tag:hover,
   .app-card .tag:focus-visible,
   .app-card .tag[aria-pressed="true"] {
     border-color: transparent;
-    background: var(--accent);
-    color: #ffffff;
+    background: #e2e4e7;
+    color: #3f4146;
+  }
+
+  :root[data-theme="dark"] .app-card .tag:hover,
+  :root[data-theme="dark"] .app-card .tag:focus-visible,
+  :root[data-theme="dark"] .app-card .tag[aria-pressed="true"] {
+    background: #4a4e55;
+    color: #f0f1f2;
   }
 
   .app-card h3 a {
