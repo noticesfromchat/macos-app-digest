@@ -1,14 +1,17 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AppCard from '../../components/AppCard.astro';
-import { allApps, allTags } from '../../data/site';
 
-export function getStaticPaths() {
-  return allTags.map((tag) => ({
+export async function getStaticPaths() {
+  const apps = await getCollection('apps');
+  const tags = [...new Set(apps.flatMap((entry) => entry.data.tags))].sort();
+
+  return tags.map((tag) => ({
     params: { tag },
     props: {
       tag,
-      apps: allApps.filter((app) => app.tags.includes(tag))
+      apps: apps.filter((entry) => entry.data.tags.includes(tag))
     }
   }));
 }
@@ -25,7 +28,7 @@ const title = tag.charAt(0).toUpperCase() + tag.slice(1);
     <h1>{title}</h1>
     <p class="dek">Mac apps selected for their relevance to {title.toLowerCase()} workflows.</p>
     <div class="grid">
-      {apps.map((app) => <AppCard app={app} />)}
+      {apps.map((entry) => <AppCard app={entry.data} />)}
     </div>
   </section>
 </BaseLayout>
