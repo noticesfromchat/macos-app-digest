@@ -1,0 +1,19 @@
+---
+import AppCard from './AppCard.astro';
+import ReadingCard from './ReadingCard.astro';
+import { issue } from '../data/site';
+const { homepage = false } = Astro.props;
+---
+<article class="issue">
+  <header class="hero">
+    <p class="eyebrow">Weekly edition · Issue {issue.number}</p>
+    <h1>🍎 macOS App Digest</h1>
+    <p class="date">{issue.date}</p>
+    <p class="dek">{issue.dek}</p>
+    <div class="hero-actions">
+      <a class="button" href={homepage ? `/issues/${issue.slug}.html` : '#new-discoveries'}>{homepage ? 'Permanent issue link' : 'Start reading'}</a>
+      <a class="button secondary" href="/archive.html">View archive</a>
+    </div>
+  </header>
+
+  {issue.sections.map((section,
