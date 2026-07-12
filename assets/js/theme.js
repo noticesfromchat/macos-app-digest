@@ -6,6 +6,18 @@ const metaTheme = document.querySelector('meta[name="theme-color"]');
 
 const layoutFixes = document.createElement("style");
 layoutFixes.textContent = `
+  :root[data-theme="dark"] {
+    --bg: #242528;
+    --surface: #2e3034;
+    --surface-strong: #373a3f;
+    --muted: #b8bbc3;
+    --line: #4a4e56;
+    --accent-soft: #23364d;
+    --header-bg: rgba(36, 37, 40, 0.9);
+    --header-line: rgba(74, 78, 86, 0.82);
+    --shadow: 0 18px 60px rgba(0, 0, 0, 0.26);
+  }
+
   .app-card .tag {
     margin-top: 0;
     transition:
@@ -78,7 +90,7 @@ layoutFixes.textContent = `
     :root[data-theme="dark"] .app-card:hover,
     :root[data-theme="dark"] .feature-card:hover,
     :root[data-theme="dark"] .archive-card:hover {
-      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.48);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.36);
     }
   }
 
@@ -99,7 +111,7 @@ layoutFixes.textContent = `
     }
 
     :root[data-theme="dark"] .app-card.is-in-view {
-      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.38);
+      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.28);
     }
   }
 
@@ -197,7 +209,7 @@ const applyTheme = (theme) => {
   if (toggle) toggle.setAttribute("aria-label", isDark ? "Switch to light mode" : "Switch to dark mode");
   if (icon) icon.textContent = isDark ? "☀" : "☾";
   if (label) label.textContent = isDark ? "Light" : "Dark";
-  if (metaTheme) metaTheme.setAttribute("content", isDark ? "#101114" : "#f5f5f7");
+  if (metaTheme) metaTheme.setAttribute("content", isDark ? "#242528" : "#f5f5f7");
 };
 
 applyTheme(root.dataset.theme || "light");
