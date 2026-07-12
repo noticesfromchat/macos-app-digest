@@ -1,0 +1,8 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import IssuePage from '../components/IssuePage.astro';
+import { issue } from '../data/site';
+---
+<BaseLayout title="macOS App Digest" description={issue.dek}>
+  <IssuePage homepage={true} />
+</BaseLayout>
