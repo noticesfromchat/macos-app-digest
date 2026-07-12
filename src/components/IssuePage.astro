@@ -2,8 +2,10 @@
 import AppCard from './AppCard.astro';
 import ReadingCard from './ReadingCard.astro';
 import { issue } from '../data/site';
-const { homepage = false } = Astro.props;
+
+const { homepage = false } = Astro.props as { homepage?: boolean };
 ---
+
 <article class="issue">
   <header class="hero">
     <p class="eyebrow">Weekly edition · Issue {issue.number}</p>
@@ -11,9 +13,52 @@ const { homepage = false } = Astro.props;
     <p class="date">{issue.date}</p>
     <p class="dek">{issue.dek}</p>
     <div class="hero-actions">
-      <a class="button" href={homepage ? `/issues/${issue.slug}.html` : '#new-discoveries'}>{homepage ? 'Permanent issue link' : 'Start reading'}</a>
+      <a class="button" href={homepage ? `/issues/${issue.slug}.html` : '#new-discoveries'}>
+        {homepage ? 'Permanent issue link' : 'Start reading'}
+      </a>
       <a class="button secondary" href="/archive.html">View archive</a>
     </div>
   </header>
 
-  {issue.sections.map((section,
+  {issue.sections.map((section, index) => (
+    <section id={index === 0 ? 'new-discoveries' : undefined} class="section">
+      <div class="section-heading">
+        <p class="eyebrow">{section.eyebrow}</p>
+        <h2>{section.title}</h2>
+      </div>
+      <div class="grid">
+        {section.apps.map((app) => <AppCard app={app} />)}
+      </div>
+    </section>
+  ))}
+
+  <section class="section">
+    <div class="section-heading">
+      <p class="eyebrow">Video of the Week</p>
+      <h2>{issue.video.title}</h2>
+    </div>
+    <article class="card feature-card">
+      <p><strong>Creator:</strong> {issue.video.creator}</p>
+      <p>{issue.video.description}</p>
+      <a href={issue.video.url} target="_blank" rel="noreferrer">Watch on YouTube</a>
+    </article>
+  </section>
+
+  <section class="section">
+    <div class="section-heading">
+      <p class="eyebrow">Weekend Reading</p>
+      <h2>Three reads for Mac context</h2>
+    </div>
+    <div class="grid">
+      {issue.readings.map((reading) => <ReadingCard reading={reading} />)}
+    </div>
+  </section>
+
+  <section class="note">
+    <h2>Source Notes</h2>
+    <p>This issue was selected from the following sources, with every app homepage checked before publishing.</p>
+    <ul>
+      {issue.sourceNotes.map((note) => <li>{note}</li>)}
+    </ul>
+  </section>
+</article>
