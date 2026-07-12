@@ -20,10 +20,29 @@ layoutFixes.textContent = `
 
   .app-card .tag {
     margin-top: 0;
+    border-color: transparent;
+    background: #f1f2f4;
+    color: #5a5a5e;
+    font-weight: 550;
+    letter-spacing: 0.01em;
+    padding: 5px 9px;
     transition:
       color 180ms ease,
       border-color 180ms ease,
       background-color 180ms ease;
+  }
+
+  :root[data-theme="dark"] .app-card .tag {
+    background: #3a3d43;
+    color: #d0d3d8;
+  }
+
+  .app-card .tag:hover,
+  .app-card .tag:focus-visible,
+  .app-card .tag[aria-pressed="true"] {
+    border-color: transparent;
+    background: var(--accent);
+    color: #ffffff;
   }
 
   .app-card h3 a {
