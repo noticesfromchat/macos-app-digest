@@ -1,9 +1,22 @@
 ---
+import type { CollectionEntry } from 'astro:content';
 import AppCard from './AppCard.astro';
 import ReadingCard from './ReadingCard.astro';
-import { issue } from '../data/site';
 
-const { homepage = false } = Astro.props as { homepage?: boolean };
+type Issue = CollectionEntry<'issues'>['data'];
+type AppEntry = CollectionEntry<'apps'>;
+
+const {
+  homepage = false,
+  issue,
+  appEntries
+} = Astro.props as {
+  homepage?: boolean;
+  issue: Issue;
+  appEntries: AppEntry[];
+};
+
+const appsById = new Map(appEntries.map((entry) => [entry.id, entry.data]));
 ---
 
 <article class="issue">
@@ -27,7 +40,10 @@ const { homepage = false } = Astro.props as { homepage?: boolean };
         <h2>{section.title}</h2>
       </div>
       <div class="grid">
-        {section.apps.map((app) => <AppCard app={app} />)}
+        {section.apps.map((appId) => {
+          const app = appsById.get(appId);
+          return app ? <AppCard app={app} /> : null;
+        })}
       </div>
     </section>
   ))}
