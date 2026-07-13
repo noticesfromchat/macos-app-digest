@@ -370,14 +370,15 @@ a { color: inherit; }
   width: min(1160px, calc(100% - 40px));
   height: 76px;
   margin: 5px auto 0;
-  color: var(--accent);
+  color: color-mix(in srgb, var(--muted) 72%, transparent);
 }
 
 .content-divider svg { display: block; width: 100%; height: 100%; overflow: visible; }
 .divider-horizon,
-.divider-buoy-mark { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; }
-.divider-horizon { opacity: .48; stroke-width: 1.25; }
-.divider-buoy-mark { transform-box: fill-box; transform-origin: center bottom; stroke-width: 2; }
+.divider-boat-mark { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; }
+.divider-horizon { opacity: .34; stroke-width: 1.1; }
+.divider-boat-mark { opacity: .68; transform-box: fill-box; transform-origin: center bottom; stroke-width: 1.65; }
+.divider-boat-mark .boat-hull { fill: var(--page); }
 .video-section { border-top: 0; padding-top: 26px; }
 
 .note { margin: 44px 0 104px; padding: 30px; background: var(--note-bg); box-shadow: none; }
@@ -402,15 +403,15 @@ a { color: inherit; }
 .archive-card strong { font-family: var(--display); font-size: 1.38rem; }
 .tag-page .grid { margin-top: 40px; }
 
-.site-footer { display: flex; width: min(1160px, calc(100% - 40px)); min-height: 108px; align-items: center; justify-content: space-between; gap: 30px; margin: 20px auto; padding: 24px 32px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--muted); font-size: .86rem; }
+.site-footer { display: flex; width: 100%; min-height: 108px; align-items: center; justify-content: space-between; gap: 30px; margin: 20px 0 0; padding: 24px clamp(24px, 3.2vw, 38px); border: 1px solid var(--line); border-right: 0; border-bottom: 0; border-left: 0; border-radius: 0; background: var(--bg); color: var(--muted); font-size: .86rem; }
 .site-footer p { margin: 0; }
 .footer-brand { display: flex; align-items: center; gap: 12px; }
 .footer-logo { width: 42px; height: 42px; }
 .footer-brand strong { display: block; color: var(--text); font-family: "Philippine", var(--display); font-size: 1.08rem; font-weight: 400; letter-spacing: .06em; }
 
-@keyframes buoy-bob {
+@keyframes boat-bob {
   0%, 100% { transform: translateY(0) rotate(-1.5deg); }
-  50% { transform: translateY(-3px) rotate(1.5deg); }
+  50% { transform: translateY(-2px) rotate(1deg); }
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -420,7 +421,7 @@ a { color: inherit; }
   .app-card:hover,
   .feature-card:hover,
   .archive-card:hover { border-color: color-mix(in srgb, var(--accent) 42%, var(--line)); background: var(--surface); box-shadow: var(--shadow-hover); }
-  .divider-buoy-mark { animation: buoy-bob 4.8s ease-in-out infinite; }
+  .divider-boat-mark { animation: boat-bob 5.6s ease-in-out infinite; }
 }
 
 @media (max-width: 920px) {
@@ -443,8 +444,7 @@ a { color: inherit; }
 }
 
 @media (max-width: 680px) {
-  .archive-page,
-  .site-footer { width: min(100% - 24px, 1160px); }
+  .archive-page { width: min(100% - 24px, 1160px); }
   .site-header { position: sticky; top: 0; width: 100%; min-height: 70px; gap: 10px; margin: 0; padding: 0 16px; }
   .issue > .section,
   .issue > .note { width: min(100% - 24px, 1160px); }
@@ -489,5 +489,5 @@ a { color: inherit; }
   .feature-card:hover,
   .archive-card:hover,
   .theme-toggle:hover { transform: none; }
-  .divider-buoy-mark { animation: none; }
+  .divider-boat-mark { animation: none; }
 }
