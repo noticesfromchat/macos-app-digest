@@ -313,7 +313,7 @@ a { color: inherit; }
 .app-card h3 a:hover,
 .app-card h3 a:focus-visible { color: var(--accent); }
 .app-card p { margin: 0; color: var(--muted); }
-.app-summary { min-height: 136px; }
+.app-summary { min-height: 136px; margin-bottom: 16px; }
 .best-for { min-height: 96px; font-size: .95rem; }
 .best-for strong,
 .source-line strong,
