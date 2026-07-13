@@ -26,7 +26,7 @@ const issueLabel = String(Number(issue.number)).padStart(2, '0');
       <p class="eyebrow">Current Issue</p>
       <h1>{issue.date}</h1>
       <p class="date">Issue {issueLabel}</p>
-      <div class="hero-rule" aria-hidden="true"><span>〰</span></div>
+      <div class="hero-rule" aria-hidden="true">~~~~~~~</div>
       <p class="dek">{issue.dek}</p>
       <div class="hero-actions">
         <a class="button" href="#new-discoveries">Start Reading <span aria-hidden="true">→</span></a>
@@ -34,7 +34,8 @@ const issueLabel = String(Number(issue.number)).padStart(2, '0');
       </div>
     </div>
     <div class="harbor-artwork" aria-hidden="true">
-      <img src="/harbor-hero.png" alt="" width="1536" height="1024" />
+      <img class="harbor-artwork-light" src="/harbor-hero.png" alt="" width="1536" height="1024" />
+      <img class="harbor-artwork-dark" src="/harbor-hero-dark.png" alt="" width="1536" height="1024" />
     </div>
   </header>
 

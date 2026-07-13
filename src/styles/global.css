@@ -230,17 +230,15 @@ a { color: inherit; }
 .date { margin: 14px 0 0; color: var(--muted); font-size: .94rem; }
 
 .hero-rule {
-  display: flex;
-  width: 162px;
-  align-items: center;
-  gap: 10px;
+  width: fit-content;
   margin: 13px 0 0;
   color: var(--accent);
-  font-size: 1.42rem;
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: 1.05rem;
+  font-weight: 500;
+  letter-spacing: -.09em;
   line-height: 1;
 }
-
-.hero-rule::after { height: 1px; flex: 1; background: var(--accent); content: ''; opacity: .8; }
 
 .dek {
   max-width: 760px;
@@ -292,10 +290,9 @@ a { color: inherit; }
 }
 
 .harbor-artwork img { display: block; width: 100%; height: auto; }
-:root[data-theme='dark'] .harbor-artwork img {
-  filter: brightness(0) saturate(100%) invert(94%) sepia(9%) saturate(347%) hue-rotate(339deg) brightness(104%) contrast(94%);
-  opacity: .9;
-}
+.harbor-artwork-dark { display: none !important; }
+:root[data-theme='dark'] .harbor-artwork-light { display: none; }
+:root[data-theme='dark'] .harbor-artwork-dark { display: block !important; }
 
 .section { padding: clamp(44px, 5vw, 64px) 0; border-top: 1px solid var(--line); }
 .section-heading { max-width: 790px; margin-bottom: 28px; }
