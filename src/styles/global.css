@@ -1,3 +1,27 @@
+@font-face {
+  font-family: "Philippine";
+  src: url("/fonts/Philippine-Light.otf") format("opentype");
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Philippine";
+  src: url("/fonts/Philippine-Regular.otf") format("opentype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Philippine";
+  src: url("/fonts/Philippine-Bold.otf") format("opentype");
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
 :root {
   color-scheme: light;
   --page: #e7ddcd;
@@ -87,10 +111,10 @@ a { color: inherit; }
 .brand {
   gap: 21px;
   color: var(--text);
-  font-family: var(--display);
-  font-size: clamp(1rem, 1.55vw, 1.22rem);
-  font-weight: 700;
-  letter-spacing: 0.25em;
+  font-family: "Philippine", var(--display);
+  font-size: clamp(1.1rem, 1.75vw, 1.4rem);
+  font-weight: 400;
+  letter-spacing: 0.16em;
   text-decoration: none;
   text-transform: uppercase;
   white-space: nowrap;
@@ -195,11 +219,23 @@ a { color: inherit; }
   gap: 14px;
   overflow: hidden;
   padding: 36px clamp(40px, 6vw, 88px) 38px;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 0;
   background:
     radial-gradient(circle at 75% 38%, color-mix(in srgb, var(--accent) 4%, transparent), transparent 38%),
     radial-gradient(circle at 15% 30%, rgba(255,255,255,.045), transparent 36%),
     var(--bg);
+}
+
+.hero::after {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: clamp(54px, 7vw, 92px);
+  background: linear-gradient(180deg, transparent, var(--page));
+  content: '';
+  pointer-events: none;
 }
 
 .issue:not(.is-homepage) .hero {
@@ -234,9 +270,9 @@ a { color: inherit; }
   margin: 13px 0 0;
   color: var(--accent);
   font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
-  font-size: 1.05rem;
+  font-size: 1.2rem;
   font-weight: 500;
-  letter-spacing: -.09em;
+  letter-spacing: .04em;
   line-height: 1;
 }
 
@@ -295,6 +331,7 @@ a { color: inherit; }
 :root[data-theme='dark'] .harbor-artwork-dark { display: block !important; }
 
 .section { padding: clamp(44px, 5vw, 64px) 0; border-top: 1px solid var(--line); }
+.is-homepage .hero + .section { border-top: 0; }
 .section-heading { max-width: 790px; margin-bottom: 28px; }
 .section h2,
 .note h2 { margin: 0; font-family: var(--display); font-size: clamp(2.2rem, 4vw, 3.8rem); font-weight: 500; letter-spacing: -.03em; line-height: 1; }
@@ -329,6 +366,20 @@ a { color: inherit; }
 .feature-card p { max-width: 780px; margin: 0 0 14px; color: var(--muted); }
 .feature-card a { color: var(--accent); font-weight: 700; }
 
+.content-divider {
+  width: min(1160px, calc(100% - 40px));
+  height: 76px;
+  margin: 5px auto 0;
+  color: var(--accent);
+}
+
+.content-divider svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.divider-horizon,
+.divider-buoy-mark { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; }
+.divider-horizon { opacity: .48; stroke-width: 1.25; }
+.divider-buoy-mark { transform-box: fill-box; transform-origin: center bottom; stroke-width: 2; }
+.video-section { border-top: 0; padding-top: 26px; }
+
 .note { margin: 44px 0 104px; padding: 30px; background: var(--note-bg); box-shadow: none; }
 .issue > .note { margin-top: 44px; margin-bottom: 104px; }
 .note p { max-width: 760px; margin: 14px 0 0; color: var(--note-text); }
@@ -355,7 +406,12 @@ a { color: inherit; }
 .site-footer p { margin: 0; }
 .footer-brand { display: flex; align-items: center; gap: 12px; }
 .footer-logo { width: 42px; height: 42px; }
-.footer-brand strong { display: block; color: var(--text); font-family: var(--display); font-size: 1rem; }
+.footer-brand strong { display: block; color: var(--text); font-family: "Philippine", var(--display); font-size: 1.08rem; font-weight: 400; letter-spacing: .06em; }
+
+@keyframes buoy-bob {
+  0%, 100% { transform: translateY(0) rotate(-1.5deg); }
+  50% { transform: translateY(-3px) rotate(1.5deg); }
+}
 
 @media (hover: hover) and (pointer: fine) {
   .app-card,
@@ -364,6 +420,7 @@ a { color: inherit; }
   .app-card:hover,
   .feature-card:hover,
   .archive-card:hover { border-color: color-mix(in srgb, var(--accent) 42%, var(--line)); background: var(--surface); box-shadow: var(--shadow-hover); }
+  .divider-buoy-mark { animation: buoy-bob 4.8s ease-in-out infinite; }
 }
 
 @media (max-width: 920px) {
@@ -404,6 +461,8 @@ a { color: inherit; }
   .button { min-width: 160px; min-height: 42px; }
   .harbor-artwork { right: -150px; bottom: -74px; width: 660px; }
   .section { padding: 46px 0; }
+  .content-divider { width: min(100% - 24px, 1160px); height: 64px; }
+  .video-section { padding-top: 20px; }
   .archive-page { padding: 52px 24px 80px; }
   .site-footer { display: block; padding: 26px 22px; }
   .site-footer > p { margin-top: 18px; }
@@ -430,4 +489,5 @@ a { color: inherit; }
   .feature-card:hover,
   .archive-card:hover,
   .theme-toggle:hover { transform: none; }
+  .divider-buoy-mark { animation: none; }
 }
