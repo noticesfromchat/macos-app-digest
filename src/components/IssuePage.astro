@@ -17,14 +17,15 @@ const {
 };
 
 const appsById = new Map(appEntries.map((entry) => [entry.id, entry.data]));
+const issueLabel = String(issue.number).padStart(2, '0');
 ---
 
 <article class:list={['issue', { 'is-homepage': homepage }]}>
   <header class="hero">
     <div class="hero-copy">
       <p class="eyebrow">Current Issue</p>
-      <h1>Issue {issue.number}</h1>
-      <p class="date">{issue.date}</p>
+      <h1>{issue.date}</h1>
+      <p class="date">Issue {issueLabel}</p>
       <div class="hero-rule" aria-hidden="true"><span>〰</span></div>
       <p class="dek">{issue.dek}</p>
       <div class="hero-actions">
@@ -36,23 +37,6 @@ const appsById = new Map(appEntries.map((entry) => [entry.id, entry.data]));
       <img src="/harbor-hero.png" alt="" width="1536" height="1024" />
     </div>
   </header>
-
-  {homepage && (
-    <div class="harbor-values" aria-label="App Waypoint values">
-      <div>
-        <svg class="value-icon" viewBox="0 0 56 44" aria-hidden="true"><path d="M3 29c8 0 8-8 16-8s8 8 16 8 8-8 16-8M8 36c7 0 7-5 14-5s7 5 14 5 7-5 14-5M15 15c4-5 9-7 15-7 7 0 12 3 16 8" /></svg>
-        <p><strong>Handpicked</strong>Carefully selected apps and tools worth your time.</p>
-      </div>
-      <div>
-        <svg class="value-icon" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="19" /><path d="M28 3v8M28 45v8M3 28h8M45 28h8M22 34l5-13 7 6-12 7Z" /></svg>
-        <p><strong>Practical</strong>Real-world recommendations for Mac users.</p>
-      </div>
-      <div>
-        <svg class="value-icon" viewBox="0 0 48 58" aria-hidden="true"><circle cx="24" cy="7" r="4" /><path d="M20 12h8l4 28H16l4-28Zm-2 10h12M13 42h22l-4 8H17l-4-8ZM19 50h10l-3 5h-4l-3-5Z" /></svg>
-        <p><strong>Independent</strong>Unaffiliated, unbiased, and focused on quality.</p>
-      </div>
-    </div>
-  )}
 
   {issue.sections.map((section, index) => (
     <section id={index === 0 ? 'new-discoveries' : undefined} class="section">
