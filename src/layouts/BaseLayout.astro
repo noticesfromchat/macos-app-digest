@@ -1,6 +1,5 @@
 ---
 import '../styles/global.css';
-import { logoDataUri } from '../data/logo';
 
 const {
   title = 'App Waypoint',
@@ -15,4 +14,62 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <meta name="theme-color" content="#eee5d3" />
-    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site
+    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
+    <link rel="icon" href="/app-waypoint-logo.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/app-waypoint-logo.png" />
+    <title>{title}</title>
+    <script is:inline>
+      (() => {
+        const saved = localStorage.getItem('app-waypoint-theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.dataset.theme = saved || (prefersDark ? 'dark' : 'light');
+      })();
+    </script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="App Waypoint home">
+        <span class="brand-icon" aria-hidden="true">
+          <img src="/app-waypoint-logo.png" alt="" />
+        </span>
+        <span>App Waypoint</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="/" aria-current={current === 'issue' ? 'page' : undefined}>Current Issue</a>
+        <a href="/archive.html" aria-current={current === 'archive' ? 'page' : undefined}>Past Issues</a>
+        <button class="theme-toggle" type="button" aria-label="Switch to dark theme" data-theme-toggle>
+          <span data-theme-icon aria-hidden="true">☾</span>
+        </button>
+      </nav>
+    </header>
+    <main><slot /></main>
+    <footer class="site-footer">
+      <div class="footer-brand">
+        <span class="footer-logo" aria-hidden="true"><img src="/app-waypoint-logo.png" alt="" /></span>
+        <div>
+          <strong>App Waypoint</strong>
+          <p>A weekly waypoint for Mac apps.</p>
+        </div>
+      </div>
+      <p>Thoughtfully curated and published every Friday.</p>
+    </footer>
+    <script is:inline>
+      const root = document.documentElement;
+      const toggle = document.querySelector('[data-theme-toggle]');
+      const icon = document.querySelector('[data-theme-icon]');
+      const themeColor = document.querySelector('meta[name="theme-color"]');
+
+      const applyTheme = (theme) => {
+        root.dataset.theme = theme;
+        localStorage.setItem('app-waypoint-theme', theme);
+        const dark = theme === 'dark';
+        if (icon) icon.textContent = dark ? '☀' : '☾';
+        if (toggle) toggle.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
+        if (themeColor) themeColor.setAttribute('content', dark ? '#0b1726' : '#eee5d3');
+      };
+
+      applyTheme(root.dataset.theme || 'light');
+      toggle?.addEventListener('click', () => applyTheme(root.dataset.theme === 'dark' ? 'light' : 'dark'));
+    </script>
+  </body>
+</html>

@@ -4,11 +4,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 const issues = [...await getCollection('issues')].sort((a, b) => b.data.slug.localeCompare(a.data.slug));
 ---
-<BaseLayout title="macOS App Digest Archive" description="Browse past macOS App Digest issues." current="archive">
+<BaseLayout title="App Waypoint Archive" description="Browse past App Waypoint issues." current="archive">
   <section class="archive-page">
     <p class="eyebrow">All Issues</p>
-    <h1>🍎 macOS App Digest Archive</h1>
-    <p class="dek">Browse every published issue of macOS App Digest.</p>
+    <h1>App Waypoint Archive</h1>
+    <p class="dek">Browse every published issue of App Waypoint.</p>
 
     <div class="archive-list">
       {issues.map((issue) => (

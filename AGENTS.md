@@ -1,6 +1,6 @@
 # Agent Instructions
 
-This repository contains the **macOS App Digest** website. Before creating, editing, publishing or regenerating any page or issue, read and follow [`docs/STYLE_GUIDE.md`](docs/STYLE_GUIDE.md).
+This repository contains the **App Waypoint** website. Before creating, editing, publishing or regenerating any page or issue, read and follow [`docs/STYLE_GUIDE.md`](docs/STYLE_GUIDE.md).
 
 ## Source of truth
 
@@ -65,7 +65,7 @@ If text exceeds a preferred range, rewrite it before adjusting CSS. Exceeding a 
 - Dark-mode card emphasis remains grayscale, not blue.
 - Card rows on desktop align titles, tags, sources and lower content consistently.
 - Mobile cards expand naturally with content.
-- The site header uses a Lucide Apple icon. Large page headings use text only, with no apple emoji.
+- The site header uses the App Waypoint buoy logo. Large page headings use text only, with no emoji.
 - The theme toggle is icon-only with no pill, no text and no emoji.
 - Do not introduce emoji as interface icons.
 - Do not add visual clutter or icons to every card.

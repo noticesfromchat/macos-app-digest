@@ -19,19 +19,31 @@ const {
 const appsById = new Map(appEntries.map((entry) => [entry.id, entry.data]));
 ---
 
-<article class="issue">
+<article class:list={['issue', { 'is-homepage': homepage }]}>
   <header class="hero">
-    <p class="eyebrow">Weekly edition · Issue {issue.number}</p>
-    <h1>🍎 macOS App Digest</h1>
-    <p class="date">{issue.date}</p>
-    <p class="dek">{issue.dek}</p>
-    <div class="hero-actions">
-      <a class="button" href={homepage ? `/issues/${issue.slug}.html` : '#new-discoveries'}>
-        {homepage ? 'Permanent issue link' : 'Start reading'}
-      </a>
-      <a class="button secondary" href="/archive.html">View archive</a>
+    <div class="hero-copy">
+      <p class="eyebrow">Current Issue</p>
+      <h1>Issue {issue.number}</h1>
+      <p class="date">{issue.date}</p>
+      <div class="hero-rule" aria-hidden="true"><span>〰</span></div>
+      <p class="dek">{issue.dek}</p>
+      <div class="hero-actions">
+        <a class="button" href="#new-discoveries">Start Reading <span aria-hidden="true">→</span></a>
+        {homepage && <a class="button secondary" href="/archive.html">Past Issues</a>}
+      </div>
+    </div>
+    <div class="harbor-artwork" aria-hidden="true">
+      <img src="/harbor-hero.svg" alt="" width="900" height="470" />
     </div>
   </header>
+
+  {homepage && (
+    <div class="harbor-values" aria-label="App Waypoint values">
+      <div><span class="value-icon">≋</span><p><strong>Handpicked</strong>Carefully selected apps and tools worth your time.</p></div>
+      <div><span class="value-icon">⌖</span><p><strong>Practical</strong>Real-world recommendations for Mac users.</p></div>
+      <div><span class="value-icon">♜</span><p><strong>Independent</strong>Unaffiliated, unbiased, and focused on quality.</p></div>
+    </div>
+  )}
 
   {issue.sections.map((section, index) => (
     <section id={index === 0 ? 'new-discoveries' : undefined} class="section">
