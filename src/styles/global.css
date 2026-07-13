@@ -7,6 +7,16 @@
 }
 
 @font-face {
+  font-family: "Seamless";
+  src:
+    url("/fonts/Seamless.otf") format("opentype"),
+    url("/fonts/Seamless.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
   font-family: "Philippine";
   src: url("/fonts/Philippine-Regular.otf") format("opentype");
   font-style: normal;
@@ -111,10 +121,10 @@ a { color: inherit; }
 .brand {
   gap: 21px;
   color: var(--text);
-  font-family: "Philippine", var(--display);
-  font-size: clamp(1.1rem, 1.75vw, 1.4rem);
+  font-family: "Seamless", "Philippine", var(--display);
+  font-size: clamp(1.08rem, 1.72vw, 1.36rem);
   font-weight: 400;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.12em;
   text-decoration: none;
   text-transform: uppercase;
   white-space: nowrap;
