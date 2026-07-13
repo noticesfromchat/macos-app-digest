@@ -65,8 +65,8 @@ const {
         root.dataset.theme = theme;
         localStorage.setItem('app-waypoint-theme', theme);
         const dark = theme === 'dark';
-        if (moonIcon) moonIcon.hidden = dark;
-        if (sunIcon) sunIcon.hidden = !dark;
+        if (moonIcon) dark ? moonIcon.setAttribute('hidden', '') : moonIcon.removeAttribute('hidden');
+        if (sunIcon) dark ? sunIcon.removeAttribute('hidden') : sunIcon.setAttribute('hidden', '');
         if (toggle) toggle.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
         if (themeColor) themeColor.setAttribute('content', dark ? '#0b1726' : '#eee5d3');
       };
