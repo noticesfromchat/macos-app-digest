@@ -122,7 +122,7 @@ a { color: inherit; }
   gap: 21px;
   color: var(--text);
   font-family: "Seamless", "Philippine", var(--display);
-  font-size: clamp(1.08rem, 1.72vw, 1.36rem);
+  font-size: clamp(1.65rem, 2.45vw, 2rem);
   font-weight: 400;
   letter-spacing: 0.12em;
   text-decoration: none;
@@ -363,11 +363,11 @@ a { color: inherit; }
 .reading-source strong { color: var(--text); }
 
 .tag-list { display: flex; min-height: 86px; flex-wrap: wrap; align-content: flex-start; gap: 6px; padding-top: 12px; }
-.tag { display: inline-flex; width: fit-content; align-items: center; margin: 0; padding: 6px 9px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface-strong); color: var(--muted); font-size: .74rem; font-weight: 700; line-height: 1; text-decoration: none; text-transform: lowercase; transition: color 180ms ease, border-color 180ms ease; }
+.tag { display: inline-flex; width: fit-content; align-items: center; margin: 0; padding: 7px 10px; border: 0; border-radius: 999px; background: var(--surface-strong); color: var(--muted); font-size: .74rem; font-weight: 700; line-height: 1; text-decoration: none; text-transform: lowercase; transition: color 180ms ease, background-color 180ms ease; }
 .tag:hover,
-.tag:focus-visible { border-color: var(--accent); color: var(--accent); }
-.source-line { min-height: 52px; padding-top: 14px; color: color-mix(in srgb, var(--muted) 72%, transparent); font-size: .86rem; }
-.source-line strong { color: color-mix(in srgb, var(--text) 58%, var(--muted)); }
+.tag:focus-visible { background: color-mix(in srgb, var(--surface-strong) 82%, var(--accent)); color: var(--accent); }
+.source-line { min-height: 52px; padding-top: 14px; color: var(--muted); font-size: .86rem; opacity: .62; }
+.source-line strong { color: inherit; }
 .reading-card h3 { min-height: 108px; }
 .reading-card .reading-source { min-height: 30px; }
 .reading-card .reading-description { min-height: 108px; }
@@ -389,7 +389,7 @@ a { color: inherit; }
 .divider-horizon { opacity: .34; stroke-width: 1.1; }
 .divider-boat-mark { opacity: .68; transform-box: fill-box; transform-origin: center bottom; stroke-width: 1.65; }
 .divider-boat-mark .boat-hull,
-.divider-boat-mark .boat-cabin { fill: var(--page); }
+.divider-boat-mark .boat-sail { fill: var(--page); }
 .video-section { border-top: 0; padding-top: 26px; }
 
 .note { position: relative; isolation: isolate; overflow: hidden; margin: 44px 0 104px; padding: 30px; background: var(--note-bg); box-shadow: none; }
@@ -432,7 +432,7 @@ a { color: inherit; }
 .site-footer p { margin: 0; }
 .footer-brand { display: flex; align-items: center; gap: 12px; }
 .footer-logo { width: 42px; height: 42px; }
-.footer-brand strong { display: block; color: var(--text); font-family: "Philippine", var(--display); font-size: 1.08rem; font-weight: 400; letter-spacing: .06em; }
+.footer-brand strong { display: block; color: var(--text); font-family: "Seamless", "Philippine", var(--display); font-size: 1.4rem; font-weight: 400; letter-spacing: .06em; }
 
 @keyframes boat-bob {
   0%, 100% { transform: translateY(0) rotate(-1.5deg); }
@@ -451,7 +451,7 @@ a { color: inherit; }
 
 @media (max-width: 920px) {
   .site-header { min-height: 76px; }
-  .brand { gap: 13px; letter-spacing: .14em; }
+  .brand { gap: 13px; font-size: 1.7rem; letter-spacing: .12em; }
   .brand-icon { width: 48px; height: 48px; }
   .site-header nav { gap: 20px; }
   .hero { min-height: 610px; grid-template-columns: 1fr; align-items: start; padding-top: 48px; }
@@ -473,18 +473,18 @@ a { color: inherit; }
   .site-header { position: sticky; top: 0; width: 100%; min-height: 70px; gap: 10px; margin: 0; padding: 0 16px; }
   .issue > .section,
   .issue > .note { width: min(100% - 24px, 1160px); }
-  .brand { gap: 9px; font-size: .82rem; letter-spacing: .1em; }
+  .brand { gap: 9px; font-size: 1.35rem; letter-spacing: .08em; }
   .brand-icon { width: 40px; height: 40px; }
   .site-header nav { gap: 12px; }
   .site-header nav a { font-size: .72rem; }
   .theme-toggle { width: 30px; height: 34px; }
   .theme-toggle svg { width: 19px; height: 19px; }
-  .hero { min-height: 640px; padding: 38px 24px 28px; }
+  .hero { min-height: 760px; padding: 38px 24px 28px; }
   .hero h1 { font-size: clamp(3.05rem, 15vw, 4.15rem); }
   .hero .dek { max-width: 360px; font-size: .94rem; }
   .hero-actions { flex-direction: column; align-items: flex-start; }
   .button { min-width: 160px; min-height: 42px; }
-  .harbor-artwork { right: -150px; bottom: -74px; width: 660px; }
+  .harbor-artwork { right: 0; bottom: -38px; width: 560px; }
   .section { padding: 46px 0; }
   .content-divider { width: min(100% - 24px, 1160px); height: 64px; }
   .video-section { padding-top: 20px; }
@@ -498,7 +498,12 @@ a { color: inherit; }
   .brand > span:last-child { display: none; }
   .site-header nav { flex: 1; justify-content: flex-end; gap: 14px; }
   .site-header nav a { font-size: .75rem; }
-  .harbor-artwork { right: -220px; bottom: -74px; width: 680px; }
+  .harbor-artwork { right: 0; bottom: -34px; width: 570px; }
+}
+
+@media (min-width: 1440px) {
+  .hero { min-height: 500px; }
+  .harbor-artwork { right: 0; bottom: -195px; width: min(64%, 1040px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
