@@ -17,7 +17,7 @@ const {
 };
 
 const appsById = new Map(appEntries.map((entry) => [entry.id, entry.data]));
-const issueLabel = String(issue.number).padStart(2, '0');
+const issueLabel = String(Number(issue.number)).padStart(2, '0');
 ---
 
 <article class:list={['issue', { 'is-homepage': homepage }]}>
