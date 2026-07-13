@@ -266,15 +266,14 @@ a { color: inherit; }
 .date { margin: 14px 0 0; color: var(--muted); font-size: .94rem; }
 
 .hero-rule {
-  width: fit-content;
+  width: 104px;
+  height: 14px;
   margin: 13px 0 0;
   color: var(--accent);
-  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
-  font-size: 1.2rem;
-  font-weight: 500;
-  letter-spacing: .04em;
-  line-height: 1;
 }
+
+.hero-rule svg { display: block; width: 100%; height: 100%; }
+.hero-rule path { fill: none; stroke: currentColor; stroke-linecap: round; stroke-width: 1.5; }
 
 .dek {
   max-width: 760px;
@@ -357,7 +356,8 @@ a { color: inherit; }
 .tag { display: inline-flex; width: fit-content; align-items: center; margin: 0; padding: 6px 9px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface-strong); color: var(--muted); font-size: .74rem; font-weight: 700; line-height: 1; text-decoration: none; text-transform: lowercase; transition: color 180ms ease, border-color 180ms ease; }
 .tag:hover,
 .tag:focus-visible { border-color: var(--accent); color: var(--accent); }
-.source-line { min-height: 52px; padding-top: 14px; font-size: .86rem; }
+.source-line { min-height: 52px; padding-top: 14px; color: color-mix(in srgb, var(--muted) 72%, transparent); font-size: .86rem; }
+.source-line strong { color: color-mix(in srgb, var(--text) 58%, var(--muted)); }
 .reading-card h3 { min-height: 108px; }
 .reading-card .reading-source { min-height: 30px; }
 .reading-card .reading-description { min-height: 108px; }
@@ -378,10 +378,25 @@ a { color: inherit; }
 .divider-boat-mark { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; }
 .divider-horizon { opacity: .34; stroke-width: 1.1; }
 .divider-boat-mark { opacity: .68; transform-box: fill-box; transform-origin: center bottom; stroke-width: 1.65; }
-.divider-boat-mark .boat-hull { fill: var(--page); }
+.divider-boat-mark .boat-hull,
+.divider-boat-mark .boat-cabin { fill: var(--page); }
 .video-section { border-top: 0; padding-top: 26px; }
 
-.note { margin: 44px 0 104px; padding: 30px; background: var(--note-bg); box-shadow: none; }
+.note { position: relative; isolation: isolate; overflow: hidden; margin: 44px 0 104px; padding: 30px; background: var(--note-bg); box-shadow: none; }
+.note::after {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  right: -4%;
+  bottom: 0;
+  width: min(62%, 720px);
+  background: url('/treasure-map.png') right center / contain no-repeat;
+  content: '';
+  mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.35) 26%, #000 58%);
+  opacity: .12;
+  pointer-events: none;
+}
+:root[data-theme='dark'] .note::after { filter: brightness(0) invert(1); opacity: .075; }
 .issue > .note { margin-top: 44px; margin-bottom: 104px; }
 .note p { max-width: 760px; margin: 14px 0 0; color: var(--note-text); }
 .note ul { max-width: 760px; margin: 18px 0 0; padding-left: 20px; color: var(--note-text); }
@@ -463,6 +478,7 @@ a { color: inherit; }
   .section { padding: 46px 0; }
   .content-divider { width: min(100% - 24px, 1160px); height: 64px; }
   .video-section { padding-top: 20px; }
+  .note::after { right: -18%; width: 82%; opacity: .08; }
   .archive-page { padding: 52px 24px 80px; }
   .site-footer { display: block; padding: 26px 22px; }
   .site-footer > p { margin-top: 18px; }

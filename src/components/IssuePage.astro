@@ -26,7 +26,11 @@ const issueLabel = String(Number(issue.number)).padStart(2, '0');
       <p class="eyebrow">Current Issue</p>
       <h1>{issue.date}</h1>
       <p class="date">Issue {issueLabel}</p>
-      <div class="hero-rule" aria-hidden="true">~~~~~~~</div>
+      <div class="hero-rule" aria-hidden="true">
+        <svg viewBox="0 0 104 14" role="presentation">
+          <path d="M1 7c4-6 8 6 12 0s8 6 12 0 8 6 12 0 8 6 12 0 8 6 12 0 8 6 12 0 8 6 12 0 8 6 12 0" />
+        </svg>
+      </div>
       <p class="dek">{issue.dek}</p>
       <div class="hero-actions">
         <a class="button" href="#new-discoveries">Start Reading <span aria-hidden="true">→</span></a>
@@ -56,13 +60,16 @@ const issueLabel = String(Number(issue.number)).padStart(2, '0');
 
   <div class="content-divider" aria-hidden="true">
     <svg viewBox="0 0 1200 76" role="presentation">
-      <path class="divider-horizon" d="M0 54c54-7 108 7 162 0s108-7 162 0 108 7 162 0 108-7 162 0 108 7 162 0 108-7 162 0 108 7 162 0 108-7 162 0" />
+      <path class="divider-horizon" d="M0 56c54-7 108 7 162 0s108-7 162 0 108 7 162 0 108-7 162 0 108 7 162 0 108-7 162 0 108 7 162 0 108-7 162 0" />
       <g class="divider-boat-mark">
-        <path class="boat-hull" d="M565 44h71l-8 10h-55z" />
-        <path d="M584 31h31v13h-38l7-13Zm4 0v13m19-13v13M582 27h37M590 23h21" />
-        <path d="M576 44V17m0 0 15 27m-15-27-11 27m2-8h18m-14-8h10" />
-        <circle cx="576" cy="17" r="3.5" />
-        <path d="M636 44h8" />
+        <path class="boat-hull" d="M544 43h112l-13 13h-87z" />
+        <path class="boat-cabin" d="M575 24h44v19h-53l9-19z" />
+        <path d="M580 20h44M581 29h12v9h-15m20-9h13v9h-13z" />
+        <path d="m619 24 20-14m-15 11 20-6m-5-5 6 5-3 7" />
+        <path d="M550 43h16m90 0h8" />
+        <circle cx="565" cy="49" r="2.4" />
+        <circle cx="579" cy="49" r="2.4" />
+        <circle cx="593" cy="49" r="2.4" />
       </g>
     </svg>
   </div>
