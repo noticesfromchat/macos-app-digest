@@ -271,7 +271,7 @@ a { color: inherit; }
 }
 
 .harbor-artwork img { display: block; width: 100%; height: auto; }
-:root[data-theme='dark'] .harbor-artwork img { filter: invert(96%) sepia(13%) saturate(435%) hue-rotate(326deg) brightness(97%); opacity: .83; }
+:root[data-theme='dark'] .harbor-artwork img { filter: brightness(0) invert(1); opacity: .76; }
 
 .harbor-values {
   display: grid;
