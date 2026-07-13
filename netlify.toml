@@ -9,13 +9,3 @@
   from = "/archive.html"
   to = "/archive/"
   status = 301
-
-[[redirects]]
-  from = "/issues/:slug.html"
-  to = "/issues/:slug/"
-  status = 301
-
-[[redirects]]
-  from = "/tags/:tag.html"
-  to = "/tags/:tag/"
-  status = 301

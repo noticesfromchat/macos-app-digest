@@ -10,7 +10,7 @@ const { app } = Astro.props as { app: App };
   </div>
   <p class="best-for"><strong>Best for:</strong> {app.bestFor}</p>
   <div class="tag-list" aria-label="App tags">
-    {app.tags.map((tag) => <a class="tag" href={`/tags/${tag}.html`}>{tag}</a>)}
+    {app.tags.map((tag) => <a class="tag" href={`/tags/${tag}/`}>{tag}</a>)}
   </div>
   <p class="source-line"><strong>Source:</strong> {app.source}</p>
 </article>

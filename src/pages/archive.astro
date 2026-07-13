@@ -12,7 +12,7 @@ const issues = [...await getCollection('issues')].sort((a, b) => b.data.slug.loc
 
     <div class="archive-list">
       {issues.map((issue) => (
-        <a class="archive-card" href={`/issues/${issue.data.slug}.html`}>
+        <a class="archive-card" href={`/issues/${issue.data.slug}/`}>
           <span>Issue {issue.data.number}</span>
           <strong>{issue.data.date}</strong>
           <em>{issue.data.dek}</em>
