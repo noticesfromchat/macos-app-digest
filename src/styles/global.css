@@ -304,7 +304,7 @@ a { color: inherit; }
 
 .button {
   display: inline-flex;
-  min-width: 166px;
+  width: 180px;
   min-height: 44px;
   align-items: center;
   justify-content: center;
@@ -386,10 +386,8 @@ a { color: inherit; }
 .content-divider svg { display: block; width: 100%; height: 100%; overflow: visible; }
 .divider-horizon,
 .divider-boat-mark { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; }
-.divider-horizon { opacity: .34; stroke-width: 1.1; }
-.divider-boat-mark { opacity: .68; transform-box: fill-box; transform-origin: center bottom; stroke-width: 1.65; }
-.divider-boat-mark .boat-hull,
-.divider-boat-mark .boat-sail { fill: var(--page); }
+.divider-horizon { opacity: .34; stroke-width: 1.1; transform-box: fill-box; transform-origin: center; animation: water-drift 7s ease-in-out infinite; }
+.divider-boat-mark { opacity: .68; transform-box: fill-box; transform-origin: center bottom; stroke-width: 1.65; animation: boat-bob 5.6s ease-in-out infinite; }
 .video-section { border-top: 0; padding-top: 26px; }
 
 .note { position: relative; isolation: isolate; overflow: hidden; margin: 44px 0 104px; padding: 30px; background: var(--note-bg); box-shadow: none; }
@@ -439,6 +437,11 @@ a { color: inherit; }
   50% { transform: translateY(-2px) rotate(1deg); }
 }
 
+@keyframes water-drift {
+  0%, 100% { transform: translateX(-10px); }
+  50% { transform: translateX(10px); }
+}
+
 @media (hover: hover) and (pointer: fine) {
   .app-card,
   .feature-card,
@@ -446,7 +449,6 @@ a { color: inherit; }
   .app-card:hover,
   .feature-card:hover,
   .archive-card:hover { border-color: color-mix(in srgb, var(--accent) 42%, var(--line)); background: var(--surface); box-shadow: var(--shadow-hover); }
-  .divider-boat-mark { animation: boat-bob 5.6s ease-in-out infinite; }
 }
 
 @media (max-width: 920px) {
@@ -454,9 +456,9 @@ a { color: inherit; }
   .brand { gap: 13px; font-size: 1.7rem; letter-spacing: .12em; }
   .brand-icon { width: 48px; height: 48px; }
   .site-header nav { gap: 20px; }
-  .hero { min-height: 610px; grid-template-columns: 1fr; align-items: start; padding-top: 48px; }
-  .hero-copy { max-width: 480px; }
-  .harbor-artwork { right: -55px; bottom: -80px; width: min(92%, 720px); }
+  .hero { min-height: 650px; grid-template-columns: 1fr; align-items: start; padding-top: 48px; }
+  .hero-copy { max-width: 430px; }
+  .harbor-artwork { right: -20px; bottom: -48px; width: min(65%, 620px); }
   .grid { grid-template-columns: 1fr; }
   .app-card { min-height: auto; }
   .app-summary,
@@ -466,6 +468,12 @@ a { color: inherit; }
   .reading-card h3,
   .reading-card .reading-source,
   .reading-card .reading-description { min-height: 0; }
+}
+
+@media (max-width: 920px) {
+  .site-header.hero-aware:not(.hero-passed) nav a { display: none; }
+  .site-header.hero-aware.hero-passed .brand > span:last-child { display: none; }
+  .site-header.hero-aware.hero-passed nav { flex: 1; justify-content: flex-end; }
 }
 
 @media (max-width: 680px) {
@@ -483,8 +491,8 @@ a { color: inherit; }
   .hero h1 { font-size: clamp(3.05rem, 15vw, 4.15rem); }
   .hero .dek { max-width: 360px; font-size: .94rem; }
   .hero-actions { flex-direction: column; align-items: flex-start; }
-  .button { min-width: 160px; min-height: 42px; }
-  .harbor-artwork { right: 0; bottom: -38px; width: 560px; }
+  .button { width: 180px; min-height: 42px; }
+  .harbor-artwork { right: -20px; bottom: -38px; width: 540px; }
   .section { padding: 46px 0; }
   .content-divider { width: min(100% - 24px, 1160px); height: 64px; }
   .video-section { padding-top: 20px; }
@@ -495,10 +503,9 @@ a { color: inherit; }
 }
 
 @media (max-width: 430px) {
-  .brand > span:last-child { display: none; }
   .site-header nav { flex: 1; justify-content: flex-end; gap: 14px; }
   .site-header nav a { font-size: .75rem; }
-  .harbor-artwork { right: 0; bottom: -34px; width: 570px; }
+  .harbor-artwork { right: -20px; bottom: -34px; width: 540px; }
 }
 
 @media (min-width: 1440px) {
@@ -521,4 +528,9 @@ a { color: inherit; }
   .archive-card:hover,
   .theme-toggle:hover { transform: none; }
   .divider-boat-mark { animation: none; }
+  .divider-horizon { animation: none; }
+}
+
+@media (max-width: 680px) {
+  .hero { min-height: 690px; }
 }

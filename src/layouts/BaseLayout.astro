@@ -73,6 +73,31 @@ const {
 
       applyTheme(root.dataset.theme || 'light');
       toggle?.addEventListener('click', () => applyTheme(root.dataset.theme === 'dark' ? 'light' : 'dark'));
+
+      const header = document.querySelector('.site-header');
+      const hero = document.querySelector('.hero');
+      let ticking = false;
+
+      const updateMobileHeader = () => {
+        if (!header || !hero) return;
+        header.classList.add('hero-aware');
+        const mobile = window.matchMedia('(max-width: 920px)').matches;
+        const threshold = hero.offsetTop + hero.offsetHeight - header.offsetHeight;
+        header.classList.toggle('hero-passed', mobile && window.scrollY >= threshold);
+      };
+
+      const requestHeaderUpdate = () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          updateMobileHeader();
+          ticking = false;
+        });
+      };
+
+      updateMobileHeader();
+      window.addEventListener('scroll', requestHeaderUpdate, { passive: true });
+      window.addEventListener('resize', requestHeaderUpdate);
     </script>
   </body>
 </html>
