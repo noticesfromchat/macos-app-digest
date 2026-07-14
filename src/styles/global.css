@@ -152,6 +152,7 @@ a { color: inherit; }
 }
 
 .site-header nav { gap: clamp(22px, 3.4vw, 42px); }
+.nav-links { display: flex; align-items: center; gap: clamp(22px, 3.4vw, 42px); }
 
 .site-header nav a {
   position: relative;
@@ -341,7 +342,7 @@ a { color: inherit; }
 
 .section { padding: clamp(44px, 5vw, 64px) 0; border-top: 1px solid var(--line); }
 .is-homepage .hero + .section { border-top: 0; }
-.section-heading { max-width: 790px; margin-bottom: 28px; }
+.section-heading { width: 100%; max-width: none; margin-bottom: 28px; }
 .section h2,
 .note h2 { margin: 0; font-family: var(--display); font-size: clamp(2.2rem, 4vw, 3.8rem); font-weight: 500; letter-spacing: -.03em; line-height: 1; }
 
@@ -378,16 +379,18 @@ a { color: inherit; }
 
 .content-divider {
   width: min(1160px, calc(100% - 40px));
-  height: 76px;
+  height: 92px;
   margin: 5px auto 0;
   color: color-mix(in srgb, var(--muted) 72%, transparent);
 }
 
 .content-divider svg { display: block; width: 100%; height: 100%; overflow: visible; }
-.divider-horizon,
-.divider-boat-mark { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; }
-.divider-horizon { opacity: .34; stroke-width: 1.1; transform-box: fill-box; transform-origin: center; animation: water-drift 7s ease-in-out infinite; }
-.divider-boat-mark { opacity: .68; transform-box: fill-box; transform-origin: center bottom; stroke-width: 1.65; animation: boat-bob 5.6s ease-in-out infinite; }
+.divider-route,
+.divider-pin { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; }
+.divider-route { opacity: .48; stroke-width: 2.2; stroke-dasharray: 1.7 2.35; animation: route-travel 18s linear infinite; }
+.divider-pin { opacity: .78; stroke-width: 1.55; }
+.divider-pin path { fill: var(--accent); stroke: var(--accent); }
+.divider-pin circle { fill: var(--page); stroke: var(--page); }
 .video-section { border-top: 0; padding-top: 26px; }
 
 .note { position: relative; isolation: isolate; overflow: hidden; margin: 44px 0 104px; padding: 30px; background: var(--note-bg); box-shadow: none; }
@@ -413,10 +416,9 @@ a { color: inherit; }
 .archive-page {
   min-height: calc(100vh - 130px);
   padding: clamp(68px, 9vw, 108px) clamp(42px, 7vw, 92px) 104px;
-  border: 1px solid var(--line);
-  border-top: 0;
-  border-radius: 0 0 var(--radius) var(--radius);
-  background: var(--bg);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
 }
 .archive-page h1 { max-width: 920px; font-size: clamp(3rem, 6vw, 5.6rem); }
 .archive-list { display: grid; gap: 14px; margin-top: 50px; }
@@ -432,14 +434,8 @@ a { color: inherit; }
 .footer-logo { width: 42px; height: 42px; }
 .footer-brand strong { display: block; color: var(--text); font-family: "Seamless", "Philippine", var(--display); font-size: 1.4rem; font-weight: 400; letter-spacing: .06em; }
 
-@keyframes boat-bob {
-  0%, 100% { transform: translateY(0) rotate(-1.5deg); }
-  50% { transform: translateY(-2px) rotate(1deg); }
-}
-
-@keyframes water-drift {
-  0%, 100% { transform: translateX(-10px); }
-  50% { transform: translateX(10px); }
+@keyframes route-travel {
+  to { stroke-dashoffset: -100; }
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -455,10 +451,11 @@ a { color: inherit; }
   .site-header { min-height: 76px; }
   .brand { gap: 13px; font-size: 1.7rem; letter-spacing: .12em; }
   .brand-icon { width: 48px; height: 48px; }
-  .site-header nav { gap: 20px; }
+  .site-header nav,
+  .nav-links { gap: 20px; }
   .hero { min-height: 650px; grid-template-columns: 1fr; align-items: start; padding-top: 48px; }
   .hero-copy { max-width: 430px; }
-  .harbor-artwork { right: -20px; bottom: -48px; width: min(65%, 620px); }
+  .harbor-artwork { right: -20px; bottom: -18px; width: min(65%, 620px); }
   .grid { grid-template-columns: 1fr; }
   .app-card { min-height: auto; }
   .app-summary,
@@ -471,8 +468,14 @@ a { color: inherit; }
 }
 
 @media (max-width: 920px) {
-  .site-header.hero-aware:not(.hero-passed) nav a { display: none; }
-  .site-header.hero-aware.hero-passed .brand > span:last-child { display: none; }
+  .site-header.hero-aware .brand,
+  .site-header.hero-aware .brand-name,
+  .site-header.hero-aware .nav-links { transition: max-width 260ms ease, opacity 180ms ease, transform 260ms ease, gap 260ms ease; }
+  .site-header.hero-aware .brand-name { max-width: 270px; overflow: hidden; opacity: 1; transform: translateY(0); }
+  .site-header.hero-aware .nav-links { max-width: 0; overflow: hidden; opacity: 0; pointer-events: none; transform: translateY(-4px); }
+  .site-header.hero-aware.hero-passed .brand { gap: 0; }
+  .site-header.hero-aware.hero-passed .brand-name { max-width: 0; opacity: 0; transform: translateY(-4px); }
+  .site-header.hero-aware.hero-passed .nav-links { max-width: 220px; opacity: 1; pointer-events: auto; transform: translateY(0); }
   .site-header.hero-aware.hero-passed nav { flex: 1; justify-content: flex-end; }
 }
 
@@ -483,7 +486,8 @@ a { color: inherit; }
   .issue > .note { width: min(100% - 24px, 1160px); }
   .brand { gap: 9px; font-size: 1.35rem; letter-spacing: .08em; }
   .brand-icon { width: 40px; height: 40px; }
-  .site-header nav { gap: 12px; }
+  .site-header nav,
+  .nav-links { gap: 12px; }
   .site-header nav a { font-size: .72rem; }
   .theme-toggle { width: 30px; height: 34px; }
   .theme-toggle svg { width: 19px; height: 19px; }
@@ -492,9 +496,9 @@ a { color: inherit; }
   .hero .dek { max-width: 360px; font-size: .94rem; }
   .hero-actions { flex-direction: column; align-items: flex-start; }
   .button { width: 180px; min-height: 42px; }
-  .harbor-artwork { right: -20px; bottom: -38px; width: 540px; }
+  .harbor-artwork { right: -20px; bottom: -8px; width: 540px; }
   .section { padding: 46px 0; }
-  .content-divider { width: min(100% - 24px, 1160px); height: 64px; }
+  .content-divider { width: min(100% - 24px, 1160px); height: 76px; }
   .video-section { padding-top: 20px; }
   .note::after { right: -18%; width: 82%; opacity: .08; }
   .archive-page { padding: 52px 24px 80px; }
@@ -504,8 +508,9 @@ a { color: inherit; }
 
 @media (max-width: 430px) {
   .site-header nav { flex: 1; justify-content: flex-end; gap: 14px; }
+  .nav-links { gap: 14px; }
   .site-header nav a { font-size: .75rem; }
-  .harbor-artwork { right: -20px; bottom: -34px; width: 540px; }
+  .harbor-artwork { right: -20px; bottom: -4px; width: 540px; }
 }
 
 @media (min-width: 1440px) {
@@ -527,10 +532,9 @@ a { color: inherit; }
   .feature-card:hover,
   .archive-card:hover,
   .theme-toggle:hover { transform: none; }
-  .divider-boat-mark { animation: none; }
-  .divider-horizon { animation: none; }
+  .divider-route { animation: none; }
 }
 
 @media (max-width: 680px) {
-  .hero { min-height: 690px; }
+  .hero { min-height: 660px; }
 }
