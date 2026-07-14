@@ -387,7 +387,7 @@ a { color: inherit; }
 .content-divider svg { display: block; width: 100%; height: 100%; overflow: visible; }
 .divider-route,
 .divider-pin { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; }
-.divider-route { opacity: .48; stroke-width: 2.2; stroke-dasharray: 1.7 2.35; animation: route-travel 18s linear infinite; }
+.divider-route { opacity: .48; stroke-width: 2.2; stroke-dasharray: 1.7 2.35; animation: route-travel 36s linear infinite; }
 .divider-pin { opacity: .78; stroke-width: 1.55; }
 .divider-pin path { fill: var(--accent); stroke: var(--accent); }
 .divider-pin circle { fill: var(--page); stroke: var(--page); }
@@ -422,6 +422,7 @@ a { color: inherit; }
 }
 .archive-page h1 { max-width: 920px; font-size: clamp(3rem, 6vw, 5.6rem); }
 .archive-list { display: grid; gap: 14px; margin-top: 50px; }
+.archive-current-link { display: none; }
 .archive-card { display: grid; gap: 8px; padding: 25px; text-decoration: none; box-shadow: none; }
 .archive-card span,
 .archive-card em { color: var(--muted); font-style: normal; }
@@ -489,6 +490,7 @@ a { color: inherit; }
   .site-header nav,
   .nav-links { gap: 12px; }
   .site-header nav a { font-size: .72rem; }
+  .site-header.hide-mobile-nav .nav-links { display: none; }
   .theme-toggle { width: 30px; height: 34px; }
   .theme-toggle svg { width: 19px; height: 19px; }
   .hero { min-height: 760px; padding: 38px 24px 28px; }
@@ -502,6 +504,8 @@ a { color: inherit; }
   .video-section { padding-top: 20px; }
   .note::after { right: -18%; width: 82%; opacity: .08; }
   .archive-page { padding: 52px 24px 80px; }
+  .archive-current-link { display: inline-flex; margin-top: 22px; }
+  .archive-current-link + .archive-list { margin-top: 34px; }
   .site-footer { display: block; padding: 26px 22px; }
   .site-footer > p { margin-top: 18px; }
 }

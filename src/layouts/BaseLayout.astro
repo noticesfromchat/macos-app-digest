@@ -27,7 +27,7 @@ const {
     </script>
   </head>
   <body>
-    <header class:list={['site-header', { 'hero-aware': current === 'issue' }]}>
+    <header class:list={['site-header', { 'hero-aware': current === 'issue', 'hide-mobile-nav': current !== 'issue' }]}>
       <a class="brand" href="/" aria-label="App Waypoint home">
         <span class="brand-icon" aria-hidden="true">
           <img src="/app-waypoint-logo.png" alt="" />

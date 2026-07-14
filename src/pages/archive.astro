@@ -3,17 +3,19 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const issues = [...await getCollection('issues')].sort((a, b) => b.data.slug.localeCompare(a.data.slug));
+const issueLabel = (number: string | number) => String(Number(number)).padStart(2, '0');
 ---
 <BaseLayout title="App Waypoint Archive" description="Browse past App Waypoint issues." current="archive">
   <section class="archive-page">
     <p class="eyebrow">All Issues</p>
     <h1>App Waypoint Archive</h1>
     <p class="dek">Browse every published issue of App Waypoint.</p>
+    <a class="button archive-current-link" href="/">Current Issue <span aria-hidden="true">→</span></a>
 
     <div class="archive-list">
       {issues.map((issue) => (
         <a class="archive-card" href={`/issues/${issue.data.slug}/`}>
-          <span>Issue {issue.data.number}</span>
+          <span>Issue {issueLabel(issue.data.number)}</span>
           <strong>{issue.data.date}</strong>
           <em>{issue.data.dek}</em>
         </a>
