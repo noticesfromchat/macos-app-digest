@@ -17,7 +17,17 @@ export async function getStaticPaths() {
 }
 
 const { tag, apps } = Astro.props;
-const title = tag.charAt(0).toUpperCase() + tag.slice(1);
+const tagLabels: Record<string, string> = {
+  ai: 'AI',
+  airdrop: 'AirDrop',
+  ios: 'iOS',
+  menubar: 'Menu Bar',
+  'open-source': 'Open Source'
+};
+const title = tagLabels[tag] ?? tag
+  .split('-')
+  .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+  .join(' ');
 ---
 <BaseLayout
   title={`${title} Mac Apps — App Waypoint`}
