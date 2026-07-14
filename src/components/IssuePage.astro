@@ -17,19 +17,29 @@ const {
 };
 
 const appsById = new Map(appEntries.map((entry) => [entry.id, entry.data]));
+const issueLabel = String(Number(issue.number)).padStart(2, '0');
 ---
 
-<article class="issue">
+<article class:list={['issue', { 'is-homepage': homepage }]}>
   <header class="hero">
-    <p class="eyebrow">Weekly edition · Issue {issue.number}</p>
-    <h1>🍎 macOS App Digest</h1>
-    <p class="date">{issue.date}</p>
-    <p class="dek">{issue.dek}</p>
-    <div class="hero-actions">
-      <a class="button" href={homepage ? `/issues/${issue.slug}.html` : '#new-discoveries'}>
-        {homepage ? 'Permanent issue link' : 'Start reading'}
-      </a>
-      <a class="button secondary" href="/archive.html">View archive</a>
+    <div class="hero-copy">
+      <p class="eyebrow">Current Issue</p>
+      <h1>{issue.date}</h1>
+      <p class="date">Issue {issueLabel}</p>
+      <div class="hero-rule" aria-hidden="true">
+        <svg viewBox="0 0 104 14" role="presentation">
+          <path d="M1 7c8-6 16 6 24 0s16 6 24 0 16 6 24 0 16 6 24 0" />
+        </svg>
+      </div>
+      <p class="dek">{issue.dek}</p>
+      <div class="hero-actions">
+        <a class="button" href="#new-discoveries">Start Reading <span aria-hidden="true">→</span></a>
+        {homepage && <a class="button secondary" href="/archive/">Past Issues</a>}
+      </div>
+    </div>
+    <div class="harbor-artwork" aria-hidden="true">
+      <img class="harbor-artwork-light" src="/harbor-hero.png" alt="" width="1536" height="1024" />
+      <img class="harbor-artwork-dark" src="/harbor-hero-dark-stars.png" alt="" width="1536" height="1024" />
     </div>
   </header>
 
@@ -48,7 +58,17 @@ const appsById = new Map(appEntries.map((entry) => [entry.id, entry.data]));
     </section>
   ))}
 
-  <section class="section">
+  <div class="content-divider" aria-hidden="true">
+    <svg viewBox="0 0 1200 128" role="presentation">
+      <path class="divider-route" pathLength="100" d="M-28 68C95 68 120 33 220 44c91 10 33 76 112 73 61-2 11-88 91-89 74-1 66 72 143 65 80-8 34-66 119-70 81-4 58 83 151 78 89-5 70-67 154-62 74 5 83 43 161 39" />
+      <g class="divider-pin" transform="translate(1138 48) scale(2.05)">
+        <path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z" />
+        <circle cx="12" cy="10" r="3" />
+      </g>
+    </svg>
+  </div>
+
+  <section class="section video-section">
     <div class="section-heading">
       <p class="eyebrow">Video of the Week</p>
       <h2>{issue.video.title}</h2>

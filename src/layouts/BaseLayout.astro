@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+
 const {
   title = 'App Waypoint',
   description = 'A weekly waypoint for Mac apps.',
@@ -12,8 +13,10 @@ const {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#f5f5f7" />
+    <meta name="theme-color" content="#eee5d3" />
     <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
+    <link rel="icon" href="/app-waypoint-logo.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/app-waypoint-logo.png" />
     <title>{title}</title>
     <script is:inline>
       (() => {
@@ -24,38 +27,79 @@ const {
     </script>
   </head>
   <body>
-    <header class="site-header">
+    <header class:list={['site-header', { 'hero-aware': current === 'issue', 'hide-mobile-nav': current !== 'issue' }]}>
       <a class="brand" href="/" aria-label="App Waypoint home">
-        <span class="brand-icon" aria-hidden="true">🍎</span>
-        <span>macOS App Digest</span>
+        <span class="brand-icon" aria-hidden="true">
+          <img src="/app-waypoint-logo.png" alt="" />
+        </span>
+        <span class="brand-name">App Waypoint</span>
       </a>
       <nav aria-label="Primary navigation">
-        <a href="/archive.html" aria-current={current === 'archive' ? 'page' : undefined}>Archive</a>
-        <button class="theme-toggle" type="button" aria-label="Switch theme" data-theme-toggle>
-          <span data-theme-icon aria-hidden="true">☾</span>
-          <span data-theme-label>Dark</span>
+        <span class="nav-links">
+          <a href="/" aria-current={current === 'issue' ? 'page' : undefined}>Current Issue</a>
+          <a href="/archive/" aria-current={current === 'archive' ? 'page' : undefined}>Past Issues</a>
+        </span>
+        <button class="theme-toggle" type="button" aria-label="Switch to dark theme" data-theme-toggle>
+          <svg data-theme-moon aria-hidden="true" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" /></svg>
+          <svg data-theme-sun aria-hidden="true" viewBox="0 0 24 24" hidden><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41" /></svg>
         </button>
       </nav>
     </header>
     <main><slot /></main>
     <footer class="site-footer">
-      <p>Published by macOS App Digest.</p>
-      <p><a href="https://github.com/noticesfromchat/macos-app-digest">GitHub</a></p>
+      <div class="footer-brand">
+        <span class="footer-logo" aria-hidden="true"><img src="/app-waypoint-logo.png" alt="" /></span>
+        <div>
+          <strong>App Waypoint</strong>
+          <p>A weekly waypoint for Mac apps.</p>
+        </div>
+      </div>
+      <p>Thoughtfully curated by AI and published every Friday.</p>
     </footer>
     <script is:inline>
       const root = document.documentElement;
       const toggle = document.querySelector('[data-theme-toggle]');
-      const icon = document.querySelector('[data-theme-icon]');
-      const label = document.querySelector('[data-theme-label]');
+      const moonIcon = document.querySelector('[data-theme-moon]');
+      const sunIcon = document.querySelector('[data-theme-sun]');
+      const themeColor = document.querySelector('meta[name="theme-color"]');
+
       const applyTheme = (theme) => {
         root.dataset.theme = theme;
         localStorage.setItem('app-waypoint-theme', theme);
         const dark = theme === 'dark';
-        if (icon) icon.textContent = dark ? '☀' : '☾';
-        if (label) label.textContent = dark ? 'Light' : 'Dark';
+        if (moonIcon) dark ? moonIcon.setAttribute('hidden', '') : moonIcon.removeAttribute('hidden');
+        if (sunIcon) dark ? sunIcon.removeAttribute('hidden') : sunIcon.setAttribute('hidden', '');
+        if (toggle) toggle.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
+        if (themeColor) themeColor.setAttribute('content', dark ? '#0b1726' : '#eee5d3');
       };
+
       applyTheme(root.dataset.theme || 'light');
       toggle?.addEventListener('click', () => applyTheme(root.dataset.theme === 'dark' ? 'light' : 'dark'));
+
+      const header = document.querySelector('.site-header');
+      const hero = document.querySelector('.hero');
+      let ticking = false;
+
+      const updateMobileHeader = () => {
+        if (!header || !hero) return;
+        header.classList.add('hero-aware');
+        const mobile = window.matchMedia('(max-width: 920px)').matches;
+        const threshold = hero.offsetTop + hero.offsetHeight - header.offsetHeight;
+        header.classList.toggle('hero-passed', mobile && window.scrollY >= threshold);
+      };
+
+      const requestHeaderUpdate = () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          updateMobileHeader();
+          ticking = false;
+        });
+      };
+
+      updateMobileHeader();
+      window.addEventListener('scroll', requestHeaderUpdate, { passive: true });
+      window.addEventListener('resize', requestHeaderUpdate);
     </script>
   </body>
 </html>

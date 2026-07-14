@@ -1,6 +1,6 @@
-# macOS App Digest Style & Brand Guide
+# App Waypoint Style & Brand Guide
 
-This document is the design and publishing source of truth for the macOS App Digest website. Read it before creating a new issue or changing any page, component, shared asset or content entry.
+This document is the design and publishing source of truth for the App Waypoint website. Read it before creating a new issue or changing any page, component, shared asset or content entry.
 
 ## 1. Brand direction
 

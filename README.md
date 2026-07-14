@@ -1,8 +1,8 @@
-# macOS App Digest
+# App Waypoint
 
-A premium weekly macOS app digest for experienced Mac users. This is an AI-based digest for my personal use. 
+A weekly waypoint for experienced Mac users discovering thoughtfully selected apps, tools, and reading.
 
-Live site: https://noticesfromchat.github.io/macos-app-digest/
+Live site: https://appwaypoint.netlify.app/
 
 ## Weekly Editorial Brief
 
