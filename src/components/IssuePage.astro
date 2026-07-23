@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import AppCard from './AppCard.astro';
+import EditorsPick from './EditorsPick.astro';
 import ReadingCard from './ReadingCard.astro';
 
 type Issue = CollectionEntry<'issues'>['data'];
@@ -18,6 +19,10 @@ const {
 
 const appsById = new Map(appEntries.map((entry) => [entry.id, entry.data]));
 const issueLabel = String(Number(issue.number)).padStart(2, '0');
+const editorsPicks = issue.editorsPicks ?? [];
+const trendingIndex = issue.sections.findIndex((section) => section.eyebrow.toLowerCase() === 'trending');
+const aiIndex = issue.sections.findIndex((section) => section.eyebrow.toLowerCase().includes('ai'));
+const editorsPickAfterIndex = trendingIndex >= 0 ? trendingIndex : Math.max(0, aiIndex - 1);
 ---
 
 <article class:list={['issue', { 'is-homepage': homepage }]}>
@@ -44,18 +49,23 @@ const issueLabel = String(Number(issue.number)).padStart(2, '0');
   </header>
 
   {issue.sections.map((section, index) => (
-    <section id={index === 0 ? 'new-discoveries' : undefined} class="section">
-      <div class="section-heading">
-        <p class="eyebrow">{section.eyebrow}</p>
-        <h2>{section.title}</h2>
-      </div>
-      <div class="grid">
-        {section.apps.map((appId) => {
-          const app = appsById.get(appId);
-          return app ? <AppCard app={app} /> : null;
-        })}
-      </div>
-    </section>
+    <>
+      <section id={index === 0 ? 'new-discoveries' : undefined} class="section">
+        <div class="section-heading">
+          <p class="eyebrow">{section.eyebrow}</p>
+          <h2>{section.title}</h2>
+        </div>
+        <div class="grid">
+          {section.apps.map((appId) => {
+            const app = appsById.get(appId);
+            return app ? <AppCard app={app} /> : null;
+          })}
+        </div>
+      </section>
+      {index === editorsPickAfterIndex && (
+        <EditorsPick picks={editorsPicks} appsById={appsById} />
+      )}
+    </>
   ))}
 
   <div class="content-divider" aria-hidden="true">

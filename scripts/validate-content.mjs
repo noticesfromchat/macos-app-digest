@@ -118,6 +118,25 @@ for (const filename of issueFiles) {
     errors.push(`${relative}: app ID "${duplicate}" appears more than once`);
   }
 
+  if (data.editorsPicks !== undefined && !Array.isArray(data.editorsPicks)) {
+    errors.push(`${relative}: editorsPicks must be a list`);
+  } else if (Array.isArray(data.editorsPicks)) {
+    const pickedApps = [];
+    for (const pick of data.editorsPicks) {
+      pickedApps.push(pick.app);
+      if (!appIds.has(pick.app)) errors.push(`${relative}: unknown Editor's Pick app ID "${pick.app}"`);
+      checkLength(relative, `Editor's Pick note for "${pick.app ?? 'unknown'}"`, pick.note, 20, 90);
+      if (!Array.isArray(pick.why) || pick.why.length < 1 || pick.why.length > 6) {
+        errors.push(`${relative}: each Editor's Pick must include 1-6 reasons`);
+      }
+    }
+
+    const duplicatePicks = pickedApps.filter((id, index) => pickedApps.indexOf(id) !== index);
+    for (const duplicate of new Set(duplicatePicks)) {
+      errors.push(`${relative}: Editor's Pick app ID "${duplicate}" appears more than once`);
+    }
+  }
+
   if (!Array.isArray(data.readings) || data.readings.length < 1 || data.readings.length > 5) {
     errors.push(`${relative}: readings must contain 1-5 entries`);
   } else {

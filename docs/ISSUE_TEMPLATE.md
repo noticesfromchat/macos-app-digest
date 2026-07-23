@@ -20,6 +20,12 @@ sections:
   - eyebrow: AI & Automation
     title: A concise editorial section title
     apps: [seventh-app-id, eighth-app-id, ninth-app-id]
+editorsPicks:
+  - app: hand-curated-app-id
+    note: Write a short first-person or editorial note explaining why this app stood out.
+    why:
+      - A concise reason this app is worth attention
+      - A second concrete reason
 video:
   title: Video title
   creator: Creator or publication
@@ -43,6 +49,17 @@ sourceNotes:
   - Official app homepages were checked before publishing
 ---
 ```
+
+## Editor's Picks
+
+`editorsPicks` is optional and may contain any number of hand-curated apps. Omit the field or use an empty list when there are no manual contributions for an issue.
+
+- Add each selected app to `src/content/apps/` first, or reuse its existing app ID.
+- Keep the pick out of the regular `sections` list for the same issue.
+- Write a 20–90 word editorial `note`.
+- Include 1–6 concise entries under `why`.
+- The site automatically places this section immediately after Trending and before AI & Automation.
+- Every entry is visibly marked as an Editor's Pick so readers can distinguish manual curation from the regular digest.
 
 ## App file template
 
@@ -68,4 +85,4 @@ npm run validate
 npm run build
 ```
 
-The validator rejects unknown app IDs, duplicate apps within an issue, duplicate issue numbers or slugs, malformed URLs and content outside the approved editorial ranges.
+The validator rejects unknown app IDs, duplicate regular apps or Editor's Picks within an issue, duplicate issue numbers or slugs, malformed URLs and content outside the approved editorial ranges.
