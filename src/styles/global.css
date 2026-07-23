@@ -347,6 +347,34 @@ a { color: inherit; }
 .note h2 { margin: 0; font-family: var(--display); font-size: clamp(2.2rem, 4vw, 3.8rem); font-weight: 500; letter-spacing: -.03em; line-height: 1; }
 
 .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.editors-pick-grid { display: grid; grid-template-columns: minmax(0, 1fr); }
+.editors-pick-card {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1.18fr) minmax(280px, .82fr);
+  grid-template-areas:
+    "summary note"
+    "best note"
+    "tags source";
+  column-gap: clamp(30px, 5vw, 72px);
+  row-gap: 18px;
+  padding: clamp(24px, 3vw, 34px);
+}
+.editors-pick-card .app-summary { grid-area: summary; min-height: 0; margin-bottom: 0; }
+.editors-pick-card .best-for { grid-area: best; min-height: 0; }
+.editors-pick-card .editor-note { grid-area: note; align-self: start; }
+.editors-pick-card .tag-list { grid-area: tags; min-height: 0; padding-top: 0; }
+.editors-pick-card .source-line { grid-area: source; min-height: 0; padding-top: 0; }
+.editor-note { padding-left: clamp(20px, 3vw, 38px); border-left: 1px solid var(--line); }
+.editor-note p { margin: 0; }
+.editor-note .editor-note-label {
+  margin-bottom: 8px;
+  color: var(--accent);
+  font-size: .74rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
 .card,
 .note,
 .archive-card { border: 1px solid var(--line); border-radius: 12px; background: color-mix(in srgb, var(--surface) 96%, transparent); box-shadow: var(--shadow); }
@@ -458,6 +486,20 @@ a { color: inherit; }
   .hero-copy { max-width: 430px; }
   .harbor-artwork { right: -20px; bottom: -18px; width: min(65%, 620px); }
   .grid { grid-template-columns: 1fr; }
+  .editors-pick-card {
+    display: flex;
+    min-height: auto;
+    flex-direction: column;
+    gap: 0;
+  }
+  .editors-pick-card .best-for { margin-top: 16px; }
+  .editors-pick-card .editor-note {
+    margin-top: 22px;
+    padding: 18px 0 0;
+    border-top: 1px solid var(--line);
+    border-left: 0;
+  }
+  .editors-pick-card .tag-list { margin-top: 20px; }
   .app-card { min-height: auto; }
   .app-summary,
   .best-for,

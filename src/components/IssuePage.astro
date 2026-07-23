@@ -18,6 +18,14 @@ const {
 
 const appsById = new Map(appEntries.map((entry) => [entry.id, entry.data]));
 const issueLabel = String(Number(issue.number)).padStart(2, '0');
+const aiSectionIndex = issue.sections.findIndex((section) => section.eyebrow.toLowerCase() === 'ai & automation');
+const trendingSectionIndex = issue.sections.findIndex((section) => section.eyebrow.toLowerCase() === 'trending');
+const editorsPickIndex = aiSectionIndex >= 0
+  ? aiSectionIndex
+  : trendingSectionIndex >= 0
+    ? trendingSectionIndex + 1
+    : issue.sections.length;
+const editorsPick = issue.editorsPick ? appsById.get(issue.editorsPick.app) : undefined;
 ---
 
 <article class:list={['issue', { 'is-homepage': homepage }]}>
@@ -44,19 +52,44 @@ const issueLabel = String(Number(issue.number)).padStart(2, '0');
   </header>
 
   {issue.sections.map((section, index) => (
-    <section id={index === 0 ? 'new-discoveries' : undefined} class="section">
-      <div class="section-heading">
-        <p class="eyebrow">{section.eyebrow}</p>
-        <h2>{section.title}</h2>
+    <>
+      {editorsPick && index === editorsPickIndex && (
+        <section id="editors-pick" class="section editors-pick-section">
+          <div class="section-heading editors-pick-heading">
+            <p class="eyebrow">Editor's Pick</p>
+            <h2>One app worth a closer look</h2>
+          </div>
+          <div class="editors-pick-grid">
+            <AppCard app={editorsPick} editorNote={issue.editorsPick?.reason} />
+          </div>
+        </section>
+      )}
+      <section id={index === 0 ? 'new-discoveries' : undefined} class="section">
+        <div class="section-heading">
+          <p class="eyebrow">{section.eyebrow}</p>
+          <h2>{section.title}</h2>
+        </div>
+        <div class="grid">
+          {section.apps.map((appId) => {
+            const app = appsById.get(appId);
+            return app ? <AppCard app={app} /> : null;
+          })}
+        </div>
+      </section>
+    </>
+  ))}
+
+  {editorsPick && editorsPickIndex === issue.sections.length && (
+    <section id="editors-pick" class="section editors-pick-section">
+      <div class="section-heading editors-pick-heading">
+        <p class="eyebrow">Editor's Pick</p>
+        <h2>One app worth a closer look</h2>
       </div>
-      <div class="grid">
-        {section.apps.map((appId) => {
-          const app = appsById.get(appId);
-          return app ? <AppCard app={app} /> : null;
-        })}
+      <div class="editors-pick-grid">
+        <AppCard app={editorsPick} editorNote={issue.editorsPick?.reason} />
       </div>
     </section>
-  ))}
+  )}
 
   <div class="content-divider" aria-hidden="true">
     <svg viewBox="0 0 1200 128" role="presentation">

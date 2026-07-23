@@ -1,14 +1,20 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 type App = CollectionEntry<'apps'>['data'];
-const { app } = Astro.props as { app: App };
+const { app, editorNote } = Astro.props as { app: App; editorNote?: string };
 ---
-<article class="card app-card">
+<article class:list={['card', 'app-card', { 'editors-pick-card': editorNote }]}>
   <div class="app-summary">
     <h3><a href={app.homepage} target="_blank" rel="noreferrer">{app.name}</a></h3>
     <p>{app.description}</p>
   </div>
   <p class="best-for"><strong>Best for:</strong> {app.bestFor}</p>
+  {editorNote && (
+    <div class="editor-note">
+      <p class="editor-note-label">Why it was chosen</p>
+      <p>{editorNote}</p>
+    </div>
+  )}
   <div class="tag-list" aria-label="App tags">
     {app.tags.map((tag) => <a class="tag" href={`/tags/${tag}/`}>{tag}</a>)}
   </div>
