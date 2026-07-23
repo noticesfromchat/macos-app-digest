@@ -18,6 +18,7 @@ Each issue includes:
 
 - New Discoveries: three apps
 - Trending: three apps
+- Editor's Picks: optional, hand-curated apps supplied by the editor
 - AI & Automation: three apps
 - Deals & Bundles: up to three only when genuinely worthwhile
 - Video of the Week: one relevant YouTube recommendation
