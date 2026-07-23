@@ -114,10 +114,11 @@ for (const filename of issueFiles) {
   }
 
   if (data.editorsPick) {
-    referencedApps.push(data.editorsPick);
-    if (!appIds.has(data.editorsPick)) {
-      errors.push(`${relative}: unknown editor's pick app ID "${data.editorsPick}"`);
+    referencedApps.push(data.editorsPick.app);
+    if (!appIds.has(data.editorsPick.app)) {
+      errors.push(`${relative}: unknown editor's pick app ID "${data.editorsPick.app}"`);
     }
+    checkLength(relative, `editor's pick reason for "${data.editorsPick.app}"`, data.editorsPick.reason, 12, 45);
   }
 
   const duplicates = referencedApps.filter((id, index) => referencedApps.indexOf(id) !== index);

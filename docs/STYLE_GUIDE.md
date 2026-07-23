@@ -17,7 +17,8 @@ The site should feel like a small, premium editorial publication for experienced
 
 ## 2. Optional Editor's Pick
 
-- An issue may name zero or one Editor's Pick with the `editorsPick` field.
+- An issue may name zero or one Editor's Pick with the `editorsPick` field. Include a
+  concise 12-45 word reason explaining why the app stands out in that issue.
 - The value is an existing app ID from `src/content/apps/`; app copy is never duplicated in the issue file.
 - When present, the module renders between Trending and AI & Automation.
 - It uses the standard app-card fields in one full-width card.

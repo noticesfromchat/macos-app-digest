@@ -20,9 +20,11 @@ sections:
   - eyebrow: AI & Automation
     title: A concise editorial section title
     apps: [seventh-app-id, eighth-app-id, ninth-app-id]
-# Optional: omit this line when the issue does not have an Editor's Pick.
+# Optional: omit this block when the issue does not have an Editor's Pick.
 # The selected app renders once in a full-width card between Trending and AI & Automation.
-editorsPick: editor-pick-app-id
+editorsPick:
+  app: editor-pick-app-id
+  reason: Write one concise 12-45 word explanation of why this app stands out in this issue.
 video:
   title: Video title
   creator: Creator or publication
@@ -73,5 +75,6 @@ npm run build
 
 The validator rejects unknown app IDs, duplicate apps within an issue, duplicate issue numbers or slugs, malformed URLs and content outside the approved editorial ranges.
 
-`editorsPick` is optional and accepts exactly one app ID. The app must already exist in
-`src/content/apps/` and must not also appear in one of the issue's regular sections.
+`editorsPick` is optional and accepts exactly one app ID plus a 12-45 word editorial
+reason. The app must already exist in `src/content/apps/` and must not also appear in
+one of the issue's regular sections.

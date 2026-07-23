@@ -25,7 +25,7 @@ const editorsPickIndex = aiSectionIndex >= 0
   : trendingSectionIndex >= 0
     ? trendingSectionIndex + 1
     : issue.sections.length;
-const editorsPick = issue.editorsPick ? appsById.get(issue.editorsPick) : undefined;
+const editorsPick = issue.editorsPick ? appsById.get(issue.editorsPick.app) : undefined;
 ---
 
 <article class:list={['issue', { 'is-homepage': homepage }]}>
@@ -54,12 +54,13 @@ const editorsPick = issue.editorsPick ? appsById.get(issue.editorsPick) : undefi
   {issue.sections.map((section, index) => (
     <>
       {editorsPick && index === editorsPickIndex && (
-        <section class="section editors-pick-section">
+        <section id="editors-pick" class="section editors-pick-section">
           <div class="section-heading editors-pick-heading">
             <p class="eyebrow">Editor's Pick</p>
+            <h2>One app worth a closer look</h2>
           </div>
           <div class="editors-pick-grid">
-            <AppCard app={editorsPick} />
+            <AppCard app={editorsPick} editorNote={issue.editorsPick?.reason} />
           </div>
         </section>
       )}
@@ -79,12 +80,13 @@ const editorsPick = issue.editorsPick ? appsById.get(issue.editorsPick) : undefi
   ))}
 
   {editorsPick && editorsPickIndex === issue.sections.length && (
-    <section class="section editors-pick-section">
+    <section id="editors-pick" class="section editors-pick-section">
       <div class="section-heading editors-pick-heading">
         <p class="eyebrow">Editor's Pick</p>
+        <h2>One app worth a closer look</h2>
       </div>
       <div class="editors-pick-grid">
-        <AppCard app={editorsPick} />
+        <AppCard app={editorsPick} editorNote={issue.editorsPick?.reason} />
       </div>
     </section>
   )}

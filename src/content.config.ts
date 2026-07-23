@@ -25,7 +25,10 @@ const issues = defineCollection({
       title: z.string().min(1).max(100),
       apps: z.array(z.string().min(1)).min(1).max(6)
     })).min(1).max(6),
-    editorsPick: z.string().min(1).optional(),
+    editorsPick: z.object({
+      app: z.string().min(1),
+      reason: z.string().min(40).max(280)
+    }).optional(),
     video: z.object({
       title: z.string().min(1).max(140),
       creator: z.string().min(1).max(80),
