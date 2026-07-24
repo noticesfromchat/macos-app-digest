@@ -1,0 +1,8 @@
+---
+name: PopTask
+description: Turns informal natural-language thoughts into scheduled tasks with dates, recurrence and reminders from the Mac menu bar.
+bestFor: People who capture commitments faster than they can complete traditional task forms.
+tags: [tasks, menubar, automation, productivity]
+source: Product Hunt launch and official homepage
+homepage: https://poptask.bar/
+---
