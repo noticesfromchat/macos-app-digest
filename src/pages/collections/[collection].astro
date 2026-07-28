@@ -1,0 +1,44 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AppCard from '../../components/AppCard.astro';
+
+const collectionLabels: Record<string, string> = {
+  'editors-picks': "Editor's Picks"
+};
+
+export async function getStaticPaths() {
+  const apps = await getCollection('apps');
+  const collections = [
+    ...new Set(apps.flatMap((entry) => entry.data.collections ?? []))
+  ].sort();
+
+  return collections.map((collection) => ({
+    params: { collection },
+    props: {
+      collection,
+      apps: apps.filter((entry) => entry.data.collections?.includes(collection))
+    }
+  }));
+}
+
+const { collection, apps } = Astro.props;
+const title = collectionLabels[collection]
+  ?? collection
+    .split('-')
+    .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+---
+<BaseLayout
+  title={`${title} — App Waypoint`}
+  description={`Browse ${title.toLowerCase()} from App Waypoint.`}
+>
+  <section class="archive-page tag-page">
+    <p class="eyebrow">Browse by collection</p>
+    <h1>{title}</h1>
+    <p class="dek">Apps given special recognition by App Waypoint.</p>
+    <div class="grid">
+      {apps.map((entry) => <AppCard app={entry.data} />)}
+    </div>
+  </section>
+</BaseLayout>

@@ -35,8 +35,9 @@ The site should feel like a small, premium editorial publication for experienced
 - When present, the module renders between Trending and AI & Automation.
 - It uses the standard section eyebrow and heading, followed by one full-width card.
 - The full-width card displays the Lucide `book-heart` icon beside the app title when
-  the app belongs to the `editors-picks` collection. Otherwise its existing layout,
-  typography, spacing and styling remain unchanged.
+  the app belongs to the `editors-picks` collection. The icon links to
+  `/collections/editors-picks/`. Otherwise the card's existing layout, typography,
+  spacing and styling remain unchanged.
 - The app description is followed by `Best for`, then the issue-specific “Why it was
   chosen” note, tags and source information.
 - Omit the object entirely when the issue has no Editor's Pick.
