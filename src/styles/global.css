@@ -384,13 +384,17 @@ a { color: inherit; }
 .app-card h3 a { color: var(--text); text-decoration: none; transition: color 180ms ease; }
 .app-card h3 a:hover,
 .app-card h3 a:focus-visible { color: var(--accent); }
+.editors-pick-title {
+  display: flex;
+  align-items: center;
+  gap: .2em;
+}
 .editors-pick-icon-link {
   display: inline-flex;
+  flex: 0 0 auto;
   width: .9em;
   height: .9em;
-  margin-left: .38em;
   color: var(--accent);
-  vertical-align: -.08em;
   transition: color 180ms ease;
 }
 .editors-pick-icon-link:hover,
@@ -426,11 +430,9 @@ a { color: inherit; }
 
 .content-divider svg { display: block; width: 100%; height: 100%; overflow: visible; }
 .divider-route,
-.divider-pin { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; }
+.divider-sailboat { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; }
 .divider-route { opacity: .48; stroke-width: 2.2; stroke-dasharray: 1.7 2.35; animation: route-travel 36s linear infinite; }
-.divider-pin { opacity: .78; stroke-width: 1.55; }
-.divider-pin path { fill: var(--accent); stroke: var(--accent); }
-.divider-pin circle { fill: var(--page); stroke: var(--page); }
+.divider-sailboat { opacity: .82; stroke-width: 1.55; }
 .video-section { border-top: 0; padding-top: 26px; }
 
 .note { position: relative; isolation: isolate; overflow: hidden; margin: 44px 0 104px; padding: 30px; background: var(--note-bg); box-shadow: none; }
@@ -512,6 +514,7 @@ a { color: inherit; }
     border-left: 0;
   }
   .editors-pick-card .tag-list { margin-top: 20px; }
+  .editors-pick-card .source-line { padding-top: 14px; }
   .app-card { min-height: auto; }
   .app-summary,
   .best-for,
