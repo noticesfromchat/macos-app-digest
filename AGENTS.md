@@ -15,6 +15,8 @@ This repository contains the **App Waypoint** website. Before creating, editing,
 - Apps live in `src/content/apps/*.md`.
 - Issues live in `src/content/issues/*.md`.
 - Each app should exist once. Issues reference app IDs rather than duplicating app content.
+- App `tags` describe what an app is. Optional `collections` record App Waypoint's
+  editorial curation; do not use `editors-picks` as a tag.
 - Homepage, archive, issue pages and tag pages are generated from Astro Content Collections.
 - Do not hand-build duplicate HTML pages or app cards.
 - Do not put app data back into a shared TypeScript data file unless explicitly approved.
@@ -45,10 +47,17 @@ When the user explicitly provides an app to feature as the Editor's Pick:
      reason: A concise 12-45 word editorial explanation of why this app stands out.
    ```
 
-6. Write the reason in App Waypoint's editorial voice. Explain the practical quality, distinctive capability or workflow value that earned the selection; do not repeat the description or use generic marketing praise.
-7. Do not also place the Editor's Pick in a regular section. An app may appear only once per issue.
-8. If the issue already has an Editor's Pick, replace it only when the user's request clearly calls for replacement; otherwise report the conflict.
-9. Run validation and the Astro build. If the app or issue cannot pass the documented requirements, stop and report the specific problem rather than silently choosing another app.
+6. Ensure the corresponding app file includes the editorial collection:
+
+   ```yaml
+   collections: [editors-picks]
+   ```
+
+   Preserve any existing collection entries when adding `editors-picks`.
+7. Write the reason in App Waypoint's editorial voice. Explain the practical quality, distinctive capability or workflow value that earned the selection; do not repeat the description or use generic marketing praise.
+8. Do not also place the Editor's Pick in a regular section. An app may appear only once per issue.
+9. If the issue already has an Editor's Pick, replace it only when the user's request clearly calls for replacement; otherwise report the conflict.
+10. Run validation and the Astro build. If the app or issue cannot pass the documented requirements, stop and report the specific problem rather than silently choosing another app.
 
 The Editor's Pick is optional and limited to one app per issue. Omit the entire
 `editorsPick` block when the user has not supplied a pick and editorial judgment does

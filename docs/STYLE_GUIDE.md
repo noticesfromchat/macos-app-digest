@@ -25,12 +25,18 @@ The site should feel like a small, premium editorial publication for experienced
   with an agent-selected alternative.
 - Reuse an existing app record when one exists. Otherwise, verify the official homepage
   or canonical repository and create one standard app file before referencing it.
+- The selected app's file must include `collections: [editors-picks]`, preserving any
+  other collection entries already present. Collections express editorial curation;
+  `editors-picks` must not be added to the app's functional tags.
 - App copy is never duplicated in the issue file.
 - The reason should explain a concrete quality, distinctive capability or practical
   workflow value. It should not repeat the description or read like marketing copy.
 - The selected app must not also appear in a regular issue section.
 - When present, the module renders between Trending and AI & Automation.
 - It uses the standard section eyebrow and heading, followed by one full-width card.
+- The full-width card displays the Lucide `book-heart` icon beside the app title when
+  the app belongs to the `editors-picks` collection. Otherwise its existing layout,
+  typography, spacing and styling remain unchanged.
 - The app description is followed by `Best for`, then the issue-specific “Why it was
   chosen” note, tags and source information.
 - Omit the object entirely when the issue has no Editor's Pick.

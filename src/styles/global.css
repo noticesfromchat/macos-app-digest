@@ -384,6 +384,13 @@ a { color: inherit; }
 .app-card h3 a { color: var(--text); text-decoration: none; transition: color 180ms ease; }
 .app-card h3 a:hover,
 .app-card h3 a:focus-visible { color: var(--accent); }
+.editors-pick-icon {
+  width: .9em;
+  height: .9em;
+  margin-left: .38em;
+  color: var(--accent);
+  vertical-align: -.08em;
+}
 .app-card p { margin: 0; color: var(--muted); }
 .app-summary { min-height: 136px; margin-bottom: 16px; }
 .best-for { min-height: 96px; font-size: .95rem; }

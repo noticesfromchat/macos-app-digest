@@ -59,6 +59,8 @@ name: App Name
 description: Write exactly one concrete 12-35 word sentence explaining the app's primary job.
 bestFor: Write exactly one 8-24 word sentence describing a recognizable user or workflow.
 tags: [productivity, utility, menubar]
+# Optional editorial curation. Required for an Editor's Pick; preserve other values.
+# collections: [editors-picks]
 source: Discovery source and official homepage
 homepage: https://example.com/
 ---
@@ -88,7 +90,9 @@ one of the issue's regular sections.
 4. Add the app ID and an original 12-45 word editorial reason to the `editorsPick`
    object. The reason should say what makes the app distinctive or especially useful,
    not repeat its description.
-5. Keep the app out of all regular `sections[].apps` lists.
-6. Do not substitute another app unless the user asks for an alternative. If the issue
+5. Add `editors-picks` to the app file's optional `collections` array. Preserve any
+   existing collection entries. Do not add `editors-picks` to `tags`.
+6. Keep the app out of all regular `sections[].apps` lists.
+7. Do not substitute another app unless the user asks for an alternative. If the issue
    already has a different Editor's Pick and replacement is unclear, report the conflict.
-7. Run the required validation and build checks before publishing.
+8. Run the required validation and build checks before publishing.
