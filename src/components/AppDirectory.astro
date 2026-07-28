@@ -1,0 +1,84 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import AppCard from './AppCard.astro';
+
+const { apps } = Astro.props as { apps: CollectionEntry<'apps'>[] };
+const issues = await getCollection('issues');
+const featuredDates = new Map<string, string>();
+
+for (const issue of issues) {
+  const appIds = [
+    ...issue.data.sections.flatMap((section) => section.apps),
+    ...(issue.data.editorsPick ? [issue.data.editorsPick.app] : [])
+  ];
+
+  for (const appId of appIds) {
+    const currentDate = featuredDates.get(appId);
+    if (!currentDate || issue.data.slug > currentDate) {
+      featuredDates.set(appId, issue.data.slug);
+    }
+  }
+}
+
+const sortedApps = [...apps].sort((a, b) =>
+  a.data.name.localeCompare(b.data.name, undefined, { sensitivity: 'base' })
+);
+---
+<div class="app-directory" data-app-directory>
+  <div class="directory-toolbar">
+    <label class="directory-sort">
+      <span>Sort apps</span>
+      <select data-app-sort>
+        <option value="a-z" selected>A–Z</option>
+        <option value="z-a">Z–A</option>
+        <option value="date-featured">Date featured</option>
+      </select>
+    </label>
+  </div>
+  <div class="grid directory-grid" data-app-grid>
+    {sortedApps.map((entry) => (
+      <AppCard
+        app={entry.data}
+        featuredDate={featuredDates.get(entry.id) ?? ''}
+      />
+    ))}
+  </div>
+</div>
+
+<script>
+  const collator = new Intl.Collator(undefined, {
+    numeric: true,
+    sensitivity: 'base'
+  });
+
+  document.querySelectorAll<HTMLElement>('[data-app-directory]').forEach((directory) => {
+    const select = directory.querySelector<HTMLSelectElement>('[data-app-sort]');
+    const grid = directory.querySelector<HTMLElement>('[data-app-grid]');
+    if (!select || !grid) return;
+
+    const cards = [...grid.querySelectorAll<HTMLElement>('[data-app-name]')];
+    const appName = (card: HTMLElement) => card.dataset.appName ?? '';
+    const featuredDate = (card: HTMLElement) => card.dataset.featuredDate ?? '';
+
+    const sortCards = () => {
+      cards.sort((a, b) => {
+        if (select.value === 'z-a') {
+          return collator.compare(appName(b), appName(a));
+        }
+
+        if (select.value === 'date-featured') {
+          return (
+            featuredDate(b).localeCompare(featuredDate(a))
+            || collator.compare(appName(a), appName(b))
+          );
+        }
+
+        return collator.compare(appName(a), appName(b));
+      });
+
+      grid.append(...cards);
+    };
+
+    select.addEventListener('change', sortCards);
+  });
+</script>

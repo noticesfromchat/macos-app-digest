@@ -469,7 +469,38 @@ a { color: inherit; }
 .archive-card span,
 .archive-card em { color: var(--muted); font-style: normal; }
 .archive-card strong { font-family: var(--display); font-size: 1.38rem; }
-.tag-page .grid { margin-top: 40px; }
+.directory-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 34px;
+}
+.directory-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  font-size: .74rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.directory-sort select {
+  min-height: 38px;
+  padding: 7px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.directory-sort select:focus-visible {
+  border-color: var(--accent);
+  outline: 2px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  outline-offset: 2px;
+}
+.tag-page .directory-grid { margin-top: 16px; }
 
 .site-footer { display: flex; width: 100%; min-height: 108px; align-items: center; justify-content: space-between; gap: 30px; margin: 20px 0 0; padding: 24px clamp(24px, 3.2vw, 38px); border: 1px solid var(--line); border-right: 0; border-bottom: 0; border-left: 0; border-radius: 0; background: var(--bg); color: var(--muted); font-size: .86rem; }
 .site-footer p { margin: 0; }
@@ -590,6 +621,7 @@ a { color: inherit; }
   .archive-page { padding: 52px 24px 80px; }
   .archive-current-link { display: inline-flex; margin-top: 22px; }
   .archive-current-link + .archive-list { margin-top: 34px; }
+  .directory-toolbar { justify-content: flex-start; margin-top: 28px; }
   .site-footer { display: block; padding: 26px 22px; }
   .site-footer > p { margin-top: 18px; }
 }

@@ -41,3 +41,11 @@ The site should feel like a small, premium editorial publication for experienced
 - The app description is followed by `Best for`, then the issue-specific “Why it was
   chosen” note, tags and source information.
 - Omit the object entirely when the issue has no Editor's Pick.
+
+## 3. Tag and collection directories
+
+- Tag and collection pages share the same sortable app-directory component.
+- Apps default to A–Z order.
+- Available sorting options are A–Z, Z–A and Date featured.
+- Date featured sorts by the app's most recent issue appearance, newest first, with
+  app name as the tie-breaker.

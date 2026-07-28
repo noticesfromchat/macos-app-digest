@@ -1,12 +1,20 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 type App = CollectionEntry<'apps'>['data'];
-const { app, editorNote } = Astro.props as { app: App; editorNote?: string };
+const { app, editorNote, featuredDate } = Astro.props as {
+  app: App;
+  editorNote?: string;
+  featuredDate?: string;
+};
 const showEditorsPickIcon = Boolean(
   editorNote && app.collections?.includes('editors-picks')
 );
 ---
-<article class:list={['card', 'app-card', { 'editors-pick-card': editorNote }]}>
+<article
+  class:list={['card', 'app-card', { 'editors-pick-card': editorNote }]}
+  data-app-name={featuredDate ? app.name : undefined}
+  data-featured-date={featuredDate}
+>
   <div class="app-summary">
     <h3 class:list={{ 'editors-pick-title': showEditorsPickIcon }}>
       <a href={app.homepage} target="_blank" rel="noreferrer">{app.name}</a>
