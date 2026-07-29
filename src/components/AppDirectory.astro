@@ -39,19 +39,25 @@ const collectionLabels: Record<string, string> = {
   'editors-picks': "Editor's Picks"
 };
 
-const collectionValues = [
-  ...new Set(allApps.flatMap((entry) => entry.data.collections ?? []))
-].sort();
-
-const tagValues = [
-  ...new Set(allApps.flatMap((entry) => entry.data.tags))
-].sort();
-
 const contextualCollectionCount = (collection: string) =>
   apps.filter((entry) => entry.data.collections?.includes(collection)).length;
 
 const contextualTagCount = (tag: string) =>
   apps.filter((entry) => entry.data.tags.includes(tag)).length;
+
+const collectionOptions = [
+  ...new Set(allApps.flatMap((entry) => entry.data.collections ?? []))
+]
+  .sort()
+  .map((value) => ({ value, count: contextualCollectionCount(value) }))
+  .filter((option) => option.count > 0);
+
+const tagOptions = [
+  ...new Set(allApps.flatMap((entry) => entry.data.tags))
+]
+  .sort()
+  .map((value) => ({ value, count: contextualTagCount(value) }))
+  .filter((option) => option.count > 0);
 
 const sortedApps = [...allApps].sort((a, b) =>
   a.data.name.localeCompare(b.data.name, undefined, { sensitivity: 'base' })
@@ -101,39 +107,37 @@ const sortedApps = [...allApps].sort((a, b) =>
         >
           <p class="filter-note">Apps must match every selected filter.</p>
           <div class="filter-scroll">
-            {collectionValues.length > 0 && (
+            {collectionOptions.length > 0 && (
               <div class="filter-group" role="group" aria-labelledby="filter-heading-collections">
                 <p class="filter-group-label" id="filter-heading-collections">Collections</p>
-                {collectionValues.map((collection) => (
+                {collectionOptions.map(({ value, count }) => (
                   <label class="filter-option">
                     <input
                       type="checkbox"
-                      value={collection}
+                      value={value}
                       data-filter-type="collection"
-                      checked={defaultFilterType === 'collection' && defaultFilterValue === collection}
+                      checked={defaultFilterType === 'collection' && defaultFilterValue === value}
                     />
                     <span class="filter-option-name">
-                      {collectionLabels[collection] ?? collection}
+                      {collectionLabels[value] ?? value}
                     </span>
-                    <span class="filter-option-count">
-                      {contextualCollectionCount(collection)}
-                    </span>
+                    <span class="filter-option-count">{count}</span>
                   </label>
                 ))}
               </div>
             )}
             <div class="filter-group" role="group" aria-labelledby="filter-heading-tags">
               <p class="filter-group-label" id="filter-heading-tags">Tags</p>
-              {tagValues.map((tag) => (
+              {tagOptions.map(({ value, count }) => (
                 <label class="filter-option">
                   <input
                     type="checkbox"
-                    value={tag}
+                    value={value}
                     data-filter-type="tag"
-                    checked={defaultFilterType === 'tag' && defaultFilterValue === tag}
+                    checked={defaultFilterType === 'tag' && defaultFilterValue === value}
                   />
-                  <span class="filter-option-name">{tag}</span>
-                  <span class="filter-option-count">{contextualTagCount(tag)}</span>
+                  <span class="filter-option-name">{value}</span>
+                  <span class="filter-option-count">{count}</span>
                 </label>
               ))}
             </div>
