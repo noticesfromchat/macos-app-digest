@@ -616,8 +616,8 @@ a { color: inherit; }
 .directory-filter-panel::before {
   position: absolute;
   top: 0;
-  left: 10px;
-  width: calc(100% - var(--control-width) - 10px);
+  left: 8px;
+  width: calc(100% - var(--control-width) - 8px);
   height: 1px;
   background: var(--line);
   content: "";
