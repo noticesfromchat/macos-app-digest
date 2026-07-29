@@ -52,7 +52,10 @@ The site should feel like a small, premium editorial publication for experienced
 - Available sorting options are A–Z, Z–A and Date featured.
 - Date featured sorts by the app's most recent issue appearance, newest first, with
   app name as the tie-breaker.
-- Keep the sort control right-aligned without a separate “Sort apps” label.
+- Place a compact grid toolbar immediately above the app cards on every viewport:
+  show the app count on the left and keep the sort control right-aligned.
+- Keep the toolbar visually connected to the grid with a 16px gap.
+- Do not display a separate “Sort apps” label.
 
 ## 4. Weekend Reading
 

@@ -26,6 +26,9 @@ const sortedApps = [...apps].sort((a, b) =>
 ---
 <div class="app-directory" data-app-directory>
   <div class="directory-toolbar">
+    <p class="directory-count">
+      {apps.length} {apps.length === 1 ? 'app' : 'apps'}
+    </p>
     <div class="directory-sort">
       <div class="directory-select" data-sort-menu>
         <button
