@@ -610,16 +610,16 @@ a { color: inherit; }
 }
 .directory-filter-panel {
   width: 268px;
-  border-top: 0;
+  border-top: 1px solid var(--line);
   border-radius: 10px 0 10px 10px;
 }
-.directory-filter-panel::before {
+.directory-filter.is-open .directory-select-trigger::after {
   position: absolute;
-  top: 0;
-  left: 8px;
-  width: calc(100% - var(--control-width) - 8px);
-  height: 1px;
-  background: var(--line);
+  right: 0;
+  bottom: -2px;
+  left: 0;
+  height: 2px;
+  background: var(--surface);
   content: "";
 }
 .filter-note {
@@ -863,7 +863,7 @@ a { color: inherit; }
     border-top: 1px solid var(--line);
     border-radius: 10px;
   }
-  .directory-filter-panel::before { display: none; }
+  .directory-filter.is-open .directory-select-trigger::after { display: none; }
   .directory-filter.is-open .directory-select-trigger {
     border-bottom-color: var(--line);
     border-radius: 10px;
