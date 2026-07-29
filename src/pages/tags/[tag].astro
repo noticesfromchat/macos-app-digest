@@ -27,6 +27,10 @@ const title = tag.charAt(0).toUpperCase() + tag.slice(1);
     <p class="eyebrow">Browse by tag</p>
     <h1>{title}</h1>
     <p class="dek">Mac apps selected for their relevance to {title.toLowerCase()} workflows.</p>
-    <AppDirectory apps={apps} />
+    <AppDirectory
+      apps={apps}
+      defaultFilterType="tag"
+      defaultFilterValue={tag}
+    />
   </section>
 </BaseLayout>
