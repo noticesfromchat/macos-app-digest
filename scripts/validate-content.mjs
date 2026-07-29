@@ -48,10 +48,12 @@ function checkLength(filename, label, value, minWords, maxWords) {
 
 const appFiles = await markdownFiles(appsDir);
 const appIds = new Set(appFiles.map((filename) => path.basename(filename, '.md')));
+const appsById = new Map();
 
 for (const filename of appFiles) {
   const relative = `src/content/apps/${filename}`;
   const data = frontmatter(await readFile(path.join(appsDir, filename), 'utf8'), relative);
+  appsById.set(path.basename(filename, '.md'), data);
 
   if (!data.name) errors.push(`${relative}: missing name`);
   if (String(data.name ?? '').length > 50) errors.push(`${relative}: name exceeds 50 characters`);
@@ -66,6 +68,21 @@ for (const filename of appFiles) {
     errors.push(`${relative}: tags must contain 2-6 entries`);
   } else if (new Set(data.tags).size !== data.tags.length) {
     errors.push(`${relative}: tags contain duplicates`);
+  }
+
+  if (data.collections !== undefined) {
+    if (!Array.isArray(data.collections) || data.collections.length > 10) {
+      errors.push(`${relative}: collections must contain no more than 10 entries`);
+    } else {
+      if (new Set(data.collections).size !== data.collections.length) {
+        errors.push(`${relative}: collections contain duplicates`);
+      }
+      for (const collection of data.collections) {
+        if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(collection)) {
+          errors.push(`${relative}: collection "${collection}" must be a lowercase slug`);
+        }
+      }
+    }
   }
 
   if (!data.source) errors.push(`${relative}: missing source`);
@@ -111,12 +128,18 @@ for (const filename of issueFiles) {
       referencedApps.push(appId);
       if (!appIds.has(appId)) errors.push(`${relative}: unknown app ID "${appId}"`);
     }
+
+    if (String(section.eyebrow ?? '').trim().toLowerCase() === 'up and coming' && section.apps.length !== 3) {
+      errors.push(`${relative}: Up and Coming must reference exactly 3 apps`);
+    }
   }
 
   if (data.editorsPick) {
     referencedApps.push(data.editorsPick.app);
     if (!appIds.has(data.editorsPick.app)) {
       errors.push(`${relative}: unknown editor's pick app ID "${data.editorsPick.app}"`);
+    } else if (!appsById.get(data.editorsPick.app)?.collections?.includes('editors-picks')) {
+      errors.push(`${relative}: editor's pick app "${data.editorsPick.app}" must include collections: [editors-picks]`);
     }
     checkLength(relative, `editor's pick reason for "${data.editorsPick.app}"`, data.editorsPick.reason, 12, 45);
   }

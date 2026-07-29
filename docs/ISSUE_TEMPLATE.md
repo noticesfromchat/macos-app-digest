@@ -20,6 +20,11 @@ sections:
   - eyebrow: AI & Automation
     title: A concise editorial section title
     apps: [seventh-app-id, eighth-app-id, ninth-app-id]
+  # Read the current r/macapps App Pile megathread and use its moderator-authored
+  # “Top 3 From Last Month's Megathread” selections in the published order.
+  - eyebrow: Up and Coming
+    title: Three community favorites worth watching
+    apps: [first-app-pile-id, second-app-pile-id, third-app-pile-id]
 # Optional: omit this block when the issue does not have an Editor's Pick.
 # The selected app renders once in a full-width card between Trending and AI & Automation.
 editorsPick:
@@ -31,6 +36,10 @@ video:
   description: Write one concise sentence explaining why the video is useful to Mac users.
   url: https://example.com/video
 readings:
+  # Weekend Reading covers the wider Mac app ecosystem, not only Apple news.
+  # At least two of the three links should primarily concern apps, such as app
+  # stories, must-try lists, workflows, developer posts or a substantive,
+  # unusually popular r/macapps discussion.
   - title: Article title
     publication: Publication
     description: Write one concise 12-35 word sentence describing the value of the article.
@@ -59,6 +68,8 @@ name: App Name
 description: Write exactly one concrete 12-35 word sentence explaining the app's primary job.
 bestFor: Write exactly one 8-24 word sentence describing a recognizable user or workflow.
 tags: [productivity, utility, menubar]
+# Optional editorial curation. Required for an Editor's Pick; preserve other values.
+# collections: [editors-picks]
 source: Discovery source and official homepage
 homepage: https://example.com/
 ---
@@ -79,6 +90,19 @@ The validator rejects unknown app IDs, duplicate apps within an issue, duplicate
 reason. The app must already exist in `src/content/apps/` and must not also appear in
 one of the issue's regular sections.
 
+Weekend Reading must follow the curation rules in `AGENTS.md`: cover the broader Mac
+app ecosystem, make at least two selections primarily about apps, and use general
+Apple coverage only when it has a meaningful connection to Mac software or workflows.
+High-signal `r/macapps` discussions are valid sources when the post is substantive and
+unusually useful or popular.
+
+The `Up and Coming` section is sourced specifically from the current `r/macapps` App
+Pile megathread. Check that thread on every weekly run and copy its explicit
+moderator-authored “Top 3 From Last Month's Megathread” selections in order. Verify
+their official links, reuse existing app records, create missing records, and credit
+the thread in `sourceNotes`. Do not substitute apps based on raw votes. If the thread
+does not publish an official top three, omit the section rather than guessing.
+
 ## When the user supplies an Editor's Pick
 
 1. Use the issue named by the user. If none is named, use the next issue being prepared.
@@ -88,7 +112,9 @@ one of the issue's regular sections.
 4. Add the app ID and an original 12-45 word editorial reason to the `editorsPick`
    object. The reason should say what makes the app distinctive or especially useful,
    not repeat its description.
-5. Keep the app out of all regular `sections[].apps` lists.
-6. Do not substitute another app unless the user asks for an alternative. If the issue
+5. Add `editors-picks` to the app file's optional `collections` array. Preserve any
+   existing collection entries. Do not add `editors-picks` to `tags`.
+6. Keep the app out of all regular `sections[].apps` lists.
+7. Do not substitute another app unless the user asks for an alternative. If the issue
    already has a different Editor's Pick and replacement is unclear, report the conflict.
-7. Run the required validation and build checks before publishing.
+8. Run the required validation and build checks before publishing.
