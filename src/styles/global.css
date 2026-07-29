@@ -613,6 +613,15 @@ a { color: inherit; }
   border-top: 1px solid var(--line);
   border-radius: 10px 0 10px 10px;
 }
+.directory-filter-panel::before {
+  position: absolute;
+  top: -1px;
+  right: 0;
+  width: var(--control-width);
+  height: 1px;
+  background: var(--surface);
+  content: "";
+}
 .filter-note {
   margin: 0;
   padding: 11px 13px 9px;
