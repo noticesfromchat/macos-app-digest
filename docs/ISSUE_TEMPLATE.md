@@ -31,6 +31,10 @@ video:
   description: Write one concise sentence explaining why the video is useful to Mac users.
   url: https://example.com/video
 readings:
+  # Weekend Reading covers the wider Mac app ecosystem, not only Apple news.
+  # At least two of the three links should primarily concern apps, such as app
+  # stories, must-try lists, workflows, developer posts or a substantive,
+  # unusually popular r/macapps discussion.
   - title: Article title
     publication: Publication
     description: Write one concise 12-35 word sentence describing the value of the article.
@@ -80,6 +84,12 @@ The validator rejects unknown app IDs, duplicate apps within an issue, duplicate
 `editorsPick` is optional and accepts exactly one app ID plus a 12-45 word editorial
 reason. The app must already exist in `src/content/apps/` and must not also appear in
 one of the issue's regular sections.
+
+Weekend Reading must follow the curation rules in `AGENTS.md`: cover the broader Mac
+app ecosystem, make at least two selections primarily about apps, and use general
+Apple coverage only when it has a meaningful connection to Mac software or workflows.
+High-signal `r/macapps` discussions are valid sources when the post is substantive and
+unusually useful or popular.
 
 ## When the user supplies an Editor's Pick
 

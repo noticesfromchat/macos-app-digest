@@ -90,6 +90,28 @@ These limits protect card alignment and are not optional unless the complete car
 
 If text exceeds a preferred range, rewrite it before adjusting CSS. Exceeding a hard maximum requires an explicit exception and visual review.
 
+## Weekend Reading curation
+
+Weekend Reading is about the wider Mac app ecosystem, not only Apple company or
+platform news.
+
+- Select three worthwhile links with a clear connection to Mac apps, software
+  discovery, app workflows or the people who make Mac software.
+- At least two of the three selections should primarily concern apps. Strong
+  candidates include thoughtful app stories, practical workflows, developer essays,
+  notable app releases, and credible “must-try” or best-app collections.
+- Apple coverage remains welcome when it materially affects Mac apps or how people use
+  them. Avoid filling the section with general Apple news that lacks a meaningful app
+  angle.
+- Check high-signal community sources, including `r/macapps`. An unusually popular,
+  substantive post may be selected when its engagement and discussion indicate genuine
+  reader value; popularity alone is not enough.
+- Link directly to the original article, list, developer post or Reddit discussion.
+  Prefer useful, specific material over press-release rewrites, thin listicles,
+  promotional posts or routine news summaries.
+- Keep the three selections varied in source and subject whenever the week's material
+  allows.
+
 ## Non-negotiable presentation rules
 
 - App titles link directly to official app homepages.

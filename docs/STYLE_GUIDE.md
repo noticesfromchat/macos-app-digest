@@ -40,6 +40,9 @@ The site should feel like a small, premium editorial publication for experienced
   spacing and styling remain unchanged.
 - The app description is followed by `Best for`, then the issue-specific “Why it was
   chosen” note, tags and source information.
+- The “Why it was chosen” heading and copy align flush left with the rest of the card.
+  A horizontal divider may separate the note, but do not indent it or use a vertical
+  rule.
 - Omit the object entirely when the issue has no Editor's Pick.
 
 ## 3. Tag and collection directories
@@ -49,3 +52,19 @@ The site should feel like a small, premium editorial publication for experienced
 - Available sorting options are A–Z, Z–A and Date featured.
 - Date featured sorts by the app's most recent issue appearance, newest first, with
   app name as the tie-breaker.
+- Keep the sort control right-aligned without a separate “Sort apps” label.
+
+## 4. Weekend Reading
+
+- Weekend Reading covers the wider Mac app ecosystem, not only Apple company or
+  platform news.
+- At least two of the three selections should primarily concern apps, app discovery,
+  app workflows or app developers.
+- Good candidates include substantive app stories, credible must-try or best-app
+  lists, practical workflows, developer posts, notable releases and unusually
+  high-signal discussions from `r/macapps`.
+- Apple coverage may be included when it has a meaningful connection to Mac apps or
+  software workflows.
+- Prefer original, specific and useful sources. Avoid thin listicles, routine news
+  summaries and promotional posts whose popularity does not translate into reader
+  value.
