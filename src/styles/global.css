@@ -610,16 +610,8 @@ a { color: inherit; }
 }
 .directory-filter-panel {
   width: 268px;
-  border-top-left-radius: 0;
-}
-.directory-filter-panel::before {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: calc(100% - var(--control-width));
-  height: 1px;
-  background: var(--line);
-  content: "";
+  border-top: 1px solid var(--line);
+  border-radius: 10px 0 10px 10px;
 }
 .filter-note {
   margin: 0;
