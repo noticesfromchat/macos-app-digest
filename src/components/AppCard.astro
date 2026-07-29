@@ -12,8 +12,10 @@ const showEditorsPickIcon = Boolean(
 ---
 <article
   class:list={['card', 'app-card', { 'editors-pick-card': editorNote }]}
-  data-app-name={featuredDate ? app.name : undefined}
+  data-app-name={app.name}
   data-featured-date={featuredDate}
+  data-tags={app.tags.join(' ')}
+  data-collections={(app.collections ?? []).join(' ')}
 >
   <div class="app-summary">
     <h3 class:list={{ 'editors-pick-title': showEditorsPickIcon }}>

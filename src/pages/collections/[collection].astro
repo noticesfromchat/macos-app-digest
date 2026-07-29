@@ -37,6 +37,10 @@ const title = collectionLabels[collection]
     <p class="eyebrow">Browse by collection</p>
     <h1>{title}</h1>
     <p class="dek">Apps given special recognition by App Waypoint.</p>
-    <AppDirectory apps={apps} />
+    <AppDirectory
+      apps={apps}
+      defaultFilterType="collection"
+      defaultFilterValue={collection}
+    />
   </section>
 </BaseLayout>
