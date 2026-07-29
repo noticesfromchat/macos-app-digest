@@ -55,6 +55,8 @@ The site should feel like a small, premium editorial publication for experienced
 - Filter-option counts are contextual to the page's starting app set. On a tag page,
   each count is the number of apps that share that page tag; on a collection page,
   each count is the number of apps within that collection.
+- Omit filter options whose contextual count is zero. Options and counts are generated
+  automatically from app content during each Astro build.
 - Place a compact grid toolbar immediately above the app cards on every viewport:
   show the app count on the left and keep the sort control right-aligned.
 - Keep the toolbar visually connected to the grid with a 16px gap.
