@@ -477,6 +477,7 @@ a { color: inherit; }
 .directory-sort {
   display: inline-flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 10px;
   color: var(--muted);
   font-size: .74rem;
@@ -484,18 +485,74 @@ a { color: inherit; }
   letter-spacing: .08em;
   text-transform: uppercase;
 }
-.directory-sort select {
+.directory-select {
+  position: relative;
+  width: 154px;
+  color: var(--text);
+  letter-spacing: 0;
+  text-align: left;
+  text-transform: none;
+}
+.directory-select-trigger {
+  display: flex;
+  width: 100%;
   min-height: 38px;
-  padding: 7px 12px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 7px 13px;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 10px;
   background: var(--surface);
   color: var(--text);
   font: inherit;
-  letter-spacing: 0;
-  text-transform: none;
+  cursor: pointer;
 }
-.directory-sort select:focus-visible {
+.directory-select-trigger svg {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  transition: transform 160ms ease;
+}
+.directory-select.is-open .directory-select-trigger {
+  position: relative;
+  z-index: 2;
+  border-bottom-color: transparent;
+  border-radius: 10px 10px 0 0;
+}
+.directory-select.is-open .directory-select-trigger svg { transform: rotate(180deg); }
+.directory-select-options {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% - 1px);
+  right: 0;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-top: 0;
+  border-radius: 0 0 10px 10px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+.directory-select-options[hidden] { display: none; }
+.directory-select-options button {
+  display: block;
+  width: 100%;
+  padding: 10px 13px;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.directory-select-options button:hover,
+.directory-select-options button:focus-visible,
+.directory-select-options button[aria-selected="true"] {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  outline: 0;
+}
+.directory-select-trigger:focus-visible {
   border-color: var(--accent);
   outline: 2px solid color-mix(in srgb, var(--accent) 30%, transparent);
   outline-offset: 2px;
@@ -621,7 +678,7 @@ a { color: inherit; }
   .archive-page { padding: 52px 24px 80px; }
   .archive-current-link { display: inline-flex; margin-top: 22px; }
   .archive-current-link + .archive-list { margin-top: 34px; }
-  .directory-toolbar { justify-content: flex-start; margin-top: 28px; }
+  .directory-toolbar { justify-content: flex-end; margin-top: 28px; }
   .site-footer { display: block; padding: 26px 22px; }
   .site-footer > p { margin-top: 18px; }
 }

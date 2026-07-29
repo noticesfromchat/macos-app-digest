@@ -26,14 +26,36 @@ const sortedApps = [...apps].sort((a, b) =>
 ---
 <div class="app-directory" data-app-directory>
   <div class="directory-toolbar">
-    <label class="directory-sort">
+    <div class="directory-sort">
       <span>Sort apps</span>
-      <select data-app-sort>
-        <option value="a-z" selected>A–Z</option>
-        <option value="z-a">Z–A</option>
-        <option value="date-featured">Date featured</option>
-      </select>
-    </label>
+      <div class="directory-select" data-sort-menu>
+        <button
+          class="directory-select-trigger"
+          type="button"
+          aria-haspopup="listbox"
+          aria-expanded="false"
+          data-sort-trigger
+        >
+          <span data-sort-label>A–Z</span>
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="m6 9 6 6 6-6"></path>
+          </svg>
+        </button>
+        <div class="directory-select-options" role="listbox" aria-label="Sort apps" hidden data-sort-options>
+          <button type="button" role="option" aria-selected="true" data-sort-value="a-z">A–Z</button>
+          <button type="button" role="option" aria-selected="false" data-sort-value="z-a">Z–A</button>
+          <button type="button" role="option" aria-selected="false" data-sort-value="date-featured">Date featured</button>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="grid directory-grid" data-app-grid>
     {sortedApps.map((entry) => (
@@ -52,21 +74,26 @@ const sortedApps = [...apps].sort((a, b) =>
   });
 
   document.querySelectorAll<HTMLElement>('[data-app-directory]').forEach((directory) => {
-    const select = directory.querySelector<HTMLSelectElement>('[data-app-sort]');
+    const menu = directory.querySelector<HTMLElement>('[data-sort-menu]');
+    const trigger = directory.querySelector<HTMLButtonElement>('[data-sort-trigger]');
+    const label = directory.querySelector<HTMLElement>('[data-sort-label]');
+    const options = directory.querySelector<HTMLElement>('[data-sort-options]');
+    const optionButtons = [...directory.querySelectorAll<HTMLButtonElement>('[data-sort-value]')];
     const grid = directory.querySelector<HTMLElement>('[data-app-grid]');
-    if (!select || !grid) return;
+    if (!menu || !trigger || !label || !options || !grid) return;
 
     const cards = [...grid.querySelectorAll<HTMLElement>('[data-app-name]')];
     const appName = (card: HTMLElement) => card.dataset.appName ?? '';
     const featuredDate = (card: HTMLElement) => card.dataset.featuredDate ?? '';
+    let selectedValue = 'a-z';
 
-    const sortCards = () => {
+    const sortCards = (value: string) => {
       cards.sort((a, b) => {
-        if (select.value === 'z-a') {
+        if (value === 'z-a') {
           return collator.compare(appName(b), appName(a));
         }
 
-        if (select.value === 'date-featured') {
+        if (value === 'date-featured') {
           return (
             featuredDate(b).localeCompare(featuredDate(a))
             || collator.compare(appName(a), appName(b))
@@ -79,6 +106,46 @@ const sortedApps = [...apps].sort((a, b) =>
       grid.append(...cards);
     };
 
-    select.addEventListener('change', sortCards);
+    const closeMenu = (returnFocus = false) => {
+      menu.classList.remove('is-open');
+      trigger.setAttribute('aria-expanded', 'false');
+      options.hidden = true;
+      if (returnFocus) trigger.focus();
+    };
+
+    const openMenu = () => {
+      menu.classList.add('is-open');
+      trigger.setAttribute('aria-expanded', 'true');
+      options.hidden = false;
+      optionButtons.find((option) => option.dataset.sortValue === selectedValue)?.focus();
+    };
+
+    trigger.addEventListener('click', () => {
+      if (menu.classList.contains('is-open')) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    });
+
+    optionButtons.forEach((option) => {
+      option.addEventListener('click', () => {
+        selectedValue = option.dataset.sortValue ?? 'a-z';
+        label.textContent = option.textContent;
+        optionButtons.forEach((button) => {
+          button.setAttribute('aria-selected', String(button === option));
+        });
+        sortCards(selectedValue);
+        closeMenu(true);
+      });
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!menu.contains(event.target as Node)) closeMenu();
+    });
+
+    menu.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') closeMenu(true);
+    });
   });
 </script>
