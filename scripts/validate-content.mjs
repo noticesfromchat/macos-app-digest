@@ -128,6 +128,10 @@ for (const filename of issueFiles) {
       referencedApps.push(appId);
       if (!appIds.has(appId)) errors.push(`${relative}: unknown app ID "${appId}"`);
     }
+
+    if (String(section.eyebrow ?? '').trim().toLowerCase() === 'up and coming' && section.apps.length !== 3) {
+      errors.push(`${relative}: Up and Coming must reference exactly 3 apps`);
+    }
   }
 
   if (data.editorsPick) {

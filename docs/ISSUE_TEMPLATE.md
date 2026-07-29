@@ -20,6 +20,11 @@ sections:
   - eyebrow: AI & Automation
     title: A concise editorial section title
     apps: [seventh-app-id, eighth-app-id, ninth-app-id]
+  # Read the current r/macapps App Pile megathread and use its moderator-authored
+  # “Top 3 From Last Month's Megathread” selections in the published order.
+  - eyebrow: Up and Coming
+    title: Three community favorites worth watching
+    apps: [first-app-pile-id, second-app-pile-id, third-app-pile-id]
 # Optional: omit this block when the issue does not have an Editor's Pick.
 # The selected app renders once in a full-width card between Trending and AI & Automation.
 editorsPick:
@@ -90,6 +95,13 @@ app ecosystem, make at least two selections primarily about apps, and use genera
 Apple coverage only when it has a meaningful connection to Mac software or workflows.
 High-signal `r/macapps` discussions are valid sources when the post is substantive and
 unusually useful or popular.
+
+The `Up and Coming` section is sourced specifically from the current `r/macapps` App
+Pile megathread. Check that thread on every weekly run and copy its explicit
+moderator-authored “Top 3 From Last Month's Megathread” selections in order. Verify
+their official links, reuse existing app records, create missing records, and credit
+the thread in `sourceNotes`. Do not substitute apps based on raw votes. If the thread
+does not publish an official top three, omit the section rather than guessing.
 
 ## When the user supplies an Editor's Pick
 
