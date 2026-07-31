@@ -55,6 +55,10 @@ for (const filename of appFiles) {
   const data = frontmatter(await readFile(path.join(appsDir, filename), 'utf8'), relative);
   appsById.set(path.basename(filename, '.md'), data);
 
+  if (/\bzac\b/i.test(JSON.stringify(data))) {
+    errors.push(`${relative}: public content must refer to the editor by role, not personal name`);
+  }
+
   if (!data.name) errors.push(`${relative}: missing name`);
   if (String(data.name ?? '').length > 50) errors.push(`${relative}: name exceeds 50 characters`);
 
@@ -95,10 +99,16 @@ for (const filename of appFiles) {
 const issueFiles = await markdownFiles(issuesDir);
 const issueNumbers = new Set();
 const issueSlugs = new Set();
+const parsedIssues = [];
 
 for (const filename of issueFiles) {
   const relative = `src/content/issues/${filename}`;
   const data = frontmatter(await readFile(path.join(issuesDir, filename), 'utf8'), relative);
+  parsedIssues.push({ relative, data });
+
+  if (/\bzac\b/i.test(JSON.stringify(data))) {
+    errors.push(`${relative}: public content must refer to the editor by role, not personal name`);
+  }
 
   if (issueNumbers.has(data.number)) errors.push(`${relative}: duplicate issue number ${data.number}`);
   issueNumbers.add(data.number);
@@ -161,6 +171,26 @@ for (const filename of issueFiles) {
 
   if (!Array.isArray(data.sourceNotes) || data.sourceNotes.length < 1 || data.sourceNotes.length > 10) {
     errors.push(`${relative}: sourceNotes must contain 1-10 entries`);
+  }
+}
+
+const chronologicalIssues = parsedIssues
+  .filter(({ data }) => typeof data.slug === 'string')
+  .sort((a, b) => a.data.slug.localeCompare(b.data.slug));
+
+for (let index = 1; index < chronologicalIssues.length; index += 1) {
+  const previous = chronologicalIssues[index - 1];
+  const current = chronologicalIssues[index];
+  const previousApps = previous.data.sections
+    ?.find((section) => String(section.eyebrow ?? '').trim().toLowerCase() === 'up and coming')
+    ?.apps ?? [];
+  const currentApps = current.data.sections
+    ?.find((section) => String(section.eyebrow ?? '').trim().toLowerCase() === 'up and coming')
+    ?.apps ?? [];
+  const repeats = currentApps.filter((appId) => previousApps.includes(appId));
+
+  for (const appId of new Set(repeats)) {
+    errors.push(`${current.relative}: Up and Coming app "${appId}" repeats the immediately preceding issue`);
   }
 }
 

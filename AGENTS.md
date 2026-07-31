@@ -114,25 +114,35 @@ platform news.
 
 ## Up and Coming curation
 
-Every weekly publishing run must check the current `r/macapps` promotional megathread,
-currently titled **The App Pile**. The thread is published monthly, but the publishing
-agent checks it every week for updates.
+Every weekly publishing run must check both the current `r/macapps` promotional
+megathread, currently titled **The App Pile**, and recent launches from the approved
+research sources. The section must never repeat an app from the immediately preceding
+issue.
 
 - Read the moderator-authored **Top 3 From Last Month's Megathread** block at the top
   of the current thread.
-- Use those three named apps for a regular issue section with the exact eyebrow
-  `Up and Coming`. Do not infer a different top three from comment order or raw votes.
+- Begin with those moderator selections when they are eligible, but exclude any app
+  that appeared in the immediately preceding issue.
+- Replace excluded or unavailable selections with credible recent discoveries from
+  sources such as Product Hunt's recent Mac launches, substantive `r/macapps`
+  discussions, GitHub activity or independent developer launch notes.
+- Use the exact eyebrow `Up and Coming`. Do not infer rankings from raw comment order
+  or votes.
 - Verify each app's official homepage or canonical repository before adding it.
 - Reuse an existing app record when the app already exists; otherwise create one
   standard Markdown app file following all normal content limits.
-- The section must contain exactly three app IDs, in the same order used by the
-  megathread's top-three block.
+- The section must contain exactly three app IDs. Preserve the megathread's order for
+  any eligible moderator selections, followed by verified alternates.
 - Do not duplicate an app elsewhere in the same issue. If a selected app already
   appears in another section, move it into `Up and Coming` rather than listing it twice.
-- Credit the relevant `r/macapps` App Pile thread in `sourceNotes`.
-- If the current thread does not contain an explicit moderator-authored top-three
-  block, do not invent one. Omit the section and report that no official selections
-  were available.
+- Credit every source used for the final slate in `sourceNotes`.
+
+## Editor attribution
+
+- Public website content must never identify the editor by personal name.
+- Use `Editor`, `Editor's Pick` or similarly role-based language for attribution.
+- Personal names may remain in private workflow instructions, but not in app records,
+  issue content or generated page copy.
 
 ## Non-negotiable presentation rules
 

@@ -4,6 +4,6 @@ description: A keyboard-first macOS scratchpad for temporary notes, contextual c
 bestFor: People who need disposable working notes without turning every thought into permanent knowledge.
 tags: [notes, productivity, utility, clipboard]
 collections: [editors-picks]
-source: Zac's Editor's Pick and official homepage
+source: Editor's Pick and official homepage
 homepage: https://antinote.io/
 ---

@@ -79,11 +79,21 @@ The site should feel like a small, premium editorial publication for experienced
 
 ## 5. Up and Coming
 
-- `Up and Coming` is a standard three-card app section sourced from the current
-  `r/macapps` App Pile megathread's moderator-authored top-three block.
+- `Up and Coming` is a standard three-card app section built from the current
+  `r/macapps` App Pile moderator selections and other approved recent-launch sources.
+- Never repeat an app from the immediately preceding issue. When an App Pile selection
+  would repeat, replace it with a verified recent discovery from Product Hunt's Mac
+  launches or another approved source.
 - Render it after AI & Automation and before the route divider, video and reading
   features.
 - Use the standard app-card grid without a special badge, icon or alternate card style.
-- Preserve the order published by the megathread.
+- Preserve the megathread's order for eligible selections, then place alternates in
+  editorial order.
 - The section title should describe the three selections as community discoveries
   without implying that App Waypoint independently ranked them.
+
+## 6. Editor attribution
+
+- Refer to the editor by role only in all public website content.
+- Never display the editor's personal name in app sources, issue copy, notes or
+  generated pages.

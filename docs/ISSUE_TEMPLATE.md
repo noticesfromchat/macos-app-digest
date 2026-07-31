@@ -20,8 +20,8 @@ sections:
   - eyebrow: AI & Automation
     title: A concise editorial section title
     apps: [seventh-app-id, eighth-app-id, ninth-app-id]
-  # Read the current r/macapps App Pile megathread and use its moderator-authored
-  # “Top 3 From Last Month's Megathread” selections in the published order.
+  # Read the current r/macapps App Pile megathread and recent approved launch sources.
+  # Never repeat an app from the immediately preceding issue; use verified alternates.
   - eyebrow: Up and Coming
     title: Three community favorites worth watching
     apps: [first-app-pile-id, second-app-pile-id, third-app-pile-id]
@@ -96,12 +96,12 @@ Apple coverage only when it has a meaningful connection to Mac software or workf
 High-signal `r/macapps` discussions are valid sources when the post is substantive and
 unusually useful or popular.
 
-The `Up and Coming` section is sourced specifically from the current `r/macapps` App
-Pile megathread. Check that thread on every weekly run and copy its explicit
-moderator-authored “Top 3 From Last Month's Megathread” selections in order. Verify
-their official links, reuse existing app records, create missing records, and credit
-the thread in `sourceNotes`. Do not substitute apps based on raw votes. If the thread
-does not publish an official top three, omit the section rather than guessing.
+The `Up and Coming` section starts with the current `r/macapps` App Pile megathread's
+moderator-authored selections, but must not repeat an app from the immediately
+preceding issue. Replace repeats or unavailable selections with verified discoveries
+from Product Hunt's recent Mac launches or another approved source. Verify official
+links, reuse existing app records, create missing records and credit every source used
+in `sourceNotes`. Do not substitute apps based solely on raw votes.
 
 ## When the user supplies an Editor's Pick
 
@@ -118,3 +118,6 @@ does not publish an official top three, omit the section rather than guessing.
 7. Do not substitute another app unless the user asks for an alternative. If the issue
    already has a different Editor's Pick and replacement is unclear, report the conflict.
 8. Run the required validation and build checks before publishing.
+
+Use role-based attribution in public content. Never include the editor's personal name
+in an app source, issue note or other generated page copy.
