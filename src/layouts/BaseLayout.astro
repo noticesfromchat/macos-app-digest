@@ -112,20 +112,21 @@ const graph = [
     </header>
     <main><slot /></main>
     <footer class="site-footer">
-      <div class="footer-brand">
+      <a class="footer-brand" href="/" aria-label="App Waypoint home">
         <span class="footer-logo" aria-hidden="true"><img src="/app-waypoint-logo.png" alt="" /></span>
-        <div>
-          <strong>App Waypoint</strong>
-          <p>A weekly waypoint for Mac apps.</p>
-        </div>
-      </div>
-      <div class="footer-meta">
-        <p class="footer-credit">
-          <span>Human-curated, thoughtfully assisted by AI.</span>
-          <span class="footer-credit-ending">Published every Friday <Heart class="footer-heart" aria-hidden="true" /></span>
-        </p>
-        <a class="footer-about" href="/about/">About</a>
-      </div>
+        <strong>App Waypoint</strong>
+      </a>
+      <p class="footer-editorial">
+        <span>A weekly waypoint for Mac apps.</span>
+        <span class="footer-separator" aria-hidden="true">·</span>
+        <span>Human-curated, thoughtfully assisted by AI.</span>
+        <span class="footer-credit-ending">Published every Friday <Heart class="footer-heart" aria-hidden="true" /></span>
+      </p>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="/about/">About App Waypoint</a>
+        <span aria-hidden="true">·</span>
+        <a href="/archive/">Issue Archive</a>
+      </nav>
     </footer>
     <script is:inline>
       const root = document.documentElement;
