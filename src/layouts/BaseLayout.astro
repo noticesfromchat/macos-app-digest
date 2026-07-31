@@ -1,11 +1,59 @@
 ---
+import { Archive, Heart, Moon, Sun } from 'lucide-astro';
 import '../styles/global.css';
 
 const {
-  title = 'App Waypoint',
-  description = 'A weekly waypoint for Mac apps.',
-  current = ''
+  title = 'App Waypoint — Curated Mac Apps for Experienced Users',
+  description = 'App Waypoint is a human-curated weekly guide to exceptional Mac apps, productivity tools, automation utilities, AI software and worthwhile reading.',
+  current = '',
+  type = 'website',
+  publishedTime,
+  socialImage = '/harbor-hero-clean.webp',
+  socialImageAlt = 'App Waypoint, a weekly guide to curated Mac apps for experienced users.'
 } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const socialImageUrl = new URL(socialImage, Astro.site);
+const graph = [
+  {
+    '@type': 'Organization',
+    '@id': new URL('/#publisher', Astro.site).href,
+    name: 'App Waypoint',
+    url: new URL('/', Astro.site).href,
+    logo: {
+      '@type': 'ImageObject',
+      url: new URL('/app-waypoint-logo.png', Astro.site).href
+    }
+  },
+  {
+    '@type': 'WebSite',
+    '@id': new URL('/#website', Astro.site).href,
+    name: 'App Waypoint',
+    url: new URL('/', Astro.site).href,
+    description: 'App Waypoint is a human-curated weekly guide to exceptional Mac apps, productivity tools, automation utilities, AI software and worthwhile reading.',
+    publisher: { '@id': new URL('/#publisher', Astro.site).href }
+  },
+  type === 'article'
+    ? {
+        '@type': 'BlogPosting',
+        '@id': `${canonical.href}#article`,
+        headline: title,
+        description,
+        datePublished: publishedTime,
+        mainEntityOfPage: canonical.href,
+        author: { '@type': 'Organization', name: 'App Waypoint' },
+        publisher: { '@id': new URL('/#publisher', Astro.site).href },
+        image: socialImageUrl.href
+      }
+    : {
+        '@type': 'WebPage',
+        '@id': `${canonical.href}#webpage`,
+        name: title,
+        description,
+        url: canonical.href,
+        isPartOf: { '@id': new URL('/#website', Astro.site).href }
+      }
+];
 ---
 <!doctype html>
 <html lang="en">
@@ -13,12 +61,27 @@ const {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
     <meta name="theme-color" content="#eee5d3" />
-    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:site_name" content="App Waypoint" />
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={socialImageUrl} />
+    <meta property="og:image:alt" content={socialImageAlt} />
+    {publishedTime && <meta property="article:published_time" content={publishedTime} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageUrl} />
+    <meta name="twitter:image:alt" content={socialImageAlt} />
     <link rel="icon" href="/app-waypoint-logo.png" type="image/png" />
     <link rel="apple-touch-icon" href="/app-waypoint-logo.png" />
     <link rel="preload" href="/fonts/Seamless.otf" as="font" type="font/otf" crossorigin="anonymous" />
     <title>{title}</title>
+    <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@graph': graph })} />
     <script is:inline>
       (() => {
         const saved = localStorage.getItem('app-waypoint-theme');
@@ -37,12 +100,13 @@ const {
       </a>
       <nav aria-label="Primary navigation">
         <span class="nav-links">
-          <a href="/" aria-current={current === 'issue' ? 'page' : undefined}>Current Issue</a>
-          <a href="/archive/" aria-current={current === 'archive' ? 'page' : undefined}>Past Issues</a>
+          <a class="nav-icon-link" href="/archive/" aria-label="Past issues" aria-current={current === 'archive' ? 'page' : undefined}>
+            <Archive aria-hidden="true" />
+          </a>
         </span>
         <button class="theme-toggle" type="button" aria-label="Switch to dark theme" data-theme-toggle>
-          <svg data-theme-moon aria-hidden="true" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" /></svg>
-          <svg data-theme-sun aria-hidden="true" viewBox="0 0 24 24" hidden><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41" /></svg>
+          <Moon data-theme-moon aria-hidden="true" />
+          <Sun data-theme-sun aria-hidden="true" hidden />
         </button>
       </nav>
     </header>
@@ -55,12 +119,13 @@ const {
           <p>A weekly waypoint for Mac apps.</p>
         </div>
       </div>
-      <p class="footer-credit">
-        Human-curated, thoughtfully assisted by AI. Published every Friday
-        <svg class="footer-heart" aria-hidden="true" viewBox="0 0 24 24">
-          <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-        </svg>
-      </p>
+      <div class="footer-meta">
+        <p class="footer-credit">
+          <span>Human-curated, thoughtfully assisted by AI.</span>
+          <span class="footer-credit-ending">Published every Friday <Heart class="footer-heart" aria-hidden="true" /></span>
+        </p>
+        <a class="footer-about" href="/about/">About</a>
+      </div>
     </footer>
     <script is:inline>
       const root = document.documentElement;

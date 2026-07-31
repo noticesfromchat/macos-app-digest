@@ -36,7 +36,7 @@ const editorsPick = issue.editorsPick ? appsById.get(issue.editorsPick.app) : un
           ? 'Curated Mac Apps for Experienced Users · Published Fridays'
           : 'App Waypoint Issue'}
       </p>
-      <h1>{issue.date}</h1>
+      <h1><time datetime={issue.slug}>{issue.date}</time></h1>
       <p class="date">{homepage ? `Current Issue · Issue ${issueLabel}` : `Issue ${issueLabel}`}</p>
       <div class="hero-rule" aria-hidden="true">
         <svg viewBox="0 0 104 14" role="presentation">
