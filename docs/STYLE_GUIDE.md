@@ -61,6 +61,13 @@ The site should feel like a small, premium editorial publication for experienced
   show the app count on the left and keep the sort control right-aligned.
 - Keep the toolbar visually connected to the grid with a 16px gap.
 - Do not display a separate “Sort apps” label.
+- Prefer durable discovery tags over narrow implementation details. Before creating a
+  new tag, check whether an existing tag already covers the reader intent. If a new
+  tag is necessary, audit existing app records for the same tag during the same
+  publishing pass.
+- Run a tag audit every four issues, and produce a before/after map for editorial
+  review before changing app records. Remove or consolidate tags that are redundant,
+  too narrow, vague, or unlikely to remain useful as the catalog grows.
 
 ## 4. Weekend Reading
 
