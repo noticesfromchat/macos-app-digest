@@ -191,7 +191,17 @@ a { color: inherit; }
 }
 
 .site-header nav .nav-icon-link::after { display: none; }
-.nav-icon-link svg { width: 21px; height: 21px; stroke-width: 1.7; }
+
+.nav-icon-link svg,
+.theme-toggle svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.7;
+}
 
 .theme-toggle {
   display: grid;
@@ -205,16 +215,6 @@ a { color: inherit; }
   cursor: pointer;
   font: inherit;
   transition: color 180ms ease, transform 180ms ease;
-}
-
-.theme-toggle svg {
-  width: 22px;
-  height: 22px;
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 1.7;
 }
 
 .theme-toggle svg[hidden] { display: none; }
@@ -865,7 +865,9 @@ a { color: inherit; }
   .nav-links { gap: 12px; }
   .site-header nav a { font-size: .72rem; }
   .site-header.hide-mobile-nav .nav-links { display: none; }
+  .site-header nav .nav-icon-link,
   .theme-toggle { width: 30px; height: 34px; }
+  .nav-icon-link svg,
   .theme-toggle svg { width: 19px; height: 19px; }
   .hero { min-height: 760px; padding: 38px 24px 28px; }
   .hero h1 { font-size: clamp(3.05rem, 15vw, 4.15rem); }
