@@ -11,7 +11,8 @@ const {
   type = 'website',
   publishedTime,
   socialImage = '/harbor-hero-clean.webp',
-  socialImageAlt = 'App Waypoint, a weekly guide to curated Mac apps for experienced users.'
+  socialImageAlt = 'App Waypoint, a weekly guide to curated Mac apps for experienced users.',
+  structuredData = []
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -66,7 +67,8 @@ const graph = [
         description,
         url: canonical.href,
         isPartOf: { '@id': new URL('/#website', Astro.site).href }
-      }
+      },
+  ...structuredData
 ];
 ---
 <!doctype html>

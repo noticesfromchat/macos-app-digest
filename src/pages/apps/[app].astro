@@ -33,12 +33,27 @@ const relatedApps = apps
   .slice(0, 6)
   .map(({ entry }) => entry);
 
+const appUrl = new URL(Astro.url.pathname, Astro.site).href;
+const appSchema = [
+  {
+    '@type': 'SoftwareApplication',
+    '@id': `${appUrl}#software`,
+    name: app.data.name,
+    description: app.data.description,
+    url: app.data.homepage,
+    applicationCategory: app.data.tags,
+    operatingSystem: 'macOS',
+    isPartOf: { '@id': new URL('/#website', Astro.site).href },
+    mainEntityOfPage: appUrl
+  }
+];
 ---
 
 <BaseLayout
   title={`${app.data.name} — App Waypoint`}
   description={`${app.data.description} App Waypoint notes who it is best for and related Mac app categories.`}
   current="app"
+  structuredData={appSchema}
 >
   <article class="app-detail-page">
     <header class="app-detail-hero">
@@ -67,7 +82,7 @@ const relatedApps = apps
       <section class="section app-detail-section">
         <div class="section-heading">
           <p class="eyebrow">You May Also Like</p>
-          <h2>Similar apps</h2>
+          <h2>These apps with similar tags</h2>
         </div>
         <div class="grid">
           {relatedApps.map((entry) => <AppCard app={entry.data} appId={entry.id} />)}
@@ -76,4 +91,3 @@ const relatedApps = apps
     )}
   </article>
 </BaseLayout>
-

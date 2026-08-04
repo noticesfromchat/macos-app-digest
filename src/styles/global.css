@@ -456,16 +456,17 @@ a { color: inherit; }
 .app-detail-hero h1 { margin: 18px 0 22px; font-family: var(--display); font-size: clamp(4rem, 10vw, 8rem); font-weight: 500; line-height: .9; letter-spacing: 0; }
 .app-detail-hero .dek { max-width: 780px; margin: 0; color: var(--muted); font-size: clamp(1.35rem, 2.6vw, 2.15rem); line-height: 1.35; }
 .app-detail-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 34px; }
+.app-detail-actions .button { gap: 8px; }
+.app-detail-actions .button svg { width: 1em; height: 1em; }
 .app-detail-panel {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1px;
-  overflow: hidden;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  background: var(--line);
+  gap: clamp(28px, 5vw, 72px);
+  max-width: 920px;
+  padding: 10px 0 32px;
+  border-bottom: 1px solid var(--line);
 }
-.app-detail-panel > div { min-height: 210px; padding: 28px; background: color-mix(in srgb, var(--surface) 96%, transparent); }
+.app-detail-panel > div { min-width: 0; }
 .app-detail-panel p:not(.eyebrow) { margin: 14px 0 0; color: var(--muted); font-size: 1.02rem; line-height: 1.55; }
 .app-detail-tags { min-height: 0; padding-top: 16px; }
 .app-detail-section { width: 100%; padding-right: 0; padding-left: 0; }
@@ -923,7 +924,7 @@ a { color: inherit; }
   .app-detail-hero .dek { font-size: 1.28rem; }
   .app-detail-actions { flex-direction: column; }
   .app-detail-panel { grid-template-columns: 1fr; }
-  .app-detail-panel > div { min-height: auto; padding: 24px; }
+  .app-detail-panel { gap: 24px; padding-bottom: 22px; }
   .directory-toolbar { margin-top: 28px; }
   .site-footer { grid-template-columns: 1fr; gap: 16px; padding: 26px 22px; }
   .footer-brand,
