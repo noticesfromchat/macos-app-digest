@@ -1,6 +1,6 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
-import { SquareArrowOutUpRight } from 'lucide-astro';
+import { ArrowUpRight } from 'lucide-astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AppCard from '../../components/AppCard.astro';
 
@@ -46,7 +46,7 @@ const relatedApps = apps
       <h1>{app.data.name}</h1>
       <p class="dek">{app.data.description}</p>
       <div class="app-detail-actions">
-        <a class="button" href={app.data.homepage} target="_blank" rel="noreferrer">Homepage <SquareArrowOutUpRight aria-hidden="true" /></a>
+        <a class="button" href={app.data.homepage} target="_blank" rel="noreferrer">Homepage <ArrowUpRight aria-hidden="true" /></a>
       </div>
     </header>
 
@@ -76,3 +76,4 @@ const relatedApps = apps
     )}
   </article>
 </BaseLayout>
+
