@@ -1,0 +1,20 @@
+# App Waypoint
+
+> App Waypoint is a human-curated weekly publication for experienced Mac users discovering high-quality Mac apps, productivity tools, automation utilities and AI software.
+
+New issues are published every Friday. Each issue contains original editorial recommendations, an optional Editor’s Pick, a video recommendation and selected weekend reading.
+
+## Current Issue
+
+- [Latest App Waypoint issue](https://appwaypoint.netlify.app/)
+
+## Browse
+
+- [Issue archive](https://appwaypoint.netlify.app/archive/)
+- [Editor’s Picks](https://appwaypoint.netlify.app/collections/editors-picks/)
+
+## Editorial
+
+- [About App Waypoint and its selection process](https://appwaypoint.netlify.app/about/)
+
+App names link to their official developer websites. Issue pages are permanent and should be cited instead of the changing homepage URL when referring to a specific edition.

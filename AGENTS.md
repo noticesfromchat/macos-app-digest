@@ -31,6 +31,34 @@ This repository contains the **App Waypoint** website. Before creating, editing,
 6. Review the Netlify deploy preview before merging substantial layout or publishing changes.
 7. Before publishing a new issue, complete the checklist in `docs/STYLE_GUIDE.md`.
 
+## Weekly release coordination
+
+Treat Thursday as the release-candidate decision point and Friday as the single
+production release point. Follow the complete workflow in
+[`docs/PUBLISHING.md`](docs/PUBLISHING.md).
+
+- On Thursday, inspect every open App Waypoint pull request and its Netlify Deploy
+  Preview while asking whether the editor has an Editor's Pick for the upcoming
+  issue.
+- If more than one preview exists, ask the editor which preview should accompany
+  Friday's issue even when one preview already appears approved. Report the purpose,
+  approval state and Netlify status of each preview and recommend a path forward.
+- Do not combine, close, merge or otherwise resolve competing previews without the
+  editor's direction.
+- When exactly one approved release-candidate preview exists, the Friday automation
+  may use it without another approval request.
+- Add the weekly issue and any new app records to the selected release-candidate
+  branch, validate the complete site, wait for its refreshed Deploy Preview to
+  succeed and merge once. This single merge should publish the approved improvements
+  and weekly issue together.
+- If no approved release candidate exists, publish the routine issue directly to
+  `main` after validation and build checks pass.
+- If multiple previews remain ambiguous on Friday because no Thursday direction was
+  received, leave every preview untouched and publish the routine issue directly to
+  `main`. Preview ambiguity must not block the weekly publication.
+- Never add unapproved design, architecture or functionality changes during the
+  autonomous Friday issue run.
+
 ## User-provided Editor's Pick
 
 When the user explicitly provides an app to feature as the Editor's Pick:

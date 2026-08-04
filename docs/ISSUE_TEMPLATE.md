@@ -61,6 +61,8 @@ sourceNotes:
 ## App file template
 
 Create new apps at `src/content/apps/app-slug.md`.
+Each app file automatically generates `/apps/app-slug/`; do not create that page
+manually.
 
 ```yaml
 ---
@@ -85,6 +87,10 @@ npm run build
 ```
 
 The validator rejects unknown app IDs, duplicate apps within an issue, duplicate issue numbers or slugs, malformed URLs and content outside the approved editorial ranges.
+
+Astro generates the homepage, archive, issue pages, tag pages, collection pages and
+individual app pages from Markdown content. Do not manually edit generated pages or
+duplicate app copy in issue files.
 
 `editorsPick` is optional and accepts exactly one app ID plus a 12-45 word editorial
 reason. The app must already exist in `src/content/apps/` and must not also appear in

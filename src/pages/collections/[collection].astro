@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AppDirectory from '../../components/AppDirectory.astro';
+import NavigationCallout from '../../components/NavigationCallout.astro';
 
 const collectionLabels: Record<string, string> = {
   'editors-picks': "Editor's Picks"
@@ -28,19 +29,23 @@ const title = collectionLabels[collection]
     .split('-')
     .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
+const description = collection === 'editors-picks'
+  ? 'Explore Mac apps singled out by the editor for exceptional utility, thoughtful design or a distinctive approach to a familiar workflow.'
+  : `Explore ${title.toLowerCase()} for experienced Mac users, with concise recommendations and links to official developer websites.`;
 ---
 <BaseLayout
-  title={`${title} — App Waypoint`}
-  description={`Browse ${title.toLowerCase()} from App Waypoint.`}
+  title={`${title} Mac Apps — App Waypoint`}
+  description={description}
 >
   <section class="archive-page tag-page">
     <p class="eyebrow">Browse by collection</p>
     <h1>{title}</h1>
-    <p class="dek">Apps given special recognition by App Waypoint.</p>
+    <p class="dek">{description}</p>
     <AppDirectory
       apps={apps}
       defaultFilterType="collection"
       defaultFilterValue={collection}
     />
+    <NavigationCallout />
   </section>
 </BaseLayout>

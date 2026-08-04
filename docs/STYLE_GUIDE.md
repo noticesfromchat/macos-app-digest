@@ -61,8 +61,28 @@ The site should feel like a small, premium editorial publication for experienced
   show the app count on the left and keep the sort control right-aligned.
 - Keep the toolbar visually connected to the grid with a 16px gap.
 - Do not display a separate “Sort apps” label.
+- Prefer durable discovery tags over narrow implementation details. Before creating a
+  new tag, check whether an existing tag already covers the reader intent. If a new
+  tag is necessary, audit existing app records for the same tag during the same
+  publishing pass.
+- Run a tag audit every four issues, and produce a before/after map for editorial
+  review before changing app records. Remove or consolidate tags that are redundant,
+  too narrow, vague, or unlikely to remain useful as the catalog grows.
 
-## 4. Weekend Reading
+## 4. App detail pages
+
+- Every app record generates an individual detail page at `/apps/{app-id}/`.
+- App cards link internally to the generated detail page.
+- App title links and explicit homepage links remain outbound to the official app
+  homepage or canonical repository.
+- Search results link to generated app detail pages so search behaves as internal site
+  navigation.
+- Detail pages use the existing app Markdown fields; do not duplicate app copy in
+  issue files or hand-authored page markup.
+- Detail pages may show related apps based on shared tags and compact links to related
+  tag landing pages.
+
+## 5. Weekend Reading
 
 - Weekend Reading covers the wider Mac app ecosystem, not only Apple company or
   platform news.
@@ -77,7 +97,7 @@ The site should feel like a small, premium editorial publication for experienced
   summaries and promotional posts whose popularity does not translate into reader
   value.
 
-## 5. Up and Coming
+## 6. Up and Coming
 
 - `Up and Coming` is a standard three-card app section built from the current
   `r/macapps` App Pile moderator selections and other approved recent-launch sources.
@@ -92,7 +112,7 @@ The site should feel like a small, premium editorial publication for experienced
 - The section title should describe the three selections as community discoveries
   without implying that App Waypoint independently ranked them.
 
-## 6. Editor attribution
+## 7. Editor attribution
 
 - Refer to the editor by role only in all public website content.
 - Never display the editor's personal name in app sources, issue copy, notes or

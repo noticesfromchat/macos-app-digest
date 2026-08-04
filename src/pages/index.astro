@@ -7,6 +7,10 @@ const issues = await getCollection('issues');
 const apps = await getCollection('apps');
 const latestIssue = [...issues].sort((a, b) => b.data.slug.localeCompare(a.data.slug))[0];
 ---
-<BaseLayout title="App Waypoint" description={latestIssue.data.dek} current="issue">
+<BaseLayout
+  title="App Waypoint — Curated Mac Apps for Experienced Users"
+  description="App Waypoint is a human-curated weekly guide to exceptional Mac apps, productivity tools, automation utilities, AI software and worthwhile reading."
+  current="issue"
+>
   <IssuePage homepage={true} issue={latestIssue.data} appEntries={apps} />
 </BaseLayout>

@@ -1,0 +1,16 @@
+---
+const { className = '' } = Astro.props as {
+  className?: string;
+};
+---
+
+<nav class:list={['navigation-callout', className]} aria-label="Continue reading App Waypoint">
+  <a class="navigation-callout-card" href="/">
+    <span>Current Issue</span>
+    <strong>Read the latest issue</strong>
+  </a>
+  <a class="navigation-callout-card" href="/archive/">
+    <span>Archive</span>
+    <strong>Browse past issues</strong>
+  </a>
+</nav>

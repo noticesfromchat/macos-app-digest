@@ -59,7 +59,7 @@ const tagOptions = [
   .map((value) => ({ value, count: contextualTagCount(value) }))
   .filter((option) => option.count > 0);
 
-const sortedApps = [...allApps].sort((a, b) =>
+const sortedApps = [...apps].sort((a, b) =>
   a.data.name.localeCompare(b.data.name, undefined, { sensitivity: 'base' })
 );
 ---
@@ -135,6 +135,7 @@ const sortedApps = [...allApps].sort((a, b) =>
                     value={value}
                     data-filter-type="tag"
                     checked={defaultFilterType === 'tag' && defaultFilterValue === value}
+                    disabled={defaultFilterType === 'tag' && defaultFilterValue === value}
                   />
                   <span class="filter-option-name">{value}</span>
                   <span class="filter-option-count">{count}</span>
@@ -182,6 +183,7 @@ const sortedApps = [...allApps].sort((a, b) =>
     {sortedApps.map((entry) => (
       <AppCard
         app={entry.data}
+        appId={entry.id}
         featuredDate={featuredDates.get(entry.id) ?? ''}
       />
     ))}
@@ -323,8 +325,12 @@ const sortedApps = [...allApps].sort((a, b) =>
       (card.dataset[key] ?? '').split(' ').filter(Boolean);
     const isDefaultFilter = (filter: HTMLInputElement) =>
       filter.dataset.filterType === defaultType && filter.value === defaultValue;
+    const requiredFilter = defaultType === 'tag'
+      ? filters.find((filter) => isDefaultFilter(filter))
+      : undefined;
 
     const applyFilters = () => {
+      if (requiredFilter) requiredFilter.checked = true;
       const selected = filters.filter((filter) => filter.checked);
       const selectedTags = selected
         .filter((filter) => filter.dataset.filterType === 'tag')

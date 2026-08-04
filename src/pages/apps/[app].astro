@@ -1,0 +1,96 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import { ArrowUpRight } from 'lucide-astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AppCard from '../../components/AppCard.astro';
+import NavigationCallout from '../../components/NavigationCallout.astro';
+
+type AppEntry = CollectionEntry<'apps'>;
+
+export async function getStaticPaths() {
+  const apps = await getCollection('apps');
+  return apps.map((app) => ({
+    params: { app: app.id },
+    props: { app, apps }
+  }));
+}
+
+const { app, apps } = Astro.props as {
+  app: AppEntry;
+  apps: AppEntry[];
+};
+
+const relatedApps = apps
+  .filter((entry) => entry.id !== app.id)
+  .map((entry) => ({
+    entry,
+    sharedTagCount: entry.data.tags.filter((tag) => app.data.tags.includes(tag)).length
+  }))
+  .filter(({ sharedTagCount }) => sharedTagCount > 0)
+  .sort((a, b) =>
+    b.sharedTagCount - a.sharedTagCount ||
+    a.entry.data.name.localeCompare(b.entry.data.name, undefined, { sensitivity: 'base' })
+  )
+  .slice(0, 6)
+  .map(({ entry }) => entry);
+
+const appUrl = new URL(Astro.url.pathname, Astro.site).href;
+const appSchema = [
+  {
+    '@type': 'SoftwareApplication',
+    '@id': `${appUrl}#software`,
+    name: app.data.name,
+    description: app.data.description,
+    url: app.data.homepage,
+    applicationCategory: app.data.tags,
+    operatingSystem: 'macOS',
+    isPartOf: { '@id': new URL('/#website', Astro.site).href },
+    mainEntityOfPage: appUrl
+  }
+];
+---
+
+<BaseLayout
+  title={`${app.data.name} — App Waypoint`}
+  description={`${app.data.description} App Waypoint notes who it is best for and related Mac app categories.`}
+  current="app"
+  structuredData={appSchema}
+>
+  <article class="app-detail-page">
+    <header class="app-detail-hero">
+      <p class="eyebrow">App Detail</p>
+      <h1>{app.data.name}</h1>
+      <p class="dek">{app.data.description}</p>
+      <div class="app-detail-actions">
+        <a class="button" href={app.data.homepage} target="_blank" rel="noreferrer">Homepage <ArrowUpRight aria-hidden="true" /></a>
+      </div>
+    </header>
+
+    <section class="app-detail-panel">
+      <div>
+        <p class="eyebrow">Best For</p>
+        <p>{app.data.bestFor}</p>
+      </div>
+      <div>
+        <p class="eyebrow">Tags</p>
+        <div class="tag-list app-detail-tags" aria-label="App tags">
+          {app.data.tags.map((tag) => <a class="tag" href={`/tags/${tag}/`}>{tag}</a>)}
+        </div>
+      </div>
+    </section>
+
+    {relatedApps.length > 0 && (
+      <section class="section app-detail-section">
+        <div class="section-heading">
+          <p class="eyebrow">You May Also Like</p>
+          <h2>These apps with similar tags</h2>
+        </div>
+        <div class="grid">
+          {relatedApps.map((entry) => <AppCard app={entry.data} appId={entry.id} />)}
+        </div>
+      </section>
+    )}
+
+    <NavigationCallout />
+  </article>
+</BaseLayout>

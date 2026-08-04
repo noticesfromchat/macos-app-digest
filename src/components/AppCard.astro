@@ -1,8 +1,9 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 type App = CollectionEntry<'apps'>['data'];
-const { app, editorNote, featuredDate } = Astro.props as {
+const { app, appId, editorNote, featuredDate } = Astro.props as {
   app: App;
+  appId?: string;
   editorNote?: string;
   featuredDate?: string;
 };
@@ -17,6 +18,7 @@ const showEditorsPickIcon = Boolean(
   data-tags={app.tags.join(' ')}
   data-collections={(app.collections ?? []).join(' ')}
 >
+  {appId && <a class="app-card-link" href={`/apps/${appId}/`} aria-label={`Read more about ${app.name}`}></a>}
   <div class="app-summary">
     <h3 class:list={{ 'editors-pick-title': showEditorsPickIcon }}>
       <a href={app.homepage} target="_blank" rel="noreferrer">{app.name}</a>

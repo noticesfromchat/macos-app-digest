@@ -5,7 +5,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 const issues = [...await getCollection('issues')].sort((a, b) => b.data.slug.localeCompare(a.data.slug));
 const issueLabel = (number: string | number) => String(Number(number)).padStart(2, '0');
 ---
-<BaseLayout title="App Waypoint Archive" description="Browse past App Waypoint issues." current="archive">
+<BaseLayout
+  title="Weekly Mac App Digest Archive — App Waypoint"
+  description="Browse every issue of App Waypoint, a weekly editorial guide to thoughtfully selected Mac apps, automation tools, AI software and Mac-focused reading."
+  current="archive"
+>
   <section class="archive-page">
     <p class="eyebrow">All Issues</p>
     <h1>App Waypoint Archive</h1>
@@ -16,7 +20,7 @@ const issueLabel = (number: string | number) => String(Number(number)).padStart(
       {issues.map((issue) => (
         <a class="archive-card" href={`/issues/${issue.data.slug}/`}>
           <span>Issue {issueLabel(issue.data.number)}</span>
-          <strong>{issue.data.date}</strong>
+          <strong><time datetime={issue.data.slug}>{issue.data.date}</time></strong>
           <em>{issue.data.dek}</em>
         </a>
       ))}
