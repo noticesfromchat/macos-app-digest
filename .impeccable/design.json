@@ -1,0 +1,342 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-04T22:51:06Z",
+  "title": "Design System: App Waypoint",
+  "extensions": {
+    "colorMeta": {
+      "harbor-sand": {
+        "role": "neutral",
+        "displayName": "Harbor Sand",
+        "canonical": "#e7ddcd",
+        "tonalRamp": [
+          "oklch(24% 0.018 79)",
+          "oklch(36% 0.018 79)",
+          "oklch(48% 0.018 79)",
+          "oklch(60% 0.018 79)",
+          "oklch(72% 0.018 79)",
+          "oklch(82% 0.017 79)",
+          "oklch(90% 0.016 79)",
+          "oklch(96% 0.014 79)"
+        ]
+      },
+      "drift-cream": {
+        "role": "neutral",
+        "displayName": "Drift Cream",
+        "canonical": "#f4ebdd",
+        "tonalRamp": [
+          "oklch(24% 0.017 83)",
+          "oklch(36% 0.017 83)",
+          "oklch(48% 0.017 83)",
+          "oklch(60% 0.017 83)",
+          "oklch(72% 0.016 83)",
+          "oklch(82% 0.015 83)",
+          "oklch(90% 0.014 83)",
+          "oklch(96% 0.013 83)"
+        ]
+      },
+      "surf-foam": {
+        "role": "neutral",
+        "displayName": "Surf Foam",
+        "canonical": "#faf4e9",
+        "tonalRamp": [
+          "oklch(25% 0.014 91)",
+          "oklch(37% 0.014 91)",
+          "oklch(49% 0.014 91)",
+          "oklch(61% 0.013 91)",
+          "oklch(73% 0.013 91)",
+          "oklch(84% 0.012 91)",
+          "oklch(92% 0.011 91)",
+          "oklch(97% 0.010 91)"
+        ]
+      },
+      "deep-sea": {
+        "role": "neutral",
+        "displayName": "Deep Sea Ink",
+        "canonical": "#092443",
+        "tonalRamp": [
+          "oklch(16% 0.085 255)",
+          "oklch(28% 0.082 255)",
+          "oklch(40% 0.078 255)",
+          "oklch(52% 0.074 255)",
+          "oklch(64% 0.062 255)",
+          "oklch(76% 0.050 255)",
+          "oklch(88% 0.034 255)",
+          "oklch(96% 0.018 255)"
+        ]
+      },
+      "beacon-blue": {
+        "role": "primary",
+        "displayName": "Beacon Blue",
+        "canonical": "#0862d8",
+        "tonalRamp": [
+          "oklch(18% 0.185 255)",
+          "oklch(30% 0.185 255)",
+          "oklch(42% 0.182 255)",
+          "oklch(54% 0.175 255)",
+          "oklch(66% 0.145 255)",
+          "oklch(78% 0.110 255)",
+          "oklch(89% 0.070 255)",
+          "oklch(95% 0.045 255)"
+        ]
+      },
+      "note-sand": {
+        "role": "neutral",
+        "displayName": "Note Sand",
+        "canonical": "#eadfcd",
+        "tonalRamp": [
+          "oklch(25% 0.016 79)",
+          "oklch(37% 0.016 79)",
+          "oklch(49% 0.015 79)",
+          "oklch(61% 0.015 79)",
+          "oklch(73% 0.014 79)",
+          "oklch(84% 0.013 79)",
+          "oklch(92% 0.012 79)",
+          "oklch(97% 0.011 79)"
+        ]
+      },
+      "night-harbor": {
+        "role": "neutral",
+        "displayName": "Night Harbor",
+        "canonical": "#091321",
+        "tonalRamp": [
+          "oklch(14% 0.075 255)",
+          "oklch(24% 0.073 255)",
+          "oklch(34% 0.068 255)",
+          "oklch(46% 0.062 255)",
+          "oklch(58% 0.053 255)",
+          "oklch(70% 0.042 255)",
+          "oklch(84% 0.029 255)",
+          "oklch(94% 0.016 255)"
+        ]
+      },
+      "midnight-surface": {
+        "role": "neutral",
+        "displayName": "Midnight Surface",
+        "canonical": "#0b1c30",
+        "tonalRamp": [
+          "oklch(15% 0.070 255)",
+          "oklch(25% 0.068 255)",
+          "oklch(35% 0.064 255)",
+          "oklch(47% 0.058 255)",
+          "oklch(59% 0.050 255)",
+          "oklch(71% 0.040 255)",
+          "oklch(84% 0.028 255)",
+          "oklch(94% 0.015 255)"
+        ]
+      },
+      "moon-ink": {
+        "role": "neutral",
+        "displayName": "Moon Ink",
+        "canonical": "#f3ecdf",
+        "tonalRamp": [
+          "oklch(24% 0.015 83)",
+          "oklch(36% 0.015 83)",
+          "oklch(48% 0.014 83)",
+          "oklch(60% 0.014 83)",
+          "oklch(72% 0.013 83)",
+          "oklch(84% 0.012 83)",
+          "oklch(92% 0.011 83)",
+          "oklch(97% 0.010 83)"
+        ]
+      },
+      "buoy-blue": {
+        "role": "primary",
+        "displayName": "Buoy Blue",
+        "canonical": "#57a2ff",
+        "tonalRamp": [
+          "oklch(26% 0.155 253)",
+          "oklch(38% 0.153 253)",
+          "oklch(50% 0.147 253)",
+          "oklch(62% 0.137 253)",
+          "oklch(74% 0.120 253)",
+          "oklch(84% 0.093 253)",
+          "oklch(91% 0.067 253)",
+          "oklch(96% 0.042 253)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Largest page titles and high-authority hero moments."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Hero titles, section titles, and major page headings."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Descriptions, explanations, and editorial copy."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Eyebrows, small UI labels, and control legends."
+      },
+      "metadata": {
+        "displayName": "Metadata",
+        "purpose": "Counts, sources, and secondary operational information."
+      },
+      "brand": {
+        "displayName": "Brand",
+        "purpose": "The Seamless and Philippine wordmark role only."
+      }
+    },
+    "shadows": [
+      {
+        "name": "ambient-card",
+        "value": "0 18px 55px rgba(27, 35, 42, 0.08)",
+        "purpose": "Resting cards and surface containers."
+      },
+      {
+        "name": "hover-lift",
+        "value": "0 26px 68px rgba(27, 35, 42, 0.14)",
+        "purpose": "Hovered cards and callout surfaces."
+      },
+      {
+        "name": "night-ambient",
+        "value": "0 20px 60px rgba(0, 0, 0, 0.24)",
+        "purpose": "Dark-theme resting surfaces."
+      },
+      {
+        "name": "night-hover",
+        "value": "0 28px 72px rgba(0, 0, 0, 0.42)",
+        "purpose": "Dark-theme hover elevation."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-standard",
+        "value": "180ms ease",
+        "purpose": "Default state transitions for buttons, links, and cards."
+      },
+      {
+        "name": "ease-quick",
+        "value": "120ms ease",
+        "purpose": "Fast highlight changes such as search results."
+      },
+      {
+        "name": "ease-rotation",
+        "value": "240ms ease",
+        "purpose": "The subtle header icon rotation on hover."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "680px"
+      },
+      {
+        "name": "md",
+        "value": "920px"
+      },
+      {
+        "name": "lg",
+        "value": "1100px"
+      },
+      {
+        "name": "xl",
+        "value": "1360px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The main call to action, used for obvious next steps.",
+      "html": "<button class=\"ds-btn ds-btn-primary\">Homepage <svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"m7 17 10-10\"></path><path d=\"M9 7h8v8\"></path></svg></button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 23px; border: 1px solid var(--accent); border-radius: 999px; background: var(--accent); color: #fff; font-family: inherit; font-size: .9rem; font-weight: 500; text-decoration: none; transition: background-color 180ms ease, border-color 180ms ease, transform 180ms ease; } .ds-btn-primary svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; } .ds-btn-primary:hover, .ds-btn-primary:focus-visible { border-color: var(--accent-hover); background: var(--accent-hover); transform: translateY(-1px); outline: 0; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "The supporting CTA that stays quieter than the primary action.",
+      "html": "<button class=\"ds-btn ds-btn-secondary\">Reset</button>",
+      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 23px; border: 1px solid var(--line); border-radius: 999px; background: transparent; color: var(--text); font: inherit; font-size: .9rem; font-weight: 500; transition: border-color 180ms ease, background-color 180ms ease, color 180ms ease, transform 180ms ease; } .ds-btn-secondary:hover, .ds-btn-secondary:focus-visible { border-color: var(--text); background: color-mix(in srgb, var(--surface) 50%, transparent); outline: 0; transform: translateY(-1px); }"
+    },
+    {
+      "name": "Tag Chip",
+      "kind": "chip",
+      "refersTo": "tag-chip",
+      "description": "A compact metadata chip used for tags and quick filters.",
+      "html": "<a class=\"ds-chip\" href=\"#\">developer</a>",
+      "css": ".ds-chip { display: inline-flex; align-items: center; padding: 7px 10px; border-radius: 999px; background: var(--surface-strong); color: var(--muted); font-family: inherit; font-size: .78rem; font-weight: 700; line-height: 1.15; text-decoration: none; text-transform: lowercase; transition: color 180ms ease, background-color 180ms ease; } .ds-chip:hover, .ds-chip:focus-visible { background: color-mix(in srgb, var(--surface-strong) 82%, var(--accent)); color: var(--accent); outline: 0; }"
+    },
+    {
+      "name": "App Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "The recurring content card for app listings and related recommendations.",
+      "html": "<article class=\"ds-card\"><h3><a href=\"#\">Chimlo</a></h3><p>Tracks Codex and Claude Code sessions from the MacBook notch.</p><p class=\"ds-card-kicker\"><strong>Best for:</strong> Developers supervising several coding agents.</p><div class=\"ds-chip-row\"><a class=\"ds-chip\" href=\"#\">ai</a><a class=\"ds-chip\" href=\"#\">developer</a></div></article>",
+      "css": ".ds-card { display: grid; gap: 16px; min-height: 286px; padding: 24px; border: 1px solid var(--line); border-radius: 12px; background: color-mix(in srgb, var(--surface) 96%, transparent); box-shadow: 0 18px 55px rgba(27, 35, 42, 0.08); transition: box-shadow 180ms ease, border-color 180ms ease, background-color 180ms ease, transform 180ms ease; } .ds-card h3 { margin: 0; font-family: var(--display); font-size: 1.4rem; font-weight: 600; line-height: 1.15; } .ds-card p { margin: 0; color: var(--muted); font-size: .95rem; line-height: 1.55; } .ds-card-kicker strong { color: var(--text); } .ds-chip-row { display: flex; flex-wrap: wrap; gap: 6px; align-content: flex-start; } .ds-card:hover, .ds-card:focus-within { border-color: color-mix(in srgb, var(--accent) 42%, var(--line)); background: var(--surface); box-shadow: 0 26px 68px rgba(27, 35, 42, 0.14); transform: translateY(-2px); outline: 0; }"
+    },
+    {
+      "name": "Site Header",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "The sticky shell that carries the brand, search, archive, and theme controls.",
+      "html": "<header class=\"ds-header\"><a class=\"ds-brand\" href=\"#\"><span class=\"ds-brand-mark\"></span><span class=\"ds-brand-name\">App Waypoint</span></a><nav class=\"ds-nav\"><a class=\"ds-nav-link is-active\" href=\"#\">Archive</a><button class=\"ds-icon-btn\" type=\"button\" aria-label=\"Search apps\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"7\"></circle><path d=\"m16 16 4 4\"></path></svg></button></nav></header>",
+      "css": ".ds-header { display: flex; align-items: center; justify-content: space-between; gap: 28px; min-height: 84px; padding: 0 38px; border-bottom: 1px solid var(--line); background: var(--header-fog); backdrop-filter: blur(20px) saturate(115%); } .ds-brand, .ds-nav { display: inline-flex; align-items: center; } .ds-brand { gap: 21px; color: var(--text); font-family: \"Seamless\", \"Philippine\", var(--display); font-size: clamp(1.65rem, 2.45vw, 2rem); letter-spacing: .12em; text-decoration: none; text-transform: uppercase; white-space: nowrap; } .ds-brand-mark { width: 56px; height: 56px; border-radius: 50%; background: #f7f0e4; } .ds-nav { gap: 42px; } .ds-nav-link { position: relative; padding: 9px 0; color: var(--text); font-size: .88rem; font-weight: 500; text-decoration: none; } .ds-nav-link::after { position: absolute; right: 0; bottom: 1px; left: 0; height: 1px; background: currentColor; content: ''; opacity: 0; transform: scaleX(.65); transition: opacity 180ms ease, transform 180ms ease; } .ds-nav-link:hover, .ds-nav-link.is-active { color: var(--accent); } .ds-nav-link:hover::after, .ds-nav-link.is-active::after { opacity: 1; transform: scaleX(1); } .ds-icon-btn { display: grid; width: 38px; height: 38px; padding: 0; place-items: center; border: 0; background: transparent; color: var(--text); transition: color 180ms ease, transform 180ms ease; } .ds-icon-btn svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; } .ds-icon-btn:hover, .ds-icon-btn:focus-visible { color: var(--accent); transform: rotate(12deg); outline: 0; }"
+    },
+    {
+      "name": "Directory Filter Menu",
+      "kind": "custom",
+      "refersTo": "input-search",
+      "description": "The compact filter popover used on tag and collection archive pages.",
+      "html": "<div class=\"ds-filter\"><button class=\"ds-filter-trigger\" type=\"button\" aria-expanded=\"false\">Filter <span class=\"ds-count\">2</span></button><div class=\"ds-filter-panel\"><p class=\"ds-filter-note\">Apps must match every selected filter.</p><label class=\"ds-filter-option\"><input type=\"checkbox\" checked disabled /><span>Editor’s Picks</span></label></div></div>",
+      "css": ".ds-filter { position: relative; width: 268px; color: var(--text); font: inherit; } .ds-filter-trigger { display: flex; width: 100%; min-height: 38px; align-items: center; justify-content: space-between; gap: 12px; padding: 7px 13px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--text); font: inherit; font-size: .78rem; font-weight: 800; } .ds-count { display: inline-flex; min-width: 19px; height: 19px; align-items: center; justify-content: center; padding: 0 5px; border-radius: 999px; background: var(--surface-strong); color: var(--muted); font-size: .75rem; font-variant-numeric: tabular-nums; } .ds-filter-panel { margin-top: -1px; overflow: hidden; border: 1px solid var(--line); border-radius: 0 0 10px 10px; background: var(--surface); box-shadow: 0 18px 55px rgba(27, 35, 42, 0.08); } .ds-filter-note { margin: 0; padding: 11px 13px 9px; border-bottom: 1px solid var(--line); color: var(--muted); font-size: .76rem; line-height: 1.45; } .ds-filter-option { display: flex; align-items: center; gap: 10px; padding: 7px 13px; color: var(--text); font-size: .78rem; font-weight: 700; }"
+    },
+    {
+      "name": "Search Modal",
+      "kind": "custom",
+      "refersTo": "input-search",
+      "description": "The centered search overlay that covers the site with a controlled, frosted backdrop.",
+      "html": "<div class=\"ds-search\"><div class=\"ds-search-backdrop\"></div><section class=\"ds-search-panel\" role=\"dialog\" aria-modal=\"true\"><div class=\"ds-search-row\"><label class=\"ds-sr-only\" for=\"site-search\">Search apps</label><input id=\"site-search\" class=\"ds-search-input\" type=\"search\" placeholder=\"Search\" /><button class=\"ds-search-close\" type=\"button\" aria-label=\"Close search\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M6 6l12 12\"></path><path d=\"M18 6 6 18\"></path></svg></button></div><p class=\"ds-search-count\">12 RESULTS</p></section></div>",
+      "css": ".ds-search { position: fixed; inset: 0; display: grid; place-items: start center; padding: min(9vh, 92px) 20px 24px; } .ds-search-backdrop { position: absolute; inset: 0; background: radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 38%), rgba(2, 11, 24, 0.52); backdrop-filter: blur(12px) saturate(110%); } .ds-search-panel { position: relative; z-index: 1; width: min(820px, 100%); overflow: hidden; border: 1px solid var(--line); border-radius: 18px; background: color-mix(in srgb, var(--surface) 98%, transparent); box-shadow: 0 30px 90px rgba(0, 0, 0, 0.28); } .ds-search-row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 14px; padding: 18px 20px; border-bottom: 1px solid var(--line); } .ds-search-input { width: 100%; border: 0; background: transparent; color: var(--text); font: inherit; font-size: clamp(1.1rem, 2vw, 1.45rem); font-weight: 600; outline: 0; } .ds-search-input::placeholder { color: color-mix(in srgb, var(--muted) 78%, transparent); } .ds-search-close { display: grid; width: 36px; height: 36px; place-items: center; border: 1px solid transparent; border-radius: 50%; background: transparent; color: var(--muted); } .ds-search-close:hover, .ds-search-close:focus-visible { border-color: var(--line); background: var(--surface-strong); color: var(--text); outline: 0; } .ds-search-count { margin: 0; padding: 10px 20px 0; color: var(--muted); font-size: .78rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Quiet harbor editorial",
+    "overview": "App Waypoint feels like a calm dock at first light: warm paper, deep-water text, and a single reliable blue used sparingly so the page never shouts. It is editorial rather than promotional, organized like a magazine, but laid out like a utility. Dense information sits inside soft cards and quiet section breaks instead of loud banners.\n\nThe language prefers stable geometry, soft depth, and generous breathing room. Serif headlines carry the authority; the system sans supports the utility layers, controls, and metadata. The result is familiar and trustworthy, with enough atmosphere to feel considered but not styled for its own sake.",
+    "keyCharacteristics": [
+      "Warm sand-and-cream surfaces with navy ink.",
+      "Beacon blue reserved for actions and current states.",
+      "Serif headlines, system-sans utility.",
+      "Soft 10-18px radii and ambient shadows.",
+      "Dense content organized through cards, chips, and careful spacing."
+    ],
+    "rules": [
+      {
+        "name": "The Beacon Rule",
+        "body": "Blue is reserved for actions, links, focus, and active states. It should not become page chrome or decorative noise.",
+        "section": "colors"
+      },
+      {
+        "name": "The Serif-Utility Split",
+        "body": "Serif type carries the editorial voice; the system sans carries the operational voice. Mixing them casually weakens both jobs.",
+        "section": "typography"
+      },
+      {
+        "name": "The Soft Hull Rule",
+        "body": "Surfaces lift with a soft shadow and a border change, not with hard edges or dramatic offsets.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do keep the warm paper base, deep-sea text, and blue accent in a tight relationship.",
+      "Do reuse the shared page shell so archive, tag, collection, about, and app pages line up.",
+      "Do keep shadows soft and ambient.",
+      "Do let serif headlines carry the editorial voice while system sans handles utility.",
+      "Do keep the defining tag or collection locked when it is the page’s own context."
+    ],
+    "donts": [
+      "Don't introduce loud secondary colors just to add energy.",
+      "Don't replace the soft shadow system with hard offsets or heavy glow.",
+      "Don't use tinted text as neutral gray on colored surfaces.",
+      "Don't make chips, filters, or buttons feel like separate UI worlds.",
+      "Don't let the brand wordmark typography spread into body copy."
+    ]
+  }
+}
