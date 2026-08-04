@@ -45,7 +45,19 @@ The site should feel like a small, premium editorial publication for experienced
   rule.
 - Omit the object entirely when the issue has no Editor's Pick.
 
-## 3. Tag and collection directories
+## 3. Page width and gutters
+
+- Standalone content pages use the shared `page-shell` container rather than defining
+  page-specific outer widths or horizontal padding.
+- The page shell is capped at 1,160px, centered, and uses a 20px gutter on larger
+  viewports and a 12px gutter on mobile.
+- App detail, tag, collection, archive and about pages must use this same shell.
+- Page sections may use narrower reading measures inside the shell, but app-card grids,
+  archive lists and navigation callouts may use its full width.
+- New standalone pages must adopt the shared shell so responsive gutters remain
+  consistent across the publication.
+
+## 4. Tag and collection directories
 
 - Tag and collection pages share the same sortable app-directory component.
 - Apps default to A–Z order.
@@ -69,7 +81,7 @@ The site should feel like a small, premium editorial publication for experienced
   review before changing app records. Remove or consolidate tags that are redundant,
   too narrow, vague, or unlikely to remain useful as the catalog grows.
 
-## 4. App detail pages
+## 5. App detail pages
 
 - Every app record generates an individual detail page at `/apps/{app-id}/`.
 - App cards link internally to the generated detail page.
@@ -82,7 +94,7 @@ The site should feel like a small, premium editorial publication for experienced
 - Detail pages may show related apps based on shared tags and compact links to related
   tag landing pages.
 
-## 5. Weekend Reading
+## 6. Weekend Reading
 
 - Weekend Reading covers the wider Mac app ecosystem, not only Apple company or
   platform news.
@@ -97,7 +109,7 @@ The site should feel like a small, premium editorial publication for experienced
   summaries and promotional posts whose popularity does not translate into reader
   value.
 
-## 6. Up and Coming
+## 7. Up and Coming
 
 - `Up and Coming` is a standard three-card app section built from the current
   `r/macapps` App Pile moderator selections and other approved recent-launch sources.
@@ -112,7 +124,7 @@ The site should feel like a small, premium editorial publication for experienced
 - The section title should describe the three selections as community discoveries
   without implying that App Waypoint independently ranked them.
 
-## 7. Editor attribution
+## 8. Editor attribution
 
 - Refer to the editor by role only in all public website content.
 - Never display the editor's personal name in app sources, issue copy, notes or
