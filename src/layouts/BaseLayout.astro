@@ -104,7 +104,7 @@ const graph = [
     </script>
   </head>
   <body>
-    <header class:list={['site-header', { 'hero-aware': current === 'issue', 'hide-mobile-nav': current !== 'issue' }]}>
+    <header class:list={['site-header', { 'hero-aware': current === 'issue', 'hide-mobile-nav': current !== 'issue' }]}> 
       <a class="brand" href="/" aria-label="App Waypoint home">
         <span class="brand-icon" aria-hidden="true">
           <img src="/app-waypoint-logo.png" alt="" />
@@ -301,7 +301,9 @@ const graph = [
           });
         };
 
-        const openSearch = () => {
+        const isMobileSearch = () => window.matchMedia('(max-width: 680px), (pointer: coarse)').matches;
+
+        const openSearch = ({ focusInput = true } = {}) => {
           previousFocus = document.activeElement;
           scrollPosition = window.scrollY;
           overlay.hidden = false;
@@ -310,6 +312,7 @@ const graph = [
           input.value = '';
           activeIndex = 0;
           render();
+          if (!focusInput) return;
           try {
             input.focus({ preventScroll: true });
           } catch {
@@ -325,7 +328,7 @@ const graph = [
           previousFocus?.focus?.();
         };
 
-        openButton.addEventListener('click', openSearch);
+        openButton.addEventListener('click', () => openSearch({ focusInput: !isMobileSearch() }));
         closeButtons.forEach((button) => button.addEventListener('click', closeSearch));
         input.addEventListener('input', () => {
           activeIndex = 0;
