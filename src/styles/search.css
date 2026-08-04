@@ -255,8 +255,11 @@
 
 @media (max-width: 920px) {
   .site-header.hero-aware .nav-links {
+    opacity: 1;
+    pointer-events: auto;
     position: static;
     right: auto;
+    visibility: visible;
   }
 }
 
