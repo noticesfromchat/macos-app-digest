@@ -183,6 +183,7 @@ const sortedApps = [...apps].sort((a, b) =>
     {sortedApps.map((entry) => (
       <AppCard
         app={entry.data}
+        appId={entry.id}
         featuredDate={featuredDates.get(entry.id) ?? ''}
       />
     ))}

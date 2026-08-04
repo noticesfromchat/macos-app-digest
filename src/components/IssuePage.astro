@@ -16,7 +16,7 @@ const {
   appEntries: AppEntry[];
 };
 
-const appsById = new Map(appEntries.map((entry) => [entry.id, entry.data]));
+const appsById = new Map(appEntries.map((entry) => [entry.id, entry]));
 const issueLabel = String(Number(issue.number)).padStart(2, '0');
 const aiSectionIndex = issue.sections.findIndex((section) => section.eyebrow.toLowerCase() === 'ai & automation');
 const trendingSectionIndex = issue.sections.findIndex((section) => section.eyebrow.toLowerCase() === 'trending');
@@ -64,7 +64,7 @@ const editorsPick = issue.editorsPick ? appsById.get(issue.editorsPick.app) : un
             <h2>One app worth a closer look</h2>
           </div>
           <div class="editors-pick-grid">
-            <AppCard app={editorsPick} editorNote={issue.editorsPick?.reason} />
+            <AppCard app={editorsPick.data} appId={editorsPick.id} editorNote={issue.editorsPick?.reason} />
           </div>
         </section>
       )}
@@ -76,7 +76,7 @@ const editorsPick = issue.editorsPick ? appsById.get(issue.editorsPick.app) : un
         <div class="grid">
           {section.apps.map((appId) => {
             const app = appsById.get(appId);
-            return app ? <AppCard app={app} /> : null;
+            return app ? <AppCard app={app.data} appId={app.id} /> : null;
           })}
         </div>
       </section>
@@ -90,7 +90,7 @@ const editorsPick = issue.editorsPick ? appsById.get(issue.editorsPick.app) : un
         <h2>One app worth a closer look</h2>
       </div>
       <div class="editors-pick-grid">
-        <AppCard app={editorsPick} editorNote={issue.editorsPick?.reason} />
+        <AppCard app={editorsPick.data} appId={editorsPick.id} editorNote={issue.editorsPick?.reason} />
       </div>
     </section>
   )}

@@ -24,7 +24,8 @@ const searchApps = (await getCollection('apps'))
     bestFor: entry.data.bestFor,
     tags: entry.data.tags,
     source: entry.data.source,
-    homepage: entry.data.homepage
+    homepage: entry.data.homepage,
+    url: `/apps/${entry.id}/`
   }))
   .sort((a, b) => a.name.localeCompare(b.name));
 const graph = [
@@ -104,7 +105,7 @@ const graph = [
     </script>
   </head>
   <body>
-    <header class:list={['site-header', { 'hero-aware': current === 'issue', 'hide-mobile-nav': current !== 'issue' }]}> 
+    <header class:list={['site-header', { 'hero-aware': current === 'issue', 'hide-mobile-nav': current !== 'issue' }]}>
       <a class="brand" href="/" aria-label="App Waypoint home">
         <span class="brand-icon" aria-hidden="true">
           <img src="/app-waypoint-logo.png" alt="" />
@@ -152,7 +153,7 @@ const graph = [
         </div>
         <div class="search-meta">
           <p class="search-count" data-search-count></p>
-          <p class="search-link-note">Results link out to app websites</p>
+          <p class="search-link-note">Results open app detail pages</p>
         </div>
         <div class="search-results" role="listbox" aria-label="Search results" data-search-results></div>
       </section>
@@ -273,9 +274,7 @@ const graph = [
             return `
               <a
                 class="search-result${index === activeIndex ? ' is-active' : ''}"
-                href="${escapeHtml(app.homepage)}"
-                target="_blank"
-                rel="noreferrer"
+                href="${escapeHtml(app.url)}"
                 role="option"
                 aria-selected="${index === activeIndex ? 'true' : 'false'}"
                 data-search-result

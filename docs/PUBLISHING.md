@@ -41,13 +41,15 @@ Thursday:
 4. Reuse existing app Markdown records and add new app records only when necessary.
 5. Add one issue Markdown file plus any required new app Markdown files to the
    release-candidate branch.
-6. Run `npm run validate` and `npm run build` against the combined branch.
-7. Fix every validation or build error before continuing.
-8. Push the completed release candidate once and wait for the refreshed Netlify
+6. Do not manually create or edit app detail pages. Astro generates `/apps/{app-id}/`
+   from `src/content/apps/` during the build.
+7. Run `npm run validate` and `npm run build` against the combined branch.
+8. Fix every validation or build error before continuing.
+9. Push the completed release candidate once and wait for the refreshed Netlify
    Deploy Preview to report ready or success.
-9. Merge the PR into `main` once. Do not first merge improvements and then make a
+10. Merge the PR into `main` once. Do not first merge improvements and then make a
    second issue commit to `main`.
-10. Confirm the Netlify production deployment succeeds before claiming the issue is
+11. Confirm the Netlify production deployment succeeds before claiming the issue is
     live or sending the weekly email.
 
 Routine issue content added to an already approved release candidate does not require
@@ -86,3 +88,14 @@ After the production deployment reports success:
 
 Never use GitHub Pages, manually publish generated HTML or claim an issue is live
 before Netlify reports a successful production deployment.
+
+## Generated app pages
+
+Every app Markdown record automatically generates a permanent detail page at
+`/apps/{app-id}/`. App cards and search results should route to these internal detail
+pages. Explicit homepage links and app-title links remain outbound to the official
+app homepage or canonical repository.
+
+When adding or updating app Markdown, make the description, `bestFor`, tags, source
+and homepage strong enough to support both issue cards and the generated app detail
+page. Do not duplicate app details in issue files or manually maintain per-app HTML.

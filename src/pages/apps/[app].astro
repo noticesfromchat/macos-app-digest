@@ -1,0 +1,100 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AppCard from '../../components/AppCard.astro';
+
+type AppEntry = CollectionEntry<'apps'>;
+
+export async function getStaticPaths() {
+  const apps = await getCollection('apps');
+  return apps.map((app) => ({
+    params: { app: app.id },
+    props: { app, apps }
+  }));
+}
+
+const { app, apps } = Astro.props as {
+  app: AppEntry;
+  apps: AppEntry[];
+};
+
+const relatedApps = apps
+  .filter((entry) => entry.id !== app.id)
+  .map((entry) => ({
+    entry,
+    sharedTagCount: entry.data.tags.filter((tag) => app.data.tags.includes(tag)).length
+  }))
+  .filter(({ sharedTagCount }) => sharedTagCount > 0)
+  .sort((a, b) =>
+    b.sharedTagCount - a.sharedTagCount ||
+    a.entry.data.name.localeCompare(b.entry.data.name, undefined, { sensitivity: 'base' })
+  )
+  .slice(0, 6)
+  .map(({ entry }) => entry);
+
+const tagTiles = app.data.tags.slice(0, 3);
+---
+
+<BaseLayout
+  title={`${app.data.name} — App Waypoint`}
+  description={`${app.data.description} App Waypoint notes who it is best for and related Mac app categories.`}
+  current="app"
+>
+  <article class="app-detail-page">
+    <header class="app-detail-hero">
+      <p class="eyebrow">App Detail</p>
+      <h1>{app.data.name}</h1>
+      <p class="dek">{app.data.description}</p>
+      <div class="app-detail-actions">
+        <a class="button" href={app.data.homepage} target="_blank" rel="noreferrer">Visit Homepage <span aria-hidden="true">→</span></a>
+        <a class="button secondary" href="/archive/">Browse Issues</a>
+      </div>
+    </header>
+
+    <section class="app-detail-panel">
+      <div>
+        <p class="eyebrow">Best For</p>
+        <p>{app.data.bestFor}</p>
+      </div>
+      <div>
+        <p class="eyebrow">Source</p>
+        <p>{app.data.source}</p>
+      </div>
+      <div>
+        <p class="eyebrow">Tags</p>
+        <div class="tag-list app-detail-tags" aria-label="App tags">
+          {app.data.tags.map((tag) => <a class="tag" href={`/tags/${tag}/`}>{tag}</a>)}
+        </div>
+      </div>
+    </section>
+
+    {tagTiles.length > 0 && (
+      <section class="section app-detail-section">
+        <div class="section-heading">
+          <p class="eyebrow">Explore Similar</p>
+          <h2>Related categories</h2>
+        </div>
+        <div class="tag-tile-grid">
+          {tagTiles.map((tag) => (
+            <a class="tag-tile" href={`/tags/${tag}/`}>
+              <span>{tag}</span>
+              <strong>Browse {tag} apps</strong>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {relatedApps.length > 0 && (
+      <section class="section app-detail-section">
+        <div class="section-heading">
+          <p class="eyebrow">You May Also Like</p>
+          <h2>Six apps with similar tags</h2>
+        </div>
+        <div class="grid">
+          {relatedApps.map((entry) => <AppCard app={entry.data} appId={entry.id} />)}
+        </div>
+      </section>
+    )}
+  </article>
+</BaseLayout>
