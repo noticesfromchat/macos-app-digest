@@ -253,6 +253,13 @@
   }
 }
 
+@media (max-width: 920px) {
+  .site-header.hero-aware .nav-links {
+    position: static;
+    right: auto;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .nav-search-toggle,
   .search-close,
