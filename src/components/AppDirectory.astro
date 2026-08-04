@@ -117,6 +117,7 @@ const sortedApps = [...apps].sort((a, b) =>
                       value={value}
                       data-filter-type="collection"
                       checked={defaultFilterType === 'collection' && defaultFilterValue === value}
+                      disabled={defaultFilterType === 'collection' && defaultFilterValue === value}
                     />
                     <span class="filter-option-name">
                       {collectionLabels[value] ?? value}
@@ -325,9 +326,7 @@ const sortedApps = [...apps].sort((a, b) =>
       (card.dataset[key] ?? '').split(' ').filter(Boolean);
     const isDefaultFilter = (filter: HTMLInputElement) =>
       filter.dataset.filterType === defaultType && filter.value === defaultValue;
-    const requiredFilter = defaultType === 'tag'
-      ? filters.find((filter) => isDefaultFilter(filter))
-      : undefined;
+    const requiredFilter = filters.find((filter) => isDefaultFilter(filter));
 
     const applyFilters = () => {
       if (requiredFilter) requiredFilter.checked = true;
@@ -364,12 +363,15 @@ const sortedApps = [...apps].sort((a, b) =>
       }
     };
 
-    registerMenu(filterMenu, filterTrigger, filterPanel, () => {
+    const menu = registerMenu(filterMenu, filterTrigger, filterPanel, () => {
       filters[0]?.focus();
     });
 
     filters.forEach((filter) => {
-      filter.addEventListener('change', applyFilters);
+      filter.addEventListener('change', () => {
+        applyFilters();
+        if (filter.checked && !isDefaultFilter(filter)) closeMenu(menu, true);
+      });
     });
 
     resetButtons.forEach((button) => {
