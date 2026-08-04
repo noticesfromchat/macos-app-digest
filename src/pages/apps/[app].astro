@@ -1,5 +1,6 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
+import { SquareArrowOutUpRight } from 'lucide-astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AppCard from '../../components/AppCard.astro';
 
@@ -32,7 +33,6 @@ const relatedApps = apps
   .slice(0, 6)
   .map(({ entry }) => entry);
 
-const tagTiles = app.data.tags.slice(0, 3);
 ---
 
 <BaseLayout
@@ -46,8 +46,7 @@ const tagTiles = app.data.tags.slice(0, 3);
       <h1>{app.data.name}</h1>
       <p class="dek">{app.data.description}</p>
       <div class="app-detail-actions">
-        <a class="button" href={app.data.homepage} target="_blank" rel="noreferrer">Visit Homepage <span aria-hidden="true">→</span></a>
-        <a class="button secondary" href="/archive/">Browse Issues</a>
+        <a class="button" href={app.data.homepage} target="_blank" rel="noreferrer">Homepage <SquareArrowOutUpRight aria-hidden="true" /></a>
       </div>
     </header>
 
@@ -57,10 +56,6 @@ const tagTiles = app.data.tags.slice(0, 3);
         <p>{app.data.bestFor}</p>
       </div>
       <div>
-        <p class="eyebrow">Source</p>
-        <p>{app.data.source}</p>
-      </div>
-      <div>
         <p class="eyebrow">Tags</p>
         <div class="tag-list app-detail-tags" aria-label="App tags">
           {app.data.tags.map((tag) => <a class="tag" href={`/tags/${tag}/`}>{tag}</a>)}
@@ -68,28 +63,11 @@ const tagTiles = app.data.tags.slice(0, 3);
       </div>
     </section>
 
-    {tagTiles.length > 0 && (
-      <section class="section app-detail-section">
-        <div class="section-heading">
-          <p class="eyebrow">Explore Similar</p>
-          <h2>Related categories</h2>
-        </div>
-        <div class="tag-tile-grid">
-          {tagTiles.map((tag) => (
-            <a class="tag-tile" href={`/tags/${tag}/`}>
-              <span>{tag}</span>
-              <strong>Browse {tag} apps</strong>
-            </a>
-          ))}
-        </div>
-      </section>
-    )}
-
     {relatedApps.length > 0 && (
       <section class="section app-detail-section">
         <div class="section-heading">
           <p class="eyebrow">You May Also Like</p>
-          <h2>Six apps with similar tags</h2>
+          <h2>Similar apps</h2>
         </div>
         <div class="grid">
           {relatedApps.map((entry) => <AppCard app={entry.data} appId={entry.id} />)}
