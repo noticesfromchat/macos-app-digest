@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AppDirectory from '../../components/AppDirectory.astro';
+import NavigationCallout from '../../components/NavigationCallout.astro';
 
 const collectionLabels: Record<string, string> = {
   'editors-picks': "Editor's Picks"
@@ -45,5 +46,6 @@ const description = collection === 'editors-picks'
       defaultFilterType="collection"
       defaultFilterValue={collection}
     />
+    <NavigationCallout />
   </section>
 </BaseLayout>

@@ -3,6 +3,7 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 import { ArrowUpRight } from 'lucide-astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AppCard from '../../components/AppCard.astro';
+import NavigationCallout from '../../components/NavigationCallout.astro';
 
 type AppEntry = CollectionEntry<'apps'>;
 
@@ -89,5 +90,7 @@ const appSchema = [
         </div>
       </section>
     )}
+
+    <NavigationCallout />
   </article>
 </BaseLayout>

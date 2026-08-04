@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AppDirectory from '../../components/AppDirectory.astro';
+import NavigationCallout from '../../components/NavigationCallout.astro';
 
 export async function getStaticPaths() {
   const apps = await getCollection('apps');
@@ -32,5 +33,6 @@ const title = tag.charAt(0).toUpperCase() + tag.slice(1);
       defaultFilterType="tag"
       defaultFilterValue={tag}
     />
+    <NavigationCallout />
   </section>
 </BaseLayout>
