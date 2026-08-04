@@ -112,10 +112,10 @@ const graph = [
         <span class="brand-name">App Waypoint</span>
       </a>
       <nav aria-label="Primary navigation">
+        <button class="nav-search-toggle" type="button" aria-label="Search apps" data-search-open>
+          <Search aria-hidden="true" />
+        </button>
         <span class="nav-links">
-          <button class="nav-search-toggle" type="button" aria-label="Search apps" data-search-open>
-            <Search aria-hidden="true" />
-          </button>
           <a class="nav-icon-link" href="/archive/" aria-label="Past issues" aria-current={current === 'archive' ? 'page' : undefined}>
             <Archive aria-hidden="true" />
           </a>
@@ -141,7 +141,7 @@ const graph = [
             id="site-search-input"
             class="search-input"
             type="search"
-            placeholder="Search apps, tags, workflows..."
+            placeholder="Search"
             autocomplete="off"
             spellcheck="false"
             data-search-input
@@ -150,7 +150,10 @@ const graph = [
             <X aria-hidden="true" />
           </button>
         </div>
-        <p class="search-count" data-search-count></p>
+        <div class="search-meta">
+          <p class="search-count" data-search-count></p>
+          <p class="search-link-note">Results link out to app websites</p>
+        </div>
         <div class="search-results" role="listbox" aria-label="Search results" data-search-results></div>
       </section>
     </div>
@@ -231,6 +234,7 @@ const graph = [
         const apps = JSON.parse(indexNode.textContent || '[]');
         let activeIndex = 0;
         let previousFocus = null;
+        let scrollPosition = 0;
 
         const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (char) => ({
           '&': '&amp;',
@@ -299,17 +303,25 @@ const graph = [
 
         const openSearch = () => {
           previousFocus = document.activeElement;
+          scrollPosition = window.scrollY;
           overlay.hidden = false;
           document.body.classList.add('search-is-open');
+          document.body.style.top = `-${scrollPosition}px`;
           input.value = '';
           activeIndex = 0;
           render();
-          requestAnimationFrame(() => input.focus());
+          try {
+            input.focus({ preventScroll: true });
+          } catch {
+            input.focus();
+          }
         };
 
         const closeSearch = () => {
           overlay.hidden = true;
           document.body.classList.remove('search-is-open');
+          document.body.style.top = '';
+          window.scrollTo(0, scrollPosition);
           previousFocus?.focus?.();
         };
 
