@@ -129,3 +129,25 @@ The site should feel like a small, premium editorial publication for experienced
 - Refer to the editor by role only in all public website content.
 - Never display the editor's personal name in app sources, issue copy, notes or
   generated pages.
+
+## 9. Issue publishing checklist
+
+Complete every item before merging a new issue:
+
+- [ ] The issue follows `docs/ISSUE_TEMPLATE.md` and references existing app IDs.
+- [ ] Every new app uses its official homepage or canonical repository.
+- [ ] No app is duplicated within the issue or repeated from the immediately previous
+  issue where the publishing rules prohibit it.
+- [ ] The Editor's Pick, if present, was supplied or approved by the editor, appears
+  only once and belongs to the `editors-picks` collection.
+- [ ] Weekend Reading contains three direct article links, with at least two focused
+  primarily on apps, workflows or app developers.
+- [ ] Up and Coming contains exactly three eligible apps and records its sources.
+- [ ] Copy meets the editorial limits and uses role-based editor attribution.
+- [ ] Light mode, dark mode, mobile layout, keyboard access and reduced motion remain
+  intact.
+- [ ] `npm run validate` passes, including the repository privacy check.
+- [ ] `npm run build` passes.
+- [ ] Required GitHub checks and the Netlify Deploy Preview succeed.
+- [ ] The production homepage and permanent issue URL are verified after merge and
+  Netlify production deployment.

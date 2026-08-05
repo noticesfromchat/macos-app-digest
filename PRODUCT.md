@@ -50,13 +50,13 @@ Confirmed brand assets include the App Waypoint logo and the existing visual sys
 
 ## Evidence on Hand
 
-- [README.md](/Users/zacbenedict/Documents/Codex/2026-08-04/continue-installing-impeccable-for-app-waypoint/work/app-waypoint-impeccable-20260804/README.md)
-- [src/data/site.ts](/Users/zacbenedict/Documents/Codex/2026-08-04/continue-installing-impeccable-for-app-waypoint/work/app-waypoint-impeccable-20260804/src/data/site.ts)
-- [src/pages/index.astro](/Users/zacbenedict/Documents/Codex/2026-08-04/continue-installing-impeccable-for-app-waypoint/work/app-waypoint-impeccable-20260804/src/pages/index.astro)
-- [src/pages/about.astro](/Users/zacbenedict/Documents/Codex/2026-08-04/continue-installing-impeccable-for-app-waypoint/work/app-waypoint-impeccable-20260804/src/pages/about.astro)
-- [src/content/apps/*.md](/Users/zacbenedict/Documents/Codex/2026-08-04/continue-installing-impeccable-for-app-waypoint/work/app-waypoint-impeccable-20260804/src/content/apps)
-- [src/content/issues/*.md](/Users/zacbenedict/Documents/Codex/2026-08-04/continue-installing-impeccable-for-app-waypoint/work/app-waypoint-impeccable-20260804/src/content/issues)
-- [public/app-waypoint-logo.png](/Users/zacbenedict/Documents/Codex/2026-08-04/continue-installing-impeccable-for-app-waypoint/work/app-waypoint-impeccable-20260804/public/app-waypoint-logo.png)
+- [README.md](README.md)
+- [src/data/site.ts](src/data/site.ts)
+- [src/pages/index.astro](src/pages/index.astro)
+- [src/pages/about.astro](src/pages/about.astro)
+- [src/content/apps](src/content/apps)
+- [src/content/issues](src/content/issues)
+- [public/app-waypoint-logo.png](public/app-waypoint-logo.png)
 
 ## Product Principles
 

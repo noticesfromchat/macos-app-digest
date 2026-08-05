@@ -4,6 +4,12 @@ A weekly waypoint for experienced Mac users discovering thoughtfully selected ap
 
 Live site: https://appwaypoint.netlify.app/
 
+## Development
+
+Start with [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md). It defines the local branch,
+validation, pull-request, Netlify preview and production deployment workflow. Local AI
+agents should also follow [`docs/OSAURUS.md`](docs/OSAURUS.md).
+
 ## Weekly Editorial Brief
 
 Every Friday, research and publish one issue for power users who care about productivity, automation, AI, menu bar utilities, Finder enhancements, window management, clipboard managers, writing tools, developer tools, open source software, local AI, note taking and file management.
