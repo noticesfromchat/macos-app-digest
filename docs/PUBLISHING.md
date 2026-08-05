@@ -61,10 +61,12 @@ architecture or functionality changes during this run.
 When no approved release candidate exists:
 
 1. Leave every unapproved or experimental preview untouched.
-2. Create the weekly issue from the latest `main`.
-3. Run `npm run validate` and `npm run build`.
-4. Commit the routine issue directly to `main` after both checks pass.
-5. Confirm the Netlify production deployment succeeds before sending the email.
+2. Create a dedicated weekly-issue branch from the latest `main`.
+3. Add the weekly issue and any required app records, then open a pull request.
+4. Run `npm run validate` and `npm run build`.
+5. Wait for required GitHub checks and the Netlify Deploy Preview to succeed.
+6. Merge the pull request into `main` once.
+7. Confirm the Netlify production deployment succeeds before sending the email.
 
 ### Multiple ambiguous previews
 
@@ -72,9 +74,10 @@ When multiple previews still exist on Friday and no Thursday direction was recei
 
 1. Do not guess which preview to merge.
 2. Do not combine, close or modify the previews.
-3. Publish the routine weekly issue directly to `main` after validation and build
-   checks pass.
-4. Report the unresolved previews separately. Preview ambiguity must not delay the
+3. Create a separate weekly-issue branch and pull request from the latest `main`.
+4. Validate, build and review its Netlify Deploy Preview, then merge it once the
+   required checks pass.
+5. Report the unresolved previews separately. Preview ambiguity must not delay the
    weekly issue.
 
 ## Production completion

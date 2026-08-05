@@ -1,6 +1,11 @@
 # Agent Instructions
 
-This repository contains the **App Waypoint** website. Before creating, editing, publishing or regenerating any page or issue, read and follow [`docs/STYLE_GUIDE.md`](docs/STYLE_GUIDE.md) and [`docs/ISSUE_TEMPLATE.md`](docs/ISSUE_TEMPLATE.md).
+This repository contains the **App Waypoint** website. Start every task by reading
+[`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md). Before creating, editing, publishing
+or regenerating any page or issue, also read and follow
+[`docs/STYLE_GUIDE.md`](docs/STYLE_GUIDE.md),
+[`docs/ISSUE_TEMPLATE.md`](docs/ISSUE_TEMPLATE.md) and
+[`docs/PUBLISHING.md`](docs/PUBLISHING.md).
 
 ## Source of truth
 
@@ -23,13 +28,17 @@ This repository contains the **App Waypoint** website. Before creating, editing,
 
 ## Required workflow
 
-1. Read `docs/STYLE_GUIDE.md` before making changes.
-2. Inspect the relevant component, content schema and current content before editing.
-3. Create or update Markdown content rather than copying page markup.
-4. Preserve light mode, dark mode, mobile behavior, keyboard access and reduced-motion behavior.
-5. Run the Astro build before publishing. A schema or build failure must be fixed rather than bypassed.
-6. Review the Netlify deploy preview before merging substantial layout or publishing changes.
-7. Before publishing a new issue, complete the checklist in `docs/STYLE_GUIDE.md`.
+1. Start from the latest `main` and create a short-lived task branch. Never make a
+   production change directly on `main`.
+2. Read the task-relevant documentation before making changes.
+3. Inspect the relevant component, content schema and current content before editing.
+4. Create or update Markdown content rather than copying page markup.
+5. Preserve light mode, dark mode, mobile behavior, keyboard access and reduced-motion behavior.
+6. Run `npm run validate` and `npm run build`. A schema, privacy or build failure must be fixed rather than bypassed.
+7. Push the branch and use a pull request for every production change.
+8. Review the Netlify Deploy Preview before merging presentation or publishing changes.
+9. Merge only after required checks pass and any required human approval is recorded.
+10. Before publishing a new issue, complete the checklist in `docs/STYLE_GUIDE.md`.
 
 ## Weekly release coordination
 
@@ -51,11 +60,11 @@ production release point. Follow the complete workflow in
   branch, validate the complete site, wait for its refreshed Deploy Preview to
   succeed and merge once. This single merge should publish the approved improvements
   and weekly issue together.
-- If no approved release candidate exists, publish the routine issue directly to
-  `main` after validation and build checks pass.
+- If no approved release candidate exists, create a dedicated issue branch and PR
+  from the latest `main`, then merge it after validation, build and preview checks pass.
 - If multiple previews remain ambiguous on Friday because no Thursday direction was
-  received, leave every preview untouched and publish the routine issue directly to
-  `main`. Preview ambiguity must not block the weekly publication.
+  received, leave every preview untouched and publish the routine issue through a
+  separate branch and PR. Preview ambiguity must not block the weekly publication.
 - Never add unapproved design, architecture or functionality changes during the
   autonomous Friday issue run.
 
@@ -188,6 +197,13 @@ issue.
 - Do not add visual clutter or icons to every card.
 
 ## Change safety
+
+### Repository path privacy
+
+- Use repository-relative paths in every committed file.
+- Never commit a local home directory, username, workspace location or machine-specific absolute path.
+- Use placeholders such as `$HOME`, `<workspace>` or `<project-root>` when an absolute-path example is unavoidable.
+- Run `npm run validate` before committing; it includes the repository privacy check.
 
 When modifying a shared component, layout, stylesheet, schema or documentation file:
 
