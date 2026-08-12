@@ -497,6 +497,11 @@ a { color: inherit; }
 .app-detail-panel > div { min-width: 0; }
 .app-detail-panel p:not(.eyebrow) { margin: 14px 0 0; color: var(--muted); font-size: 1.02rem; line-height: 1.55; }
 .app-detail-tags { min-height: 0; padding-top: 3px; }
+.category-tags-panel {
+  width: 100%;
+  max-width: none;
+  padding-top: clamp(26px, 3.8vw, 40px);
+}
 .app-detail-section { width: 100%; padding-right: 0; padding-left: 0; }
 .app-detail-panel + .app-detail-section { padding-top: clamp(26px, 3.8vw, 40px); }
 

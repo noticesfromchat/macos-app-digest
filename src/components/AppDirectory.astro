@@ -7,11 +7,13 @@ type FilterType = 'tag' | 'collection';
 const {
   apps,
   defaultFilterType,
-  defaultFilterValue
+  defaultFilterValue,
+  showFilterMenu = true
 } = Astro.props as {
   apps: CollectionEntry<'apps'>[];
-  defaultFilterType: FilterType;
-  defaultFilterValue: string;
+  defaultFilterType?: FilterType;
+  defaultFilterValue?: string;
+  showFilterMenu?: boolean;
 };
 
 const [allApps, issues] = await Promise.all([
@@ -74,81 +76,83 @@ const sortedApps = [...apps].sort((a, b) =>
       {apps.length} {apps.length === 1 ? 'app' : 'apps'}
     </p>
     <div class="directory-controls">
-      <div class="directory-select directory-filter" data-filter-menu>
-        <button
-          class="directory-select-trigger"
-          type="button"
-          aria-haspopup="true"
-          aria-expanded="false"
-          data-filter-trigger
-        >
-          <span class="directory-filter-label">
-            Filter
-            <span class="directory-filter-count" hidden data-filter-count></span>
-          </span>
-          <svg
-            aria-hidden="true"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+      {showFilterMenu && (
+        <div class="directory-select directory-filter" data-filter-menu>
+          <button
+            class="directory-select-trigger"
+            type="button"
+            aria-haspopup="true"
+            aria-expanded="false"
+            data-filter-trigger
           >
-            <path d="m6 9 6 6 6-6"></path>
-          </svg>
-        </button>
-        <div
-          class="directory-select-options directory-filter-panel"
-          role="group"
-          aria-label="Filter apps"
-          hidden
-          data-filter-panel
-        >
-          <p class="filter-note">Apps must match every selected filter.</p>
-          <div class="filter-scroll">
-            {collectionOptions.length > 0 && (
-              <div class="filter-group" role="group" aria-labelledby="filter-heading-collections">
-                <p class="filter-group-label" id="filter-heading-collections">Collections</p>
-                {collectionOptions.map(({ value, count }) => (
+            <span class="directory-filter-label">
+              Filter
+              <span class="directory-filter-count" hidden data-filter-count></span>
+            </span>
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="m6 9 6 6 6-6"></path>
+            </svg>
+          </button>
+          <div
+            class="directory-select-options directory-filter-panel"
+            role="group"
+            aria-label="Filter apps"
+            hidden
+            data-filter-panel
+          >
+            <p class="filter-note">Apps must match every selected filter.</p>
+            <div class="filter-scroll">
+              {collectionOptions.length > 0 && (
+                <div class="filter-group" role="group" aria-labelledby="filter-heading-collections">
+                  <p class="filter-group-label" id="filter-heading-collections">Collections</p>
+                  {collectionOptions.map(({ value, count }) => (
+                    <label class="filter-option">
+                      <input
+                        type="checkbox"
+                        value={value}
+                        data-filter-type="collection"
+                        checked={defaultFilterType === 'collection' && defaultFilterValue === value}
+                        disabled={defaultFilterType === 'collection' && defaultFilterValue === value}
+                      />
+                      <span class="filter-option-name">
+                        {collectionLabels[value] ?? value}
+                      </span>
+                      <span class="filter-option-count">{count}</span>
+                    </label>
+                  ))}
+                </div>
+              )}
+              <div class="filter-group" role="group" aria-labelledby="filter-heading-tags">
+                <p class="filter-group-label" id="filter-heading-tags">Tags</p>
+                {tagOptions.map(({ value, count }) => (
                   <label class="filter-option">
                     <input
                       type="checkbox"
                       value={value}
-                      data-filter-type="collection"
-                      checked={defaultFilterType === 'collection' && defaultFilterValue === value}
-                      disabled={defaultFilterType === 'collection' && defaultFilterValue === value}
+                      data-filter-type="tag"
+                      checked={defaultFilterType === 'tag' && defaultFilterValue === value}
+                      disabled={defaultFilterType === 'tag' && defaultFilterValue === value}
                     />
-                    <span class="filter-option-name">
-                      {collectionLabels[value] ?? value}
-                    </span>
+                    <span class="filter-option-name">{value}</span>
                     <span class="filter-option-count">{count}</span>
                   </label>
                 ))}
               </div>
-            )}
-            <div class="filter-group" role="group" aria-labelledby="filter-heading-tags">
-              <p class="filter-group-label" id="filter-heading-tags">Tags</p>
-              {tagOptions.map(({ value, count }) => (
-                <label class="filter-option">
-                  <input
-                    type="checkbox"
-                    value={value}
-                    data-filter-type="tag"
-                    checked={defaultFilterType === 'tag' && defaultFilterValue === value}
-                    disabled={defaultFilterType === 'tag' && defaultFilterValue === value}
-                  />
-                  <span class="filter-option-name">{value}</span>
-                  <span class="filter-option-count">{count}</span>
-                </label>
-              ))}
+            </div>
+            <div class="filter-actions">
+              <button type="button" class="filter-reset" data-filter-reset>Reset</button>
             </div>
           </div>
-          <div class="filter-actions">
-            <button type="button" class="filter-reset" data-filter-reset>Reset</button>
-          </div>
         </div>
-      </div>
+      )}
       <div class="directory-sort">
         <div class="directory-select" data-sort-menu>
           <button
