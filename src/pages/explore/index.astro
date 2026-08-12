@@ -1,0 +1,148 @@
+---
+import { getCollection } from 'astro:content';
+import {
+  Code2,
+  Folder,
+  Heart,
+  MessageCircle,
+  PenTool,
+  SlidersHorizontal,
+  Target,
+  Zap
+} from 'lucide-astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AppCard from '../../components/AppCard.astro';
+import { categories } from '../../data/categories';
+
+const shuffled = <T,>(items: T[]) => {
+  const output = [...items];
+
+  for (let index = output.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(Math.random() * (index + 1));
+    [output[index], output[swapIndex]] = [output[swapIndex], output[index]];
+  }
+
+  return output;
+};
+
+const pickRandom = <T extends { id: string }>(
+  items: T[],
+  count: number,
+  excludedIds = new Set<string>()
+) => {
+  const available = items.filter((item) => !excludedIds.has(item.id));
+  return shuffled(available).slice(0, count);
+};
+
+const apps = await getCollection('apps');
+const sortedCategories = [...categories].sort((a, b) =>
+  a.title.localeCompare(b.title, undefined, { sensitivity: 'base' })
+);
+
+const categoryIcons: Record<string, typeof Target> = {
+  automate: Zap,
+  code: Code2,
+  communicate: MessageCircle,
+  design: PenTool,
+  focus: Target,
+  organize: Folder,
+  thrive: Heart,
+  tweak: SlidersHorizontal
+};
+
+const editorsPicks = pickRandom(
+  apps.filter((entry) => entry.data.collections?.includes('editors-picks')),
+  3
+);
+const communityFavorites = pickRandom(
+  apps.filter((entry) => entry.data.collections?.includes('community-favorites')),
+  3,
+  new Set(editorsPicks.map((entry) => entry.id))
+);
+const browseAllApps = pickRandom(
+  apps,
+  3,
+  new Set([...editorsPicks, ...communityFavorites].map((entry) => entry.id))
+);
+
+---
+<BaseLayout
+  title="Explore — App Waypoint"
+  description="Browse the site by task or collection to jump straight to the apps that fit the way you work."
+>
+  <section class="page-shell archive-page explore-page">
+    <header class="explore-hero">
+      <p class="eyebrow">Explore</p>
+      <h1>Explore App Waypoint</h1>
+      <p class="dek">
+        Browse the site by task or collection to jump straight to the apps that fit the way you work.
+      </p>
+    </header>
+
+    <section class="section explore-section explore-categories-section">
+      <div class="section-heading">
+        <h2>Browse by what you want to do</h2>
+      </div>
+      <div class="explore-category-grid" aria-label="App Waypoint categories">
+        {sortedCategories.map((category, index) => {
+          const Icon = categoryIcons[category.slug] ?? Target;
+
+          return (
+            <a
+              class="card explore-category-card"
+              href={`/categories/${category.slug}/`}
+              style={`--tile-index: ${index};`}
+            >
+              <span class="explore-category-icon" aria-hidden="true">
+                <Icon />
+              </span>
+              <strong>{category.title}</strong>
+            </a>
+          );
+        })}
+      </div>
+    </section>
+
+    <section class="section explore-section">
+      <div class="section-heading">
+        <h2>Editor's Picks</h2>
+      </div>
+      <div class="grid">
+        {editorsPicks.map((entry) => (
+          <AppCard app={entry.data} appId={entry.id} />
+        ))}
+      </div>
+      <p class="explore-more">
+        <a href="/collections/editors-picks/">More Editor's Picks</a>
+      </p>
+    </section>
+
+    <section class="section explore-section">
+      <div class="section-heading">
+        <h2>Community Favorites</h2>
+      </div>
+      <div class="grid">
+        {communityFavorites.map((entry) => (
+          <AppCard app={entry.data} appId={entry.id} />
+        ))}
+      </div>
+      <p class="explore-more">
+        <a href="/collections/community-favorites/">More Community Favorites</a>
+      </p>
+    </section>
+
+    <section class="section explore-section">
+      <div class="section-heading">
+        <h2>Browse all apps</h2>
+      </div>
+      <div class="grid">
+        {browseAllApps.map((entry) => (
+          <AppCard app={entry.data} appId={entry.id} />
+        ))}
+      </div>
+      <p class="explore-more">
+        <a href="/apps/">More apps</a>
+      </p>
+    </section>
+  </section>
+</BaseLayout>
