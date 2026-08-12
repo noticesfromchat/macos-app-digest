@@ -109,7 +109,7 @@ const sortedApps = [...apps].sort((a, b) =>
             hidden
             data-filter-panel
           >
-            <p class="filter-note">Apps must match every selected filter.</p>
+            <p class="filter-note">Show apps matching all selected filters.</p>
             <div class="filter-scroll">
               {collectionOptions.length > 0 && (
                 <div class="filter-group" role="group" aria-labelledby="filter-heading-collections">
@@ -325,6 +325,8 @@ const sortedApps = [...apps].sort((a, b) =>
     const filters = [
       ...filterPanel.querySelectorAll<HTMLInputElement>('input[type="checkbox"]')
     ];
+    const filterRows = filters.map((filter) => filter.closest<HTMLElement>('.filter-option')).filter(Boolean);
+    const filterGroups = [...filterPanel.querySelectorAll<HTMLElement>('.filter-group')];
     const defaultType = directory.dataset.defaultType ?? '';
     const defaultValue = directory.dataset.defaultValue ?? '';
     const values = (card: HTMLElement, key: 'tags' | 'collections') =>
@@ -332,6 +334,18 @@ const sortedApps = [...apps].sort((a, b) =>
     const isDefaultFilter = (filter: HTMLInputElement) =>
       filter.dataset.filterType === defaultType && filter.value === defaultValue;
     const requiredFilter = filters.find((filter) => isDefaultFilter(filter));
+    const dedupe = (items: string[]) => [...new Set(items)];
+    const matchesFilterSet = (card: HTMLElement, tags: string[], collections: string[]) => {
+      const cardTags = values(card, 'tags');
+      const cardCollections = values(card, 'collections');
+
+      return (
+        tags.every((tag) => cardTags.includes(tag))
+        && collections.every((collection) => cardCollections.includes(collection))
+      );
+    };
+    const countMatchingCards = (tags: string[], collections: string[]) =>
+      cards.reduce((count, card) => count + (matchesFilterSet(card, tags, collections) ? 1 : 0), 0);
 
     const applyFilters = () => {
       if (requiredFilter) requiredFilter.checked = true;
@@ -345,12 +359,7 @@ const sortedApps = [...apps].sort((a, b) =>
       let visibleCount = 0;
 
       cards.forEach((card) => {
-        const tags = values(card, 'tags');
-        const collections = values(card, 'collections');
-        const matches = (
-          selectedTags.every((tag) => tags.includes(tag))
-          && selectedCollections.every((collection) => collections.includes(collection))
-        );
+        const matches = matchesFilterSet(card, selectedTags, selectedCollections);
         card.hidden = !matches;
         if (matches) visibleCount += 1;
       });
@@ -363,9 +372,39 @@ const sortedApps = [...apps].sort((a, b) =>
       if (filterCount) {
         const isOnlyDefault = selected.length === 1 && isDefaultFilter(selected[0]);
         filterCount.textContent = String(selected.length);
-        filterCount.hidden = isOnlyDefault;
+        filterCount.hidden = selected.length === 0 || isOnlyDefault;
         filterMenu.classList.toggle('has-custom-filters', !isOnlyDefault);
       }
+
+      filters.forEach((filter, index) => {
+        const row = filterRows[index];
+        if (!row) return;
+
+        const optionType = filter.dataset.filterType === 'collection' ? 'collection' : 'tag';
+        const optionValue = filter.value;
+        const candidateTags = dedupe([
+          ...selectedTags,
+          ...(optionType === 'tag' ? [optionValue] : [])
+        ]);
+        const candidateCollections = dedupe([
+          ...selectedCollections,
+          ...(optionType === 'collection' ? [optionValue] : [])
+        ]);
+        const count = countMatchingCards(candidateTags, candidateCollections);
+        const countLabel = row.querySelector<HTMLElement>('.filter-option-count');
+
+        if (countLabel) {
+          countLabel.textContent = String(count);
+        }
+
+        row.style.display = count === 0 ? 'none' : '';
+      });
+
+      filterGroups.forEach((group) => {
+        const hasVisibleOption = [...group.querySelectorAll<HTMLElement>('.filter-option')]
+          .some((option) => option.style.display !== 'none');
+        group.style.display = hasVisibleOption ? '' : 'none';
+      });
     };
 
     const menu = registerMenu(filterMenu, filterTrigger, filterPanel, () => {
