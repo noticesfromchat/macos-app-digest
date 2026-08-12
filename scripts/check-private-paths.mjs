@@ -10,7 +10,10 @@ const ignoredDirectories = new Set([
   'dist',
   'node_modules',
 ]);
-const ignoredPrefixes = ['.github/skills/'];
+const ignoredPrefixes = [
+  '.github/skills/',
+  '.agents/skills/impeccable/',
+];
 const textExtensions = new Set([
   '.astro', '.css', '.html', '.js', '.json', '.md', '.mjs', '.toml',
   '.ts', '.txt', '.yaml', '.yml',
