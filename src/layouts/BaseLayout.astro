@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import { Archive, Heart, Moon, Search, Sun, X } from 'lucide-astro';
+import { Archive, Check, Copy, Heart, Moon, Rss, Search, Sun, X } from 'lucide-astro';
 import '../styles/global.css';
 import '../styles/search.css';
 
@@ -17,6 +17,7 @@ const {
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const socialImageUrl = new URL(socialImage, Astro.site);
+const rssUrl = new URL('/rss.xml', Astro.site);
 const searchApps = (await getCollection('apps'))
   .map((entry) => ({
     id: entry.id,
@@ -87,6 +88,7 @@ const graph = [
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={socialImageUrl} />
     <meta property="og:image:alt" content={socialImageAlt} />
+    <link rel="alternate" type="application/rss+xml" title="App Waypoint RSS feed" href={rssUrl} />
     {publishedTime && <meta property="article:published_time" content={publishedTime} />}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
@@ -169,15 +171,56 @@ const graph = [
         <span class="footer-credit-ending">Published every Friday <Heart class="footer-heart" aria-hidden="true" /></span>
       </p>
       <nav class="footer-nav" aria-label="Footer navigation">
-        <a href="/about/">About App Waypoint</a>
+        <a href="/about/">About</a>
         <span aria-hidden="true">·</span>
         <a href="/explore/">Explore</a>
         <span aria-hidden="true">·</span>
-        <a href="/categories/">Categories</a>
+        <a href="/archive/">Past Issues</a>
         <span aria-hidden="true">·</span>
-        <a href="/archive/">Issue Archive</a>
+        <button
+          class="footer-rss-toggle"
+          type="button"
+          aria-haspopup="dialog"
+          aria-expanded="false"
+          aria-controls="rss-feed-modal"
+          data-rss-open
+        >
+          <Rss aria-hidden="true" />
+          <span>RSS</span>
+        </button>
       </nav>
     </footer>
+    <div class="rss-overlay" data-rss-overlay hidden>
+      <button class="rss-backdrop" type="button" aria-label="Close RSS subscription dialog" data-rss-close></button>
+      <section
+        class="rss-modal"
+        id="rss-feed-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="rss-title"
+        aria-describedby="rss-description"
+      >
+        <div class="rss-modal-topline">
+          <p class="rss-kicker">Subscribe</p>
+          <button class="rss-close" type="button" aria-label="Close RSS subscription dialog" data-rss-close>
+            <X aria-hidden="true" />
+          </button>
+        </div>
+        <h2 id="rss-title">App Waypoint RSS feed</h2>
+        <p id="rss-description" class="rss-description">
+          We love <a href="/tags/rss/">RSS</a> too, and want to make it easy for you to subscribe. Copy the URL below and paste it into your favorite RSS reader to subscribe.
+        </p>
+        <div class="rss-url-card">
+          <code class="rss-url-value" data-rss-url>{rssUrl.href}</code>
+          <button class="rss-copy-button" type="button" aria-label="Copy RSS feed URL" data-rss-copy>
+            <Copy class="rss-copy-icon" aria-hidden="true" data-rss-copy-icon />
+            <Check class="rss-copy-check" aria-hidden="true" hidden data-rss-copy-check />
+            <span class="sr-only" data-rss-copy-label>Copy RSS feed URL</span>
+          </button>
+        </div>
+        <p class="rss-feedback sr-only" aria-live="polite" data-rss-feedback></p>
+      </section>
+    </div>
     <script id="app-search-index" type="application/json" set:html={JSON.stringify(searchApps)} />
     <script is:inline>
       const root = document.documentElement;
@@ -368,6 +411,123 @@ const graph = [
               event.preventDefault();
               active.click();
             }
+          }
+        });
+      })();
+    </script>
+    <script is:inline>
+      (() => {
+        const overlay = document.querySelector('[data-rss-overlay]');
+        const openButtons = [...document.querySelectorAll('[data-rss-open]')];
+        const closeButtons = [...document.querySelectorAll('[data-rss-close]')];
+        const copyButton = document.querySelector('[data-rss-copy]');
+        const copyIcon = document.querySelector('[data-rss-copy-icon]');
+        const copyCheck = document.querySelector('[data-rss-copy-check]');
+        const copyLabel = document.querySelector('[data-rss-copy-label]');
+        const feedback = document.querySelector('[data-rss-feedback]');
+        const urlNode = document.querySelector('[data-rss-url]');
+        if (!overlay || !copyButton || !copyIcon || !copyCheck || !copyLabel || !feedback || !urlNode) return;
+
+        const feedUrl = urlNode.textContent?.trim() || '/rss.xml';
+        const openLabel = copyLabel.textContent || 'Copy RSS feed URL';
+        const body = document.body;
+        const firstFocusableSelector = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
+        let previousFocus = null;
+        let scrollPosition = 0;
+        let resetTimer = null;
+
+        const focusables = () => {
+          const modal = overlay.querySelector('.rss-modal');
+          if (!modal) return [];
+          return [...modal.querySelectorAll(firstFocusableSelector)].filter((item) => !item.hasAttribute('disabled'));
+        };
+
+        const setCopyState = (copied, label, message) => {
+          copyLabel.textContent = label;
+          copyButton.setAttribute('aria-label', label);
+          feedback.textContent = message;
+          copyIcon.toggleAttribute('hidden', copied);
+          copyCheck.toggleAttribute('hidden', !copied);
+          copyButton.classList.toggle('is-copied', copied);
+        };
+
+        const openRss = () => {
+          previousFocus = document.activeElement;
+          scrollPosition = window.scrollY;
+          overlay.hidden = false;
+          openButtons.forEach((button) => button.setAttribute('aria-expanded', 'true'));
+          body.classList.add('rss-is-open');
+          body.style.top = `-${scrollPosition}px`;
+          setCopyState(false, openLabel, '');
+          try {
+            focusables()[0]?.focus({ preventScroll: true });
+          } catch {
+            focusables()[0]?.focus();
+          }
+        };
+
+        const closeRss = () => {
+          overlay.hidden = true;
+          openButtons.forEach((button) => button.setAttribute('aria-expanded', 'false'));
+          body.classList.remove('rss-is-open');
+          body.style.top = '';
+          window.scrollTo(0, scrollPosition);
+          previousFocus?.focus?.();
+          setCopyState(false, openLabel, '');
+          clearTimeout(resetTimer);
+          resetTimer = null;
+        };
+
+        const copyFeedUrl = async () => {
+          try {
+            await navigator.clipboard.writeText(feedUrl);
+            setCopyState(true, 'Copied RSS feed URL', 'RSS feed URL copied to clipboard.');
+          } catch {
+            const input = document.createElement('textarea');
+            input.value = feedUrl;
+            input.setAttribute('readonly', '');
+            input.style.position = 'fixed';
+            input.style.opacity = '0';
+            document.body.appendChild(input);
+            input.select();
+            const copied = document.execCommand('copy');
+            document.body.removeChild(input);
+            if (!copied) return;
+            setCopyState(true, 'Copied RSS feed URL', 'RSS feed URL copied to clipboard.');
+          }
+          clearTimeout(resetTimer);
+          resetTimer = window.setTimeout(() => setCopyState(false, openLabel, ''), 2000);
+        };
+
+        openButtons.forEach((button) => button.addEventListener('click', openRss));
+        closeButtons.forEach((button) => button.addEventListener('click', closeRss));
+        copyButton.addEventListener('click', copyFeedUrl);
+
+        overlay.addEventListener('click', (event) => {
+          if (event.target === overlay) closeRss();
+        });
+
+        document.addEventListener('keydown', (event) => {
+          if (overlay.hidden) return;
+          if (event.key === 'Escape') {
+            event.preventDefault();
+            closeRss();
+            return;
+          }
+          if (event.key !== 'Tab') return;
+          const items = focusables();
+          if (!items.length) return;
+          const activeIndex = items.indexOf(document.activeElement);
+          if (event.shiftKey) {
+            if (activeIndex <= 0) {
+              event.preventDefault();
+              items.at(-1)?.focus();
+            }
+            return;
+          }
+          if (activeIndex === items.length - 1) {
+            event.preventDefault();
+            items[0]?.focus();
           }
         });
       })();

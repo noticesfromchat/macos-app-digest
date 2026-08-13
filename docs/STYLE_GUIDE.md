@@ -141,11 +141,14 @@ Complete every item before merging a new issue:
 - [ ] The Editor's Pick, if present, was supplied or approved by the editor, appears
   only once and belongs to the `editors-picks` collection.
 - [ ] Weekend Reading contains three direct article links, with at least two focused
-  primarily on apps, workflows or app developers.
+      primarily on apps, workflows or app developers.
 - [ ] Up and Coming contains exactly three eligible apps and records its sources.
+- [ ] The built `/rss.xml` feed includes every published issue exactly once, newest-
+      first, with stable GUIDs, correct publication dates and correct issue URLs,
+      and the latest issue appears automatically during the normal build.
 - [ ] Copy meets the editorial limits and uses role-based editor attribution.
 - [ ] Light mode, dark mode, mobile layout, keyboard access and reduced motion remain
-  intact.
+      intact.
 - [ ] `npm run validate` passes, including the repository privacy check.
 - [ ] `npm run build` passes.
 - [ ] Required GitHub checks and the Netlify Deploy Preview succeed.
