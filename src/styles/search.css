@@ -340,7 +340,7 @@
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 14px;
   align-items: center;
-  margin: 20px 20px 0;
+  margin: 20px 20px 24px;
   padding: 16px 18px;
   border: 1px solid var(--line);
   border-radius: 16px;
@@ -415,21 +415,6 @@
   border-radius: 8px;
 }
 
-.rss-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin: 16px 20px 0;
-  padding-bottom: 22px;
-}
-
-.rss-actions a {
-  font-size: .98rem;
-  font-weight: 700;
-  text-decoration-thickness: 1px;
-  text-underline-offset: .2em;
-}
-
 @media (max-width: 680px) {
   .nav-search-toggle { width: 30px; height: 34px; }
   .nav-search-toggle svg { width: 19px; height: 19px; }
@@ -472,7 +457,7 @@
   .rss-url-card {
     grid-template-columns: minmax(0, 1fr) auto;
     gap: 10px;
-    margin: 16px 14px 0;
+    margin: 16px 14px 18px;
     padding: 13px 14px;
   }
   .rss-url-value {
@@ -481,10 +466,6 @@
   }
   .rss-copy-button { width: 28px; height: 28px; }
   .rss-copy-button svg { width: 18px; height: 18px; }
-  .rss-actions {
-    margin: 14px 14px 0;
-    padding-bottom: 18px;
-  }
 }
 
 @media (max-width: 920px) {
