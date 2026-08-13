@@ -1156,6 +1156,21 @@ a { color: inherit; }
   .footer-editorial,
   .footer-nav { grid-column: 1; grid-row: auto; justify-self: start; }
   .footer-editorial { flex-wrap: wrap; justify-content: flex-start; row-gap: 2px; }
+  .footer-credit-ending { white-space: normal; }
+  .footer-nav {
+    display: flex;
+    width: 100%;
+    max-width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    white-space: normal;
+  }
+  .footer-nav span { display: none; }
+  .footer-nav a,
+  .footer-rss-toggle {
+    max-width: 100%;
+  }
 }
 
 @media (max-width: 560px) {
