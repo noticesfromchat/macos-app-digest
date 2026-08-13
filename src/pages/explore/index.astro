@@ -1,0 +1,236 @@
+---
+import { getCollection } from 'astro:content';
+import {
+  Code2,
+  Folder,
+  Heart,
+  MessageCircle,
+  PenTool,
+  SlidersHorizontal,
+  Target,
+  Zap
+} from 'lucide-astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AppCard from '../../components/AppCard.astro';
+import { categories } from '../../data/categories';
+
+const shuffled = <T,>(items: T[]) => {
+  const output = [...items];
+
+  for (let index = output.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(Math.random() * (index + 1));
+    [output[index], output[swapIndex]] = [output[swapIndex], output[index]];
+  }
+
+  return output;
+};
+
+const pickRandom = <T extends { id: string }>(
+  items: T[],
+  count: number,
+  excludedIds = new Set<string>()
+) => {
+  const available = items.filter((item) => !excludedIds.has(item.id));
+  return shuffled(available).slice(0, count);
+};
+
+const apps = await getCollection('apps');
+const sortedCategories = [...categories].sort((a, b) =>
+  a.title.localeCompare(b.title, undefined, { sensitivity: 'base' })
+);
+
+const toExploreApp = (entry: (typeof apps)[number]) => ({
+  id: entry.id,
+  name: entry.data.name,
+  description: entry.data.description,
+  bestFor: entry.data.bestFor,
+  tags: entry.data.tags,
+  source: entry.data.source,
+  homepage: entry.data.homepage
+});
+
+const exploreData = {
+  editorsPicks: apps
+    .filter((entry) => entry.data.collections?.includes('editors-picks'))
+    .map(toExploreApp),
+  communityFavorites: apps
+    .filter((entry) => entry.data.collections?.includes('community-favorites'))
+    .map(toExploreApp),
+  allApps: apps.map(toExploreApp)
+};
+
+const categoryIcons: Record<string, typeof Target> = {
+  automate: Zap,
+  code: Code2,
+  communicate: MessageCircle,
+  design: PenTool,
+  focus: Target,
+  organize: Folder,
+  thrive: Heart,
+  tweak: SlidersHorizontal
+};
+
+const editorsPicks = pickRandom(
+  apps.filter((entry) => entry.data.collections?.includes('editors-picks')),
+  3
+);
+const communityFavorites = pickRandom(
+  apps.filter((entry) => entry.data.collections?.includes('community-favorites')),
+  3,
+  new Set(editorsPicks.map((entry) => entry.id))
+);
+const browseAllApps = pickRandom(
+  apps,
+  3,
+  new Set([...editorsPicks, ...communityFavorites].map((entry) => entry.id))
+);
+
+---
+<BaseLayout
+  title="Explore — App Waypoint"
+  description="Browse the site by task or collection to jump straight to the apps that fit the way you work."
+>
+  <section class="page-shell archive-page explore-page">
+    <header class="explore-hero">
+      <p class="eyebrow">Explore</p>
+      <h1>Explore App Waypoint</h1>
+      <p class="dek">
+        Browse the site by task or collection to jump straight to the apps that fit the way you work.
+      </p>
+    </header>
+
+    <section class="section explore-section explore-categories-section">
+      <div class="section-heading">
+        <h2>Browse by what you want to do</h2>
+      </div>
+      <div class="explore-category-grid" aria-label="App Waypoint categories">
+        {sortedCategories.map((category, index) => {
+          const Icon = categoryIcons[category.slug] ?? Target;
+
+          return (
+            <a
+              class="card explore-category-card"
+              href={`/categories/${category.slug}/`}
+              style={`--tile-index: ${index};`}
+            >
+              <span class="explore-category-icon" aria-hidden="true">
+                <Icon />
+              </span>
+              <strong>{category.title}</strong>
+            </a>
+          );
+        })}
+      </div>
+    </section>
+
+    <section class="section explore-section">
+      <div class="section-heading">
+        <h2>Editor's Picks</h2>
+      </div>
+      <div class="grid" data-explore-grid="editors-picks">
+        {editorsPicks.map((entry) => (
+          <AppCard app={entry.data} appId={entry.id} />
+        ))}
+      </div>
+      <p class="explore-more">
+        <a href="/collections/editors-picks/">More Editor's Picks</a>
+      </p>
+    </section>
+
+    <section class="section explore-section">
+      <div class="section-heading">
+        <h2>Community Favorites</h2>
+      </div>
+      <div class="grid" data-explore-grid="community-favorites">
+        {communityFavorites.map((entry) => (
+          <AppCard app={entry.data} appId={entry.id} />
+        ))}
+      </div>
+      <p class="explore-more">
+        <a href="/collections/community-favorites/">More Community Favorites</a>
+      </p>
+    </section>
+
+    <section class="section explore-section">
+      <div class="section-heading">
+        <h2>Browse all apps</h2>
+      </div>
+      <div class="grid" data-explore-grid="all-apps">
+        {browseAllApps.map((entry) => (
+          <AppCard app={entry.data} appId={entry.id} />
+        ))}
+      </div>
+      <p class="explore-more">
+        <a href="/apps/">More apps</a>
+      </p>
+    </section>
+  </section>
+  <script type="application/json" id="explore-random-data">{JSON.stringify(exploreData).replaceAll('<', '\\u003c')}</script>
+  <script is:inline type="module">
+    const dataElement = document.getElementById('explore-random-data');
+    if (dataElement?.textContent) {
+      const data = JSON.parse(dataElement.textContent);
+
+      const escapeHTML = (value) =>
+        String(value)
+          .replaceAll('&', '&amp;')
+          .replaceAll('<', '&lt;')
+          .replaceAll('>', '&gt;')
+          .replaceAll('"', '&quot;')
+          .replaceAll("'", '&#39;');
+
+      const shuffle = (items) => {
+        const output = [...items];
+
+        for (let index = output.length - 1; index > 0; index -= 1) {
+          const swapIndex = Math.floor(Math.random() * (index + 1));
+          [output[index], output[swapIndex]] = [output[swapIndex], output[index]];
+        }
+
+        return output;
+      };
+
+      const pickRandom = (items, count, excludedIds = new Set()) => {
+        const available = items.filter((item) => !excludedIds.has(item.id));
+        return shuffle(available).slice(0, count);
+      };
+
+      const renderCard = (app) => `
+        <article class="card app-card" data-app-name="${escapeHTML(app.name)}">
+          <a class="app-card-link" href="/apps/${escapeHTML(app.id)}/" aria-label="Read more about ${escapeHTML(app.name)}"></a>
+          <div class="app-summary">
+            <h3><a href="${escapeHTML(app.homepage)}" target="_blank" rel="noreferrer">${escapeHTML(app.name)}</a></h3>
+            <p>${escapeHTML(app.description)}</p>
+          </div>
+          <p class="best-for"><strong>Best for:</strong> ${escapeHTML(app.bestFor)}</p>
+          <div class="tag-list" aria-label="App tags">
+            ${app.tags.map((tag) => `<a class="tag" href="/tags/${escapeHTML(tag)}/">${escapeHTML(tag)}</a>`).join('')}
+          </div>
+          <p class="source-line"><strong>Source:</strong> ${escapeHTML(app.source)}</p>
+        </article>
+      `;
+
+      const renderSelection = (selector, selection) => {
+        const grid = document.querySelector(selector);
+        if (!grid) return;
+        grid.innerHTML = selection.map(renderCard).join('');
+      };
+
+      const editorsPicks = pickRandom(data.editorsPicks, 3);
+      const communityFavorites = pickRandom(
+        data.communityFavorites,
+        3,
+        new Set(editorsPicks.map((app) => app.id))
+      );
+      const browseAllApps = pickRandom(
+        data.allApps,
+        3,
+        new Set([...editorsPicks, ...communityFavorites].map((app) => app.id))
+      );
+
+      renderSelection('[data-explore-grid="editors-picks"]', editorsPicks);
+      renderSelection('[data-explore-grid="community-favorites"]', communityFavorites);
+      renderSelection('[data-explore-grid="all-apps"]', browseAllApps);
+    }
+  </script>
+</BaseLayout>

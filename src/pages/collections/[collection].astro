@@ -5,7 +5,13 @@ import AppDirectory from '../../components/AppDirectory.astro';
 import NavigationCallout from '../../components/NavigationCallout.astro';
 
 const collectionLabels: Record<string, string> = {
-  'editors-picks': "Editor's Picks"
+  'editors-picks': "Editor's Picks",
+  'community-favorites': 'Community Favorites'
+};
+
+const collectionDescriptions: Record<string, string> = {
+  'editors-picks': 'Explore Mac apps singled out by the editor for exceptional utility, thoughtful design or a distinctive approach to a familiar workflow.',
+  'community-favorites': 'Explore Mac apps the community keeps recommending for practical workflows, dependable utility and standout execution.'
 };
 
 export async function getStaticPaths() {
@@ -29,9 +35,8 @@ const title = collectionLabels[collection]
     .split('-')
     .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
-const description = collection === 'editors-picks'
-  ? 'Explore Mac apps singled out by the editor for exceptional utility, thoughtful design or a distinctive approach to a familiar workflow.'
-  : `Explore ${title.toLowerCase()} for experienced Mac users, with concise recommendations and links to official developer websites.`;
+const description = collectionDescriptions[collection]
+  ?? `Explore ${title.toLowerCase()} for experienced Mac users, with concise recommendations and links to official developer websites.`;
 ---
 <BaseLayout
   title={`${title} Mac Apps — App Waypoint`}
