@@ -23,7 +23,7 @@ const { category, apps } = Astro.props as {
 };
 
 const resolvedCategory = getCategoryBySlug(category.slug) ?? category;
-const tagLinks = resolvedCategory.tags.map((tag) => `/tags/${tag}/`);
+const sortedTags = [...resolvedCategory.tags].sort((a, b) => a.localeCompare(b));
 ---
 <BaseLayout
   title={`${resolvedCategory.title} Mac Apps — App Waypoint`}
@@ -37,8 +37,8 @@ const tagLinks = resolvedCategory.tags.map((tag) => `/tags/${tag}/`);
       <div>
         <p class="eyebrow">Tags</p>
         <div class="tag-list app-detail-tags" aria-label={`${resolvedCategory.title} tags`}>
-          {resolvedCategory.tags.map((tag, index) => (
-            <a class="tag" href={tagLinks[index]}>{tag}</a>
+          {sortedTags.map((tag) => (
+            <a class="tag" href={`/tags/${tag}/`}>{tag}</a>
           ))}
         </div>
       </div>
