@@ -45,12 +45,16 @@ Thursday:
    from `src/content/apps/` during the build.
 7. Run `npm run validate` and `npm run build` against the combined branch.
 8. Fix every validation or build error before continuing.
-9. Push the completed release candidate once and wait for the refreshed Netlify
+9. Verify the built `/rss.xml` feed includes every published issue exactly once,
+   ordered newest-first, with stable GUIDs, correct publication dates and correct
+   permanent issue URLs, and confirm the latest issue appears automatically during
+   the normal build without any manual RSS-generation step.
+10. Push the completed release candidate once and wait for the refreshed Netlify
    Deploy Preview to report ready or success.
-10. Merge the PR into `main` once. Do not first merge improvements and then make a
+11. Merge the PR into `main` once. Do not first merge improvements and then make a
    second issue commit to `main`.
-11. Confirm the Netlify production deployment succeeds before claiming the issue is
-    live or sending the weekly email.
+12. Confirm the Netlify production deployment succeeds before claiming the issue is
+   live or sending the weekly email.
 
 Routine issue content added to an already approved release candidate does not require
 another manual approval after all checks pass. Do not add new unapproved design,

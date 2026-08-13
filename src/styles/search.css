@@ -38,7 +38,47 @@
   transform: rotate(12deg);
 }
 
+.footer-rss-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: .35em;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  text-decoration: none;
+  transition: color 180ms ease, transform 180ms ease;
+}
+
+.footer-rss-toggle svg {
+  width: 1em;
+  height: 1em;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
+.footer-rss-toggle:hover,
+.footer-rss-toggle:focus-visible {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: .2em;
+  outline: 0;
+}
+
 .search-is-open {
+  position: fixed;
+  width: 100%;
+  overflow: hidden;
+}
+
+.rss-is-open {
   position: fixed;
   width: 100%;
   overflow: hidden;
@@ -56,6 +96,18 @@
 
 .search-overlay[hidden] { display: none; }
 
+.rss-overlay {
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: min(10vh, 96px) 20px 24px;
+  overflow: hidden;
+}
+
+.rss-overlay[hidden] { display: none; }
+
 .search-backdrop {
   position: absolute;
   inset: 0;
@@ -67,10 +119,32 @@
   cursor: default;
 }
 
+.rss-backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background:
+    radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 36%),
+    rgba(2, 11, 24, .54);
+  backdrop-filter: blur(12px) saturate(110%);
+  cursor: default;
+}
+
 .search-modal {
   position: relative;
   z-index: 1;
   width: min(820px, 100%);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--surface) 98%, transparent);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, .28);
+}
+
+.rss-modal {
+  position: relative;
+  z-index: 1;
+  width: min(760px, 100%);
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 18px;
@@ -200,15 +274,177 @@
   font-size: .95rem;
 }
 
+.rss-modal-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px 0;
+}
+
+.rss-kicker {
+  margin: 0;
+  color: var(--accent);
+  font-size: var(--type-label);
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.rss-close {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  place-items: center;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease;
+}
+
+.rss-close svg {
+  width: 20px;
+  height: 20px;
+}
+
+.rss-close:hover,
+.rss-close:focus-visible {
+  border-color: var(--line);
+  background: var(--surface-strong);
+  color: var(--text);
+  outline: 0;
+}
+
+.rss-modal h2 {
+  margin: 16px 20px 0;
+  color: var(--text);
+  font-family: var(--display);
+  font-size: clamp(2rem, 4vw, 2.85rem);
+  font-weight: 400;
+  line-height: .98;
+}
+
+.rss-description {
+  margin: 14px 20px 0;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: 60ch;
+}
+
+.rss-url-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+  margin: 20px 20px 0;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--surface-strong) 78%, transparent);
+}
+
+.rss-url-value {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--text);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: .94rem;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rss-copy-button {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  line-height: 0;
+  transition: color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+}
+
+.rss-copy-button svg {
+  grid-area: 1 / 1;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+  fill: none;
+}
+
+.rss-copy-button .rss-copy-icon {
+  display: block;
+}
+
+.rss-copy-button .rss-copy-check {
+  display: none;
+  color: var(--accent);
+}
+
+.rss-copy-button.is-copied .rss-copy-icon,
+.rss-copy-button .rss-copy-icon[hidden] {
+  display: none;
+}
+
+.rss-copy-button.is-copied .rss-copy-check {
+  display: block;
+}
+
+.rss-copy-button:hover,
+.rss-copy-button:focus-visible {
+  color: var(--accent);
+  outline: 0;
+  transform: translateY(-1px);
+}
+
+.rss-copy-button:focus-visible {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 32%, transparent);
+  border-radius: 8px;
+}
+
+.rss-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 16px 20px 0;
+  padding-bottom: 22px;
+}
+
+.rss-actions a {
+  font-size: .98rem;
+  font-weight: 700;
+  text-decoration-thickness: 1px;
+  text-underline-offset: .2em;
+}
+
 @media (max-width: 680px) {
   .nav-search-toggle { width: 30px; height: 34px; }
   .nav-search-toggle svg { width: 19px; height: 19px; }
+  .footer-rss-toggle { font-size: .75rem; }
   .search-overlay {
     height: 100dvh;
     padding: max(12px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom));
     place-items: start center;
   }
+  .rss-overlay {
+    height: 100dvh;
+    padding: max(12px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom));
+  }
   .search-modal { border-radius: 14px; }
+  .rss-modal { border-radius: 14px; }
   .search-input-wrap { gap: 10px; padding: 14px; }
   .search-input-icon { width: 21px; height: 21px; }
   .search-close { width: 32px; height: 32px; }
@@ -230,6 +466,25 @@
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
   }
+  .rss-modal-topline { padding: 16px 14px 0; }
+  .rss-modal h2 { margin: 14px 14px 0; font-size: clamp(1.75rem, 10vw, 2.4rem); }
+  .rss-description { margin: 12px 14px 0; font-size: .96rem; }
+  .rss-url-card {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px;
+    margin: 16px 14px 0;
+    padding: 13px 14px;
+  }
+  .rss-url-value {
+    font-size: .84rem;
+    line-height: 1.3;
+  }
+  .rss-copy-button { width: 28px; height: 28px; }
+  .rss-copy-button svg { width: 18px; height: 18px; }
+  .rss-actions {
+    margin: 14px 14px 0;
+    padding-bottom: 18px;
+  }
 }
 
 @media (max-width: 920px) {
@@ -244,7 +499,13 @@
 
 @media (prefers-reduced-motion: reduce) {
   .nav-search-toggle,
+  .footer-rss-toggle,
   .search-close,
+  .rss-close,
+  .rss-copy-button,
+  .rss-open-link,
   .search-result { transition: none; }
   .nav-search-toggle:hover { transform: none; }
+  .footer-rss-toggle:hover { transform: none; }
+  .rss-copy-button:hover { transform: none; }
 }
