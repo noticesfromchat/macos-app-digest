@@ -297,6 +297,7 @@
 .mobile-nav-overlay.is-opening .mobile-nav-actions > :nth-child(1) { animation-delay: 80ms; }
 .mobile-nav-overlay.is-opening .mobile-nav-actions > :nth-child(2) { animation-delay: 150ms; }
 .mobile-nav-overlay.is-opening .mobile-nav-actions > :nth-child(3) { animation-delay: 220ms; }
+.mobile-nav-overlay.is-opening .mobile-nav-actions > :nth-child(4) { animation-delay: 290ms; }
 
 .mobile-nav-search {
   cursor: pointer;
@@ -630,10 +631,10 @@
     padding: calc(70px + max(12px, env(safe-area-inset-top))) 12px 24px;
   }
   .mobile-nav-modal { border-radius: 14px; }
-  .mobile-nav-actions { padding: 10px 8px; }
+  .mobile-nav-actions { gap: 2px; padding: 10px 8px; }
   .mobile-nav-actions a,
   .mobile-nav-search {
-    min-height: 54px;
+    min-height: 44px;
     padding: 0 14px;
     font-size: .98rem;
   }
