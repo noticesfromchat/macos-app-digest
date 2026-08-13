@@ -1013,6 +1013,7 @@ a { color: inherit; }
   align-items: center;
   gap: 6px;
 }
+.footer-rss-label { display: none; }
 .footer-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
 .footer-logo { width: 42px; height: 42px; }
 .footer-brand strong { display: block; color: var(--text); font-family: "Seamless", "Philippine", var(--display); font-size: 1.4rem; font-weight: 400; letter-spacing: .06em; }
@@ -1135,29 +1136,61 @@ a { color: inherit; }
   .navigation-callout { grid-template-columns: 1fr; margin-top: 40px; padding-top: 26px; }
   .navigation-callout-card { min-height: 122px; padding: 20px; }
   .directory-toolbar { margin-top: 28px; }
-  .site-footer { grid-template-columns: 1fr; gap: 18px; padding: 28px 22px max(30px, env(safe-area-inset-bottom)); }
+  .site-footer {
+    grid-template-columns: 1fr;
+    justify-items: start;
+    align-items: start;
+    gap: 26px;
+    padding: 34px 28px max(36px, env(safe-area-inset-bottom));
+  }
   .footer-brand { min-width: 0; justify-self: start; }
   .footer-nav {
-    display: flex;
+    display: inline-flex;
     width: auto;
     max-width: none;
-    flex-wrap: nowrap;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 18px;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 14px;
     white-space: normal;
-    justify-self: end;
+    justify-self: start;
+  }
+  .footer-nav > a {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
   }
   .footer-utilities {
     display: inline-flex;
-    align-items: center;
-    gap: 18px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
   }
-  .footer-rss-toggle,
+  .site-footer .footer-rss-toggle {
+    display: inline-flex;
+    width: auto;
+    height: 44px;
+    min-width: 44px;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0;
+    padding: 0;
+    border-radius: 0;
+    color: var(--text);
+    font-weight: 700;
+  }
+  .site-footer .footer-rss-toggle svg {
+    display: none;
+  }
+  .footer-rss-label {
+    display: inline;
+  }
   .footer-theme-toggle {
     width: 44px;
     height: 44px;
     max-width: none;
+    justify-content: flex-start;
+    padding: 0;
   }
 }
 
