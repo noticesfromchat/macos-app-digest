@@ -143,9 +143,11 @@ Complete every item before merging a new issue:
 - [ ] Weekend Reading contains three direct article links, with at least two focused
       primarily on apps, workflows or app developers.
 - [ ] Up and Coming contains exactly three eligible apps and records its sources.
+- [ ] The issue includes an `rss` block with a concise issue-specific title and the
+      standard `Read this issue` CTA.
 - [ ] The built `/rss.xml` feed includes every published issue exactly once, newest-
-      first, with stable GUIDs, correct publication dates and correct issue URLs,
-      and the latest issue appears automatically during the normal build.
+      first, with stable GUIDs, correct publication dates, correct issue URLs, the
+      issue-specific RSS title, the issue-number-prefixed summary and the linked CTA.
 - [ ] Copy meets the editorial limits and uses role-based editor attribution.
 - [ ] Light mode, dark mode, mobile layout, keyboard access and reduced motion remain
       intact.

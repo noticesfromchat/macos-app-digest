@@ -13,6 +13,10 @@ const formatRssDate = (slug: string) => {
   return Number.isNaN(parsed.getTime()) ? new Date().toUTCString() : parsed.toUTCString();
 };
 
+const escapeCdata = (value: string) => value.replaceAll(']]>', ']]]]><![CDATA[>');
+
+const formatIssueNumber = (number: string) => `Issue ${number.slice(-2)}`;
+
 export async function GET(context: { site?: URL }) {
   const site = context.site ?? new URL('https://appwaypoint.netlify.app');
   const issues = (await getCollection('issues'))
@@ -22,14 +26,16 @@ export async function GET(context: { site?: URL }) {
   const items = issues
     .map((issue) => {
       const permalink = new URL(`/issues/${issue.data.slug}/`, site).href;
-      const title = `App Waypoint — ${issue.data.date}`;
-      const description = issue.data.dek;
+      const title = issue.data.rss?.title ?? `App Waypoint — ${issue.data.date}`;
+      const cta = issue.data.rss?.cta ?? 'Read this issue';
+      const summary = `${formatIssueNumber(issue.data.number)} - ${issue.data.dek}`;
+      const description = `${summary}<br /><br /><a href="${permalink}">${cta}</a>`;
       const pubDate = formatRssDate(issue.data.slug);
 
       return `
         <item>
           <title>${escapeXml(title)}</title>
-          <description>${escapeXml(description)}</description>
+          <description><![CDATA[${escapeCdata(description)}]]></description>
           <link>${escapeXml(permalink)}</link>
           <guid isPermaLink="true">${escapeXml(permalink)}</guid>
           <pubDate>${pubDate}</pubDate>

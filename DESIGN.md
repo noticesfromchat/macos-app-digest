@@ -193,7 +193,7 @@ The type system is split between a classic editorial serif for the headlines and
 
 The site uses a shared centered shell with a maximum width of 1160px and responsive gutters that resolve to 20px on desktop and 12px on mobile. The same shell is used across app detail, tag, collection, archive, and about pages so the directory feels like one system instead of separate templates.
 
-The homepage opens wider and more scenic, but its content still obeys the same page rhythm: full-width header and footer, then a controlled interior with sections separated by thin rules. Desktop cards usually live in a three-column grid; below 920px the grid collapses to one column and the pages stop pretending they are desktops. Around 680px the mobile gutters tighten and the header simplifies further.
+The homepage opens wider and more scenic, but its content still obeys the same page rhythm: full-width header and footer, then a controlled interior with sections separated by thin rules. Desktop cards usually live in a three-column grid; below 920px the grid collapses to one column and the pages stop pretending they are desktops. Around 680px the mobile gutters tighten, the header simplifies further, and coarse-pointer contexts inherit larger hit targets even when they are wider than a phone.
 
 App detail pages use the same shell but a more editorial composition: a large title, a two-column best-for/tags panel, and a narrower related-apps grid. Section spacing is generous but disciplined, with more space above headings than below them.
 
@@ -223,7 +223,7 @@ Buttons are quiet, pill-shaped workhorses: obvious, tactile, and not over-embell
 - **Primary:** blue fill, white text, 44px minimum height, 23px horizontal padding, and a small icon gap.
 - **Hover / Focus:** the blue deepens on hover, and focus is handled with a clear accessible outline rather than a visual stunt.
 - **Secondary:** transparent fill, ink text, and a borderless or low-border utility presence.
-- **Icon Buttons:** the header search, archive, and theme controls are 38px squares on desktop and shrink on mobile.
+- **Icon Buttons:** the header search, archive, and theme controls are 38px squares on desktop, but expand to 44px targets on mobile and coarse-pointer devices.
 
 ### Tag Chips
 Tag chips are compact chips rather than buttons. They read as metadata first.
@@ -253,7 +253,7 @@ The filter menu is a compact popover, not a modal. It is designed to support fas
 Search is a centered overlay with a frosted dark backdrop and a bright, controlled surface.
 - **Shape:** 18px radius on desktop, 14px on mobile.
 - **Structure:** input row, result count, then a scrollable result list.
-- **Behavior:** the backdrop blurs, the modal remains narrow enough to feel deliberate, and active results receive a soft surface tint rather than a heavy highlight.
+- **Behavior:** the backdrop blurs, the modal remains narrow enough to feel deliberate, the app index loads on demand, and results behave like normal focusable links rather than a custom combobox.
 
 ## Do's and Don'ts
 

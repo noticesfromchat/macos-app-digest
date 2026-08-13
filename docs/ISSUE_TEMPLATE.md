@@ -10,6 +10,9 @@ number: '002'
 slug: 2026-07-17
 date: July 17, 2026
 dek: Write one concise 18-45 word sentence that previews the issue without listing every item.
+rss:
+  title: Short issue-specific RSS title aligned with the issue theme
+  cta: Read this issue
 sections:
   - eyebrow: New Discoveries
     title: A concise editorial section title
@@ -87,6 +90,13 @@ npm run build
 ```
 
 The validator rejects unknown app IDs, duplicate apps within an issue, duplicate issue numbers or slugs, malformed URLs and content outside the approved editorial ranges.
+
+Each issue should include an `rss` block. `rss.title` is a short, issue-specific
+headline for feed readers. It may be polished, lightly witty or occasionally framed
+as a question, but it must match the issue theme and avoid clickbait. `rss.cta`
+should stay `Read this issue` unless the feed format is intentionally revised.
+The RSS summary uses the existing issue `dek`, prefixed with the issue number, so do
+not duplicate summary copy inside `rss`.
 
 Astro generates the homepage, archive, issue pages, tag pages, collection pages and
 individual app pages from Markdown content. Do not manually edit generated pages or

@@ -122,6 +122,20 @@ for (const filename of issueFiles) {
 
   checkLength(relative, 'dek', data.dek, 18, 45);
 
+  if (!data.rss || typeof data.rss !== 'object') {
+    errors.push(`${relative}: missing rss block`);
+  } else {
+    if (!String(data.rss.title ?? '').trim()) {
+      errors.push(`${relative}: missing rss title`);
+    } else if (String(data.rss.title).length > 90) {
+      errors.push(`${relative}: rss title exceeds 90 characters`);
+    }
+
+    if ((data.rss.cta ?? 'Read this issue') !== 'Read this issue') {
+      errors.push(`${relative}: rss cta should be "Read this issue"`);
+    }
+  }
+
   if (!Array.isArray(data.sections) || data.sections.length < 1 || data.sections.length > 6) {
     errors.push(`${relative}: sections must contain 1-6 entries`);
     continue;
