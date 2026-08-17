@@ -113,11 +113,10 @@ const exploreData = {
             <div class="explore-collection-list explore-category-list" aria-label="App Waypoint categories">
               {sortedCategories.map((category) => (
                 <a
-                  class="explore-collection-link explore-category-link"
+                  class="explore-discovery-link explore-category-link"
                   href={`/categories/${category.slug}/`}
-                  style={`--category-accent: ${category.accent};`}
                 >
-                  <span class="explore-category-icon" aria-hidden="true">
+                  <span class="explore-discovery-icon" aria-hidden="true">
                     <MetaIcon name={category.icon} />
                   </span>
                   <span>
@@ -136,8 +135,8 @@ const exploreData = {
               </div>
               <div class="explore-collection-list">
                 {collections.map((collection) => (
-                  <a class="explore-collection-link" href={`/collections/${collection.slug}/`}>
-                    <span class="explore-collection-icon" aria-hidden="true">
+                  <a class="explore-discovery-link" href={`/collections/${collection.slug}/`}>
+                    <span class="explore-discovery-icon" aria-hidden="true">
                       <MetaIcon name={collection.icon} />
                     </span>
                     <span>
