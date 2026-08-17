@@ -7,6 +7,7 @@ export async function GET() {
       name: entry.data.name,
       description: entry.data.description,
       bestFor: entry.data.bestFor,
+      categories: entry.data.categories,
       tags: entry.data.tags,
       source: entry.data.source,
       url: `/apps/${entry.id}/`

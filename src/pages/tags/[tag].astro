@@ -2,7 +2,6 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AppDirectory from '../../components/AppDirectory.astro';
-import NavigationCallout from '../../components/NavigationCallout.astro';
 
 export async function getStaticPaths() {
   const apps = await getCollection('apps');
@@ -18,7 +17,12 @@ export async function getStaticPaths() {
 }
 
 const { tag, apps } = Astro.props;
-const title = tag.charAt(0).toUpperCase() + tag.slice(1);
+const title = tag === 'rss'
+  ? 'RSS'
+  : tag.charAt(0).toUpperCase() + tag.slice(1);
+const dek = tag === 'rss'
+  ? 'RSS readers and tools to help with RSS feeds.'
+  : `Mac apps selected for their relevance to ${title.toLowerCase()} workflows.`;
 ---
 <BaseLayout
   title={`${title} Mac Apps — App Waypoint`}
@@ -27,12 +31,11 @@ const title = tag.charAt(0).toUpperCase() + tag.slice(1);
   <section class="page-shell archive-page tag-page">
     <p class="eyebrow">Browse by tag</p>
     <h1>{title}</h1>
-    <p class="dek">Mac apps selected for their relevance to {title.toLowerCase()} workflows.</p>
+    <p class="dek">{dek}</p>
     <AppDirectory
       apps={apps}
       defaultFilterType="tag"
       defaultFilterValue={tag}
     />
-    <NavigationCallout />
   </section>
 </BaseLayout>

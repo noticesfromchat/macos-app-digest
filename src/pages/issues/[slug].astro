@@ -22,5 +22,5 @@ const { issue, apps } = Astro.props;
   publishedTime={issue.data.slug}
   socialImageAlt={`App Waypoint's Mac app digest for ${issue.data.date}.`}
 >
-  <IssuePage issue={issue.data} appEntries={apps} />
+  <IssuePage homepageStyle={true} issue={issue.data} appEntries={apps} />
 </BaseLayout>

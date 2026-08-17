@@ -2,12 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AppDirectory from '../../components/AppDirectory.astro';
-import NavigationCallout from '../../components/NavigationCallout.astro';
-
-const collectionLabels: Record<string, string> = {
-  'editors-picks': "Editor's Picks",
-  'community-favorites': 'Community Favorites'
-};
+import { collectionLabels } from '../../data/categories';
 
 const collectionDescriptions: Record<string, string> = {
   'editors-picks': 'Explore Mac apps singled out by the editor for exceptional utility, thoughtful design or a distinctive approach to a familiar workflow.',
@@ -30,7 +25,7 @@ export async function getStaticPaths() {
 }
 
 const { collection, apps } = Astro.props;
-const title = collectionLabels[collection]
+const title = collectionLabels[collection as keyof typeof collectionLabels]
   ?? collection
     .split('-')
     .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
@@ -51,6 +46,5 @@ const description = collectionDescriptions[collection]
       defaultFilterType="collection"
       defaultFilterValue={collection}
     />
-    <NavigationCallout />
   </section>
 </BaseLayout>

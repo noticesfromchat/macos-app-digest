@@ -106,8 +106,8 @@ const graph = [
       </a>
       <nav aria-label="Primary navigation">
         <span class="nav-links">
-          <a href="/explore/" aria-current={current === 'explore' ? 'page' : undefined}>Explore</a>
-          <a href="/archive/" aria-current={current === 'archive' ? 'page' : undefined}>Past Issues</a>
+          <a href="/explore/" aria-current={current === 'explore' ? 'page' : undefined}>Explore Apps</a>
+          <a href="/archive/" aria-current={current === 'archive' ? 'page' : undefined}>Issues</a>
           <a href="/about/" aria-current={current === 'about' ? 'page' : undefined}>About</a>
         </span>
         <button
@@ -154,11 +154,11 @@ const graph = [
           </button>
           <a href="/explore/" aria-current={current === 'explore' ? 'page' : undefined}>
             <Compass aria-hidden="true" />
-            <span>Explore</span>
+            <span>Explore Apps</span>
           </a>
           <a href="/archive/" aria-current={current === 'archive' ? 'page' : undefined}>
             <Archive aria-hidden="true" />
-            <span>Past Issues</span>
+            <span>Issues</span>
           </a>
           <a href="/about/" aria-current={current === 'about' ? 'page' : undefined}>
             <Info aria-hidden="true" />
@@ -198,10 +198,6 @@ const graph = [
     </div>
     <main><slot /></main>
     <footer class="site-footer">
-      <a class="footer-brand" href="/" aria-label="App Waypoint home">
-        <span class="footer-logo" aria-hidden="true"><img src="/app-waypoint-logo.png" alt="" /></span>
-        <strong>App Waypoint</strong>
-      </a>
       <div class="footer-utilities">
         <button
           class="footer-rss-toggle"
@@ -248,7 +244,6 @@ const graph = [
             <span class="sr-only" data-rss-copy-label>Copy RSS feed URL</span>
           </button>
         </div>
-        <p class="rss-feedback sr-only" aria-live="polite" data-rss-feedback></p>
       </section>
     </div>
     <script is:inline>
@@ -553,9 +548,8 @@ const graph = [
         const copyIcon = document.querySelector('[data-rss-copy-icon]');
         const copyCheck = document.querySelector('[data-rss-copy-check]');
         const copyLabel = document.querySelector('[data-rss-copy-label]');
-        const feedback = document.querySelector('[data-rss-feedback]');
         const urlNode = document.querySelector('[data-rss-url]');
-        if (!overlay || !copyButton || !copyIcon || !copyCheck || !copyLabel || !feedback || !urlNode) return;
+        if (!overlay || !copyButton || !copyIcon || !copyCheck || !copyLabel || !urlNode) return;
 
         const feedUrl = urlNode.textContent?.trim() || '/rss.xml';
         const openLabel = copyLabel.textContent || 'Copy RSS feed URL';
@@ -569,10 +563,9 @@ const graph = [
           return [...modal.querySelectorAll(firstFocusableSelector)].filter((item) => !item.hasAttribute('disabled'));
         };
 
-        const setCopyState = (copied, label, message) => {
+        const setCopyState = (copied, label) => {
           copyLabel.textContent = label;
           copyButton.setAttribute('aria-label', label);
-          feedback.textContent = message;
           copyIcon.toggleAttribute('hidden', copied);
           copyCheck.toggleAttribute('hidden', !copied);
           copyButton.classList.toggle('is-copied', copied);
@@ -582,7 +575,7 @@ const graph = [
           previousFocus = document.activeElement;
           overlay.hidden = false;
           openButtons.forEach((button) => button.setAttribute('aria-expanded', 'true'));
-          setCopyState(false, openLabel, '');
+          setCopyState(false, openLabel);
           try {
             focusables()[0]?.focus({ preventScroll: true });
           } catch {
@@ -594,15 +587,16 @@ const graph = [
           overlay.hidden = true;
           openButtons.forEach((button) => button.setAttribute('aria-expanded', 'false'));
           previousFocus?.focus?.();
-          setCopyState(false, openLabel, '');
+          setCopyState(false, openLabel);
           clearTimeout(resetTimer);
           resetTimer = null;
         };
 
         const copyFeedUrl = async () => {
+          let copied = false;
           try {
             await navigator.clipboard.writeText(feedUrl);
-            setCopyState(true, 'Copied RSS feed URL', 'RSS feed URL copied to clipboard.');
+            copied = true;
           } catch {
             const input = document.createElement('textarea');
             input.value = feedUrl;
@@ -611,13 +605,18 @@ const graph = [
             input.style.opacity = '0';
             document.body.appendChild(input);
             input.select();
-            const copied = document.execCommand('copy');
+            copied = document.execCommand('copy');
             document.body.removeChild(input);
-            if (!copied) return;
-            setCopyState(true, 'Copied RSS feed URL', 'RSS feed URL copied to clipboard.');
           }
+          if (!copied) {
+            setCopyState(false, openLabel);
+            clearTimeout(resetTimer);
+            resetTimer = window.setTimeout(() => setCopyState(false, openLabel), 2600);
+            return;
+          }
+          setCopyState(true, 'Copied RSS feed URL');
           clearTimeout(resetTimer);
-          resetTimer = window.setTimeout(() => setCopyState(false, openLabel, ''), 2000);
+          resetTimer = window.setTimeout(() => setCopyState(false, openLabel), 2000);
         };
 
         openButtons.forEach((button) => button.addEventListener('click', openRss));

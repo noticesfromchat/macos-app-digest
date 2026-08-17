@@ -1,5 +1,8 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
+import { categorySlugs } from './data/categories';
+
+const categoryEnum = z.enum(categorySlugs as [string, ...string[]]);
 
 const apps = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/apps' }),
@@ -8,6 +11,10 @@ const apps = defineCollection({
     description: z.string().min(40).max(240),
     bestFor: z.string().min(25).max(180),
     tags: z.array(z.string().min(1).max(30)).min(2).max(6),
+    categories: z.array(categoryEnum).min(1).max(categorySlugs.length)
+      .refine((value) => new Set(value).size === value.length, {
+        message: 'categories must not contain duplicates'
+      }),
     collections: z.array(z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)).max(10).optional(),
     source: z.string().min(1).max(140),
     homepage: z.string().url()

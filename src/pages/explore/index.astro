@@ -1,18 +1,15 @@
 ---
 import { getCollection } from 'astro:content';
-import {
-  Code2,
-  Folder,
-  Heart,
-  MessageCircle,
-  PenTool,
-  SlidersHorizontal,
-  Target,
-  Zap
-} from 'lucide-astro';
+import { Check, ChevronLeft, ChevronRight, Copy, Rss } from 'lucide-astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AppCard from '../../components/AppCard.astro';
-import { categories } from '../../data/categories';
+import MetaIcon from '../../components/MetaIcon.astro';
+import {
+  categories,
+  collectionLabels,
+  collections,
+  getPopularTags
+} from '../../data/categories';
 
 const shuffled = <T,>(items: T[]) => {
   const output = [...items];
@@ -38,6 +35,12 @@ const apps = await getCollection('apps');
 const sortedCategories = [...categories].sort((a, b) =>
   a.title.localeCompare(b.title, undefined, { sensitivity: 'base' })
 );
+const popularTags = getPopularTags(apps.map((entry) => entry.data));
+const rssFeedUrl = new URL('/rss.xml', Astro.site).href;
+const collectionDescriptions: Record<string, string> = {
+  'editors-picks': 'Editor-selected standouts with distinctive utility, polish, or an especially memorable point of view.',
+  'community-favorites': 'Apps Mac readers keep recommending for dependable workflows, practical value, and repeat use.'
+};
 
 const toExploreApp = (entry: (typeof apps)[number]) => ({
   id: entry.id,
@@ -45,82 +48,122 @@ const toExploreApp = (entry: (typeof apps)[number]) => ({
   description: entry.data.description,
   bestFor: entry.data.bestFor,
   tags: entry.data.tags,
+  categories: entry.data.categories,
   source: entry.data.source,
   homepage: entry.data.homepage
 });
 
-const exploreData = {
-  editorsPicks: apps
-    .filter((entry) => entry.data.collections?.includes('editors-picks'))
-    .map(toExploreApp),
-  communityFavorites: apps
-    .filter((entry) => entry.data.collections?.includes('community-favorites'))
-    .map(toExploreApp),
-  allApps: apps.map(toExploreApp)
-};
+const editorsPicksPool = apps.filter((entry) => entry.data.collections?.includes('editors-picks'));
+const communityFavoritesPool = apps.filter((entry) => entry.data.collections?.includes('community-favorites'));
 
-const categoryIcons: Record<string, typeof Target> = {
-  automate: Zap,
-  code: Code2,
-  communicate: MessageCircle,
-  design: PenTool,
-  focus: Target,
-  organize: Folder,
-  thrive: Heart,
-  tweak: SlidersHorizontal
-};
-
-const editorsPicks = pickRandom(
-  apps.filter((entry) => entry.data.collections?.includes('editors-picks')),
-  3
-);
+const editorsPicks = pickRandom(editorsPicksPool, 3);
 const communityFavorites = pickRandom(
-  apps.filter((entry) => entry.data.collections?.includes('community-favorites')),
+  communityFavoritesPool,
   3,
   new Set(editorsPicks.map((entry) => entry.id))
 );
-const browseAllApps = pickRandom(
-  apps,
-  3,
-  new Set([...editorsPicks, ...communityFavorites].map((entry) => entry.id))
-);
+const categoryModules = sortedCategories.map((category) => ({
+  ...category,
+  apps: pickRandom(
+    apps.filter((entry) => entry.data.categories.includes(category.slug)),
+    3
+  )
+}));
+const browseCarouselApps = shuffled(apps);
+
+const getInitialCarouselPosition = (index: number, itemCount: number) => {
+  if (index <= 1) return index;
+  if (index === itemCount - 1) return -1;
+  return undefined;
+};
+
+const exploreData = {
+  editorsPicks: editorsPicksPool.map(toExploreApp),
+  communityFavorites: communityFavoritesPool.map(toExploreApp),
+  categories: sortedCategories.map((category) => ({
+    slug: category.slug,
+    apps: apps
+      .filter((entry) => entry.data.categories.includes(category.slug))
+      .map(toExploreApp)
+  }))
+};
 
 ---
 <BaseLayout
   title="Explore — App Waypoint"
-  description="Browse the site by task or collection to jump straight to the apps that fit the way you work."
+  description="Explore App Waypoint through editorial collections, popular tags, and six browse categories built from the Mac app catalog."
+  current="explore"
 >
   <section class="page-shell archive-page explore-page">
     <header class="explore-hero">
       <p class="eyebrow">Explore</p>
-      <h1>Explore App Waypoint</h1>
+      <h1>Explore Apps</h1>
       <p class="dek">
-        Browse the site by task or collection to jump straight to the apps that fit the way you work.
+        Browse App Waypoint through Mac apps chosen by hand, surfaced by the community, and organized to make worthwhile software easier to discover.
       </p>
     </header>
 
-    <section class="section explore-section explore-categories-section">
-      <div class="section-heading">
-        <h2>Browse by what you want to do</h2>
-      </div>
-      <div class="explore-category-grid" aria-label="App Waypoint categories">
-        {sortedCategories.map((category, index) => {
-          const Icon = categoryIcons[category.slug] ?? Target;
+    <section class="section explore-section explore-discovery-section">
+      <article class="card explore-utility-card explore-utility-combined-card explore-discovery-card">
+        <div class="explore-discovery-layout">
+          <section class="explore-discovery-categories">
+            <div class="section-heading">
+              <h2>Categories</h2>
+            </div>
+            <div class="explore-collection-list explore-category-list" aria-label="App Waypoint categories">
+              {sortedCategories.map((category) => (
+                <a
+                  class="explore-discovery-link explore-category-link"
+                  href={`/categories/${category.slug}/`}
+                >
+                  <span class="explore-discovery-icon" aria-hidden="true">
+                    <MetaIcon name={category.icon} />
+                  </span>
+                  <span>
+                    <strong>{category.title}</strong>
+                    <small>{category.description}</small>
+                  </span>
+                </a>
+              ))}
+            </div>
+          </section>
 
-          return (
-            <a
-              class="card explore-category-card"
-              href={`/categories/${category.slug}/`}
-              style={`--tile-index: ${index};`}
-            >
-              <span class="explore-category-icon" aria-hidden="true">
-                <Icon />
-              </span>
-              <strong>{category.title}</strong>
-            </a>
-          );
-        })}
-      </div>
+          <div class="explore-utility-grid explore-discovery-lower-grid">
+            <section class="explore-discovery-collections">
+              <div class="section-heading">
+                <h2>Collections</h2>
+              </div>
+              <div class="explore-collection-list">
+                {collections.map((collection) => (
+                  <a class="explore-discovery-link" href={`/collections/${collection.slug}/`}>
+                    <span class="explore-discovery-icon" aria-hidden="true">
+                      <MetaIcon name={collection.icon} />
+                    </span>
+                    <span>
+                      <strong>{collectionLabels[collection.slug]}</strong>
+                      <small>{collectionDescriptions[collection.slug]}</small>
+                    </span>
+                  </a>
+                ))}
+              </div>
+            </section>
+
+            <section class="explore-utility-tags-panel">
+              <div class="section-heading">
+                <h2>Popular tags</h2>
+              </div>
+              <div class="tag-list explore-popular-tags" aria-label="Popular tags">
+                {popularTags.map(({ tag, count }) => (
+                  <a class="tag" href={`/tags/${tag}/`}>
+                    {tag}
+                    <span>{count}</span>
+                  </a>
+                ))}
+              </div>
+            </section>
+          </div>
+        </div>
+      </article>
     </section>
 
     <section class="section explore-section">
@@ -151,21 +194,101 @@ const browseAllApps = pickRandom(
       </p>
     </section>
 
+    <section class="section explore-section explore-rss-section">
+      <article class="card explore-subscribe-card">
+        <div class="explore-subscribe-heading">
+          <span class="explore-subscribe-icon" aria-hidden="true">
+            <Rss />
+          </span>
+          <h2>Apps delivered every Friday</h2>
+        </div>
+        <div class="explore-subscribe-content">
+          <p class="explore-subscribe-body">We love <a href="/tags/rss/">RSS</a> and want to make it easy for you to subscribe. Copy the URL and paste it into your favorite RSS reader to subscribe.</p>
+          <div class="rss-url-card explore-subscribe-url">
+            <code class="rss-url-value">{rssFeedUrl}</code>
+            <button
+              class="rss-copy-button"
+              type="button"
+              aria-label="Copy RSS feed URL"
+              data-rss-inline-copy
+              data-rss-inline-url={rssFeedUrl}
+            >
+              <Copy class="rss-copy-icon" aria-hidden="true" data-rss-inline-copy-icon />
+              <Check class="rss-copy-check" aria-hidden="true" hidden data-rss-inline-copy-check />
+              <span class="sr-only" data-rss-inline-label>Copy RSS feed URL</span>
+            </button>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    {categoryModules.map((category) => (
+      <section class="section explore-section">
+        <div class="section-heading">
+          <h2>{category.title}</h2>
+        </div>
+        <div class="grid" data-explore-grid={`category-${category.slug}`}>
+          {category.apps.map((entry) => (
+            <AppCard app={entry.data} appId={entry.id} />
+          ))}
+        </div>
+        <p class="explore-more">
+          <a href={`/categories/${category.slug}/`}>More {category.title}</a>
+        </p>
+      </section>
+    ))}
+
     <section class="section explore-section">
       <div class="section-heading">
         <h2>Browse all apps</h2>
       </div>
-      <div class="grid" data-explore-grid="all-apps">
-        {browseAllApps.map((entry) => (
-          <AppCard app={entry.data} appId={entry.id} />
-        ))}
-      </div>
-      <p class="explore-more">
-        <a href="/apps/">More apps</a>
+      <p class="explore-section-dek">
+        Still scrolling? Swipe left or right to browse all apps.
       </p>
+      <div class="explore-carousel-shell">
+        <div class="explore-carousel-stage">
+          <button class="explore-carousel-arrow is-prev" type="button" data-carousel-prev aria-label="Previous app">
+            <ChevronLeft aria-hidden="true" />
+          </button>
+          <div
+            class="explore-carousel-viewport"
+            data-carousel-viewport
+            role="region"
+            aria-label="Browse all apps carousel"
+            tabindex="0"
+          >
+            <div class="explore-carousel-track" data-carousel-track>
+              {browseCarouselApps.map((entry, index) => {
+                const position = getInitialCarouselPosition(index, browseCarouselApps.length);
+                return (
+                  <div
+                    class="explore-carousel-card-slot"
+                    data-carousel-item
+                    data-position={position}
+                    aria-hidden={position === 0 ? 'false' : 'true'}
+                  >
+                    <AppCard app={entry.data} appId={entry.id} />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <button class="explore-carousel-arrow is-next" type="button" data-carousel-next aria-label="Next app">
+            <ChevronRight aria-hidden="true" />
+          </button>
+        </div>
+        <div class="explore-carousel-footer">
+          <a class="explore-carousel-directory-link" href="/apps/">Open the full directory</a>
+        </div>
+      </div>
     </section>
   </section>
-  <script type="application/json" id="explore-random-data">{JSON.stringify(exploreData).replaceAll('<', '\\u003c')}</script>
+
+  <script
+    type="application/json"
+    id="explore-random-data"
+    set:html={JSON.stringify(exploreData).replaceAll('<', '\\u003c')}
+  />
   <script is:inline type="module">
     const dataElement = document.getElementById('explore-random-data');
     if (dataElement?.textContent) {
@@ -222,15 +345,227 @@ const browseAllApps = pickRandom(
         3,
         new Set(editorsPicks.map((app) => app.id))
       );
-      const browseAllApps = pickRandom(
-        data.allApps,
-        3,
-        new Set([...editorsPicks, ...communityFavorites].map((app) => app.id))
-      );
+      const categorySelections = new Map();
+
+      data.categories.forEach((category) => {
+        categorySelections.set(category.slug, pickRandom(category.apps, 3));
+      });
 
       renderSelection('[data-explore-grid="editors-picks"]', editorsPicks);
       renderSelection('[data-explore-grid="community-favorites"]', communityFavorites);
-      renderSelection('[data-explore-grid="all-apps"]', browseAllApps);
+      categorySelections.forEach((selection, slug) => {
+        renderSelection(`[data-explore-grid="category-${slug}"]`, selection);
+      });
+
+      const copyText = async (value) => {
+        try {
+          await navigator.clipboard.writeText(value);
+          return true;
+        } catch {
+          const input = document.createElement('textarea');
+          input.value = value;
+          input.setAttribute('readonly', '');
+          input.style.position = 'fixed';
+          input.style.opacity = '0';
+          document.body.appendChild(input);
+          input.select();
+          const copied = document.execCommand('copy');
+          document.body.removeChild(input);
+          return copied;
+        }
+      };
+
+      const inlineCopyButton = document.querySelector('[data-rss-inline-copy]');
+      const inlineCopyIcon = document.querySelector('[data-rss-inline-copy-icon]');
+      const inlineCopyCheck = document.querySelector('[data-rss-inline-copy-check]');
+      const inlineCopyLabel = document.querySelector('[data-rss-inline-label]');
+      inlineCopyButton?.addEventListener('click', async () => {
+        const value = inlineCopyButton.getAttribute('data-rss-inline-url') || '';
+        const copied = value ? await copyText(value) : false;
+        inlineCopyButton.classList.toggle('is-copied', copied);
+        if (inlineCopyLabel) {
+          inlineCopyLabel.textContent = copied ? 'Copied RSS feed URL' : 'Copy RSS feed URL';
+          inlineCopyButton.setAttribute('aria-label', inlineCopyLabel.textContent);
+        }
+        inlineCopyIcon?.toggleAttribute('hidden', copied);
+        inlineCopyCheck?.toggleAttribute('hidden', !copied);
+        window.setTimeout(() => {
+          inlineCopyButton.classList.remove('is-copied');
+          if (inlineCopyLabel) {
+            inlineCopyLabel.textContent = 'Copy RSS feed URL';
+            inlineCopyButton.setAttribute('aria-label', 'Copy RSS feed URL');
+          }
+          inlineCopyIcon?.removeAttribute('hidden');
+          inlineCopyCheck?.setAttribute('hidden', '');
+        }, 2000);
+      });
+
+      const carouselTrack = document.querySelector('[data-carousel-track]');
+      const carouselCards = [...document.querySelectorAll('[data-carousel-item]')];
+      const carouselPrev = document.querySelector('[data-carousel-prev]');
+      const carouselNext = document.querySelector('[data-carousel-next]');
+      const carouselViewport = document.querySelector('[data-carousel-viewport]');
+
+      let carouselItems = shuffle(carouselCards);
+      let carouselIndex = 0;
+      let activePointerId = null;
+      let mouseDragging = false;
+      let pointerStartX = 0;
+      let pointerDeltaX = 0;
+      let suppressClick = false;
+      let pointerDownTarget = null;
+
+      const setCardPosition = (card, position) => {
+        const isCenter = position === 0;
+        if (position === null) card.removeAttribute('data-position');
+        else card.setAttribute('data-position', String(position));
+        card.setAttribute('aria-hidden', isCenter ? 'false' : 'true');
+        card.querySelectorAll('a, button').forEach((control) => {
+          if (isCenter) control.removeAttribute('tabindex');
+          else control.setAttribute('tabindex', '-1');
+        });
+      };
+
+      const paintCarousel = () => {
+        if (!carouselTrack || !carouselCards.length || !carouselItems.length) return;
+        carouselCards.forEach((card) => setCardPosition(card, null));
+        [-1, 0, 1].forEach((position) => {
+          const itemIndex = (carouselIndex + position + carouselItems.length) % carouselItems.length;
+          setCardPosition(carouselItems[itemIndex], position);
+        });
+      };
+
+      const goToNext = () => {
+        carouselIndex = (carouselIndex + 1) % carouselItems.length;
+        paintCarousel();
+      };
+
+      const goToPrev = () => {
+        carouselIndex = (carouselIndex - 1 + carouselItems.length) % carouselItems.length;
+        paintCarousel();
+      };
+
+      const beginDrag = (clientX) => {
+        pointerStartX = clientX;
+        pointerDeltaX = 0;
+        suppressClick = false;
+        carouselViewport?.classList.add('is-dragging');
+      };
+
+      const updateDrag = (clientX) => {
+        if (!carouselViewport) return;
+        const limit = carouselViewport.clientWidth * 0.34;
+        pointerDeltaX = Math.max(-limit, Math.min(limit, clientX - pointerStartX));
+        carouselViewport.style.setProperty('--carousel-drag', `${pointerDeltaX}px`);
+      };
+
+      const endDrag = () => {
+        if (!carouselViewport) return;
+        const threshold = Math.min(72, carouselViewport.clientWidth * 0.14);
+        suppressClick = Math.abs(pointerDeltaX) > 8;
+        carouselViewport.classList.remove('is-dragging');
+        carouselViewport.style.setProperty('--carousel-drag', '0px');
+        if (pointerDeltaX <= -threshold) goToNext();
+        else if (pointerDeltaX >= threshold) goToPrev();
+        window.setTimeout(() => { suppressClick = false; }, 0);
+      };
+
+      carouselPrev?.addEventListener('click', goToPrev);
+      carouselNext?.addEventListener('click', goToNext);
+
+      carouselViewport?.addEventListener('pointerdown', (event) => {
+        if (event.button !== 0 || activePointerId !== null) return;
+        activePointerId = event.pointerId;
+        pointerDownTarget = event.target;
+        beginDrag(event.clientX);
+      });
+
+      carouselViewport?.addEventListener('pointermove', (event) => {
+        if (event.pointerId !== activePointerId) return;
+        updateDrag(event.clientX);
+        if (Math.abs(pointerDeltaX) > 4) {
+          if (!carouselViewport.hasPointerCapture(event.pointerId)) {
+            carouselViewport.setPointerCapture(event.pointerId);
+          }
+          event.preventDefault();
+        }
+      });
+
+      const finishDrag = (event) => {
+        if (event.pointerId !== activePointerId) return;
+        if (carouselViewport.hasPointerCapture(event.pointerId)) {
+          carouselViewport.releasePointerCapture(event.pointerId);
+        }
+        activePointerId = null;
+        endDrag();
+        if (event.type === 'pointercancel') pointerDownTarget = null;
+      };
+
+      carouselViewport?.addEventListener('pointerup', finishDrag);
+      carouselViewport?.addEventListener('pointercancel', finishDrag);
+      carouselViewport?.addEventListener('mousedown', (event) => {
+        if (event.button !== 0 || activePointerId !== null) return;
+        mouseDragging = true;
+        beginDrag(event.clientX);
+      });
+      window.addEventListener('mousemove', (event) => {
+        if (!mouseDragging || activePointerId !== null) return;
+        updateDrag(event.clientX);
+        if (Math.abs(pointerDeltaX) > 4) event.preventDefault();
+      });
+      window.addEventListener('mouseup', () => {
+        if (!mouseDragging || activePointerId !== null) return;
+        mouseDragging = false;
+        endDrag();
+      });
+      carouselViewport?.querySelectorAll('a').forEach((link) => {
+        link.setAttribute('draggable', 'false');
+        link.addEventListener('dragstart', (event) => event.preventDefault());
+      });
+      carouselViewport?.addEventListener('click', (event) => {
+        const clickOrigin = pointerDownTarget || event.target;
+        pointerDownTarget = null;
+
+        if (suppressClick) {
+          event.preventDefault();
+          event.stopPropagation();
+          return;
+        }
+        const sideCard = clickOrigin.closest?.('[data-carousel-item][data-position="-1"], [data-carousel-item][data-position="1"]');
+        if (sideCard) {
+          event.preventDefault();
+          event.stopPropagation();
+          if (sideCard.getAttribute('data-position') === '-1') goToPrev();
+          else goToNext();
+          return;
+        }
+
+        const centerCard = clickOrigin.closest?.('[data-carousel-item][data-position="0"]');
+        const clickedLink = clickOrigin.closest?.('a');
+        const destination = clickedLink || centerCard?.querySelector('.app-card-link');
+        if (!centerCard || !destination) return;
+
+        event.preventDefault();
+        event.stopPropagation();
+        if (destination.target === '_blank') {
+          window.open(destination.href, '_blank', 'noopener,noreferrer');
+        } else {
+          window.location.assign(destination.href);
+        }
+      }, true);
+
+      carouselViewport?.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowLeft') {
+          event.preventDefault();
+          goToPrev();
+        }
+        if (event.key === 'ArrowRight') {
+          event.preventDefault();
+          goToNext();
+        }
+      });
+
+      paintCarousel();
     }
   </script>
 </BaseLayout>

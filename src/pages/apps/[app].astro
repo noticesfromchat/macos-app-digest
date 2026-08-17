@@ -3,7 +3,12 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 import { ArrowUpRight } from 'lucide-astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AppCard from '../../components/AppCard.astro';
-import NavigationCallout from '../../components/NavigationCallout.astro';
+import MetaIcon from '../../components/MetaIcon.astro';
+import {
+  categories,
+  collectionLabels,
+  collections as collectionMeta
+} from '../../data/categories';
 
 type AppEntry = CollectionEntry<'apps'>;
 
@@ -20,18 +25,26 @@ const { app, apps } = Astro.props as {
   apps: AppEntry[];
 };
 
+const appCategories = categories.filter((category) =>
+  app.data.categories.includes(category.slug)
+);
+const appCollections = collectionMeta.filter((collection) =>
+  app.data.collections?.includes(collection.slug)
+);
+
 const relatedApps = apps
   .filter((entry) => entry.id !== app.id)
   .map((entry) => ({
     entry,
-    sharedTagCount: entry.data.tags.filter((tag) => app.data.tags.includes(tag)).length
+    sharedCategoryCount: entry.data.categories.filter((category) =>
+      app.data.categories.includes(category)
+    ).length
   }))
-  .filter(({ sharedTagCount }) => sharedTagCount > 0)
+  .filter(({ sharedCategoryCount }) => sharedCategoryCount > 0)
   .sort((a, b) =>
-    b.sharedTagCount - a.sharedTagCount ||
+    b.sharedCategoryCount - a.sharedCategoryCount ||
     a.entry.data.name.localeCompare(b.entry.data.name, undefined, { sensitivity: 'base' })
   )
-  .slice(0, 6)
   .map(({ entry }) => entry);
 
 const appUrl = new URL(Astro.url.pathname, Astro.site).href;
@@ -42,7 +55,8 @@ const appSchema = [
     name: app.data.name,
     description: app.data.description,
     url: app.data.homepage,
-    applicationCategory: app.data.tags,
+    applicationCategory: appCategories.map((category) => category.title),
+    keywords: app.data.tags.join(', '),
     operatingSystem: 'macOS',
     isPartOf: { '@id': new URL('/#website', Astro.site).href },
     mainEntityOfPage: appUrl
@@ -61,17 +75,51 @@ const appSchema = [
       <p class="eyebrow">App Detail</p>
       <h1>{app.data.name}</h1>
       <p class="dek">{app.data.description}</p>
+      <div class="app-detail-meta-flow">
+        {appCollections.length > 0 && (
+          <div class="app-detail-collections" aria-label="Collections">
+            {appCollections.map((collection) => (
+              <a class="collection-badge" href={`/collections/${collection.slug}/`}>
+                <span class="collection-badge-icon" aria-hidden="true">
+                  <MetaIcon name={collection.icon} />
+                </span>
+                <span>{collectionLabels[collection.slug]}</span>
+              </a>
+            ))}
+          </div>
+        )}
+        <div class="app-detail-best-for">
+          <p class="eyebrow">Best For</p>
+          <p>{app.data.bestFor}</p>
+        </div>
+      </div>
       <div class="app-detail-actions">
         <a class="button" href={app.data.homepage} target="_blank" rel="noreferrer">Homepage <ArrowUpRight aria-hidden="true" /></a>
       </div>
     </header>
 
-    <section class="app-detail-panel">
-      <div>
-        <p class="eyebrow">Best For</p>
-        <p>{app.data.bestFor}</p>
+    <section class="app-detail-taxonomy">
+      <div class="section-heading">
+        <p class="eyebrow">Categories</p>
       </div>
-      <div>
+      <div class="app-detail-category-grid" aria-label="App categories">
+        {appCategories.map((category) => (
+          <a
+            class="app-detail-category-card"
+            href={`/categories/${category.slug}/`}
+            style={`--category-accent: ${category.accent};`}
+          >
+            <span class="app-detail-category-icon" aria-hidden="true">
+              <MetaIcon name={category.icon} />
+            </span>
+            <span class="app-detail-category-copy">
+              <strong>{category.title}</strong>
+              <small>{category.description}</small>
+            </span>
+          </a>
+        ))}
+      </div>
+      <div class="app-detail-tag-stack">
         <p class="eyebrow">Tags</p>
         <div class="tag-list app-detail-tags" aria-label="App tags">
           {app.data.tags.map((tag) => <a class="tag" href={`/tags/${tag}/`}>{tag}</a>)}
@@ -83,14 +131,65 @@ const appSchema = [
       <section class="section app-detail-section">
         <div class="section-heading">
           <p class="eyebrow">You May Also Like</p>
-          <h2>These apps with similar tags</h2>
+          <h2>More apps from the same categories</h2>
         </div>
-        <div class="grid">
-          {relatedApps.map((entry) => <AppCard app={entry.data} appId={entry.id} />)}
+        <div class="grid" data-related-apps-grid>
+          {relatedApps.slice(0, 6).map((entry) => <AppCard app={entry.data} appId={entry.id} />)}
         </div>
       </section>
     )}
-
-    <NavigationCallout />
   </article>
+  {relatedApps.length > 0 && (
+    <script type="application/json" id="related-apps-data">{JSON.stringify(relatedApps.map((entry) => ({
+      id: entry.id,
+      ...entry.data
+    }))).replaceAll('<', '\\u003c')}</script>
+  )}
+  <script is:inline type="module">
+    const relatedAppsData = document.getElementById('related-apps-data');
+    const relatedAppsGrid = document.querySelector('[data-related-apps-grid]');
+
+    if (relatedAppsData?.textContent && relatedAppsGrid) {
+      const relatedApps = JSON.parse(relatedAppsData.textContent);
+
+      const escapeHTML = (value) =>
+        String(value)
+          .replaceAll('&', '&amp;')
+          .replaceAll('<', '&lt;')
+          .replaceAll('>', '&gt;')
+          .replaceAll('"', '&quot;')
+          .replaceAll("'", '&#39;');
+
+      const shuffle = (items) => {
+        const output = [...items];
+
+        for (let index = output.length - 1; index > 0; index -= 1) {
+          const swapIndex = Math.floor(Math.random() * (index + 1));
+          [output[index], output[swapIndex]] = [output[swapIndex], output[index]];
+        }
+
+        return output;
+      };
+
+      const renderCard = (relatedApp) => `
+        <article class="card app-card" data-app-name="${escapeHTML(relatedApp.name)}">
+          <a class="app-card-link" href="/apps/${escapeHTML(relatedApp.id)}/" aria-label="Read more about ${escapeHTML(relatedApp.name)}"></a>
+          <div class="app-summary">
+            <h3><a href="${escapeHTML(relatedApp.homepage)}" target="_blank" rel="noreferrer">${escapeHTML(relatedApp.name)}</a></h3>
+            <p>${escapeHTML(relatedApp.description)}</p>
+          </div>
+          <p class="best-for"><strong>Best for:</strong> ${escapeHTML(relatedApp.bestFor)}</p>
+          <div class="tag-list" aria-label="App tags">
+            ${relatedApp.tags.map((tag) => `<a class="tag" href="/tags/${escapeHTML(tag)}/">${escapeHTML(tag)}</a>`).join('')}
+          </div>
+          <p class="source-line"><strong>Source:</strong> ${escapeHTML(relatedApp.source)}</p>
+        </article>
+      `;
+
+      relatedAppsGrid.innerHTML = shuffle(relatedApps)
+        .slice(0, 6)
+        .map(renderCard)
+        .join('');
+    }
+  </script>
 </BaseLayout>

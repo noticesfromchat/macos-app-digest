@@ -1,6 +1,7 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import AppCard from './AppCard.astro';
+import { collectionLabels } from '../data/categories';
 
 type FilterType = 'tag' | 'collection';
 
@@ -37,11 +38,6 @@ for (const issue of issues) {
   }
 }
 
-const collectionLabels: Record<string, string> = {
-  'editors-picks': "Editor's Picks",
-  'community-favorites': 'Community Favorites'
-};
-
 const contextualCollectionCount = (collection: string) =>
   apps.filter((entry) => entry.data.collections?.includes(collection)).length;
 
@@ -72,7 +68,7 @@ const sortedApps = [...apps].sort((a, b) =>
   data-default-type={defaultFilterType}
   data-default-value={defaultFilterValue}
 >
-  <div class="directory-toolbar">
+  <div class:list={['directory-toolbar', !showFilterMenu && 'directory-toolbar--no-filter']}>
     <p class="directory-count" aria-live="polite" data-directory-count>
       {apps.length} {apps.length === 1 ? 'app' : 'apps'}
     </p>

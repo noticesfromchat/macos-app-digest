@@ -9,3 +9,43 @@
   from = "/archive.html"
   to = "/archive/"
   status = 301
+
+[[redirects]]
+  from = "/categories/focus/"
+  to = "/categories/productivity-workflow/"
+  status = 301
+
+[[redirects]]
+  from = "/categories/communicate/"
+  to = "/categories/writing-notes-reading/"
+  status = 301
+
+[[redirects]]
+  from = "/categories/design/"
+  to = "/categories/files-research-documents/"
+  status = 301
+
+[[redirects]]
+  from = "/categories/automate/"
+  to = "/categories/productivity-workflow/"
+  status = 301
+
+[[redirects]]
+  from = "/categories/organize/"
+  to = "/categories/files-research-documents/"
+  status = 301
+
+[[redirects]]
+  from = "/categories/code/"
+  to = "/categories/developer-tools/"
+  status = 301
+
+[[redirects]]
+  from = "/categories/thrive/"
+  to = "/tags/health/"
+  status = 301
+
+[[redirects]]
+  from = "/categories/tweak/"
+  to = "/categories/mac-utilities-customization/"
+  status = 301

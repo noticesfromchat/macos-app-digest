@@ -1,0 +1,29 @@
+---
+import {
+  BookHeart,
+  Code2,
+  FolderSearch,
+  Heart,
+  NotebookPen,
+  Route,
+  SlidersHorizontal,
+  Sparkles
+} from 'lucide-astro';
+
+const { name } = Astro.props as { name: string };
+
+const icons = {
+  'book-heart': BookHeart,
+  'code-2': Code2,
+  'folder-search': FolderSearch,
+  heart: Heart,
+  'notebook-pen': NotebookPen,
+  route: Route,
+  'sliders-horizontal': SlidersHorizontal,
+  sparkles: Sparkles
+} as const;
+
+const Icon = icons[name as keyof typeof icons] ?? Sparkles;
+---
+
+<Icon />

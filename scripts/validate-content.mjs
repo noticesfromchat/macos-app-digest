@@ -2,11 +2,13 @@ import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 import { parse } from 'yaml';
+import { categorySlugs, getCategoriesForTags } from '../src/data/categories.ts';
 
 const root = process.cwd();
 const appsDir = path.join(root, 'src/content/apps');
 const issuesDir = path.join(root, 'src/content/issues');
 const errors = [];
+const validCategorySlugs = new Set(categorySlugs);
 
 async function markdownFiles(directory) {
   return (await readdir(directory))
@@ -72,6 +74,28 @@ for (const filename of appFiles) {
     errors.push(`${relative}: tags must contain 2-6 entries`);
   } else if (new Set(data.tags).size !== data.tags.length) {
     errors.push(`${relative}: tags contain duplicates`);
+  }
+
+  const expectedCategories = Array.isArray(data.tags) ? getCategoriesForTags(data.tags) : [];
+
+  if (!Array.isArray(data.categories)) {
+    errors.push(`${relative}: categories must contain 1-${categorySlugs.length} entries`);
+  } else if (data.categories.length < 1 || data.categories.length > categorySlugs.length) {
+    errors.push(`${relative}: categories must contain 1-${categorySlugs.length} entries`);
+  } else {
+    if (new Set(data.categories).size !== data.categories.length) {
+      errors.push(`${relative}: categories contain duplicates`);
+    }
+
+    for (const category of data.categories) {
+      if (!validCategorySlugs.has(category)) {
+        errors.push(`${relative}: category "${category}" is not in the approved 6-category set`);
+      }
+    }
+
+    if (expectedCategories.length && data.categories.join('|') !== expectedCategories.join('|')) {
+      errors.push(`${relative}: categories must stay synced with tags (expected [${expectedCategories.join(', ')}])`);
+    }
   }
 
   if (data.collections !== undefined) {
