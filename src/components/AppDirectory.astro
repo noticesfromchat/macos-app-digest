@@ -68,7 +68,7 @@ const sortedApps = [...apps].sort((a, b) =>
   data-default-type={defaultFilterType}
   data-default-value={defaultFilterValue}
 >
-  <div class="directory-toolbar">
+  <div class:list={['directory-toolbar', !showFilterMenu && 'directory-toolbar--no-filter']}>
     <p class="directory-count" aria-live="polite" data-directory-count>
       {apps.length} {apps.length === 1 ? 'app' : 'apps'}
     </p>

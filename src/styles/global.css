@@ -1532,6 +1532,18 @@ a { color: inherit; }
   .directory-toolbar { flex-wrap: wrap; row-gap: 12px; }
   .directory-controls { flex: 1 1 100%; }
   .directory-controls .directory-select { flex: 1 1 0; width: auto; }
+  .directory-toolbar--no-filter {
+    flex-wrap: nowrap;
+    align-items: flex-end;
+  }
+  .directory-toolbar--no-filter .directory-controls {
+    flex: 0 0 auto;
+    margin-left: auto;
+  }
+  .directory-toolbar--no-filter .directory-select {
+    flex: 0 0 auto;
+    width: var(--control-width);
+  }
 }
 
 @media (min-width: 1440px) {
