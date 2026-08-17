@@ -8,10 +8,12 @@ type AppEntry = CollectionEntry<'apps'>;
 
 const {
   homepage = false,
+  homepageStyle = homepage,
   issue,
   appEntries
 } = Astro.props as {
   homepage?: boolean;
+  homepageStyle?: boolean;
   issue: Issue;
   appEntries: AppEntry[];
 };
@@ -28,7 +30,7 @@ const editorsPickIndex = aiSectionIndex >= 0
 const editorsPick = issue.editorsPick ? appsById.get(issue.editorsPick.app) : undefined;
 ---
 
-<article class:list={['issue', { 'is-homepage': homepage }]}>
+<article class:list={['issue', { 'is-homepage': homepageStyle }]}>
   <header class="hero">
     <div class="hero-copy">
       <p class="eyebrow">

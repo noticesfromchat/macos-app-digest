@@ -1,38 +1,38 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import MetaIcon from '../../components/MetaIcon.astro';
 import { categories } from '../../data/categories';
-import NavigationCallout from '../../components/NavigationCallout.astro';
 
 const apps = await getCollection('apps');
 
 const categoryCounts = new Map(
   categories.map((category) => [
     category.slug,
-    apps.filter((entry) => entry.data.tags.some((tag) => category.tags.includes(tag))).length
+    apps.filter((entry) => entry.data.categories.includes(category.slug)).length
   ])
 );
 ---
 <BaseLayout
   title="Categories — App Waypoint"
-  description="Browse App Waypoint's category pages, each grouping related tags into a focused landing page for Mac apps."
+  description="Browse App Waypoint's six editorial categories for Mac apps, from AI tools and developer utilities to writing, files, and customization workflows."
 >
   <section class="page-shell archive-page">
     <p class="eyebrow">Browse by category</p>
     <h1>Categories</h1>
-    <p class="dek">Grouped landing pages for related App Waypoint tags and the apps that span them.</p>
+    <p class="dek">Six broader browse lanes shaped from App Waypoint tags, built to make app discovery feel more editorial and less overwhelming.</p>
 
     <div class="archive-list">
       {categories.map((category) => (
-        <a class="archive-card category-card" href={`/categories/${category.slug}/`}>
-          <span>{category.title}</span>
-          <strong>{categoryCounts.get(category.slug) ?? 0} apps</strong>
+        <a class="archive-card category-card category-directory-card" href={`/categories/${category.slug}/`} style={`--category-accent: ${category.accent};`}>
+          <span class="category-directory-icon" aria-hidden="true">
+            <MetaIcon name={category.icon} />
+          </span>
+          <strong>{category.title}</strong>
+          <span>{categoryCounts.get(category.slug) ?? 0} apps</span>
           <em>{category.description}</em>
         </a>
       ))}
     </div>
-
-    <NavigationCallout />
   </section>
 </BaseLayout>
-

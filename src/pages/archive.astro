@@ -19,8 +19,8 @@ const issueLabel = (number: string | number) => String(Number(number)).padStart(
     <div class="archive-list">
       {issues.map((issue) => (
         <a class="archive-card" href={`/issues/${issue.data.slug}/`}>
-          <span>Issue {issueLabel(issue.data.number)}</span>
-          <strong><time datetime={issue.data.slug}>{issue.data.date}</time></strong>
+          <strong>Issue {issueLabel(issue.data.number)}</strong>
+          <span class="archive-card-date"><time datetime={issue.data.slug}>{issue.data.date}</time></span>
           <em>{issue.data.dek}</em>
         </a>
       ))}
