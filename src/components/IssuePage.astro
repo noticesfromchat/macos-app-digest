@@ -20,10 +20,13 @@ const {
 
 const appsById = new Map(appEntries.map((entry) => [entry.id, entry]));
 const issueLabel = String(Number(issue.number)).padStart(2, '0');
+const oldFavoritesSectionIndex = issue.sections.findIndex((section) => section.eyebrow.toLowerCase() === 'old favorites');
 const aiSectionIndex = issue.sections.findIndex((section) => section.eyebrow.toLowerCase() === 'ai & automation');
 const trendingSectionIndex = issue.sections.findIndex((section) => section.eyebrow.toLowerCase() === 'trending');
-const editorsPickIndex = aiSectionIndex >= 0
-  ? aiSectionIndex
+const editorsPickIndex = oldFavoritesSectionIndex >= 0
+  ? oldFavoritesSectionIndex
+  : aiSectionIndex >= 0
+    ? aiSectionIndex
   : trendingSectionIndex >= 0
     ? trendingSectionIndex + 1
     : issue.sections.length;

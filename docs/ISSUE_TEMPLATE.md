@@ -20,16 +20,21 @@ sections:
   - eyebrow: Trending
     title: A concise editorial section title
     apps: [fourth-app-id, fifth-app-id, sixth-app-id]
+  # Optional: include a "Old Favorites" section for established apps that still
+  # deserve attention because they are quietly excellent or frequently praised.
+  - eyebrow: Old Favorites
+    title: Three established apps worth revisiting
+    apps: [seventh-app-id, eighth-app-id, ninth-app-id]
   - eyebrow: AI & Automation
     title: A concise editorial section title
-    apps: [seventh-app-id, eighth-app-id, ninth-app-id]
+    apps: [tenth-app-id, eleventh-app-id, twelfth-app-id]
   # Read the current r/macapps App Pile megathread and recent approved launch sources.
   # Never repeat an app from the immediately preceding issue; use verified alternates.
   - eyebrow: Up and Coming
     title: Three community favorites worth watching
-    apps: [first-app-pile-id, second-app-pile-id, third-app-pile-id]
+    apps: [thirteenth-app-pile-id, fourteenth-app-pile-id, fifteenth-app-pile-id]
 # Optional: omit this block when the issue does not have an Editor's Pick.
-# The selected app renders once in a full-width card between Trending and AI & Automation.
+# The selected app renders once in a full-width card between Trending and Old Favorites.
 editorsPick:
   app: editor-pick-app-id
   reason: Write one concise 12-45 word explanation of why this app stands out in this issue.
@@ -105,6 +110,10 @@ duplicate app copy in issue files.
 `editorsPick` is optional and accepts exactly one app ID plus a 12-45 word editorial
 reason. The app must already exist in `src/content/apps/` and must not also appear in
 one of the issue's regular sections.
+
+`Old Favorites` is a standard three-app section for established Mac apps that still
+earn community attention because they are unusually useful, overlooked or
+continuously recommended.
 
 Weekend Reading must follow the curation rules in `AGENTS.md`: cover the broader Mac
 app ecosystem, make at least two selections primarily about apps, and use general
