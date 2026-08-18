@@ -32,7 +32,7 @@ The site should feel like a small, premium editorial publication for experienced
 - The reason should explain a concrete quality, distinctive capability or practical
   workflow value. It should not repeat the description or read like marketing copy.
 - The selected app must not also appear in a regular issue section.
-- When present, the module renders between Trending and AI & Automation.
+- When present, the module renders between Trending and Old Favorites.
 - It uses the standard section eyebrow and heading, followed by one full-width card.
 - The full-width card displays the Lucide `book-heart` icon beside the app title when
   the app belongs to the `editors-picks` collection. The icon links to
@@ -109,7 +109,19 @@ The site should feel like a small, premium editorial publication for experienced
   summaries and promotional posts whose popularity does not translate into reader
   value.
 
-## 7. Up and Coming
+## 7. Old Favorites
+
+- `Old Favorites` is a standard three-card app section for established Mac apps
+  that are still worth surfacing because they remain especially useful,
+  overlooked or repeatedly recommended by the community.
+- Favor apps that are not new, but still come up in forums, Reddit or Product
+  Hunt comments as strong examples of useful software.
+- Render it after the Editor's Pick and before AI & Automation.
+- Use the standard app-card grid without a special badge, icon or alternate card
+  style.
+- Keep the section focused on rediscovery and durable value rather than novelty.
+
+## 8. Up and Coming
 
 - `Up and Coming` is a standard three-card app section built from the current
   `r/macapps` App Pile moderator selections and other approved recent-launch sources.
@@ -124,13 +136,13 @@ The site should feel like a small, premium editorial publication for experienced
 - The section title should describe the three selections as community discoveries
   without implying that App Waypoint independently ranked them.
 
-## 8. Editor attribution
+## 9. Editor attribution
 
 - Refer to the editor by role only in all public website content.
 - Never display the editor's personal name in app sources, issue copy, notes or
   generated pages.
 
-## 9. Issue publishing checklist
+## 10. Issue publishing checklist
 
 Complete every item before merging a new issue:
 
@@ -139,7 +151,9 @@ Complete every item before merging a new issue:
 - [ ] No app is duplicated within the issue or repeated from the immediately previous
   issue where the publishing rules prohibit it.
 - [ ] The Editor's Pick, if present, was supplied or approved by the editor, appears
-  only once and belongs to the `editors-picks` collection.
+      only once and belongs to the `editors-picks` collection.
+- [ ] Old Favorites contains exactly three eligible apps and highlights established
+      apps that are still recommended, overlooked or exceptional.
 - [ ] Weekend Reading contains three direct article links, with at least two focused
       primarily on apps, workflows or app developers.
 - [ ] Up and Coming contains exactly three eligible apps and records its sources.

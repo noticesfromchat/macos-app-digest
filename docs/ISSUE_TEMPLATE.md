@@ -16,20 +16,25 @@ rss:
 sections:
   - eyebrow: New Discoveries
     title: A concise editorial section title
-    apps: [first-app-id, second-app-id, third-app-id]
+    apps: [new-discovery-app-id-1, new-discovery-app-id-2, new-discovery-app-id-3]
   - eyebrow: Trending
     title: A concise editorial section title
-    apps: [fourth-app-id, fifth-app-id, sixth-app-id]
+    apps: [trending-app-id-1, trending-app-id-2, trending-app-id-3]
+  # Optional: include a "Old Favorites" section for established apps that still
+  # deserve attention because they are quietly excellent or frequently praised.
+  - eyebrow: Old Favorites
+    title: Three established apps worth revisiting
+    apps: [old-favorites-app-id-1, old-favorites-app-id-2, old-favorites-app-id-3]
   - eyebrow: AI & Automation
     title: A concise editorial section title
-    apps: [seventh-app-id, eighth-app-id, ninth-app-id]
+    apps: [ai-automation-app-id-1, ai-automation-app-id-2, ai-automation-app-id-3]
   # Read the current r/macapps App Pile megathread and recent approved launch sources.
   # Never repeat an app from the immediately preceding issue; use verified alternates.
   - eyebrow: Up and Coming
     title: Three community favorites worth watching
-    apps: [first-app-pile-id, second-app-pile-id, third-app-pile-id]
+    apps: [upcoming-app-id-1, upcoming-app-id-2, upcoming-app-id-3]
 # Optional: omit this block when the issue does not have an Editor's Pick.
-# The selected app renders once in a full-width card between Trending and AI & Automation.
+# The selected app renders once in a full-width card between Trending and Old Favorites.
 editorsPick:
   app: editor-pick-app-id
   reason: Write one concise 12-45 word explanation of why this app stands out in this issue.
@@ -105,6 +110,10 @@ duplicate app copy in issue files.
 `editorsPick` is optional and accepts exactly one app ID plus a 12-45 word editorial
 reason. The app must already exist in `src/content/apps/` and must not also appear in
 one of the issue's regular sections.
+
+`Old Favorites` is a standard three-app section for established Mac apps that still
+earn community attention because they are unusually useful, overlooked or
+continuously recommended.
 
 Weekend Reading must follow the curation rules in `AGENTS.md`: cover the broader Mac
 app ecosystem, make at least two selections primarily about apps, and use general
