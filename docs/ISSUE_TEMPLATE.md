@@ -24,15 +24,15 @@ sections:
   # deserve attention because they are quietly excellent or frequently praised.
   - eyebrow: Old Favorites
     title: Three established apps worth revisiting
-    apps: [seventh-app-id, eighth-app-id, ninth-app-id]
+    apps: [old-favorites-app-id-1, old-favorites-app-id-2, old-favorites-app-id-3]
   - eyebrow: AI & Automation
     title: A concise editorial section title
-    apps: [tenth-app-id, eleventh-app-id, twelfth-app-id]
+    apps: [ai-automation-app-id-1, ai-automation-app-id-2, ai-automation-app-id-3]
   # Read the current r/macapps App Pile megathread and recent approved launch sources.
   # Never repeat an app from the immediately preceding issue; use verified alternates.
   - eyebrow: Up and Coming
     title: Three community favorites worth watching
-    apps: [thirteenth-app-pile-id, fourteenth-app-pile-id, fifteenth-app-pile-id]
+    apps: [upcoming-app-id-1, upcoming-app-id-2, upcoming-app-id-3]
 # Optional: omit this block when the issue does not have an Editor's Pick.
 # The selected app renders once in a full-width card between Trending and Old Favorites.
 editorsPick:
