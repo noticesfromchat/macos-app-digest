@@ -16,10 +16,10 @@ rss:
 sections:
   - eyebrow: New Discoveries
     title: A concise editorial section title
-    apps: [first-app-id, second-app-id, third-app-id]
+    apps: [new-discovery-app-id-1, new-discovery-app-id-2, new-discovery-app-id-3]
   - eyebrow: Trending
     title: A concise editorial section title
-    apps: [fourth-app-id, fifth-app-id, sixth-app-id]
+    apps: [trending-app-id-1, trending-app-id-2, trending-app-id-3]
   # Optional: include a "Old Favorites" section for established apps that still
   # deserve attention because they are quietly excellent or frequently praised.
   - eyebrow: Old Favorites
