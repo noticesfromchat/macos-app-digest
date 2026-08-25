@@ -177,7 +177,17 @@ for (const filename of issueFiles) {
       if (!appIds.has(appId)) errors.push(`${relative}: unknown app ID "${appId}"`);
     }
 
-    if (String(section.eyebrow ?? '').trim().toLowerCase() === 'up and coming' && section.apps.length !== 3) {
+    const sectionEyebrow = String(section.eyebrow ?? '').trim().toLowerCase();
+
+    if (sectionEyebrow === 'old favorites') {
+      for (const appId of section.apps) {
+        if (appIds.has(appId) && !appsById.get(appId)?.collections?.includes('community-favorites')) {
+          errors.push(`${relative}: Old Favorites app "${appId}" must include collections: [community-favorites]`);
+        }
+      }
+    }
+
+    if (sectionEyebrow === 'up and coming' && section.apps.length !== 3) {
       errors.push(`${relative}: Up and Coming must reference exactly 3 apps`);
     }
   }

@@ -42,31 +42,50 @@ or regenerating any page or issue, also read and follow
 
 ## Weekly release coordination
 
-Treat Thursday as the release-candidate decision point and Friday as the single
-production release point. Follow the complete workflow in
+Treat Thursday as the editorial check and Deploy Preview review day, and Friday as
+the single production deployment point. Follow the complete workflow in
 [`docs/PUBLISHING.md`](docs/PUBLISHING.md).
 
-- On Thursday, inspect every open App Waypoint pull request and its Netlify Deploy
-  Preview while asking whether the editor has an Editor's Pick for the upcoming
-  issue.
-- If more than one preview exists, ask the editor which preview should accompany
-  Friday's issue even when one preview already appears approved. Report the purpose,
-  approval state and Netlify status of each preview and recommend a path forward.
+- On Thursday, research candidate apps, links and sources for the upcoming issue,
+  then propose the Friday slate for editor review.
+- For each proposed app, include draft description, `bestFor`, tags, source or
+  homepage and any collection recommendations.
+- Every app placed in an `Old Favorites` section must include `community-favorites`
+  in its app record's `collections` array. Preserve any existing collection entries.
+- During the Thursday check, audit existing tags for underuse, duplication, vague
+  labels, overly narrow labels and apps that appear mistagged or undertagged.
+- Ask whether the editor wants any changes to existing app records before preparing
+  the release candidate. Check for previously provided Editor's Pick direction in
+  GitHub issues, pull request comments, prior Thursday reports or other explicit
+  scheduled-task context; report any direction found and ask the editor to confirm,
+  change, reorder or remove it before preparing the release candidate. Ask whether
+  the editor has a new Editor's Pick only when no previously confirmed direction
+  exists.
+- Also on Thursday, inspect every open App Waypoint pull request and its Netlify
+  Deploy Preview. If more than one preview exists, ask the editor which preview
+  should accompany Friday's issue even when one preview already appears approved.
+  Report the purpose, approval state and Netlify status of each preview and recommend
+  a path forward.
 - Do not combine, close, merge or otherwise resolve competing previews without the
   editor's direction.
 - When exactly one approved release-candidate preview exists, the Friday automation
   may use it without another approval request.
-- Add the weekly issue and any new app records to the selected release-candidate
-  branch, validate the complete site, wait for its refreshed Deploy Preview to
-  succeed and merge once. This single merge should publish the approved improvements
-  and weekly issue together.
-- If no approved release candidate exists, create a dedicated issue branch and PR
-  from the latest `main`, then merge it after validation, build and preview checks pass.
+- On Thursday, prepare the weekly issue from the Thursday-reviewed slate and apply
+  confirmed app-record changes. Add the issue and any new app records to the selected
+  release-candidate branch, validate the complete site, wait for its refreshed
+  Deploy Preview to succeed, review it and ask the editor for final approval to use
+  that candidate for Friday's production deployment.
+- On Friday, merge only the reviewed, passing and editor-approved release-candidate
+  PR into `main`, then verify the Netlify production deployment and complete the
+  reporting and email steps.
+- If no reviewed, passing and editor-approved release candidate exists on Friday,
+  do not create, build, merge or publish a new issue directly on Friday. Report the
+  missing review state and ask whether to run a new review cycle before deployment.
 - If multiple previews remain ambiguous on Friday because no Thursday direction was
-  received, leave every preview untouched and publish the routine issue through a
-  separate branch and PR. Preview ambiguity must not block the weekly publication.
+  received, leave every preview untouched and do not publish. Preview ambiguity must
+  block production deployment until it is resolved.
 - Never add unapproved design, architecture or functionality changes during the
-  autonomous Friday issue run.
+  autonomous Thursday issue-preparation or Friday deployment run.
 
 ## User-provided Editor's Pick
 
@@ -95,6 +114,14 @@ When the user explicitly provides an app to feature as the Editor's Pick:
 8. Do not also place the Editor's Pick in a regular section. An app may appear only once per issue.
 9. If the issue already has an Editor's Pick, replace it only when the user's request clearly calls for replacement; otherwise report the conflict.
 10. Run validation and the Astro build. If the app or issue cannot pass the documented requirements, stop and report the specific problem rather than silently choosing another app.
+
+Previously provided Editor's Pick direction in GitHub issues, pull request comments,
+prior Thursday reports or other explicit scheduled-task context counts as
+editor-provided direction only after the Thursday check reports it and asks the
+editor to confirm, change, reorder or remove it. Do not hard-code app names in
+scheduled-task prompts, and do not infer or auto-promote Editor's Picks from an old
+queue unless the editor explicitly confirmed that queue is still active. Friday may
+use only the Editor's Pick confirmed during Thursday review.
 
 The Editor's Pick is optional and limited to one app per issue. Omit the entire
 `editorsPick` block when the user has not supplied a pick and editorial judgment does

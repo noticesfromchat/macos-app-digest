@@ -73,7 +73,11 @@ gate for merge.
 
 ## 7. Weekly release path
 
-Thursday selects any approved release candidate. Friday adds the issue either to that
-candidate or to a separate weekly-issue branch. In every case, production changes go
-through a pull request and protected `main`. The full decision tree is in
+Thursday prepares the weekly issue, applies confirmed app-record changes, validates
+and builds the release candidate, opens or updates the pull request, waits for GitHub
+checks and the Netlify Deploy Preview, reviews that preview and records editor
+approval. Friday only merges the reviewed, passing and approved pull request into
+`main`, then verifies the Netlify production deployment and completes the reporting
+and email steps. If Thursday review did not produce an approved candidate, Friday
+must not create or publish a new issue directly. The full decision tree is in
 `docs/PUBLISHING.md`.

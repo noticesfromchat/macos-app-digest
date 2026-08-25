@@ -119,6 +119,9 @@ The site should feel like a small, premium editorial publication for experienced
 - Render it after the Editor's Pick and before AI & Automation.
 - Use the standard app-card grid without a special badge, icon or alternate card
   style.
+- Every featured app must belong to the `community-favorites` collection. Add
+  `community-favorites` to each app record's `collections` array while preserving
+  any existing collection entries.
 - Keep the section focused on rediscovery and durable value rather than novelty.
 
 ## 8. Up and Coming
@@ -152,8 +155,9 @@ Complete every item before merging a new issue:
   issue where the publishing rules prohibit it.
 - [ ] The Editor's Pick, if present, was supplied or approved by the editor, appears
       only once and belongs to the `editors-picks` collection.
-- [ ] Old Favorites contains exactly three eligible apps and highlights established
-      apps that are still recommended, overlooked or exceptional.
+- [ ] Old Favorites contains exactly three eligible apps, highlights established
+      apps that are still recommended, overlooked or exceptional, and every featured
+      app belongs to the `community-favorites` collection.
 - [ ] Weekend Reading contains three direct article links, with at least two focused
       primarily on apps, workflows or app developers.
 - [ ] Up and Coming contains exactly three eligible apps and records its sources.

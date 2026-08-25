@@ -4,80 +4,95 @@ App Waypoint publishes one coordinated release each Friday. The preferred releas
 contains the weekly issue plus any site improvements that the editor approved in
 advance, merged to `main` once so Netlify performs one production deployment.
 
-## Thursday release check
+## Thursday editorial check
 
-The Thursday check combines Editor's Pick collection with release-candidate
-coordination.
+The Thursday check prepares and reviews the Friday issue before production
+deployment. It combines candidate research, app metadata review, tag maintenance,
+Editor's Pick collection, release-candidate coordination, validation and Deploy
+Preview review.
 
-1. Ask whether the editor has an app to contribute as the upcoming Editor's Pick.
-2. Inspect every open pull request for `noticesfromchat/macos-app-digest` and its
+1. Research candidate apps, links and sources for the upcoming Friday issue.
+2. Propose a Friday issue slate for editor review. For each proposed app, include
+   the draft description, `bestFor`, tags, source or homepage and any collection
+   recommendations.
+3. Audit tags across existing app records. Identify underused, duplicate, vague or
+   overly broad tags, and flag apps that appear mistagged or would benefit from
+   additional tags.
+4. Ask whether the editor wants any changes to existing app records before preparing
+   the release candidate.
+5. Check the current workflow context for previously provided Editor's Pick
+   direction, including GitHub issues, pull request comments, prior Thursday reports
+   or other explicit scheduled-task context. Report any prior direction found and
+   ask the editor to confirm, change, reorder or remove it before preparing the
+   release candidate. Do not hard-code app names in scheduled-task prompts and do
+   not infer or auto-promote Editor's Picks from an old queue unless the editor
+   explicitly confirmed that queue is still active.
+6. Ask whether the editor has a new app to contribute as the upcoming Editor's Pick
+   when no previously confirmed direction exists.
+7. Inspect every open pull request for `noticesfromchat/macos-app-digest` and its
    Netlify Deploy Preview.
-3. Record each preview's purpose, explicit approval state and current Netlify status.
-4. If more than one preview exists, ask the editor which preview should accompany the
+8. Record each preview's purpose, explicit approval state and current Netlify status.
+9. If more than one preview exists, ask the editor which preview should accompany the
    Friday issue. Do this whether none, one or several previews appear approved.
-5. Recommend whether to select one preview, consolidate approved work or leave the
+10. Recommend whether to select one preview, consolidate approved work or leave the
    previews separate.
-6. Do not merge, close, consolidate or otherwise alter competing previews without the
-   editor's direction.
+11. Create or update the selected release-candidate branch from the latest `main`
+    with the Thursday-reviewed issue slate, confirmed app-record changes, required
+    app records and one issue Markdown file.
+12. For every app in an `Old Favorites` section, add `community-favorites` to the app
+    record's `collections` array while preserving any existing collection entries.
+13. Include the issue `rss` block with a short issue-specific title and the standard
+    `Read this issue` CTA. The feed summary is generated from the issue `dek`, so do
+    not duplicate that summary in the `rss` block.
+14. Run `npm run validate` and `npm run build`, fix every error and verify the built
+    `/rss.xml` feed includes the new issue correctly.
+15. Push the release candidate once, wait for required GitHub checks and the Netlify
+    Deploy Preview to succeed, then review the Deploy Preview.
+16. Ask the editor for final approval to use that reviewed release candidate for
+    Friday's production deployment.
+17. Do not merge, close, consolidate or otherwise alter competing previews without
+    the editor's direction.
 
 An idle preview may remain open without creating another build. Minimize Netlify
 credit use by validating locally, batching related changes and pushing only at a
 meaningful review or release milestone.
 
-## Friday release selection
+## Friday production deployment
+
+Friday should be a narrow production step. The issue, app records, validation, build,
+RSS verification, pull request checks and Deploy Preview review should already be
+complete from Thursday.
 
 Use the following order of operations:
 
-### One approved release candidate
+### Reviewed and approved release candidate
 
-When exactly one approved release-candidate PR exists, or the editor selected one on
-Thursday:
+When exactly one reviewed, passing and editor-approved release-candidate PR exists:
 
-1. Confirm the PR contains only approved site improvements and its existing Deploy
-   Preview succeeded.
-2. Sync the release-candidate branch with the latest `main` before adding content.
-3. Research and prepare the weekly issue using the branch's current components,
-   layouts, styles and content schema.
-4. Reuse existing app Markdown records and add new app records only when necessary.
-5. Add one issue Markdown file plus any required new app Markdown files to the
-   release-candidate branch.
-6. Include the issue `rss` block with a short issue-specific title and the standard
-   `Read this issue` CTA. The feed summary is generated from the issue `dek`, so do
-   not duplicate that summary in the `rss` block.
-7. Do not manually create or edit app detail pages. Astro generates `/apps/{app-id}/`
-   from `src/content/apps/` during the build.
-8. Run `npm run validate` and `npm run build` against the combined branch.
-9. Fix every validation or build error before continuing.
-10. Verify the built `/rss.xml` feed includes every published issue exactly once,
-   ordered newest-first, with stable GUIDs, correct publication dates and correct
-   permanent issue URLs, the issue-specific RSS title, the issue-number-prefixed
-   summary and the linked CTA. Confirm the latest issue appears automatically during
-   the normal build without any manual RSS-generation step.
-11. Push the completed release candidate once and wait for the refreshed Netlify
-   Deploy Preview to report ready or success.
-12. Merge the PR into `main` once. Do not first merge improvements and then make a
-   second issue commit to `main`.
-13. Confirm the Netlify production deployment succeeds before claiming the issue is
+1. Confirm the PR still has passing required GitHub checks and a ready/successful
+   Netlify Deploy Preview.
+2. Confirm no unresolved editor direction or competing preview ambiguity remains.
+3. Confirm the release candidate uses only the Editor's Pick direction confirmed
+   during Thursday review. If no Editor's Pick was confirmed, the issue must omit
+   the `editorsPick` block.
+4. Merge the approved PR into `main` once. Do not add new content or app-record
+   changes on Friday unless the editor explicitly pauses deployment and asks for a
+   new Thursday-style review cycle.
+5. Confirm the Netlify production deployment succeeds before claiming the issue is
    live or sending the weekly email.
 
 Routine issue content added to an already approved release candidate does not require
 another manual approval after all checks pass. Do not add new unapproved design,
 architecture or functionality changes during this run.
 
-### No approved release candidate
+### No reviewed release candidate
 
-When no approved release candidate exists:
+When no reviewed, passing and editor-approved release candidate exists on Friday:
 
-1. Leave every unapproved or experimental preview untouched.
-2. Create a dedicated weekly-issue branch from the latest `main`.
-3. Add the weekly issue, its `rss` block and any required app records, then open a
-   pull request.
-4. Run `npm run validate` and `npm run build`.
-5. Verify the built `/rss.xml` feed includes the issue-specific RSS title, the
-   issue-number-prefixed summary and the linked `Read this issue` CTA.
-6. Wait for required GitHub checks and the Netlify Deploy Preview to succeed.
-7. Merge the pull request into `main` once.
-8. Confirm the Netlify production deployment succeeds before sending the email.
+1. Do not build, publish or merge a new weekly issue directly on Friday.
+2. Report that the release is not ready because Thursday review, checks or Deploy
+   Preview approval is missing.
+3. Ask whether to run a new review cycle before deploying.
 
 ### Multiple ambiguous previews
 
@@ -85,12 +100,9 @@ When multiple previews still exist on Friday and no Thursday direction was recei
 
 1. Do not guess which preview to merge.
 2. Do not combine, close or modify the previews.
-3. Create a separate weekly-issue branch and pull request from the latest `main`.
-4. Add the weekly issue with its required `rss` block.
-5. Validate, build, verify `/rss.xml` and review its Netlify Deploy Preview, then
-   merge it once the required checks pass.
-6. Report the unresolved previews separately. Preview ambiguity must not delay the
-   weekly issue.
+3. Do not build, publish or merge a separate weekly issue directly on Friday.
+4. Report the unresolved previews and ask which candidate should enter a new review
+   cycle. Preview ambiguity must block production deployment until it is resolved.
 
 ## Production completion
 
