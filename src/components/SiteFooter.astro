@@ -1,0 +1,98 @@
+---
+const { current = '' } = Astro.props;
+---
+
+<footer id="site-footer" class="site-footer">
+  <div class="site-footer-inner page-shell">
+    <p>Your weekly guide to Mac apps.</p>
+    <nav aria-label="Footer navigation">
+      <a href="/explore/" aria-current={current === 'explore' ? 'page' : undefined}>Explore Apps</a>
+      <a href="/archive/" aria-current={current === 'archive' ? 'page' : undefined}>Issues</a>
+      <a href="/about/" aria-current={current === 'about' ? 'page' : undefined}>About</a>
+      <button
+        type="button"
+        aria-haspopup="dialog"
+        aria-expanded="false"
+        aria-controls="rss-feed-modal"
+        data-rss-open
+      >Subscribe</button>
+    </nav>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    width: 100%;
+    margin-top: clamp(48px, 6vw, 76px);
+    border-top: 1px solid var(--line);
+    background: var(--bg);
+  }
+
+  .site-footer-inner {
+    display: flex;
+    min-height: 88px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .site-footer p {
+    margin: 0;
+    color: var(--muted);
+    font-size: var(--type-meta);
+  }
+
+  .site-footer nav {
+    display: flex;
+    align-items: center;
+    gap: clamp(20px, 2.8vw, 32px);
+    white-space: nowrap;
+  }
+
+  .site-footer a,
+  .site-footer nav button {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--text);
+    font-family: inherit;
+    font-size: var(--type-meta);
+    font-weight: 600;
+    line-height: inherit;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .site-footer a:hover,
+  .site-footer a:focus-visible,
+  .site-footer a[aria-current='page'],
+  .site-footer nav button:hover,
+  .site-footer nav button:focus-visible {
+    color: var(--accent);
+  }
+
+  .site-footer a:focus-visible,
+  .site-footer nav button:focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--accent) 34%, transparent);
+    outline-offset: 4px;
+  }
+
+  @media (max-width: 680px) {
+    .site-footer-inner {
+      min-height: 0;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 14px;
+      padding-top: 24px;
+      padding-bottom: 24px;
+    }
+
+    .site-footer nav {
+      width: 100%;
+      flex-wrap: wrap;
+      gap: 14px 24px;
+    }
+  }
+</style>

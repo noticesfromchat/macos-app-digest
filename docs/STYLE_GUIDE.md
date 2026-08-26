@@ -23,6 +23,10 @@ The site should feel like a small, premium editorial publication for experienced
 - When the user supplies an app specifically for this feature, use that selection for
   the named issue—or the next issue being prepared if none is named. Do not replace it
   with an agent-selected alternative.
+- During Thursday review, pull pending Editor's Pick direction first from the Notion
+  [Editor's Picks note](https://app.notion.com/p/Editor-s-Picks-3c8d6482d47f80c4bbc6ce99ed84d908?source=copy_link),
+  then ask the editor to confirm, change, reorder or remove that direction before
+  preparing the release candidate.
 - Reuse an existing app record when one exists. Otherwise, verify the official homepage
   or canonical repository and create one standard app file before referencing it.
 - The selected app's file must include `collections: [editors-picks]`, preserving any
@@ -119,6 +123,9 @@ The site should feel like a small, premium editorial publication for experienced
 - Render it after the Editor's Pick and before AI & Automation.
 - Use the standard app-card grid without a special badge, icon or alternate card
   style.
+- Every featured app must belong to the `community-favorites` collection. Add
+  `community-favorites` to each app record's `collections` array while preserving
+  any existing collection entries.
 - Keep the section focused on rediscovery and durable value rather than novelty.
 
 ## 8. Up and Coming
@@ -152,8 +159,9 @@ Complete every item before merging a new issue:
   issue where the publishing rules prohibit it.
 - [ ] The Editor's Pick, if present, was supplied or approved by the editor, appears
       only once and belongs to the `editors-picks` collection.
-- [ ] Old Favorites contains exactly three eligible apps and highlights established
-      apps that are still recommended, overlooked or exceptional.
+- [ ] Old Favorites contains exactly three eligible apps, highlights established
+      apps that are still recommended, overlooked or exceptional, and every featured
+      app belongs to the `community-favorites` collection.
 - [ ] Weekend Reading contains three direct article links, with at least two focused
       primarily on apps, workflows or app developers.
 - [ ] Up and Coming contains exactly three eligible apps and records its sources.

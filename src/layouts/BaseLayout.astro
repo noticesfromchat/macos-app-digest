@@ -1,5 +1,6 @@
 ---
 import { Archive, Check, Compass, Copy, Info, Moon, Rss, Search, Sun, X } from 'lucide-astro';
+import SiteFooter from '../components/SiteFooter.astro';
 import '../styles/global.css';
 import '../styles/search.css';
 
@@ -105,21 +106,9 @@ const graph = [
         <span class="brand-name">App Waypoint</span>
       </a>
       <nav aria-label="Primary navigation">
-        <span class="nav-links">
-          <a href="/explore/" aria-current={current === 'explore' ? 'page' : undefined}>Explore Apps</a>
-          <a href="/archive/" aria-current={current === 'archive' ? 'page' : undefined}>Issues</a>
-          <a href="/about/" aria-current={current === 'about' ? 'page' : undefined}>About</a>
-        </span>
-        <button
-          class="nav-search-toggle"
-          type="button"
-          aria-label="Search apps"
-          aria-haspopup="dialog"
-          aria-expanded="false"
-          aria-controls="site-search-modal"
-          data-search-open
-        >
-          <Search aria-hidden="true" />
+        <button class="theme-toggle nav-theme-toggle" type="button" aria-label="Switch to dark theme" data-theme-toggle>
+          <Moon data-theme-moon aria-hidden="true" />
+          <Sun data-theme-sun aria-hidden="true" hidden />
         </button>
         <button
           class="nav-menu-toggle"
@@ -165,6 +154,21 @@ const graph = [
             <span>About</span>
           </a>
         </div>
+        <div class="mobile-nav-utilities" role="group" aria-label="Site utilities">
+          <button
+            class="mobile-nav-rss"
+            type="button"
+            aria-label="Open RSS subscription dialog"
+            title="RSS feed"
+            aria-haspopup="dialog"
+            aria-expanded="false"
+            aria-controls="rss-feed-modal"
+            data-rss-open
+          >
+            <Rss aria-hidden="true" />
+            <span>Subscribe</span>
+          </button>
+        </div>
       </section>
     </div>
     <div class="search-overlay" data-search-overlay data-search-index-url={searchIndexUrl.pathname} hidden>
@@ -197,25 +201,7 @@ const graph = [
       </section>
     </div>
     <main><slot /></main>
-    <footer class="site-footer">
-      <div class="footer-utilities">
-        <button
-          class="footer-rss-toggle"
-          type="button"
-          aria-label="Open RSS subscription dialog"
-          aria-haspopup="dialog"
-          aria-expanded="false"
-          aria-controls="rss-feed-modal"
-          data-rss-open
-        >
-          <Rss aria-hidden="true" />
-        </button>
-        <button class="theme-toggle footer-theme-toggle" type="button" aria-label="Switch to dark theme" data-theme-toggle>
-          <Moon data-theme-moon aria-hidden="true" />
-          <Sun data-theme-sun aria-hidden="true" hidden />
-        </button>
-      </div>
-    </footer>
+    <SiteFooter current={current} />
     <div class="rss-overlay" data-rss-overlay hidden>
       <button class="rss-backdrop" type="button" aria-label="Close RSS subscription dialog" data-rss-close></button>
       <section
@@ -259,7 +245,11 @@ const graph = [
         const dark = theme === 'dark';
         if (moonIcon) dark ? moonIcon.setAttribute('hidden', '') : moonIcon.removeAttribute('hidden');
         if (sunIcon) dark ? sunIcon.removeAttribute('hidden') : sunIcon.setAttribute('hidden', '');
-        if (toggle) toggle.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
+        if (toggle) {
+          const label = dark ? 'Switch to light theme' : 'Switch to dark theme';
+          toggle.setAttribute('aria-label', label);
+          toggle.setAttribute('title', label);
+        }
         if (themeColor) themeColor.setAttribute('content', dark ? '#091321' : '#e7ddcd');
       };
 
@@ -277,7 +267,7 @@ const graph = [
         const results = document.querySelector('[data-search-results]');
         const count = document.querySelector('[data-search-count]');
         const modal = overlay?.querySelector('.search-modal');
-        if (!overlay || !openButtons.length || !input || !results || !count) return;
+        if (!overlay || (!openButtons.length && !mobileSearchButton) || !input || !results || !count) return;
 
         const searchIndexUrl = overlay.getAttribute('data-search-index-url') || '/search-index.json';
         let previousFocus = null;
@@ -425,8 +415,9 @@ const graph = [
         const openButton = document.querySelector('[data-nav-menu-open]');
         const menuLinks = [...document.querySelectorAll('.mobile-nav-actions a')];
         const searchButton = document.querySelector('[data-mobile-search-open]');
+        const rssButton = document.querySelector('.mobile-nav-rss');
+        const lastAnimatedItem = overlay?.querySelector('.mobile-nav-actions > :last-child');
         const searchOverlay = document.querySelector('[data-search-overlay]');
-        const mobileNavQuery = window.matchMedia('(max-width: 680px)');
         const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
         if (!overlay || !openButton) return;
 
@@ -484,7 +475,7 @@ const graph = [
             overlay.classList.add('is-open');
             menuState = 'open';
             stateTimer = null;
-          }, 580);
+          }, 390);
           const first = focusables()[1] || focusables()[0];
           try {
             first?.focus({ preventScroll: true });
@@ -496,6 +487,7 @@ const graph = [
         openButton.addEventListener('click', () => menuState === 'closed' ? openMenu() : closeMenu());
         menuLinks.forEach((link) => link.addEventListener('click', () => closeMenu({ restoreFocus: false, animate: false })));
         searchButton?.addEventListener('click', () => closeMenu({ restoreFocus: false, animate: false }));
+        rssButton?.addEventListener('click', () => closeMenu({ restoreFocus: false, animate: false }));
 
         overlay.addEventListener('click', (event) => {
           if (event.target === overlay || event.target?.classList?.contains('mobile-nav-backdrop')) closeMenu();
@@ -506,17 +498,13 @@ const graph = [
             finishClose();
             return;
           }
-          if (menuState === 'opening' && event.animationName === 'mobile-nav-item-in' && event.target === focusables().at(-1)) {
+          if (menuState === 'opening' && event.animationName === 'mobile-nav-item-in' && event.target === lastAnimatedItem) {
             clearTimeout(stateTimer);
             overlay.classList.remove('is-opening');
             overlay.classList.add('is-open');
             menuState = 'open';
             stateTimer = null;
           }
-        });
-
-        mobileNavQuery.addEventListener('change', (event) => {
-          if (!event.matches && !overlay.hidden) closeMenu({ restoreFocus: false, animate: false });
         });
 
         document.addEventListener('keydown', (event) => {
@@ -571,8 +559,10 @@ const graph = [
           copyButton.classList.toggle('is-copied', copied);
         };
 
-        const openRss = () => {
-          previousFocus = document.activeElement;
+        const openRss = (event) => {
+          previousFocus = event?.currentTarget?.closest?.('[data-nav-menu-overlay]')
+            ? document.querySelector('[data-nav-menu-open]')
+            : document.activeElement;
           overlay.hidden = false;
           openButtons.forEach((button) => button.setAttribute('aria-expanded', 'true'));
           setCopyState(false, openLabel);

@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { ArrowRight } from 'lucide-astro';
 import AppCard from './AppCard.astro';
 import ReadingCard from './ReadingCard.astro';
 
@@ -38,7 +39,7 @@ const editorsPick = issue.editorsPick ? appsById.get(issue.editorsPick.app) : un
     <div class="hero-copy">
       <p class="eyebrow">
         {homepage
-          ? 'Curated Mac Apps for Experienced Users · Published Fridays'
+          ? (<>Your weekly guide to Mac apps<br />Published Fridays</>)
           : 'App Waypoint Issue'}
       </p>
       <h1><time datetime={issue.slug}>{issue.date}</time></h1>
@@ -50,7 +51,7 @@ const editorsPick = issue.editorsPick ? appsById.get(issue.editorsPick.app) : un
       </div>
       <p class="dek">{issue.dek}</p>
       <div class="hero-actions">
-        <a class="button" href="#new-discoveries">Start Reading <span aria-hidden="true">→</span></a>
+        <a class="button" href="#new-discoveries">Start Reading <ArrowRight aria-hidden="true" /></a>
       </div>
     </div>
     <div class="harbor-artwork" aria-hidden="true">

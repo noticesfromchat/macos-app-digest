@@ -22,6 +22,7 @@ sections:
     apps: [trending-app-id-1, trending-app-id-2, trending-app-id-3]
   # Optional: include a "Old Favorites" section for established apps that still
   # deserve attention because they are quietly excellent or frequently praised.
+  # Each app record must include community-favorites in its collections array.
   - eyebrow: Old Favorites
     title: Three established apps worth revisiting
     apps: [old-favorites-app-id-1, old-favorites-app-id-2, old-favorites-app-id-3]
@@ -78,8 +79,9 @@ name: App Name
 description: Write exactly one concrete 12-35 word sentence explaining the app's primary job.
 bestFor: Write exactly one 8-24 word sentence describing a recognizable user or workflow.
 tags: [productivity, utility, menubar]
-# Optional editorial curation. Required for an Editor's Pick; preserve other values.
-# collections: [editors-picks]
+# Optional editorial curation. Required for Editor's Pick and Old Favorites apps;
+# preserve other values when adding either collection.
+# collections: [editors-picks, community-favorites]
 source: Discovery source and official homepage
 homepage: https://example.com/
 ---
@@ -113,7 +115,8 @@ one of the issue's regular sections.
 
 `Old Favorites` is a standard three-app section for established Mac apps that still
 earn community attention because they are unusually useful, overlooked or
-continuously recommended.
+continuously recommended. Every referenced app must include `community-favorites` in
+its app file's `collections` array, preserving any existing collection entries.
 
 Weekend Reading must follow the curation rules in `AGENTS.md`: cover the broader Mac
 app ecosystem, make at least two selections primarily about apps, and use general
@@ -143,6 +146,17 @@ in `sourceNotes`. Do not substitute apps based solely on raw votes.
 7. Do not substitute another app unless the user asks for an alternative. If the issue
    already has a different Editor's Pick and replacement is unclear, report the conflict.
 8. Run the required validation and build checks before publishing.
+
+Pending Editor's Pick direction should be pulled first from the Notion
+[Editor's Picks note](https://app.notion.com/p/Editor-s-Picks-3c8d6482d47f80c4bbc6ce99ed84d908?source=copy_link).
+Previously provided Editor's Pick direction in that note, GitHub issues, pull
+request comments, prior Thursday reports or other explicit scheduled-task context
+counts as editor-provided direction only after the Thursday check reports it and
+asks the editor to confirm, change, reorder or remove it. Do not hard-code app names
+in scheduled-task prompts, and do not infer or auto-promote Editor's Picks from an
+old queue unless the editor explicitly confirmed that queue is still active. Friday
+may use only the Editor's Pick confirmed during Thursday review. If no Editor's Pick
+was confirmed, omit the `editorsPick` block.
 
 Use role-based attribution in public content. Never include the editor's personal name
 in an app source, issue note or other generated page copy.
