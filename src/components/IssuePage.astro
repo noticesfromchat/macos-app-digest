@@ -1,6 +1,5 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import { ArrowRight } from 'lucide-astro';
 import AppCard from './AppCard.astro';
 import BrandMark from './BrandMark.astro';
 import WaveRule from './WaveRule.astro';
@@ -51,20 +50,13 @@ const IssueHeading = homepage ? 'p' : 'h1';
             Published <time datetime={issue.slug}>{issue.date}</time>
           </p>
           <p class="home-hero-dek">{issue.dek}</p>
-          {/* Two anchors, one hidden per breakpoint: on a stacked phone layout
-              the pick sits below the fold, so the CTA reveals it first. */}
-          <a class="button home-hero-cta-wide" href="#new-discoveries">
-            Start Reading <ArrowRight aria-hidden="true" />
-          </a>
-          <a class="button home-hero-cta-narrow" href="#editors-pick">
-            Start Reading <ArrowRight aria-hidden="true" />
-          </a>
         </div>
       </div>
 
       {editorsPick && (
         <div class="home-hero-pick" id="editors-pick">
           <p class="eyebrow">{homepage ? 'This Week’s Editor’s Pick' : 'Editor’s Pick'}</p>
+          <h2 class="home-hero-pick-title">One app worth a closer look</h2>
           <AppCard
             app={editorsPick.data}
             appId={editorsPick.id}
@@ -83,9 +75,6 @@ const IssueHeading = homepage ? 'p' : 'h1';
         <p class="date">{`Issue ${issueLabel}`}</p>
         <WaveRule />
         <p class="dek">{issue.dek}</p>
-        <div class="hero-actions">
-          <a class="button" href="#new-discoveries">Start Reading <ArrowRight aria-hidden="true" /></a>
-        </div>
       </div>
     </header>
   )}

@@ -279,15 +279,6 @@ a { color: inherit; }
 
 .hero .dek { color: var(--text); }
 
-.hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-top: 23px;
-}
-.hero-actions .button { gap: 8px; }
-.hero-actions .button svg { width: 1em; height: 1em; }
-
 .button {
   display: inline-flex;
   width: 180px;
@@ -414,10 +405,6 @@ a { color: inherit; }
   line-height: 1.58;
 }
 
-.home-hero .button { width: auto; margin-top: 20px; gap: 10px; }
-.home-hero .button svg { width: 1em; height: 1em; }
-.home-hero-cta-narrow { display: none; }
-
 .section { padding: clamp(40px, 4.8vw, 58px) 0; border-top: 1px solid var(--line); }
 .home-hero + .section { border-top: 0; }
 .section-heading { width: 100%; max-width: none; margin-bottom: 28px; }
@@ -453,6 +440,7 @@ a { color: inherit; }
 
 .home-hero-pick { display: flex; flex-direction: column; }
 .home-hero-pick .eyebrow { margin-bottom: 11px; }
+.home-hero-pick-title { display: none; }
 .home-hero-pick .hero-pick-card { flex: 1; }
 
 .hero-pick-card .app-summary { margin-bottom: 0; }
@@ -1438,9 +1426,16 @@ a { color: inherit; }
   .home-hero-copy { order: 1; }
   .home-hero-sea { position: static; order: 2; width: 100%; height: var(--sea-h); }
   .home-hero-pick { order: 3; }
-  /* The pick now sits below the CTA, so Start Reading reveals it first. */
-  .home-hero-cta-wide { display: none; }
-  .home-hero-cta-narrow { display: inline-flex; }
+  .home-hero-pick-title {
+    display: block;
+    margin: 0 0 22px;
+    font-family: var(--display);
+    font-size: var(--type-subhead);
+    font-weight: 500;
+    letter-spacing: -.03em;
+    line-height: 1;
+    text-wrap: balance;
+  }
   
   .grid { grid-template-columns: 1fr; }
   .editors-pick-card {
@@ -1483,10 +1478,8 @@ a { color: inherit; }
   }
   .hero h1 { font-size: clamp(3.05rem, 15vw, 4.15rem); }
   .hero .dek { max-width: 360px; font-size: .94rem; }
-  .hero-actions { flex-direction: column; align-items: flex-start; }
   .button { width: 180px; min-height: 44px; }
   .home-hero { --sea-h: 72px; padding-block: 30px 32px; }
-  .home-hero .button { width: 100%; }
   .section { padding: 46px 0; }
   .content-divider { height: 68px; }
   .video-section { padding-top: 20px; }
