@@ -1,0 +1,10 @@
+---
+import { MARK_WAVE, MARK_WAVE_VIEWBOX } from '../data/mark';
+---
+{/* The buoy's own wave, drawn on its own: the rule under the wordmark is the
+    same water as the mark, at a slightly finer weight. */}
+<div class="hero-rule" aria-hidden="true">
+  <svg viewBox={MARK_WAVE_VIEWBOX} role="presentation">
+    <path d={MARK_WAVE} />
+  </svg>
+</div>

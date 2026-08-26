@@ -1,0 +1,44 @@
+---
+import { MARK_BEACON, MARK_FRAME, MARK_WATERLINE, MARK_WAVE } from '../data/mark';
+
+const { class: className = '', ping = false } = Astro.props as {
+  class?: string;
+  ping?: boolean;
+};
+---
+{/* The buoy: beacon, A-frame, waterline, wave. Strokes follow currentColor so
+    one mark serves both themes; the beacon keeps the accent to itself. */}
+<svg
+  class:list={['brand-mark', className]}
+  viewBox="128 126 768 768"
+  aria-hidden="true"
+>
+  <g
+    transform="translate(0,38)"
+    fill="none"
+    stroke-width="54"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    {ping && (
+      <circle
+        class="brand-mark-ping"
+        cx={MARK_BEACON.cx}
+        cy={MARK_BEACON.cy}
+        r="118"
+        stroke-width="26"
+        stroke="var(--accent)"
+      />
+    )}
+    <circle cx={MARK_BEACON.cx} cy={MARK_BEACON.cy} r={MARK_BEACON.r} stroke="var(--accent)" />
+    <path d={MARK_FRAME} stroke="currentColor" />
+    <line
+      x1={MARK_WATERLINE.x1}
+      y1={MARK_WATERLINE.y1}
+      x2={MARK_WATERLINE.x2}
+      y2={MARK_WATERLINE.y2}
+      stroke="currentColor"
+    />
+    <path d={MARK_WAVE} stroke="currentColor" />
+  </g>
+</svg>

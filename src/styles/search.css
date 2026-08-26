@@ -335,6 +335,10 @@
   color: var(--accent);
 }
 
+/* The dialog takes focus on open; it is a container, not a control. */
+.mobile-nav-modal:focus,
+.mobile-nav-modal:focus-visible { outline: 0; }
+
 .mobile-nav-actions a:focus-visible,
 .mobile-nav-search:focus-visible {
   background: color-mix(in srgb, var(--surface-strong) 68%, transparent);

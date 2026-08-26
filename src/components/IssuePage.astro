@@ -2,6 +2,8 @@
 import type { CollectionEntry } from 'astro:content';
 import { ArrowRight } from 'lucide-astro';
 import AppCard from './AppCard.astro';
+import BrandMark from './BrandMark.astro';
+import WaveRule from './WaveRule.astro';
 import ReadingCard from './ReadingCard.astro';
 
 type Issue = CollectionEntry<'issues'>['data'];
@@ -21,58 +23,75 @@ const {
 
 const appsById = new Map(appEntries.map((entry) => [entry.id, entry]));
 const issueLabel = String(Number(issue.number)).padStart(2, '0');
-const oldFavoritesSectionIndex = issue.sections.findIndex((section) => section.eyebrow.toLowerCase() === 'old favorites');
-const aiSectionIndex = issue.sections.findIndex((section) => section.eyebrow.toLowerCase() === 'ai & automation');
-const trendingSectionIndex = issue.sections.findIndex((section) => section.eyebrow.toLowerCase() === 'trending');
-const editorsPickIndex = oldFavoritesSectionIndex >= 0
-  ? oldFavoritesSectionIndex
-  : aiSectionIndex >= 0
-    ? aiSectionIndex
-  : trendingSectionIndex >= 0
-    ? trendingSectionIndex + 1
-    : issue.sections.length;
 const editorsPick = issue.editorsPick ? appsById.get(issue.editorsPick.app) : undefined;
+const Wordmark = homepage ? 'h1' : 'p';
+const IssueHeading = homepage ? 'p' : 'h1';
 ---
 
 <article class:list={['issue', { 'is-homepage': homepageStyle }]}>
-  <header class="hero">
-    <div class="hero-copy">
-      <p class="eyebrow">
-        {homepage
-          ? (<>Your weekly guide to Mac apps<br />Published Fridays</>)
-          : 'App Waypoint Issue'}
-      </p>
-      <h1><time datetime={issue.slug}>{issue.date}</time></h1>
-      <p class="date">{homepage ? `Current Issue · Issue ${issueLabel}` : `Issue ${issueLabel}`}</p>
-      <div class="hero-rule" aria-hidden="true">
-        <svg viewBox="0 0 104 14" role="presentation">
-          <path d="M1 7c8-6 16 6 24 0s16 6 24 0 16 6 24 0 16 6 24 0" />
-        </svg>
+  {homepageStyle ? (
+    <header class="home-hero">
+      <canvas class="home-hero-sky" aria-hidden="true"></canvas>
+      <canvas class="home-hero-sea" aria-hidden="true"></canvas>
+
+      <div class="home-hero-inner">
+      <div class="home-hero-copy">
+        <div class="home-hero-intro">
+          <Wordmark class="home-hero-wordmark">App Waypoint</Wordmark>
+          <WaveRule />
+          <p class="home-hero-tagline">
+            Your weekly guide to Mac apps.<br />New issues published every Friday.
+          </p>
+        </div>
+
+        <div class="home-hero-issue">
+          <p class="eyebrow">{homepage ? 'Current issue' : 'Archived issue'}</p>
+          <IssueHeading class="home-hero-number">Issue {issueLabel}</IssueHeading>
+          <p class="home-hero-date">
+            Published <time datetime={issue.slug}>{issue.date}</time>
+          </p>
+          <p class="home-hero-dek">{issue.dek}</p>
+          {/* Two anchors, one hidden per breakpoint: on a stacked phone layout
+              the pick sits below the fold, so the CTA reveals it first. */}
+          <a class="button home-hero-cta-wide" href="#new-discoveries">
+            Start Reading <ArrowRight aria-hidden="true" />
+          </a>
+          <a class="button home-hero-cta-narrow" href="#editors-pick">
+            Start Reading <ArrowRight aria-hidden="true" />
+          </a>
+        </div>
       </div>
-      <p class="dek">{issue.dek}</p>
-      <div class="hero-actions">
-        <a class="button" href="#new-discoveries">Start Reading <ArrowRight aria-hidden="true" /></a>
+
+      {editorsPick && (
+        <div class="home-hero-pick" id="editors-pick">
+          <p class="eyebrow">{homepage ? 'This Week’s Editor’s Pick' : 'Editor’s Pick'}</p>
+          <AppCard
+            app={editorsPick.data}
+            appId={editorsPick.id}
+            editorNote={issue.editorsPick?.reason}
+            variant="hero"
+          />
+        </div>
+      )}
       </div>
-    </div>
-    <div class="harbor-artwork" aria-hidden="true">
-      <img class="harbor-artwork-light" src="/harbor-hero-clean.webp" alt="" width="1200" height="800" />
-      <img class="harbor-artwork-dark" src="/harbor-hero-dark-clean-stars.webp" alt="" width="1200" height="800" />
-    </div>
-  </header>
+    </header>
+  ) : (
+    <header class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">App Waypoint Issue</p>
+        <h1><time datetime={issue.slug}>{issue.date}</time></h1>
+        <p class="date">{`Issue ${issueLabel}`}</p>
+        <WaveRule />
+        <p class="dek">{issue.dek}</p>
+        <div class="hero-actions">
+          <a class="button" href="#new-discoveries">Start Reading <ArrowRight aria-hidden="true" /></a>
+        </div>
+      </div>
+    </header>
+  )}
 
   {issue.sections.map((section, index) => (
     <>
-      {editorsPick && index === editorsPickIndex && (
-        <section id="editors-pick" class="section editors-pick-section">
-          <div class="section-heading editors-pick-heading">
-            <p class="eyebrow">Editor's Pick</p>
-            <h2>One app worth a closer look</h2>
-          </div>
-          <div class="editors-pick-grid">
-            <AppCard app={editorsPick.data} appId={editorsPick.id} editorNote={issue.editorsPick?.reason} />
-          </div>
-        </section>
-      )}
       <section id={index === 0 ? 'new-discoveries' : undefined} class="section">
         <div class="section-heading">
           <p class="eyebrow">{section.eyebrow}</p>
@@ -88,27 +107,11 @@ const editorsPick = issue.editorsPick ? appsById.get(issue.editorsPick.app) : un
     </>
   ))}
 
-  {editorsPick && editorsPickIndex === issue.sections.length && (
-    <section id="editors-pick" class="section editors-pick-section">
-      <div class="section-heading editors-pick-heading">
-        <p class="eyebrow">Editor's Pick</p>
-        <h2>One app worth a closer look</h2>
-      </div>
-      <div class="editors-pick-grid">
-        <AppCard app={editorsPick.data} appId={editorsPick.id} editorNote={issue.editorsPick?.reason} />
-      </div>
-    </section>
-  )}
-
-  <div class="content-divider" aria-hidden="true">
-    <svg viewBox="0 0 1200 128" role="presentation">
-      <path class="divider-route" pathLength="100" d="M-28 68C95 68 120 33 220 44c91 10 33 76 112 73 61-2 11-88 91-89 74-1 66 72 143 65 80-8 34-66 119-70 81-4 58 83 151 78 89-5 70-67 154-62 74 5 83 43 161 39" />
-      <g class="divider-sailboat" transform="translate(1136 31) scale(2)">
-        <path d="M10 2v15" />
-        <path d="M7 22a4 4 0 0 1-4-4 1 1 0 0 1 1-1h16a1 1 0 0 1 1 1 4 4 0 0 1-4 4z" />
-        <path d="M9.159 2.46a1 1 0 0 1 1.521-.193l9.977 8.98A1 1 0 0 1 20 13H4a1 1 0 0 1-.824-1.567z" />
-      </g>
-    </svg>
+  {/* A waypoint between the apps and the watching and reading. The mark is
+      always drawn; its light fires once when the divider first comes into view. */}
+  <div class="content-divider" aria-hidden="true" data-waypoint>
+    <canvas class="content-divider-sea"></canvas>
+    <BrandMark class="content-divider-mark" ping={true} />
   </div>
 
   <section class="section video-section">
@@ -141,3 +144,122 @@ const editorsPick = issue.editorsPick ? appsById.get(issue.editorsPick.app) : un
     </ul>
   </section>
 </article>
+
+<script>
+  /* Hero atmosphere: a star field for the night theme and an engraved wave
+     band for both. Drawn rather than loaded, so it costs no image request.
+     Static — painted once, then only on theme change or resize. */
+
+  /* A buoy is identified by the rhythm of its light. This one flashes once, as
+     you pass it, once it reaches the middle of the screen rather than its edge.
+     One shot per load: the observer releases the element after. */
+  const waypoint = document.querySelector('[data-waypoint]');
+  const stillness = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  if (waypoint && !stillness.matches && 'IntersectionObserver' in window) {
+    const passing = new IntersectionObserver((entries, observer) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        entry.target.classList.add('is-lit');
+        observer.unobserve(entry.target);
+      }
+    }, { rootMargin: '-35% 0px -35% 0px', threshold: 0 });
+    passing.observe(waypoint);
+  }
+
+  const sky = document.querySelector('.home-hero-sky');
+  const sea = document.querySelector('.home-hero-sea');
+  const dividerSea = document.querySelector('.content-divider-sea');
+
+  if (sky || sea || dividerSea) {
+    const root = document.documentElement;
+    const token = (name) => getComputedStyle(root).getPropertyValue(name).trim();
+    const isDark = () => root.dataset.theme === 'dark';
+
+    const fit = (canvas) => {
+      const rect = canvas.getBoundingClientRect();
+      if (!rect.width || !rect.height) return null;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(rect.width * dpr);
+      canvas.height = Math.round(rect.height * dpr);
+      const ctx = canvas.getContext('2d');
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, rect.width, rect.height);
+      return { ctx, w: rect.width, h: rect.height };
+    };
+
+    /* Stars belong to night only; by day the wave band carries the hero alone. */
+    const drawSky = () => {
+      if (!sky) return;
+      const c = fit(sky);
+      if (!c || !isDark()) return;
+      const ink = token('--sea-ink');
+      const count = Math.floor((c.w * c.h) / 5200);
+      for (let i = 0; i < count; i += 1) {
+        const x = Math.random() * c.w;
+        const y = Math.random() * c.h * 0.82;
+        const r = Math.random() * 1.3 + 0.2;
+        const a = Math.random() * 0.5 + 0.12;
+        c.ctx.beginPath();
+        c.ctx.arc(x, y, r, 0, Math.PI * 2);
+        c.ctx.fillStyle = `rgb(${ink} / ${a})`;
+        c.ctx.fill();
+      }
+    };
+
+    /* Layered sine lines: amplitude decays with depth, wavelength grows, and a
+       second harmonic keeps the crests from repeating mechanically. The hero
+       runs it full strength; the divider runs the same water, quieted and
+       dissolved at both ends so it reads as a passage rather than a rule. */
+    const drawWaves = (canvas, { lines, amp, quiet = 1, fadeEnds = false }) => {
+      if (!canvas) return;
+      const c = fit(canvas);
+      if (!c) return;
+      const ink = token('--sea-ink');
+      const peak = (parseFloat(token('--sea-alpha')) || 0.3) * quiet;
+      for (let l = 0; l < lines; l += 1) {
+        const t = lines === 1 ? 0 : l / (lines - 1);
+        const baseY = c.h * (0.24 + t * 0.7);
+        const a = amp * (1 - t * 0.45) + 2;
+        const wl = 60 + l * 14;
+        const phase = l * 0.9;
+        c.ctx.beginPath();
+        for (let x = 0; x <= c.w; x += 4) {
+          const y = baseY
+            + Math.sin(x / wl + phase) * a
+            + Math.sin(x / (wl * 2.3) + phase * 1.7) * a * 0.4;
+          if (x === 0) c.ctx.moveTo(x, y); else c.ctx.lineTo(x, y);
+        }
+        const alpha = peak * Math.pow(1 - t, 1.35);
+        if (fadeEnds) {
+          const grad = c.ctx.createLinearGradient(0, 0, c.w, 0);
+          grad.addColorStop(0, `rgb(${ink} / 0)`);
+          grad.addColorStop(0.28, `rgb(${ink} / ${alpha})`);
+          grad.addColorStop(0.72, `rgb(${ink} / ${alpha})`);
+          grad.addColorStop(1, `rgb(${ink} / 0)`);
+          c.ctx.strokeStyle = grad;
+        } else {
+          c.ctx.strokeStyle = `rgb(${ink} / ${alpha})`;
+        }
+        c.ctx.lineWidth = 1.1;
+        c.ctx.stroke();
+      }
+    };
+
+    const paint = () => {
+      drawSky();
+      drawWaves(sea, { lines: 8, amp: 13 });
+      drawWaves(dividerSea, { lines: 5, amp: 7, quiet: 0.7, fadeEnds: true });
+    };
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(paint, 150);
+    });
+    document.addEventListener('appwaypoint:themechange', paint);
+
+    paint();
+    if (document.readyState !== 'complete') window.addEventListener('load', paint);
+  }
+</script>
