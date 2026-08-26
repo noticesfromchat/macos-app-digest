@@ -55,11 +55,13 @@ the single production deployment point. Follow the complete workflow in
 - During the Thursday check, audit existing tags for underuse, duplication, vague
   labels, overly narrow labels and apps that appear mistagged or undertagged.
 - Ask whether the editor wants any changes to existing app records before preparing
-  the release candidate. Check for previously provided Editor's Pick direction in
-  GitHub issues, pull request comments, prior Thursday reports or other explicit
-  scheduled-task context; report any direction found and ask the editor to confirm,
-  change, reorder or remove it before preparing the release candidate. Ask whether
-  the editor has a new Editor's Pick only when no previously confirmed direction
+  the release candidate. Check the Notion
+  [Editor's Picks note](https://app.notion.com/p/Editor-s-Picks-3c8d6482d47f80c4bbc6ce99ed84d908?source=copy_link)
+  first for pending Editor's Pick direction, then check GitHub issues, pull request
+  comments, prior Thursday reports and other explicit scheduled-task context; report
+  any direction found and ask the editor to confirm, change, reorder or remove it
+  before preparing the release candidate. Ask whether the editor has a new Editor's
+  Pick only when no pending Notion direction or previously confirmed direction
   exists.
 - Also on Thursday, inspect every open App Waypoint pull request and its Netlify
   Deploy Preview. If more than one preview exists, ask the editor which preview
@@ -115,13 +117,15 @@ When the user explicitly provides an app to feature as the Editor's Pick:
 9. If the issue already has an Editor's Pick, replace it only when the user's request clearly calls for replacement; otherwise report the conflict.
 10. Run validation and the Astro build. If the app or issue cannot pass the documented requirements, stop and report the specific problem rather than silently choosing another app.
 
-Previously provided Editor's Pick direction in GitHub issues, pull request comments,
-prior Thursday reports or other explicit scheduled-task context counts as
-editor-provided direction only after the Thursday check reports it and asks the
-editor to confirm, change, reorder or remove it. Do not hard-code app names in
-scheduled-task prompts, and do not infer or auto-promote Editor's Picks from an old
-queue unless the editor explicitly confirmed that queue is still active. Friday may
-use only the Editor's Pick confirmed during Thursday review.
+Pending Editor's Pick direction should be pulled first from the Notion
+[Editor's Picks note](https://app.notion.com/p/Editor-s-Picks-3c8d6482d47f80c4bbc6ce99ed84d908?source=copy_link).
+Previously provided Editor's Pick direction in that note, GitHub issues, pull
+request comments, prior Thursday reports or other explicit scheduled-task context
+counts as editor-provided direction only after the Thursday check reports it and
+asks the editor to confirm, change, reorder or remove it. Do not hard-code app names
+in scheduled-task prompts, and do not infer or auto-promote Editor's Picks from an
+old queue unless the editor explicitly confirmed that queue is still active. Friday
+may use only the Editor's Pick confirmed during Thursday review.
 
 The Editor's Pick is optional and limited to one app per issue. Omit the entire
 `editorsPick` block when the user has not supplied a pick and editorial judgment does

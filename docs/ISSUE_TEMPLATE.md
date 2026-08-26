@@ -147,14 +147,16 @@ in `sourceNotes`. Do not substitute apps based solely on raw votes.
    already has a different Editor's Pick and replacement is unclear, report the conflict.
 8. Run the required validation and build checks before publishing.
 
-Previously provided Editor's Pick direction in GitHub issues, pull request comments,
-prior Thursday reports or other explicit scheduled-task context counts as
-editor-provided direction only after the Thursday check reports it and asks the
-editor to confirm, change, reorder or remove it. Do not hard-code app names in
-scheduled-task prompts, and do not infer or auto-promote Editor's Picks from an old
-queue unless the editor explicitly confirmed that queue is still active. Friday may
-use only the Editor's Pick confirmed during Thursday review. If no Editor's Pick was
-confirmed, omit the `editorsPick` block.
+Pending Editor's Pick direction should be pulled first from the Notion
+[Editor's Picks note](https://app.notion.com/p/Editor-s-Picks-3c8d6482d47f80c4bbc6ce99ed84d908?source=copy_link).
+Previously provided Editor's Pick direction in that note, GitHub issues, pull
+request comments, prior Thursday reports or other explicit scheduled-task context
+counts as editor-provided direction only after the Thursday check reports it and
+asks the editor to confirm, change, reorder or remove it. Do not hard-code app names
+in scheduled-task prompts, and do not infer or auto-promote Editor's Picks from an
+old queue unless the editor explicitly confirmed that queue is still active. Friday
+may use only the Editor's Pick confirmed during Thursday review. If no Editor's Pick
+was confirmed, omit the `editorsPick` block.
 
 Use role-based attribution in public content. Never include the editor's personal name
 in an app source, issue note or other generated page copy.

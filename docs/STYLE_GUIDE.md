@@ -23,6 +23,10 @@ The site should feel like a small, premium editorial publication for experienced
 - When the user supplies an app specifically for this feature, use that selection for
   the named issue—or the next issue being prepared if none is named. Do not replace it
   with an agent-selected alternative.
+- During Thursday review, pull pending Editor's Pick direction first from the Notion
+  [Editor's Picks note](https://app.notion.com/p/Editor-s-Picks-3c8d6482d47f80c4bbc6ce99ed84d908?source=copy_link),
+  then ask the editor to confirm, change, reorder or remove that direction before
+  preparing the release candidate.
 - Reuse an existing app record when one exists. Otherwise, verify the official homepage
   or canonical repository and create one standard app file before referencing it.
 - The selected app's file must include `collections: [editors-picks]`, preserving any

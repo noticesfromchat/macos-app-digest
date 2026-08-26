@@ -20,15 +20,17 @@ Preview review.
    additional tags.
 4. Ask whether the editor wants any changes to existing app records before preparing
    the release candidate.
-5. Check the current workflow context for previously provided Editor's Pick
-   direction, including GitHub issues, pull request comments, prior Thursday reports
-   or other explicit scheduled-task context. Report any prior direction found and
-   ask the editor to confirm, change, reorder or remove it before preparing the
-   release candidate. Do not hard-code app names in scheduled-task prompts and do
-   not infer or auto-promote Editor's Picks from an old queue unless the editor
-   explicitly confirmed that queue is still active.
+5. Pull pending Editor's Pick direction from the Notion
+   [Editor's Picks note](https://app.notion.com/p/Editor-s-Picks-3c8d6482d47f80c4bbc6ce99ed84d908?source=copy_link),
+   then check the current workflow context for other previously provided direction,
+   including GitHub issues, pull request comments, prior Thursday reports or other
+   explicit scheduled-task context. Report any prior direction found and ask the
+   editor to confirm, change, reorder or remove it before preparing the release
+   candidate. Do not hard-code app names in scheduled-task prompts and do not infer
+   or auto-promote Editor's Picks from an old queue unless the editor explicitly
+   confirmed that queue is still active.
 6. Ask whether the editor has a new app to contribute as the upcoming Editor's Pick
-   when no previously confirmed direction exists.
+   when no pending Notion direction or previously confirmed direction exists.
 7. Inspect every open pull request for `noticesfromchat/macos-app-digest` and its
    Netlify Deploy Preview.
 8. Record each preview's purpose, explicit approval state and current Netlify status.
