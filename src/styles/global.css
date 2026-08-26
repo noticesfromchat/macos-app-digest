@@ -1426,6 +1426,7 @@ a { color: inherit; }
   .home-hero-copy { order: 1; }
   .home-hero-sea { position: static; order: 2; width: 100%; height: var(--sea-h); }
   .home-hero-pick { order: 3; }
+  .home-hero + .section { border-top: 1px solid var(--line); }
   .home-hero-pick-title {
     display: block;
     margin: 0 0 22px;
