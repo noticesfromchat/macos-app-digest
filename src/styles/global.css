@@ -1412,7 +1412,7 @@ a { color: inherit; }
     display: flex;
     flex-direction: column;
     gap: 30px;
-    padding-block: 34px 36px;
+    padding-block: 34px 46px;
   }
 
   .home-hero-inner { display: contents; }
@@ -1480,7 +1480,7 @@ a { color: inherit; }
   .hero h1 { font-size: clamp(3.05rem, 15vw, 4.15rem); }
   .hero .dek { max-width: 360px; font-size: .94rem; }
   .button { width: 180px; min-height: 44px; }
-  .home-hero { --sea-h: 72px; padding-block: 30px 32px; }
+  .home-hero { --sea-h: 72px; padding-block: 30px 46px; }
   .section { padding: 46px 0; }
   .content-divider { height: 68px; }
   .video-section { padding-top: 20px; }
