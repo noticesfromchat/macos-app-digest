@@ -1,7 +1,7 @@
 # App Waypoint Development Workflow
 
 This is the canonical path from a local edit to production. It applies to people,
-Codex, Osaurus and other development agents.
+Codex and other development agents.
 
 ## 1. Prepare the work
 
@@ -12,7 +12,6 @@ Codex, Osaurus and other development agents.
    - `docs/STYLE_GUIDE.md` for any content or presentation change
    - `docs/ISSUE_TEMPLATE.md` for app or issue content
    - `docs/PUBLISHING.md` for weekly release work
-   - `docs/OSAURUS.md` when using the local Osaurus agent
 5. Inspect the current content schema, components and related content before editing.
 
 Use repository-relative paths in committed files. Never commit a username, home
