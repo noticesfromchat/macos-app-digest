@@ -139,12 +139,14 @@ a { color: inherit; }
 .brand-wordmark {
   overflow: hidden;
   max-width: 14ch;
+  margin-block: -.08em;
+  padding-block: .08em .14em;
   color: var(--text);
   font-family: var(--display);
   font-size: var(--type-brand-nav);
   font-weight: 500;
   letter-spacing: 0;
-  line-height: 1;
+  line-height: 1.08;
   opacity: 1;
   transform: translateX(0);
   transition:
