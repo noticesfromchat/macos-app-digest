@@ -70,13 +70,19 @@ Preview review.
 14. Include the issue `rss` block with a short issue-specific title and the standard
     `Read this issue` CTA. The feed summary is generated from the issue `dek`, so do
     not duplicate that summary in the `rss` block.
-15. Run `npm run validate` and `npm run build`, fix every error and verify the built
+15. Write `sourceNotes` in concise editorial language that explains where the issue's
+    app selections and supporting links came from. Include all selected apps, grouped
+    by source type when useful. Avoid internal agent or process wording such as
+    “checked against records,” “during the research pass,” or “before preparing the
+    release candidate.” Keep validation, duplicate checks and workflow details in
+    Production Notes instead of Source Notes.
+16. Run `npm run validate` and `npm run build`, fix every error and verify the built
     `/rss.xml` feed includes the new issue correctly.
-16. Push the release candidate once, wait for required GitHub checks and the Netlify
+17. Push the release candidate once, wait for required GitHub checks and the Netlify
     Deploy Preview to succeed, then review the Deploy Preview.
-17. Ask the editor for final approval to use that reviewed release candidate for
+18. Ask the editor for final approval to use that reviewed release candidate for
     Friday's production deployment.
-18. Do not merge, close, consolidate or otherwise alter competing previews without
+19. Do not merge, close, consolidate or otherwise alter competing previews without
     the editor's direction.
 
 An idle preview may remain open without creating another build. Minimize Netlify
