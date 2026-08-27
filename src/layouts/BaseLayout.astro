@@ -20,6 +20,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 const socialImageUrl = new URL(socialImage, Astro.site);
 const rssUrl = new URL('/rss.xml', Astro.site);
 const searchIndexUrl = new URL('/search-index.json', Astro.site);
+const isHomepage = Astro.url.pathname === '/';
 const graph = [
   {
     '@type': 'Organization',
@@ -100,9 +101,10 @@ const graph = [
     </script>
   </head>
   <body>
-    <header class="site-header">
+    <header class:list={['site-header', { 'is-homepage-brand': isHomepage }]} data-site-header>
       <a class="brand" href="/" aria-label="App Waypoint home">
         <BrandMark />
+        <span class="brand-wordmark" data-brand-wordmark>App Waypoint</span>
       </a>
       <nav aria-label="Primary navigation">
         <button class="theme-toggle nav-theme-toggle" type="button" aria-label="Switch to dark theme" data-theme-toggle>
@@ -257,6 +259,32 @@ const graph = [
       applyTheme(root.dataset.theme || 'light');
       toggle?.addEventListener('click', () => applyTheme(root.dataset.theme === 'dark' ? 'light' : 'dark'));
 
+    </script>
+    <script is:inline>
+      (() => {
+        const header = document.querySelector('[data-site-header].is-homepage-brand');
+        const heroWordmark = document.querySelector('.home-hero-wordmark');
+        if (!header || !heroWordmark) return;
+
+        let ticking = false;
+        const updateHeaderBrand = () => {
+          ticking = false;
+          const headerBottom = header.getBoundingClientRect().bottom;
+          const wordmarkBottom = heroWordmark.getBoundingClientRect().bottom;
+          header.classList.toggle('is-brand-visible', wordmarkBottom <= headerBottom + 8);
+        };
+
+        const requestUpdate = () => {
+          if (ticking) return;
+          ticking = true;
+          window.requestAnimationFrame(updateHeaderBrand);
+        };
+
+        window.addEventListener('scroll', requestUpdate, { passive: true });
+        window.addEventListener('resize', requestUpdate);
+        window.addEventListener('load', requestUpdate);
+        updateHeaderBrand();
+      })();
     </script>
     <script is:inline>
       (() => {
