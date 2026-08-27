@@ -40,6 +40,23 @@ or regenerating any page or issue, also read and follow
 9. Merge only after required checks pass and any required human approval is recorded.
 10. Before publishing a new issue, complete the checklist in `docs/STYLE_GUIDE.md`.
 
+## Standard issue structure
+
+Every issue must use the same regular app-section spine, in this order:
+
+1. `New Discoveries`
+2. `Trending`
+3. `Old Favorites`
+4. `AI & Automation`
+5. `Up and Coming`
+
+Do not rename, omit, reorder or add regular app sections during scheduled issue
+preparation. The optional `editorsPick` module is the only app feature outside that
+spine, and when present it renders between `Trending` and `Old Favorites`. If the
+slate does not yet contain three eligible apps for a required section, keep the
+section name and ask the editor to choose replacements with checkbox options in
+Notion before building the preview.
+
 ## Deployment authority
 
 - Netlify is the only deployment target for this repository.
@@ -66,6 +83,10 @@ the single production deployment point. Follow the complete workflow in
   then propose the Friday slate for editor review.
 - For each proposed app, include draft description, `bestFor`, tags, source or
   homepage and any collection recommendations.
+- Proposed issue slates must preserve the standard section spine:
+  `New Discoveries`, `Trending`, `Old Favorites`, `AI & Automation`,
+  `Up and Coming`. Do not substitute alternate section names such as utility,
+  workbench or themed catchall sections.
 - Every app placed in an `Old Favorites` section must include `community-favorites`
   in its app record's `collections` array. Preserve any existing collection entries.
 - During the Thursday check, audit existing tags for underuse, duplication, vague

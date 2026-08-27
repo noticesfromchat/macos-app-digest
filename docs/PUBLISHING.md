@@ -34,12 +34,17 @@ Preview review.
 2. Propose a Friday issue slate for editor review. For each proposed app, include
    the draft description, `bestFor`, tags, source or homepage and any collection
    recommendations.
-3. Audit tags across existing app records. Identify underused, duplicate, vague or
+3. Preserve the standard issue section spine exactly:
+   `New Discoveries`, `Trending`, `Old Favorites`, `AI & Automation`,
+   `Up and Coming`. Do not rename, omit, reorder or add regular app sections.
+   The optional Editor's Pick is the only app module outside that spine and, when
+   present, belongs between `Trending` and `Old Favorites`.
+4. Audit tags across existing app records. Identify underused, duplicate, vague or
    overly broad tags, and flag apps that appear mistagged or would benefit from
    additional tags.
-4. Ask whether the editor wants any changes to existing app records before preparing
+5. Ask whether the editor wants any changes to existing app records before preparing
    the release candidate.
-5. Pull pending Editor's Pick direction from the Notion
+6. Pull pending Editor's Pick direction from the Notion
    [Editor's Picks note](https://app.notion.com/p/Editor-s-Picks-3c8d6482d47f80c4bbc6ce99ed84d908?source=copy_link),
    then check the current workflow context for other previously provided direction,
    including GitHub issues, pull request comments, prior Thursday reports or other
@@ -48,30 +53,30 @@ Preview review.
    candidate. Do not hard-code app names in scheduled-task prompts and do not infer
    or auto-promote Editor's Picks from an old queue unless the editor explicitly
    confirmed that queue is still active.
-6. Ask whether the editor has a new app to contribute as the upcoming Editor's Pick
+7. Ask whether the editor has a new app to contribute as the upcoming Editor's Pick
    when no pending Notion direction or previously confirmed direction exists.
-7. Inspect every open pull request for `noticesfromchat/macos-app-digest` and its
+8. Inspect every open pull request for `noticesfromchat/macos-app-digest` and its
    Netlify Deploy Preview.
-8. Record each preview's purpose, explicit approval state and current Netlify status.
-9. If more than one preview exists, ask the editor which preview should accompany the
+9. Record each preview's purpose, explicit approval state and current Netlify status.
+10. If more than one preview exists, ask the editor which preview should accompany the
    Friday issue. Do this whether none, one or several previews appear approved.
-10. Recommend whether to select one preview, consolidate approved work or leave the
+11. Recommend whether to select one preview, consolidate approved work or leave the
    previews separate.
-11. Create or update the selected release-candidate branch from the latest `main`
+12. Create or update the selected release-candidate branch from the latest `main`
     with the Thursday-reviewed issue slate, confirmed app-record changes, required
     app records and one issue Markdown file.
-12. For every app in an `Old Favorites` section, add `community-favorites` to the app
+13. For every app in the required `Old Favorites` section, add `community-favorites` to the app
     record's `collections` array while preserving any existing collection entries.
-13. Include the issue `rss` block with a short issue-specific title and the standard
+14. Include the issue `rss` block with a short issue-specific title and the standard
     `Read this issue` CTA. The feed summary is generated from the issue `dek`, so do
     not duplicate that summary in the `rss` block.
-14. Run `npm run validate` and `npm run build`, fix every error and verify the built
+15. Run `npm run validate` and `npm run build`, fix every error and verify the built
     `/rss.xml` feed includes the new issue correctly.
-15. Push the release candidate once, wait for required GitHub checks and the Netlify
+16. Push the release candidate once, wait for required GitHub checks and the Netlify
     Deploy Preview to succeed, then review the Deploy Preview.
-16. Ask the editor for final approval to use that reviewed release candidate for
+17. Ask the editor for final approval to use that reviewed release candidate for
     Friday's production deployment.
-17. Do not merge, close, consolidate or otherwise alter competing previews without
+18. Do not merge, close, consolidate or otherwise alter competing previews without
     the editor's direction.
 
 An idle preview may remain open without creating another build. Minimize Netlify

@@ -4,6 +4,12 @@ Copy the frontmatter below into a new file named `src/content/issues/YYYY-MM-DD.
 
 Before creating the issue, add a Markdown file under `src/content/apps/` for every app ID that does not already exist. Reuse existing app IDs rather than duplicating app records.
 
+Every issue must keep the same regular app-section spine, in this exact order:
+`New Discoveries`, `Trending`, `Old Favorites`, `AI & Automation`, `Up and Coming`.
+Do not rename, omit, reorder or add regular app sections. Weekly variation belongs in
+section titles and app choices, not in the section eyebrows. The optional
+`editorsPick` object renders between `Trending` and `Old Favorites`.
+
 ```yaml
 ---
 number: '002'
@@ -20,8 +26,8 @@ sections:
   - eyebrow: Trending
     title: A concise editorial section title
     apps: [trending-app-id-1, trending-app-id-2, trending-app-id-3]
-  # Optional: include a "Old Favorites" section for established apps that still
-  # deserve attention because they are quietly excellent or frequently praised.
+  # Required: Old Favorites is always the third regular app section.
+  # Feature established apps that are quietly excellent or frequently praised.
   # Each app record must include community-favorites in its collections array.
   - eyebrow: Old Favorites
     title: Three established apps worth revisiting
@@ -98,6 +104,13 @@ npm run build
 
 The validator rejects unknown app IDs, duplicate apps within an issue, duplicate issue numbers or slugs, malformed URLs and content outside the approved editorial ranges.
 
+The issue section structure is fixed across the publication. Every issue must include
+exactly five regular app sections, in this order: `New Discoveries`, `Trending`,
+`Old Favorites`, `AI & Automation`, `Up and Coming`. Do not substitute a one-off
+section such as a utility bench, productivity group or themed catchall. If the slate
+lacks three eligible apps for a required section, keep the required section name and
+ask the editor for replacements before preview work continues.
+
 Each issue should include an `rss` block. `rss.title` is a short, issue-specific
 headline for feed readers. It may be polished, lightly witty or occasionally framed
 as a question, but it must match the issue theme and avoid clickbait. `rss.cta`
@@ -113,8 +126,8 @@ duplicate app copy in issue files.
 reason. The app must already exist in `src/content/apps/` and must not also appear in
 one of the issue's regular sections.
 
-`Old Favorites` is a standard three-app section for established Mac apps that still
-earn community attention because they are unusually useful, overlooked or
+`Old Favorites` is a required standard three-app section for established Mac apps
+that still earn community attention because they are unusually useful, overlooked or
 continuously recommended. Every referenced app must include `community-favorites` in
 its app file's `collections` array, preserving any existing collection entries.
 

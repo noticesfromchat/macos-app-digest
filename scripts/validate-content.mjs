@@ -9,6 +9,14 @@ const appsDir = path.join(root, 'src/content/apps');
 const issuesDir = path.join(root, 'src/content/issues');
 const errors = [];
 const validCategorySlugs = new Set(categorySlugs);
+const standardIssueSectionEyebrows = [
+  'New Discoveries',
+  'Trending',
+  'Old Favorites',
+  'AI & Automation',
+  'Up and Coming',
+];
+const standardIssueSectionStartSlug = '2026-08-21';
 
 async function markdownFiles(directory) {
   return (await readdir(directory))
@@ -165,6 +173,13 @@ for (const filename of issueFiles) {
     continue;
   }
 
+  if (typeof data.slug === 'string' && data.slug >= standardIssueSectionStartSlug) {
+    const sectionEyebrows = data.sections.map((section) => String(section.eyebrow ?? '').trim());
+    if (sectionEyebrows.join('|') !== standardIssueSectionEyebrows.join('|')) {
+      errors.push(`${relative}: sections must use the standard issue spine: ${standardIssueSectionEyebrows.join(' -> ')}`);
+    }
+  }
+
   const referencedApps = [];
   for (const section of data.sections) {
     if (!Array.isArray(section.apps) || section.apps.length < 1 || section.apps.length > 6) {
@@ -178,6 +193,15 @@ for (const filename of issueFiles) {
     }
 
     const sectionEyebrow = String(section.eyebrow ?? '').trim().toLowerCase();
+
+    if (
+      typeof data.slug === 'string'
+      && data.slug >= standardIssueSectionStartSlug
+      && standardIssueSectionEyebrows.map((eyebrow) => eyebrow.toLowerCase()).includes(sectionEyebrow)
+      && section.apps.length !== 3
+    ) {
+      errors.push(`${relative}: ${section.eyebrow} must reference exactly 3 apps`);
+    }
 
     if (sectionEyebrow === 'old favorites') {
       for (const appId of section.apps) {
