@@ -40,6 +40,22 @@ or regenerating any page or issue, also read and follow
 9. Merge only after required checks pass and any required human approval is recorded.
 10. Before publishing a new issue, complete the checklist in `docs/STYLE_GUIDE.md`.
 
+## Deployment authority
+
+- Netlify is the only deployment target for this repository.
+- GitHub Pages must remain disabled. Do not enable Pages, create a Pages workflow,
+  upload `dist/` to Pages, commit generated `dist/` output or use `gh-pages`.
+- Netlify uses the Git-connected site configuration in `netlify.toml`: build command
+  `npm run build`, publish directory `dist`, Node 22.
+- A Netlify Deploy Preview is created only by pushing a task branch and opening or
+  updating a pull request. Do not use `netlify deploy` as a substitute for the PR
+  Deploy Preview unless the user explicitly asks for a one-off manual Netlify deploy.
+- After every preview-relevant push, wait for GitHub checks and
+  `netlify/appwaypoint/deploy-preview` to pass, then review the Deploy Preview URL
+  shown on the pull request.
+- Production deployment happens only when the approved pull request is merged into
+  `main`. Do not deploy production with GitHub Pages or a manual CLI command.
+
 ## Weekly release coordination
 
 Treat Thursday as the editorial check and Deploy Preview review day, and Friday as

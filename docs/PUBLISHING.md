@@ -4,6 +4,25 @@ App Waypoint publishes one coordinated release each Friday. The preferred releas
 contains the weekly issue plus any site improvements that the editor approved in
 advance, merged to `main` once so Netlify performs one production deployment.
 
+## Deployment contract
+
+- Netlify is the only deployment target for App Waypoint.
+- GitHub Pages must remain disabled. Never enable Pages, create a Pages workflow,
+  publish from a `gh-pages` branch, upload generated files or commit `dist/`.
+- Netlify previews are created by GitHub pull requests. Push the release-candidate
+  branch, open or update the PR against `main`, then wait for
+  `netlify/appwaypoint/deploy-preview` to pass.
+- The preview URL for PR `{PR_NUMBER}` should be
+  `https://deploy-preview-{PR_NUMBER}--appwaypoint.netlify.app`.
+- The repository's `netlify.toml` defines the build command, publish directory and
+  Node version. Do not override those settings during release work unless the editor
+  explicitly approves a deployment-configuration change.
+- Use `netlify deploy` only for an explicitly requested one-off manual deploy. It is
+  not the normal preview workflow and does not satisfy the required pull request
+  Deploy Preview review.
+- Production deployment happens only by merging the reviewed, passing and
+  editor-approved PR into `main`.
+
 ## Thursday editorial check
 
 The Thursday check prepares and reviews the Friday issue before production

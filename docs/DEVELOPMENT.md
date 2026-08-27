@@ -46,18 +46,38 @@ and reduced-motion behavior.
 
 1. Commit only the intended files with a concise message.
 2. Push the task branch and open a pull request.
-3. Wait for the repository validation/build check and Netlify Deploy Preview.
-4. Review the Deploy Preview when content, layout or publishing output changed.
-5. Resolve review conversations and failures before merge.
-6. Merge only after required checks pass and the change has the approval required by
+3. Confirm the pull request targets `main`.
+4. Wait for the repository validation/build check and
+   `netlify/appwaypoint/deploy-preview` to pass.
+5. Use the Netlify Deploy Preview URL attached to the pull request for review.
+   The preview URL should look like
+   `https://deploy-preview-{PR_NUMBER}--appwaypoint.netlify.app`.
+6. Review the Deploy Preview when content, layout or publishing output changed.
+7. Resolve review conversations and failures before merge.
+8. Merge only after required checks pass and the change has the approval required by
    `docs/PUBLISHING.md`.
 
 Batch related edits and push at meaningful milestones to conserve Netlify build
-credits. Never use GitHub Pages or manually publish `dist/`.
+credits.
+
+### Deployment contract
+
+- Netlify is the only deployment target for App Waypoint.
+- `netlify.toml` is the deployment source of truth: `npm run build` builds the site,
+  Netlify publishes `dist`, and builds use Node 22.
+- GitHub Pages must stay disabled. Do not enable GitHub Pages, add a Pages workflow,
+  commit or upload `dist/`, use a `gh-pages` branch or manually publish generated
+  HTML.
+- Do not use `netlify deploy` to create the normal PR preview. The normal preview is
+  Git-based: push the branch, open or update the PR, and wait for
+  `netlify/appwaypoint/deploy-preview`.
+- A manual Netlify CLI deploy is allowed only when the user explicitly asks for a
+  one-off manual deploy. It does not replace the required PR Deploy Preview.
 
 ## 5. Production
 
-Merging the pull request into `main` starts the Netlify production deployment. Do not
+Merging the approved pull request into `main` starts the Netlify production
+deployment. Do not run a manual production deploy and do not use GitHub Pages. Do not
 claim a change or issue is live until Netlify reports success. After deployment,
 verify the production homepage and every changed permanent URL. Weekly releases must
 also complete the reporting and email steps in `docs/PUBLISHING.md`.
