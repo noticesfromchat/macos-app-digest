@@ -7,16 +7,6 @@
 }
 
 @font-face {
-  font-family: "Seamless";
-  src:
-    url("/fonts/Seamless.otf") format("opentype"),
-    url("/fonts/Seamless.ttf") format("truetype");
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-}
-
-@font-face {
   font-family: "Philippine";
   src: url("/fonts/Philippine-Regular.otf") format("opentype");
   font-style: normal;
@@ -52,7 +42,6 @@
   --page-start-space: 36px;
   --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
   --display: "Iowan Old Style", "Baskerville", "Times New Roman", serif;
-  --brand: "Seamless", "Philippine", "Iowan Old Style", serif;
   --type-brand-nav: clamp(1.15rem, 2.1vw, 1.55rem);
   --type-label: .78rem;
   --type-meta: .84rem;
@@ -151,9 +140,9 @@ a { color: inherit; }
   overflow: hidden;
   max-width: 14ch;
   color: var(--text);
-  font-family: var(--brand);
+  font-family: var(--display);
   font-size: var(--type-brand-nav);
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: 0;
   line-height: 1;
   opacity: 1;

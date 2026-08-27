@@ -26,53 +26,59 @@ colors:
   sea-ink-night: "226 236 250"
 typography:
   display:
-    fontFamily: "Iowan Old Style, Baskerville, \"Times New Roman\", serif"
+    fontFamily: 'Iowan Old Style, Baskerville, "Times New Roman", serif'
     fontSize: "clamp(4rem, 8vw, 6rem)"
     fontWeight: 500
     lineHeight: 0.9
     letterSpacing: "0"
   headline:
-    fontFamily: "Iowan Old Style, Baskerville, \"Times New Roman\", serif"
+    fontFamily: 'Iowan Old Style, Baskerville, "Times New Roman", serif'
     fontSize: "clamp(3.25rem, 5.1vw, 4.25rem)"
     fontWeight: 500
     lineHeight: 0.96
     letterSpacing: "-0.035em"
   subhead:
-    fontFamily: "Iowan Old Style, Baskerville, \"Times New Roman\", serif"
+    fontFamily: 'Iowan Old Style, Baskerville, "Times New Roman", serif'
     fontSize: "clamp(1.9rem, 2.4vw, 2.35rem)"
     fontWeight: 600
     lineHeight: 1.1
     letterSpacing: "-0.02em"
   title:
-    fontFamily: "Iowan Old Style, Baskerville, \"Times New Roman\", serif"
+    fontFamily: 'Iowan Old Style, Baskerville, "Times New Roman", serif'
     fontSize: "1.4rem"
     fontWeight: 600
     lineHeight: 1.15
     letterSpacing: "-0.02em"
   body:
-    fontFamily: "-apple-system, BlinkMacSystemFont, \"SF Pro Text\", \"Segoe UI\", sans-serif"
+    fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif'
     fontSize: "1rem"
     fontWeight: 400
     lineHeight: 1.55
     letterSpacing: "normal"
   label:
-    fontFamily: "-apple-system, BlinkMacSystemFont, \"SF Pro Text\", \"Segoe UI\", sans-serif"
+    fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif'
     fontSize: ".78rem"
     fontWeight: 800
     lineHeight: 1
     letterSpacing: ".1em"
   metadata:
-    fontFamily: "-apple-system, BlinkMacSystemFont, \"SF Pro Text\", \"Segoe UI\", sans-serif"
+    fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif'
     fontSize: ".84rem"
     fontWeight: 600
     lineHeight: 1.45
     letterSpacing: ".02em"
   brand:
-    fontFamily: "Seamless, Philippine, Iowan Old Style, serif"
+    fontFamily: 'Iowan Old Style, Baskerville, "Times New Roman", serif'
     fontSize: "clamp(1.35rem, 2.45vw, 2rem)"
-    fontWeight: 400
+    fontWeight: 500
     lineHeight: 1
-    letterSpacing: ".08em"
+    letterSpacing: "0"
+  displayAsset:
+    fontFamily: 'Philippine, Iowan Old Style, Baskerville, "Times New Roman", serif'
+    fontSize: "clamp(3.25rem, 5.1vw, 4.25rem)"
+    fontWeight: 400
+    lineHeight: 0.96
+    letterSpacing: "0"
 rounded:
   xs: "8px"
   sm: "10px"
@@ -179,9 +185,9 @@ These are drawn, not printed: they exist only inside the homepage hero's canvas 
 
 **Display Font:** Iowan Old Style, Baskerville, "Times New Roman", serif
 **Body Font:** -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif
-**Label/Brand Font:** Seamless, Philippine, Iowan Old Style, serif
+**Label Font:** -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif
 
-The type system is split between a classic editorial serif for the headlines and a practical system sans for everything that carries utility, metadata, or navigation. The Seamless brand face is kept for the wordmark and footer lockup so it feels special instead of repetitive.
+The type system is split between a classic editorial serif for the headlines and a practical system sans for everything that carries utility, metadata, or navigation. The App Waypoint wordmark uses the same editorial serif as the headline system so the brand voice stays consistent.
 
 ### Hierarchy
 - **Display** (500, clamp(4rem, 8vw, 6rem), 0.92): the largest page titles and high-authority hero moments.
@@ -191,7 +197,7 @@ The type system is split between a classic editorial serif for the headlines and
 - **Body** (400, 1rem, 1.55): descriptions, explanations, and editorial copy.
 - **Label** (800, .78rem, .1em, uppercase): eyebrows, small UI labels, and control legends.
 - **Metadata** (600, .84rem, 1.45): counts, sources, and secondary operational information.
-- **Brand** (400, fluid 1.35-2rem): the Seamless/Philippine wordmark role only.
+- **Brand** (500, fluid 1.35-2rem): the App Waypoint wordmark set in the same editorial serif as the headline system.
 
 **The Serif-Utility Split.** Serif type carries the editorial voice; the system sans carries the operational voice. Mixing them casually weakens both jobs.
 
@@ -244,7 +250,7 @@ Cards are the primary container language for apps, readings, and archive entries
 - **Behavior:** hover deepens the shadow and nudges the card upward slightly on pointer devices.
 
 ### Site Header and Navigation
-The header is sticky, translucent, and restrained. The brand uses the Seamless wordmark, while the icon controls stay compact and monochrome until hover or focus gives them blue.
+The header is sticky, translucent, and restrained. The brand wordmark uses the same editorial serif as the headline system, while the icon controls stay compact and monochrome until hover or focus gives them blue.
 - **Desktop:** brand on the left, search/archive/theme controls on the right.
 - **Mobile:** the navigation compresses and some links hide outside the issue page context.
 - **Hover / Active:** navigation links underline on hover and active state, with accent color reserved for the current page.

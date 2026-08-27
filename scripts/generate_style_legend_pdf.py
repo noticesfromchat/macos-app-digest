@@ -37,7 +37,6 @@ def register_fonts() -> dict[str, str]:
     candidates = [
         ("Philippine", ROOT / "public" / "fonts" / "Philippine-Regular.otf", "display"),
         ("Philippine-Bold", ROOT / "public" / "fonts" / "Philippine-Bold.otf", "display_bold"),
-        ("Seamless", ROOT / "public" / "fonts" / "Seamless.ttf", "brand"),
     ]
 
     for name, path, key in candidates:
@@ -340,7 +339,7 @@ def page_colors(c: Canvas) -> None:
 def page_typography(c: Canvas) -> None:
     c.setFillColor(hex_color(LIGHT_THEME.page))
     c.rect(0, 0, PAGE_W, PAGE_H, fill=1, stroke=0)
-    title(c, "Typography System", "The current site is serif-led for editorial authority, with system sans for utility and monospace for technical URLs. Custom font assets are available for future reskin work.", 3)
+    title(c, "Typography System", "The current site is serif-led for editorial authority, with system sans for utility and monospace for technical URLs. Custom font assets are limited to approved editorial display support.", 3)
 
     draw_round_rect(c, MARGIN, 290, 342, 180, LIGHT_THEME.surface, LIGHT_THEME.line, 14)
     label(c, "Current stacks", MARGIN + 18, 442, LIGHT_THEME.accent)
@@ -351,7 +350,6 @@ def page_typography(c: Canvas) -> None:
     draw_round_rect(c, MARGIN + 374, 290, 350, 180, DARK_THEME.surface, DARK_THEME.line, 14)
     label(c, "Available font assets", MARGIN + 392, 442, DARK_THEME.accent)
     para(c, "Philippine Light / Regular / Bold are bundled in public/fonts and can support future display work.", MARGIN + 392, 420, 304, FONTS["ui"], 10, DARK_THEME.text, 14)
-    para(c, "Seamless is bundled as OTF and TTF, historically suited to wordmark-style usage.", MARGIN + 392, 366, 304, FONTS["ui"], 10, DARK_THEME.text, 14)
 
     label(c, "Type roles", MARGIN, 258, LIGHT_THEME.accent)
     y = 232
