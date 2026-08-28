@@ -10,12 +10,10 @@ type AppEntry = CollectionEntry<'apps'>;
 
 const {
   homepage = false,
-  homepageStyle = homepage,
   issue,
   appEntries
 } = Astro.props as {
   homepage?: boolean;
-  homepageStyle?: boolean;
   issue: Issue;
   appEntries: AppEntry[];
 };
@@ -27,58 +25,45 @@ const Wordmark = homepage ? 'h1' : 'p';
 const IssueHeading = homepage ? 'p' : 'h1';
 ---
 
-<article class:list={['issue', { 'is-homepage': homepageStyle }]}>
-  {homepageStyle ? (
-    <header class="home-hero">
-      <canvas class="home-hero-sky" aria-hidden="true"></canvas>
-      <canvas class="home-hero-sea" aria-hidden="true"></canvas>
+<article class="issue">
+  <header class="home-hero">
+    <canvas class="home-hero-sky" aria-hidden="true"></canvas>
+    <canvas class="home-hero-sea" aria-hidden="true"></canvas>
 
-      <div class="home-hero-inner">
-      <div class="home-hero-copy">
-        <div class="home-hero-intro">
-          <Wordmark class="home-hero-wordmark">App Waypoint</Wordmark>
-          <WaveRule />
-          <p class="home-hero-tagline">
-            Your weekly guide to Mac apps.<br />New issues published every Friday.
-          </p>
-        </div>
-
-        <div class="home-hero-issue">
-          <p class="eyebrow">{homepage ? 'Current issue' : 'Archived issue'}</p>
-          <IssueHeading class="home-hero-number">Issue {issueLabel}</IssueHeading>
-          <p class="home-hero-date">
-            Published <time datetime={issue.slug}>{issue.date}</time>
-          </p>
-          <p class="home-hero-dek">{issue.dek}</p>
-        </div>
-      </div>
-
-      {editorsPick && (
-        <div class="home-hero-pick" id="editors-pick">
-          <p class="eyebrow">{homepage ? 'This Week’s Editor’s Pick' : 'Editor’s Pick'}</p>
-          <h2 class="home-hero-pick-title">One app worth a closer look</h2>
-          <AppCard
-            app={editorsPick.data}
-            appId={editorsPick.id}
-            editorNote={issue.editorsPick?.reason}
-            variant="hero"
-          />
-        </div>
-      )}
-      </div>
-    </header>
-  ) : (
-    <header class="hero">
-      <div class="hero-copy">
-        <p class="eyebrow">App Waypoint Issue</p>
-        <h1><time datetime={issue.slug}>{issue.date}</time></h1>
-        <p class="date">{`Issue ${issueLabel}`}</p>
+    <div class="home-hero-inner">
+    <div class="home-hero-copy">
+      <div class="home-hero-intro">
+        <Wordmark class="home-hero-wordmark">App Waypoint</Wordmark>
         <WaveRule />
-        <p class="dek">{issue.dek}</p>
+        <p class="home-hero-tagline">
+          Your weekly guide to Mac apps.<br />New issues published every Friday.
+        </p>
       </div>
-    </header>
-  )}
 
+      <div class="home-hero-issue">
+        <p class="eyebrow">{homepage ? 'Current issue' : 'Archived issue'}</p>
+        <IssueHeading class="home-hero-number">Issue {issueLabel}</IssueHeading>
+        <p class="home-hero-date">
+          Published <time datetime={issue.slug}>{issue.date}</time>
+        </p>
+        <p class="home-hero-dek">{issue.dek}</p>
+      </div>
+    </div>
+
+    {editorsPick && (
+      <div class="home-hero-pick" id="editors-pick">
+        <p class="eyebrow">{homepage ? 'This Week’s Editor’s Pick' : 'Editor’s Pick'}</p>
+        <h2 class="home-hero-pick-title">One app worth a closer look</h2>
+        <AppCard
+          app={editorsPick.data}
+          appId={editorsPick.id}
+          editorNote={issue.editorsPick?.reason}
+          variant="hero"
+        />
+      </div>
+    )}
+    </div>
+  </header>
   {issue.sections.map((section, index) => (
     <>
       <section id={index === 0 ? 'new-discoveries' : undefined} class="section">

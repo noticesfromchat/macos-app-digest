@@ -57,32 +57,30 @@ FONTS = register_fonts()
 
 
 LIGHT = {
-    "page": ("#e7ddcd", "Outer page field"),
-    "bg": ("#f4ebdd", "Header, footer, homepage hero atmosphere"),
-    "surface": ("#faf4e9", "Primary cards and panels"),
-    "surface-strong": ("#eee2d0", "Tags, chips, icon tiles"),
+    "page": ("#e8ecf1", "Outer page field"),
+    "bg": ("#f4f6f9", "Header, footer, homepage hero atmosphere"),
+    "surface": ("#ffffff", "Primary cards and panels"),
+    "surface-strong": ("#e3e8ee", "Control fills: button, nav and search feedback"),
+    "chip": ("#f0f3f7", "Tag chips"),
     "text": ("#092443", "Primary ink"),
     "muted": ("#4d5762", "Secondary copy and metadata"),
     "line": ("#092342 / 20%", "Borders and dividers"),
     "accent": ("#0862d8", "Links, active nav, CTAs"),
-    "accent-hover": ("#004caf", "Hover accent"),
-    "note-bg": ("#eadfcd", "Note surface"),
-    "note-text": ("#31485d", "Note copy"),
-    "header-bg": ("#f4ebdd / 96%", "Sticky header fill"),
+    "accent-hover": ("#004caf", "Hover accent, and tag chip labels on hover"),
+    "header-bg": ("#f4f6f9 / 96%", "Sticky header fill"),
 }
 
 DARK = {
     "page": ("#091321", "Outer page field"),
     "bg": ("#020b18", "Deep background canvas"),
     "surface": ("#0b1c30", "Primary cards and panels"),
-    "surface-strong": ("#10253b", "Tags, chips, icon tiles"),
+    "surface-strong": ("#10253b", "Control fills: button, nav and search feedback"),
+    "chip": ("#10253b", "Tag chips; the night chip already sat at the quiet step"),
     "text": ("#f3ecdf", "Primary ink"),
     "muted": ("#afb6bf", "Secondary copy and metadata"),
     "line": ("#d9e5f0 / 20%", "Borders and dividers"),
     "accent": ("#57a2ff", "Links, active nav, CTAs"),
-    "accent-hover": ("#81b8ff", "Hover accent"),
-    "note-bg": ("#0c2137", "Note surface"),
-    "note-text": ("#c1cbd4", "Note copy"),
+    "accent-hover": ("#81b8ff", "Hover accent, and tag chip labels on hover"),
     "header-bg": ("#041426 / 96%", "Sticky header fill"),
 }
 
@@ -107,14 +105,13 @@ SPACING = {
 }
 
 TYPE_SCALE = [
-    ("App detail display", "clamp(4rem, 8vw, 6rem)", "500", "0.92", "Sonexis"),
-    ("Page headline", "clamp(3.25rem, 5.1vw, 4.25rem)", "500", "0.96", "Explore Apps"),
+    ("Page title", "clamp(3.25rem, 5.1vw, 4.25rem)", "500", "0.96", "Explore Apps"),
+    ("Dek", "clamp(1.12rem, 1.4vw, 1.25rem)", "400", "1.58", "A complete list of App Waypoint's Mac app catalog."),
     ("Section title", "clamp(2.2rem, 4vw, 3.8rem)", "500", "1.0", "Browse by category"),
     ("Card title / app name", "1.4rem", "600", "1.15", "WhimFiles"),
     ("Body copy", "1rem", "400", "1.55", "Mac apps chosen by hand, surfaced by the community, and organized for discovery."),
     ("Metadata", ".84rem", "600", "1.45", "Source: Editor selection and official homepage"),
     ("Label / eyebrow", ".78rem", "800", "1.0", "CATEGORY PREVIEW"),
-    ("Small label", ".73rem", "700", "1.0", "EXPLORE"),
 ]
 
 CATEGORY_ACCENTS = [

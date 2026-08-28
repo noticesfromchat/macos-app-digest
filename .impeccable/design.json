@@ -4,49 +4,64 @@
   "title": "Design System: App Waypoint",
   "extensions": {
     "colorMeta": {
-      "harbor-sand": {
+      "harbor-fog": {
         "role": "neutral",
-        "displayName": "Harbor Sand",
-        "canonical": "#e7ddcd",
+        "displayName": "Harbor Fog",
+        "canonical": "#e8ecf1",
         "tonalRamp": [
-          "oklch(24% 0.018 79)",
-          "oklch(36% 0.018 79)",
-          "oklch(48% 0.018 79)",
-          "oklch(60% 0.018 79)",
-          "oklch(72% 0.018 79)",
-          "oklch(82% 0.017 79)",
-          "oklch(90% 0.016 79)",
-          "oklch(96% 0.014 79)"
+          "oklch(24% 0.019 254)",
+          "oklch(36% 0.019 254)",
+          "oklch(48% 0.018 254)",
+          "oklch(60% 0.017 254)",
+          "oklch(72% 0.014 254)",
+          "oklch(82% 0.011 254)",
+          "oklch(90% 0.009 254)",
+          "oklch(96% 0.008 254)"
         ]
       },
-      "drift-cream": {
+      "drift-mist": {
         "role": "neutral",
-        "displayName": "Drift Cream",
-        "canonical": "#f4ebdd",
+        "displayName": "Drift Mist",
+        "canonical": "#f4f6f9",
         "tonalRamp": [
-          "oklch(24% 0.017 83)",
-          "oklch(36% 0.017 83)",
-          "oklch(48% 0.017 83)",
-          "oklch(60% 0.017 83)",
-          "oklch(72% 0.016 83)",
-          "oklch(82% 0.015 83)",
-          "oklch(90% 0.014 83)",
-          "oklch(96% 0.013 83)"
+          "oklch(24% 0.012 258)",
+          "oklch(36% 0.012 258)",
+          "oklch(48% 0.011 258)",
+          "oklch(60% 0.011 258)",
+          "oklch(72% 0.009 258)",
+          "oklch(82% 0.007 258)",
+          "oklch(90% 0.006 258)",
+          "oklch(96% 0.005 258)"
         ]
       },
       "surf-foam": {
         "role": "neutral",
         "displayName": "Surf Foam",
-        "canonical": "#faf4e9",
+        "canonical": "#ffffff",
         "tonalRamp": [
-          "oklch(25% 0.014 91)",
-          "oklch(37% 0.014 91)",
-          "oklch(49% 0.014 91)",
-          "oklch(61% 0.013 91)",
-          "oklch(73% 0.013 91)",
-          "oklch(84% 0.012 91)",
-          "oklch(92% 0.011 91)",
-          "oklch(97% 0.010 91)"
+          "oklch(24% 0.000 254)",
+          "oklch(36% 0.000 254)",
+          "oklch(48% 0.000 254)",
+          "oklch(60% 0.000 254)",
+          "oklch(72% 0.000 254)",
+          "oklch(82% 0.000 254)",
+          "oklch(90% 0.000 254)",
+          "oklch(100% 0.000 254)"
+        ]
+      },
+      "shell-quiet": {
+        "role": "neutral",
+        "displayName": "Shell Quiet",
+        "canonical": "#f0f3f7",
+        "tonalRamp": [
+          "oklch(24% 0.015 255)",
+          "oklch(36% 0.015 255)",
+          "oklch(48% 0.014 255)",
+          "oklch(60% 0.013 255)",
+          "oklch(72% 0.011 255)",
+          "oklch(82% 0.008 255)",
+          "oklch(90% 0.007 255)",
+          "oklch(96% 0.006 255)"
         ]
       },
       "deep-sea": {
@@ -77,21 +92,6 @@
           "oklch(78% 0.110 255)",
           "oklch(89% 0.070 255)",
           "oklch(95% 0.045 255)"
-        ]
-      },
-      "note-sand": {
-        "role": "neutral",
-        "displayName": "Note Sand",
-        "canonical": "#eadfcd",
-        "tonalRamp": [
-          "oklch(25% 0.016 79)",
-          "oklch(37% 0.016 79)",
-          "oklch(49% 0.015 79)",
-          "oklch(61% 0.015 79)",
-          "oklch(73% 0.014 79)",
-          "oklch(84% 0.013 79)",
-          "oklch(92% 0.012 79)",
-          "oklch(97% 0.011 79)"
         ]
       },
       "night-harbor": {
@@ -158,11 +158,19 @@
     "typographyMeta": {
       "display": {
         "displayName": "Display",
-        "purpose": "Largest page titles and high-authority hero moments."
+        "purpose": "Held in reserve; nothing currently uses it."
       },
       "headline": {
         "displayName": "Headline",
-        "purpose": "Hero titles, section titles, and major page headings."
+        "purpose": "Every page title, delivered through --type-page-title."
+      },
+      "sectionTitle": {
+        "displayName": "Section Title",
+        "purpose": "Headings that open a section within a page, delivered through --type-section-title."
+      },
+      "dek": {
+        "displayName": "Dek",
+        "purpose": "The standfirst under a page or section title, delivered through --type-dek; always one step above body."
       },
       "body": {
         "displayName": "Body",
@@ -189,7 +197,7 @@
       },
       {
         "name": "hover-lift",
-        "value": "0 26px 68px rgba(27, 35, 42, 0.14)",
+        "value": "0 26px 68px rgba(27, 35, 42, 0.11)",
         "purpose": "Hovered cards and callout surfaces."
       },
       {
@@ -218,6 +226,11 @@
         "name": "ease-emphasis",
         "value": "240ms ease",
         "purpose": "Longer opacity and visibility transitions used by hero-aware header states."
+      },
+      {
+        "name": "ease-settle",
+        "value": "320ms cubic-bezier(.16, 1, .3, 1)",
+        "purpose": "Card hover elevation and border changes; an exponential ease-out that settles instead of snapping."
       }
     ],
     "breakpoints": [
@@ -285,7 +298,7 @@
       "kind": "custom",
       "refersTo": "input-search",
       "description": "The compact filter popover used on tag and collection archive pages.",
-      "html": "<div class=\"ds-filter\"><button class=\"ds-filter-trigger\" type=\"button\" aria-expanded=\"false\">Filter <span class=\"ds-count\">2</span></button><div class=\"ds-filter-panel\"><p class=\"ds-filter-note\">Apps must match every selected filter.</p><label class=\"ds-filter-option\"><input type=\"checkbox\" checked disabled /><span>Editor’s Picks</span></label></div></div>",
+      "html": "<div class=\"ds-filter\"><button class=\"ds-filter-trigger\" type=\"button\" aria-expanded=\"false\">Filter <span class=\"ds-count\">2</span></button><div class=\"ds-filter-panel\"><p class=\"ds-filter-note\">Apps must match every selected filter.</p><label class=\"ds-filter-option\"><input type=\"checkbox\" checked disabled /><span>Editor\u2019s Picks</span></label></div></div>",
       "css": ".ds-filter { position: relative; width: 268px; color: var(--text); font: inherit; } .ds-filter-trigger { display: flex; width: 100%; min-height: 38px; align-items: center; justify-content: space-between; gap: 12px; padding: 7px 13px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--text); font: inherit; font-size: .78rem; font-weight: 800; } .ds-count { display: inline-flex; min-width: 19px; height: 19px; align-items: center; justify-content: center; padding: 0 5px; border-radius: 999px; background: var(--surface-strong); color: var(--muted); font-size: .75rem; font-variant-numeric: tabular-nums; } .ds-filter-panel { margin-top: -1px; overflow: hidden; border: 1px solid var(--line); border-radius: 0 0 10px 10px; background: var(--surface); box-shadow: 0 18px 55px rgba(27, 35, 42, 0.08); } .ds-filter-note { margin: 0; padding: 11px 13px 9px; border-bottom: 1px solid var(--line); color: var(--muted); font-size: .76rem; line-height: 1.45; } .ds-filter-option { display: flex; align-items: center; gap: 10px; padding: 7px 13px; color: var(--text); font-size: .78rem; font-weight: 700; }"
     },
     {
@@ -299,9 +312,9 @@
   ],
   "narrative": {
     "northStar": "Quiet harbor editorial",
-    "overview": "App Waypoint feels like a calm dock at first light: warm paper, deep-water text, and a single reliable blue used sparingly so the page never shouts. It is editorial rather than promotional, organized like a magazine, but laid out like a utility. Dense information sits inside soft cards and quiet section breaks instead of loud banners.\n\nThe language prefers stable geometry, soft depth, and generous breathing room. Serif headlines carry the authority; the system sans supports the utility layers, controls, and metadata. The result is familiar and trustworthy, with enough atmosphere to feel considered but not styled for its own sake.",
+    "overview": "App Waypoint feels like a calm dock under overcast light: cool paper, deep-water text, and a single reliable blue used sparingly so the page never shouts. It is editorial rather than promotional, organized like a magazine, but laid out like a utility. Dense information sits inside soft cards and quiet section breaks instead of loud banners.\n\nThe language prefers stable geometry, soft depth, and generous breathing room. Serif headlines carry the authority; the system sans supports the utility layers, controls, and metadata. The result is familiar and trustworthy, with enough atmosphere to feel considered but not styled for its own sake.",
     "keyCharacteristics": [
-      "Warm sand-and-cream surfaces with navy ink.",
+      "White paper on a cool fog-grey field, with navy ink.",
       "Beacon blue reserved for actions and current states.",
       "Serif headlines, system-sans utility.",
       "Soft 10-18px radii and ambient shadows.",
@@ -309,9 +322,29 @@
     ],
     "rules": [
       {
+        "name": "The Fog Rule",
+        "body": "Every light-mode neutral sits on Deep Sea's hue \u2014 OKLCH hue 253\u2013258, the ink's own axis \u2014 at a chroma of 0.010 or less: Surf Foam 0.000, Drift Mist 0.005, Harbor Fog 0.008, Shell Strong 0.010. That is what keeps the field reading as harbor weather rather than default UI grey. A neutral off that axis, or any warm tone reintroduced into the light theme, breaks the day palette.",
+        "section": "colors"
+      },
+      {
         "name": "The Beacon Rule",
         "body": "Blue is reserved for actions, links, focus, and active states. It should not become page chrome or decorative noise.",
         "section": "colors"
+      },
+      {
+        "name": "The Even Rule Rule",
+        "body": "A horizontal rule carries the same space above it as below it: --section-space, clamp(26px, 3.8vw, 40px), one value for the whole site. That space belongs to the blocks on either side, so a page opening closes on it before the first divider. Only blocks following a drawn divider rather than a rule sit tighter.",
+        "section": "layout"
+      },
+      {
+        "name": "The One Measure Rule",
+        "body": "All prose runs to --measure (52ch). Because ch scales with the element font size, one token holds roughly seventy characters at every size in the ramp. A fixed-pixel max-width on running text is a bug.",
+        "section": "typography"
+      },
+      {
+        "name": "The One Page Title Rule",
+        "body": "Every page opens with its title in Headline at --type-page-title, hard against --page-start-space with no margin of its own, and the dek 15px beneath at --type-dek. App detail pages are not an exception; presence comes from composition, never from a private type scale.",
+        "section": "typography"
       },
       {
         "name": "The Serif-Utility Split",
@@ -322,17 +355,28 @@
         "name": "The Soft Hull Rule",
         "body": "Surfaces lift with a soft shadow and a border change, not with hard edges or dramatic offsets.",
         "section": "elevation"
+      },
+      {
+        "name": "The One Hover Rule",
+        "body": "Every card that leads somewhere shares one hover contract: rest at Ambient Card, move to Hover Lift and a border of color-mix(in srgb, var(--accent) 42%, var(--line)), cross over 320ms on cubic-bezier(.16, 1, .3, 1), under (hover: hover) and (pointer: fine) only. Container cards that hold their own links stay flat, and the explore carousel suppresses the lift because its stack already carries depth.",
+        "section": "components"
+      },
+      {
+        "name": "The Two Control Heights",
+        "body": "Every pill control is inline-flex with a min-height and horizontal padding only, at 44px for a primary action or 38px for a secondary one (44px on coarse pointers). Rank comes from height and fill, not from a different construction, and a button is as wide as its label.",
+        "section": "components"
       }
     ],
     "dos": [
-      "Do keep the warm paper base, deep-sea text, and blue accent in a tight relationship.",
+      "Do keep the fog-grey field, white paper, deep-sea text, and blue accent in a tight relationship.",
       "Do reuse the shared page shell so archive, tag, collection, about, and app pages line up.",
       "Do keep shadows soft and ambient.",
       "Do let serif headlines carry the editorial voice while system sans handles utility.",
-      "Do keep the defining tag or collection locked when it is the page’s own context."
+      "Do keep the defining tag or collection locked when it is the page\u2019s own context."
     ],
     "donts": [
       "Don't introduce loud secondary colors just to add energy.",
+      "Don't reintroduce warm sand or cream into the light theme; the day palette is white and Deep-Sea-tinted grey.",
       "Don't replace the soft shadow system with hard offsets or heavy glow.",
       "Don't use tinted text as neutral gray on colored surfaces.",
       "Don't make chips, filters, or buttons feel like separate UI worlds.",
