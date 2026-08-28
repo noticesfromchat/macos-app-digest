@@ -7,8 +7,8 @@ Live site: https://appwaypoint.netlify.app/
 ## Development
 
 Start with [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md). It defines the local branch,
-validation, pull-request, Netlify preview and production deployment workflow. Local AI
-agents should also follow [`docs/OSAURUS.md`](docs/OSAURUS.md).
+validation, pull-request, Netlify preview and production deployment workflow. It applies
+to people and to local AI agents.
 
 ## Weekly Editorial Brief
 

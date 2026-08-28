@@ -15,7 +15,7 @@ export async function getStaticPaths() {
 const { issue, apps } = Astro.props;
 ---
 <BaseLayout
-  title={`Mac App Digest — ${issue.data.date} | App Waypoint`}
+  title={`${issue.data.rss.title} — Mac Apps Issue ${issue.data.number} — App Waypoint`}
   description={issue.data.dek}
   current="issue"
   type="article"

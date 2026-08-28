@@ -32,20 +32,25 @@ const appCollections = collectionMeta.filter((collection) =>
   app.data.collections?.includes(collection.slug)
 );
 
+// Pool of the most category-related apps, most-related first. The client shuffles
+// this pool on each load; CSS shows only the first six, so no-JS visitors still get
+// the six most-related apps and there is no post-paint card swap. The pool is capped
+// so a broadly-tagged app does not render dozens of hidden cards per page.
+const RELATED_POOL_SIZE = 24;
 const relatedApps = apps
-  .filter((entry) => entry.id !== app.id)
   .map((entry) => ({
     entry,
     sharedCategoryCount: entry.data.categories.filter((category) =>
       app.data.categories.includes(category)
     ).length
   }))
-  .filter(({ sharedCategoryCount }) => sharedCategoryCount > 0)
+  .filter(({ entry, sharedCategoryCount }) => entry.id !== app.id && sharedCategoryCount > 0)
   .sort((a, b) =>
     b.sharedCategoryCount - a.sharedCategoryCount ||
     a.entry.data.name.localeCompare(b.entry.data.name, undefined, { sensitivity: 'base' })
   )
-  .map(({ entry }) => entry);
+  .map(({ entry }) => entry)
+  .slice(0, RELATED_POOL_SIZE);
 
 const appUrl = new URL(Astro.url.pathname, Astro.site).href;
 const appSchema = [
@@ -55,7 +60,7 @@ const appSchema = [
     name: app.data.name,
     description: app.data.description,
     url: app.data.homepage,
-    applicationCategory: appCategories.map((category) => category.title),
+    applicationCategory: appCategories.map((category) => category.title).join(', '),
     keywords: app.data.tags.join(', '),
     operatingSystem: 'macOS',
     isPartOf: { '@id': new URL('/#website', Astro.site).href },
@@ -65,14 +70,13 @@ const appSchema = [
 ---
 
 <BaseLayout
-  title={`${app.data.name} — App Waypoint`}
-  description={`${app.data.description} App Waypoint notes who it is best for and related Mac app categories.`}
+  title={`${app.data.name} for Mac — App Waypoint`}
+  description={`${app.data.description} ${app.data.bestFor}`}
   current="app"
   structuredData={appSchema}
 >
   <article class="page-shell app-detail-page">
     <header class="app-detail-hero">
-      <p class="eyebrow">App Detail</p>
       <h1>{app.data.name}</h1>
       <p class="dek">{app.data.description}</p>
       <div class="app-detail-meta-flow">
@@ -114,7 +118,6 @@ const appSchema = [
             </span>
             <span class="app-detail-category-copy">
               <strong>{category.title}</strong>
-              <small>{category.description}</small>
             </span>
           </a>
         ))}
@@ -131,65 +134,28 @@ const appSchema = [
       <section class="section app-detail-section">
         <div class="section-heading">
           <p class="eyebrow">You May Also Like</p>
-          <h2>More apps from the same categories</h2>
+          <h2>More apps like this</h2>
         </div>
-        <div class="grid" data-related-apps-grid>
-          {relatedApps.slice(0, 6).map((entry) => <AppCard app={entry.data} appId={entry.id} />)}
+        <div class="grid directory-grid app-detail-related-grid" data-related-apps-grid>
+          {relatedApps.map((entry) => <AppCard app={entry.data} appId={entry.id} />)}
         </div>
       </section>
     )}
   </article>
   {relatedApps.length > 0 && (
-    <script type="application/json" id="related-apps-data">{JSON.stringify(relatedApps.map((entry) => ({
-      id: entry.id,
-      ...entry.data
-    }))).replaceAll('<', '\\u003c')}</script>
-  )}
-  <script is:inline type="module">
-    const relatedAppsData = document.getElementById('related-apps-data');
-    const relatedAppsGrid = document.querySelector('[data-related-apps-grid]');
-
-    if (relatedAppsData?.textContent && relatedAppsGrid) {
-      const relatedApps = JSON.parse(relatedAppsData.textContent);
-
-      const escapeHTML = (value) =>
-        String(value)
-          .replaceAll('&', '&amp;')
-          .replaceAll('<', '&lt;')
-          .replaceAll('>', '&gt;')
-          .replaceAll('"', '&quot;')
-          .replaceAll("'", '&#39;');
-
-      const shuffle = (items) => {
-        const output = [...items];
-
-        for (let index = output.length - 1; index > 0; index -= 1) {
-          const swapIndex = Math.floor(Math.random() * (index + 1));
-          [output[index], output[swapIndex]] = [output[swapIndex], output[index]];
+    <script is:inline>
+      (() => {
+        const grid = document.querySelector('[data-related-apps-grid]');
+        if (!grid) return;
+        const cards = Array.from(grid.children);
+        for (let i = cards.length - 1; i > 0; i -= 1) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [cards[i], cards[j]] = [cards[j], cards[i]];
         }
-
-        return output;
-      };
-
-      const renderCard = (relatedApp) => `
-        <article class="card app-card" data-app-name="${escapeHTML(relatedApp.name)}">
-          <a class="app-card-link" href="/apps/${escapeHTML(relatedApp.id)}/" aria-label="Read more about ${escapeHTML(relatedApp.name)}"></a>
-          <div class="app-summary">
-            <h3><a href="${escapeHTML(relatedApp.homepage)}" target="_blank" rel="noreferrer">${escapeHTML(relatedApp.name)}</a></h3>
-            <p>${escapeHTML(relatedApp.description)}</p>
-          </div>
-          <p class="best-for"><strong>Best for:</strong> ${escapeHTML(relatedApp.bestFor)}</p>
-          <div class="tag-list" aria-label="App tags">
-            ${relatedApp.tags.map((tag) => `<a class="tag" href="/tags/${escapeHTML(tag)}/">${escapeHTML(tag)}</a>`).join('')}
-          </div>
-          <p class="source-line"><strong>Source:</strong> ${escapeHTML(relatedApp.source)}</p>
-        </article>
-      `;
-
-      relatedAppsGrid.innerHTML = shuffle(relatedApps)
-        .slice(0, 6)
-        .map(renderCard)
-        .join('');
-    }
-  </script>
+        const fragment = document.createDocumentFragment();
+        cards.forEach((card) => fragment.appendChild(card));
+        grid.appendChild(fragment);
+      })();
+    </script>
+  )}
 </BaseLayout>

@@ -15,7 +15,30 @@ The site should feel like a small, premium editorial publication for experienced
 - technically polished
 - calm, useful and slightly playful
 
-## 2. Optional Editor's Pick
+## 2. Standard Issue Structure
+
+Every issue uses the same regular app-section spine, in this order:
+
+1. `New Discoveries`
+2. `Trending`
+3. `Old Favorites`
+4. `AI & Automation`
+5. `Up and Coming`
+
+These section eyebrows are fixed publication structure, not weekly theme labels. Do
+not rename, omit, reorder or add regular app sections for a single issue. Weekly
+editorial variation belongs in each section's `title`, app selection and supporting
+copy.
+
+Each regular app section contains exactly three app cards. If a draft lacks three
+eligible apps for any required section, the issue is not ready for preview. Ask the
+editor to select replacements or approve specific app-record changes before building
+the release candidate.
+
+The optional `editorsPick` module is the only app feature outside the regular
+section spine. When present, it renders between `Trending` and `Old Favorites`.
+
+## 3. Optional Editor's Pick
 
 - An issue may name zero or one Editor's Pick with the `editorsPick` object.
 - The object contains an existing `app` ID from `src/content/apps/` and a concise
@@ -23,6 +46,10 @@ The site should feel like a small, premium editorial publication for experienced
 - When the user supplies an app specifically for this feature, use that selection for
   the named issue—or the next issue being prepared if none is named. Do not replace it
   with an agent-selected alternative.
+- During Thursday review, pull pending Editor's Pick direction first from the Notion
+  [Editor's Picks note](https://app.notion.com/p/Editor-s-Picks-3c8d6482d47f80c4bbc6ce99ed84d908?source=copy_link),
+  then ask the editor to confirm, change, reorder or remove that direction before
+  preparing the release candidate.
 - Reuse an existing app record when one exists. Otherwise, verify the official homepage
   or canonical repository and create one standard app file before referencing it.
 - The selected app's file must include `collections: [editors-picks]`, preserving any
@@ -45,7 +72,7 @@ The site should feel like a small, premium editorial publication for experienced
   rule.
 - Omit the object entirely when the issue has no Editor's Pick.
 
-## 3. Page width and gutters
+## 4. Page width and gutters
 
 - Standalone content pages use the shared `page-shell` container rather than defining
   page-specific outer widths or horizontal padding.
@@ -57,7 +84,7 @@ The site should feel like a small, premium editorial publication for experienced
 - New standalone pages must adopt the shared shell so responsive gutters remain
   consistent across the publication.
 
-## 4. Tag and collection directories
+## 5. Tag and collection directories
 
 - Tag and collection pages share the same sortable app-directory component.
 - Apps default to A–Z order.
@@ -81,7 +108,7 @@ The site should feel like a small, premium editorial publication for experienced
   review before changing app records. Remove or consolidate tags that are redundant,
   too narrow, vague, or unlikely to remain useful as the catalog grows.
 
-## 5. App detail pages
+## 6. App detail pages
 
 - Every app record generates an individual detail page at `/apps/{app-id}/`.
 - App cards link internally to the generated detail page.
@@ -94,7 +121,7 @@ The site should feel like a small, premium editorial publication for experienced
 - Detail pages may show related apps based on shared tags and compact links to related
   tag landing pages.
 
-## 6. Weekend Reading
+## 7. Weekend Reading
 
 - Weekend Reading covers the wider Mac app ecosystem, not only Apple company or
   platform news.
@@ -109,7 +136,7 @@ The site should feel like a small, premium editorial publication for experienced
   summaries and promotional posts whose popularity does not translate into reader
   value.
 
-## 7. Old Favorites
+## 8. Old Favorites
 
 - `Old Favorites` is a standard three-card app section for established Mac apps
   that are still worth surfacing because they remain especially useful,
@@ -119,9 +146,15 @@ The site should feel like a small, premium editorial publication for experienced
 - Render it after the Editor's Pick and before AI & Automation.
 - Use the standard app-card grid without a special badge, icon or alternate card
   style.
+- Every featured app must belong to the `community-favorites` collection. Add
+  `community-favorites` to each app record's `collections` array while preserving
+  any existing collection entries.
 - Keep the section focused on rediscovery and durable value rather than novelty.
+- Do not replace `Old Favorites` with another utility, productivity or daily-helper
+  section. If a week does not yet have three eligible established apps, continue
+  research or ask the editor to choose replacements before preview work proceeds.
 
-## 8. Up and Coming
+## 9. Up and Coming
 
 - `Up and Coming` is a standard three-card app section built from the current
   `r/macapps` App Pile moderator selections and other approved recent-launch sources.
@@ -136,24 +169,28 @@ The site should feel like a small, premium editorial publication for experienced
 - The section title should describe the three selections as community discoveries
   without implying that App Waypoint independently ranked them.
 
-## 9. Editor attribution
+## 10. Editor attribution
 
 - Refer to the editor by role only in all public website content.
 - Never display the editor's personal name in app sources, issue copy, notes or
   generated pages.
 
-## 10. Issue publishing checklist
+## 11. Issue publishing checklist
 
 Complete every item before merging a new issue:
 
 - [ ] The issue follows `docs/ISSUE_TEMPLATE.md` and references existing app IDs.
+- [ ] The issue preserves the standard app-section spine exactly:
+      `New Discoveries`, `Trending`, `Old Favorites`, `AI & Automation`,
+      `Up and Coming`.
 - [ ] Every new app uses its official homepage or canonical repository.
 - [ ] No app is duplicated within the issue or repeated from the immediately previous
   issue where the publishing rules prohibit it.
 - [ ] The Editor's Pick, if present, was supplied or approved by the editor, appears
       only once and belongs to the `editors-picks` collection.
-- [ ] Old Favorites contains exactly three eligible apps and highlights established
-      apps that are still recommended, overlooked or exceptional.
+- [ ] Old Favorites contains exactly three eligible apps, highlights established
+      apps that are still recommended, overlooked or exceptional, and every featured
+      app belongs to the `community-favorites` collection.
 - [ ] Weekend Reading contains three direct article links, with at least two focused
       primarily on apps, workflows or app developers.
 - [ ] Up and Coming contains exactly three eligible apps and records its sources.

@@ -1,18 +1,20 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 type App = CollectionEntry<'apps'>['data'];
-const { app, appId, editorNote, featuredDate } = Astro.props as {
+const { app, appId, editorNote, featuredDate, variant = 'default' } = Astro.props as {
   app: App;
   appId?: string;
   editorNote?: string;
   featuredDate?: string;
+  variant?: 'default' | 'hero';
 };
+const isHero = variant === 'hero';
 const showEditorsPickIcon = Boolean(
   editorNote && app.collections?.includes('editors-picks')
 );
 ---
 <article
-  class:list={['card', 'app-card', { 'editors-pick-card': editorNote }]}
+  class:list={['card', 'app-card', { 'editors-pick-card': editorNote, 'hero-pick-card': isHero }]}
   data-app-name={app.name}
   data-featured-date={featuredDate}
   data-tags={app.tags.join(' ')}
@@ -47,15 +49,32 @@ const showEditorsPickIcon = Boolean(
     </h3>
     <p>{app.description}</p>
   </div>
-  <p class="best-for"><strong>Best for:</strong> {app.bestFor}</p>
-  {editorNote && (
-    <div class="editor-note">
-      <p class="editor-note-label">Why it was chosen</p>
-      <p>{editorNote}</p>
-    </div>
+  {isHero ? (
+    <>
+      {editorNote && (
+        <div class="editor-note">
+          <p class="editor-note-label">Why it was chosen</p>
+          <p>{editorNote}</p>
+        </div>
+      )}
+      <div class="best-for">
+        <p class="editor-note-label">Best for</p>
+        <p>{app.bestFor}</p>
+      </div>
+    </>
+  ) : (
+    <>
+      <p class="best-for"><strong>Best for:</strong> {app.bestFor}</p>
+      {editorNote && (
+        <div class="editor-note">
+          <p class="editor-note-label">Why it was chosen</p>
+          <p>{editorNote}</p>
+        </div>
+      )}
+    </>
   )}
   <div class="tag-list" aria-label="App tags">
     {app.tags.map((tag) => <a class="tag" href={`/tags/${tag}/`}>{tag}</a>)}
   </div>
-  <p class="source-line"><strong>Source:</strong> {app.source}</p>
+  {!isHero && <p class="source-line"><strong>Source:</strong> {app.source}</p>}
 </article>
