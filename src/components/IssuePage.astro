@@ -113,8 +113,13 @@ const IssueHeading = homepage ? 'p' : 'h1';
   <section class="note">
     <h2>Source Notes</h2>
     <p>This issue was selected from the following sources, with every app homepage checked before publishing.</p>
-    <ul>
-      {issue.sourceNotes.map((note) => <li>{note}</li>)}
+    <ul class="source-timeline" data-source-timeline>
+      {issue.sourceNotes.map((note, index) => (
+        <li style={`--source-index: ${index};`}>
+          <span class="source-timeline-marker" aria-hidden="true"></span>
+          <span class="source-timeline-copy">{note}</span>
+        </li>
+      ))}
     </ul>
   </section>
 </article>
@@ -139,6 +144,20 @@ const IssueHeading = homepage ? 'p' : 'h1';
       }
     }, { rootMargin: '-35% 0px -35% 0px', threshold: 0 });
     passing.observe(waypoint);
+  }
+
+  const sourceTimeline = document.querySelector('[data-source-timeline]');
+
+  if (sourceTimeline && !stillness.matches && 'IntersectionObserver' in window) {
+    sourceTimeline.classList.add('is-motion-ready');
+    const sourcePassing = new IntersectionObserver((entries, observer) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    }, { rootMargin: '-18% 0px -12% 0px', threshold: 0.12 });
+    sourcePassing.observe(sourceTimeline);
   }
 
   const sky = document.querySelector('.home-hero-sky');

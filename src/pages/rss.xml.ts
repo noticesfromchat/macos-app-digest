@@ -47,6 +47,7 @@ export async function GET(context: { site?: URL }) {
   const lastBuildDate = latestIssue ? formatRssDate(latestIssue.data.slug) : new Date().toUTCString();
   const feedLink = new URL('/rss.xml', site).href;
   const homeLink = new URL('/', site).href;
+  const imageUrl = new URL('/icon-512.png', site).href;
   const description = 'App Waypoint is a curated weekly guide to exceptional Mac apps, productivity tools, automation utilities, AI software and worthwhile reading.';
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -57,6 +58,11 @@ export async function GET(context: { site?: URL }) {
     <link>${escapeXml(homeLink)}</link>
     <atom:link href="${escapeXml(feedLink)}" rel="self" type="application/rss+xml" />
     <language>en-US</language>
+    <image>
+      <url>${escapeXml(imageUrl)}</url>
+      <title>App Waypoint</title>
+      <link>${escapeXml(homeLink)}</link>
+    </image>
     <generator>App Waypoint</generator>
     <lastBuildDate>${lastBuildDate}</lastBuildDate>
 ${items}

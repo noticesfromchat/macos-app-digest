@@ -4,6 +4,9 @@ Copy the frontmatter below into a new file named `src/content/issues/YYYY-MM-DD.
 
 Before creating the issue, add a Markdown file under `src/content/apps/` for every app ID that does not already exist. Reuse existing app IDs rather than duplicating app records.
 
+Write issue and app copy without Oxford commas. In lists of three or more, use
+`A, B and C`, not `A, B, and C`.
+
 Every issue must keep the same regular app-section spine, in this exact order:
 `New Discoveries`, `Trending`, `Old Favorites`, `AI & Automation`, `Up and Coming`.
 Do not rename, omit, reorder or add regular app sections. Weekly variation belongs in

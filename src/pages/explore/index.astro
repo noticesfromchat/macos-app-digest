@@ -38,8 +38,8 @@ const sortedCategories = [...categories].sort((a, b) =>
 const popularTags = getPopularTags(apps.map((entry) => entry.data));
 const rssFeedUrl = new URL('/rss.xml', Astro.site).href;
 const collectionDescriptions: Record<string, string> = {
-  'editors-picks': 'Editor-selected standouts with distinctive utility, polish, or an especially memorable point of view.',
-  'community-favorites': 'Apps Mac readers keep recommending for dependable workflows, practical value, and repeat use.'
+  'editors-picks': 'Editor-selected standouts with distinctive utility, polish or an especially memorable point of view.',
+  'community-favorites': 'Apps Mac readers keep recommending for dependable workflows, practical value and repeat use.'
 };
 
 const toExploreApp = (entry: (typeof apps)[number]) => ({
@@ -91,14 +91,14 @@ const exploreData = {
 ---
 <BaseLayout
   title="Explore Mac Apps — App Waypoint"
-  description="Explore App Waypoint through editorial collections, popular tags, and six browse categories built from the Mac app catalog."
+  description="Explore App Waypoint through editorial collections, popular tags and six browse categories built from the Mac app catalog."
   current="explore"
 >
   <section class="page-shell archive-page explore-page">
     <header class="explore-hero">
       <h1>Explore Apps</h1>
       <p class="dek">
-        Browse App Waypoint through Mac apps chosen by hand, surfaced by the community, and organized to make worthwhile software easier to discover.
+        Browse App Waypoint through Mac apps chosen by hand, surfaced by the community and organized to make worthwhile software easier to discover.
       </p>
     </header>
 

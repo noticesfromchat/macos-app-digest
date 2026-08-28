@@ -25,7 +25,7 @@ export const categories: Category[] = [
   {
     slug: 'ai-agents',
     title: 'AI & Agents',
-    description: 'Local models, agent tools, and AI-powered search that make Mac workflows more capable without losing focus.',
+    description: 'Local models, agent tools and AI-powered search that make Mac workflows more capable without losing focus.',
     tags: ['ai', 'agents', 'agent', 'search'],
     icon: 'sparkles',
     accent: 'color-mix(in srgb, var(--accent) 12%, var(--surface-strong))'
@@ -33,7 +33,7 @@ export const categories: Category[] = [
   {
     slug: 'developer-tools',
     title: 'Developer Tools',
-    description: 'Terminal utilities, databases, CLIs, and coding helpers built for people shipping software on the Mac.',
+    description: 'Terminal utilities, databases, CLIs and coding helpers built for people shipping software on the Mac.',
     tags: ['developer', 'terminal', 'database', 'cli'],
     icon: 'code-2',
     accent: 'color-mix(in srgb, var(--accent) 10%, var(--surface-strong))'
@@ -41,7 +41,7 @@ export const categories: Category[] = [
   {
     slug: 'files-research-documents',
     title: 'Files, Research & Documents',
-    description: 'Tools for finding, capturing, annotating, exporting, and organizing the documents and files that keep work moving.',
+    description: 'Tools for finding, capturing, annotating, exporting and organizing the documents and files that keep work moving.',
     tags: ['files', 'finder', 'documents', 'research', 'pdf', 'ebooks', 'library', 'backup', 'downloads', 'capture', 'airdrop', 'export', 'cloud'],
     icon: 'folder-search',
     accent: 'color-mix(in srgb, var(--accent) 8%, var(--surface-strong))'
@@ -49,7 +49,7 @@ export const categories: Category[] = [
   {
     slug: 'mac-utilities-customization',
     title: 'Mac Utilities & Customization',
-    description: 'Menu bar tools, window managers, launchers, and system tweaks that make the Mac feel more responsive and personal.',
+    description: 'Menu bar tools, window managers, launchers and system tweaks that make the Mac feel more responsive and personal.',
     tags: ['utility', 'menubar', 'customization', 'privacy', 'launcher', 'windows', 'keyboard', 'accessibility', 'audio', 'network', 'monitoring', 'maintenance', 'battery', 'dashboard', 'remote', 'ios'],
     icon: 'sliders-horizontal',
     accent: 'color-mix(in srgb, var(--accent) 9%, var(--surface-strong))'
@@ -57,7 +57,7 @@ export const categories: Category[] = [
   {
     slug: 'productivity-workflow',
     title: 'Productivity & Workflow',
-    description: 'Task managers, reminders, automation, and scheduling tools that help Mac users reduce friction in repeat work.',
+    description: 'Task managers, reminders, automation and scheduling tools that help Mac users reduce friction in repeat work.',
     tags: ['productivity', 'tasks', 'reminders', 'automation', 'calendar'],
     icon: 'route',
     accent: 'color-mix(in srgb, var(--accent) 11%, var(--surface-strong))'
@@ -65,7 +65,7 @@ export const categories: Category[] = [
   {
     slug: 'writing-notes-reading',
     title: 'Writing, Notes & Reading',
-    description: 'Writing environments, note tools, dictation, and reading apps for people who spend their days moving through text.',
+    description: 'Writing environments, note tools, dictation and reading apps for people who spend their days moving through text.',
     tags: ['writing', 'notes', 'markdown', 'dictation', 'clipboard', 'messages', 'reading', 'rss'],
     icon: 'notebook-pen',
     accent: 'color-mix(in srgb, var(--accent) 7%, var(--surface-strong))'

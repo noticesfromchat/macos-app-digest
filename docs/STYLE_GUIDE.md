@@ -15,6 +15,11 @@ The site should feel like a small, premium editorial publication for experienced
 - technically polished
 - calm, useful and slightly playful
 
+### Editorial punctuation
+
+- Do not use Oxford commas in App Waypoint editorial copy. In lists of three or
+  more, write `A, B and C`, not `A, B, and C`.
+
 ## 2. Standard Issue Structure
 
 Every issue uses the same regular app-section spine, in this order:
@@ -199,7 +204,8 @@ Complete every item before merging a new issue:
 - [ ] The built `/rss.xml` feed includes every published issue exactly once, newest-
       first, with stable GUIDs, correct publication dates, correct issue URLs, the
       issue-specific RSS title, the issue-number-prefixed summary and the linked CTA.
-- [ ] Copy meets the editorial limits and uses role-based editor attribution.
+- [ ] Copy meets the editorial limits, avoids Oxford commas and uses role-based
+      editor attribution.
 - [ ] Light mode, dark mode, mobile layout, keyboard access and reduced motion remain
       intact.
 - [ ] `npm run validate` passes, including the repository privacy check.

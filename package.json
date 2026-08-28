@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "sync:categories": "node scripts/sync-app-categories.mjs",
-    "validate": "node scripts/check-private-paths.mjs && node scripts/validate-content.mjs",
+    "validate": "node scripts/check-private-paths.mjs && node scripts/check-editorial-style.mjs && node scripts/validate-content.mjs",
     "build": "npm run validate && astro build",
     "preview": "astro preview"
   },
