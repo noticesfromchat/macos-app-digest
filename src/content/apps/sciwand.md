@@ -6,4 +6,5 @@ tags: [research, pdf, ai, writing, local]
 categories: [files-research-documents, ai-agents, writing-notes-reading]
 source: r/macapps App Pile top-three selection and official homepage
 homepage: https://sciwand.com/
+icon: /app-icons/sciwand.png
 ---

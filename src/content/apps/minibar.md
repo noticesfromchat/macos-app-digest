@@ -6,4 +6,6 @@ tags: [menubar, launcher, shortcuts, utility, monitoring]
 categories: [mac-utilities-customization]
 source: Product Hunt Mac discovery and official homepage
 homepage: https://maciejbula.dev/projects/minibar/
+icon: /app-icons/minibar.svg
+iconStyle: contain
 ---

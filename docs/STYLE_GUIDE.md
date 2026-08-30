@@ -180,7 +180,52 @@ section spine. When present, it renders between `Trending` and `Old Favorites`.
 - Never display the editor's personal name in app sources, issue copy, notes or
   generated pages.
 
-## 11. Issue publishing checklist
+## 11. App icons
+
+App icons are part of the app record, not issue-specific markup. They should support
+recognition without making cards feel like an app-store grid.
+
+- Store app icons locally under `public/app-icons/` and reference them from app
+  records with a root-relative path such as `/app-icons/app-slug.png`.
+- Use official app assets from the app homepage, canonical repository or official
+  product files. Prefer high-resolution product icons or Apple touch icons over small
+  favicons.
+- Do not use generic marketplace favicons, Product Hunt marks, GitHub organization
+  avatars or unrelated publisher logos unless that asset is clearly the app's own
+  identity.
+- Default to `iconStyle: plain` for finished square app icons. Plain icons render
+  without an added background or border so their own rounded edges stay clean.
+- Use `iconStyle: backed` only for transparent icons, loose product artwork or
+  identity marks that need a white backing to remain legible in dark mode. Backed
+  icons use contained fitting and should not crop important artwork.
+- Use `iconStyle: contain` for non-square logos or wide/tall marks that should avoid
+  cropping but do not need a white backing.
+- When no suitable official icon is available, omit the app's `icon` field. App
+  cards will render the app's first category icon in a stable fallback color from
+  the missing-icon palette: green `#2F8F5B`, orange `#C66A22`, blue `#2F75D6`,
+  purple `#8B5CC7` or pink `#C24B7A`.
+- The fallback icon is intentional editorial metadata, not a temporary broken state.
+  Use it when the available homepage, repository, marketplace or search-result image
+  is generic, blurry, cropped, misleading or not clearly owned by the app.
+- Fallback tiles use the first entry in the app record's `categories` array, so place
+  the most representative category first when an app depends on the fallback. The
+  fallback color is stable from the app ID so cards do not reshuffle visually between
+  builds.
+- When an app appears in a new issue, check whether its app record already has a
+  suitable icon. Add or update the icon during the same app-record pass when it is
+  missing, generic, cropped, blurry or visually misleading.
+- Review every new or changed icon in light mode, dark mode and mobile. Confirm
+  transparent icons remain legible, square app icons do not show unwanted backing
+  edges and app names stay vertically centered beside the icon.
+- The all-app icon rollout applies to every app-card view, including the homepage,
+  current issue, archived issues, app directory, tag pages, collection pages and
+  related-app cards.
+- When changing the app card icon structure, keep any client-rendered card templates
+  in sync with the shared `AppCard` component. The Explore page re-renders randomized
+  sections in the browser and must preserve icon images, fallback tiles, category
+  icons and `iconStyle` behavior.
+
+## 12. Issue publishing checklist
 
 Complete every item before merging a new issue:
 
@@ -199,6 +244,8 @@ Complete every item before merging a new issue:
 - [ ] Weekend Reading contains three direct article links, with at least two focused
       primarily on apps, workflows or app developers.
 - [ ] Up and Coming contains exactly three eligible apps and records its sources.
+- [ ] Every app featured in the issue has a reviewed icon record, or a documented
+      reason the icon is intentionally deferred.
 - [ ] The issue includes an `rss` block with a concise issue-specific title and the
       standard `Read this issue` CTA.
 - [ ] The built `/rss.xml` feed includes every published issue exactly once, newest-

@@ -6,4 +6,6 @@ tags: [launcher, productivity, customization, utility]
 categories: [mac-utilities-customization, productivity-workflow]
 source: Product Hunt Mac launch and official homepage
 homepage: https://launchosapp.com/
+icon: /app-icons/launchos.svg
+iconStyle: contain
 ---

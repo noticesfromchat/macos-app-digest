@@ -7,4 +7,6 @@ categories: [mac-utilities-customization, productivity-workflow, writing-notes-r
 collections: [editors-picks]
 source: Editor selection and official Tuna product information
 homepage: https://tunaformac.com/
+icon: /app-icons/tuna.webp
+iconStyle: backed
 ---

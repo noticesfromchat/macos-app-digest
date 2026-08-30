@@ -6,4 +6,5 @@ tags: [files, utility, cloud, open-source]
 categories: [files-research-documents, mac-utilities-customization]
 source: r/macapps August App Pile moderator pick and official homepage
 homepage: https://duckdisk.com/
+icon: /app-icons/duckdisk.png
 ---

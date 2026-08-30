@@ -6,4 +6,5 @@ tags: [launcher, shortcuts, ios, productivity]
 categories: [mac-utilities-customization, productivity-workflow]
 source: Mac Power Users #854 and official homepage
 homepage: https://choclift.com/
+icon: /app-icons/choclift.png
 ---

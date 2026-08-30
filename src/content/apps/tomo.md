@@ -6,4 +6,5 @@ tags: [ebooks, library, files, privacy]
 categories: [files-research-documents, mac-utilities-customization]
 source: r/macapps App Pile top-three selection and official homepage
 homepage: https://tomolibrary.com/
+icon: /app-icons/tomo.png
 ---

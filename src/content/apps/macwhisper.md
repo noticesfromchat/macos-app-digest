@@ -7,4 +7,5 @@ categories: [writing-notes-reading, ai-agents, productivity-workflow]
 collections: [community-favorites]
 source: 9to5Mac workflow coverage and official homepage
 homepage: https://www.macwhisper.com/
+icon: /app-icons/macwhisper.png
 ---

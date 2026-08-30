@@ -6,4 +6,5 @@ tags: [ai, developer, agents, local, utility]
 categories: [ai-agents, developer-tools, mac-utilities-customization]
 source: Product Hunt recent Mac launch and official homepage
 homepage: https://crew-deskmates.vercel.app/
+icon: /app-icons/crew.png
 ---

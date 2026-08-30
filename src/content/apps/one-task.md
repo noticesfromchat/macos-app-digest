@@ -6,4 +6,5 @@ tags: [productivity, tasks, reminders, utility]
 categories: [productivity-workflow, mac-utilities-customization]
 source: Official One Task product information
 homepage: https://sindresorhus.com/one-task
+icon: /app-icons/one-task.png
 ---

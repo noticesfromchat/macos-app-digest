@@ -6,4 +6,5 @@ tags: [menubar, developer, automation, open-source]
 categories: [mac-utilities-customization, developer-tools, productivity-workflow]
 source: GitHub activity, community adoption and official homepage
 homepage: https://swiftbar.app/
+icon: /app-icons/swiftbar.png
 ---

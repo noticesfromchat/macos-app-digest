@@ -6,4 +6,5 @@ tags: [ai, developer, menubar, local]
 categories: [ai-agents, developer-tools, mac-utilities-customization]
 source: Product Hunt and official homepage
 homepage: https://agentpeek.app/
+icon: /app-icons/agentpeek.png
 ---

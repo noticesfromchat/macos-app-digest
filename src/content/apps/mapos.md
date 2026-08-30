@@ -6,4 +6,5 @@ tags: [maps, local, ai, automation, markdown]
 categories: [ai-agents, productivity-workflow, writing-notes-reading]
 source: r/macapps August App Pile and official homepage
 homepage: https://mapos.md/
+icon: /app-icons/mapos.png
 ---

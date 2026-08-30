@@ -6,4 +6,5 @@ tags: [developer, automation, local]
 categories: [developer-tools, productivity-workflow]
 source: Taphouse Software launch post and official homepage
 homepage: https://taphouse.io/arborist
+icon: /app-icons/arborist.png
 ---

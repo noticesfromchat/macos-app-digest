@@ -93,8 +93,21 @@ tags: [productivity, utility, menubar]
 # collections: [editors-picks, community-favorites]
 source: Discovery source and official homepage
 homepage: https://example.com/
+# Optional app-card icon. Store the file under public/app-icons/.
+icon: /app-icons/app-slug.png
+# Optional icon rendering style: plain, backed or contain. Defaults to plain.
+iconStyle: plain
 ---
 ```
+
+Use `iconStyle: plain` for finished square app icons. Use `backed` for transparent
+or loose artwork that needs a white backing, and `contain` for non-square marks that
+should avoid cropping without adding a backing.
+
+If no suitable official icon is available, omit `icon` and `iconStyle`; app cards
+will use the app's first category icon with the approved missing-icon color palette.
+Because fallback icons use the first category, order `categories` with the most
+representative app category first when the fallback will appear publicly.
 
 ## Required checks
 

@@ -7,4 +7,5 @@ categories: [mac-utilities-customization, files-research-documents]
 collections: [community-favorites]
 source: Sindre Sorhus release notes and official homepage
 homepage: https://sindresorhus.com/supercharge
+icon: /app-icons/supercharge.png
 ---

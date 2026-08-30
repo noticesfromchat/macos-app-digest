@@ -6,4 +6,5 @@ tags: [ai, automation, productivity]
 categories: [ai-agents, productivity-workflow]
 source: Product Hunt launch and official homepage
 homepage: https://www.useflowlyapp.com/
+icon: /app-icons/flowly.png
 ---

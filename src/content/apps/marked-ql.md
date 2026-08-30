@@ -6,4 +6,5 @@ tags: [markdown, finder, quicklook, developer]
 categories: [writing-notes-reading, files-research-documents, developer-tools]
 source: MacStories App Debuts, developer launch notes and official homepage
 homepage: https://markedapp.com/ql/
+icon: /app-icons/marked-ql.png
 ---

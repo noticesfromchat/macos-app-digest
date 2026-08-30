@@ -6,4 +6,6 @@ tags: [automation, documentation, productivity, local]
 categories: [productivity-workflow]
 source: Product Hunt productivity launches and official homepage
 homepage: https://stepshot.app/
+icon: /app-icons/stepshot.svg
+iconStyle: contain
 ---

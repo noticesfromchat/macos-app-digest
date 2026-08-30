@@ -421,6 +421,15 @@ a { color: inherit; }
 .home-hero-pick .hero-pick-card { flex: 1; }
 
 .hero-pick-card .app-summary { margin-bottom: 0; }
+.hero-pick-card .app-summary.has-app-icon .app-summary-heading {
+  grid-template-columns: 52px minmax(0, 1fr);
+  column-gap: 16px;
+}
+.hero-pick-card .app-icon-frame {
+  width: 52px;
+  height: 52px;
+  border-radius: 13px;
+}
 .hero-pick-card h3 { font-size: var(--type-subhead); letter-spacing: -.02em; line-height: 1.08; }
 .hero-pick-card .pick-desc,
 .hero-pick-card .app-summary p { font-size: 1rem; }
@@ -454,6 +463,58 @@ a { color: inherit; }
 .app-card h3 a { color: var(--text); text-decoration: none; transition: color 180ms ease; }
 .app-card h3 a:hover,
 .app-card h3 a:focus-visible { color: var(--accent); }
+.app-summary-heading {
+  display: block;
+}
+.app-summary.has-app-icon .app-summary-heading {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  column-gap: 14px;
+  align-items: center;
+}
+.app-summary.has-app-icon h3 { margin-bottom: 0; }
+.app-icon-frame {
+  display: flex;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 0;
+  border-radius: 11px;
+  background: transparent;
+}
+.app-icon {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.app-icon-backed .app-icon-frame {
+  background: #fff;
+  padding: 5px;
+}
+.app-icon-backed .app-icon,
+.app-icon-contain .app-icon {
+  object-fit: contain;
+}
+.app-icon-fallback .app-icon-frame,
+.missing-app-icon-frame {
+  background: var(--missing-icon-bg);
+}
+.missing-app-icon-frame svg,
+.missing-app-icon {
+  display: block;
+  width: 56%;
+  height: 56%;
+  color: #fff;
+  stroke-width: 2.1;
+}
+.app-icon-color-green { --missing-icon-bg: #2f8f5b; }
+.app-icon-color-orange { --missing-icon-bg: #c66a22; }
+.app-icon-color-blue { --missing-icon-bg: #2f75d6; }
+.app-icon-color-purple { --missing-icon-bg: #8b5cc7; }
+.app-icon-color-pink { --missing-icon-bg: #c24b7a; }
 .editors-pick-title {
   display: flex;
   align-items: center;
@@ -471,6 +532,7 @@ a { color: inherit; }
 .editors-pick-icon-link:focus-visible { color: var(--accent-hover); }
 .editors-pick-icon { width: 100%; height: 100%; }
 .app-card p { margin: 0; color: var(--muted); }
+.app-summary.has-app-icon .app-description { margin-top: 12px; }
 .app-summary { min-height: 136px; margin-bottom: 16px; }
 .best-for { min-height: 96px; font-size: 1rem; }
 .best-for strong,

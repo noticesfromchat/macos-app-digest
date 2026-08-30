@@ -6,4 +6,5 @@ tags: [ai, search, developer, local, automation]
 categories: [ai-agents, developer-tools, productivity-workflow]
 source: Product Hunt recent Mac launch and official homepage
 homepage: https://tryreference.com/
+icon: /app-icons/reference.png
 ---

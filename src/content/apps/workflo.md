@@ -6,4 +6,5 @@ tags: [productivity, automation, windows, calendar]
 categories: [productivity-workflow, mac-utilities-customization]
 source: Product Hunt Mac recent launches and official homepage
 homepage: https://getworkflo.app/
+icon: /app-icons/workflo.png
 ---

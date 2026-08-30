@@ -6,4 +6,5 @@ tags: [menubar, network, privacy, utility]
 categories: [mac-utilities-customization]
 source: Product Hunt recent Mac launch and official homepage
 homepage: https://hotspot-meter.loam.sk/
+icon: /app-icons/hotspot-meter.png
 ---

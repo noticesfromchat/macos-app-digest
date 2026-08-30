@@ -6,4 +6,5 @@ tags: [utility, menubar, productivity]
 categories: [mac-utilities-customization, productivity-workflow]
 source: Product Hunt launch and official homepage
 homepage: https://lippi304.xyz/projects/islet
+icon: /app-icons/islet.png
 ---

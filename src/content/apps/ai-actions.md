@@ -6,4 +6,5 @@ tags: [ai, automation, productivity, utility]
 categories: [ai-agents, productivity-workflow, mac-utilities-customization]
 source: Official AI Actions product information
 homepage: https://sindresorhus.com/ai-actions
+icon: /app-icons/ai-actions.png
 ---

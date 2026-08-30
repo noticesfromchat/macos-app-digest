@@ -6,4 +6,5 @@ tags: [ai, automation, local]
 categories: [ai-agents, productivity-workflow]
 source: Product Hunt, GitHub and official homepage
 homepage: https://macuse.app/
+icon: /app-icons/macuse.png
 ---

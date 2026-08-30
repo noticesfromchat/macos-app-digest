@@ -7,4 +7,5 @@ collections: [community-favorites]
 categories: [files-research-documents, productivity-workflow, mac-utilities-customization]
 source: Official Shottr product information
 homepage: https://shottr.cc/
+icon: /app-icons/shottr.png
 ---

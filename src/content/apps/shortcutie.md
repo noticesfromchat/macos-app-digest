@@ -7,4 +7,5 @@ categories: [productivity-workflow, mac-utilities-customization]
 collections: [community-favorites]
 source: Sindre Sorhus and official homepage
 homepage: https://sindresorhus.com/shortcutie
+icon: /app-icons/shortcutie.png
 ---

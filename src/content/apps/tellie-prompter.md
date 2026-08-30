@@ -6,4 +6,5 @@ tags: [writing, dictation, audio, productivity]
 categories: [writing-notes-reading, mac-utilities-customization, productivity-workflow]
 source: Product Hunt launch listing and official Tellie homepage
 homepage: https://tellieapp.com/
+icon: /app-icons/tellie-prompter.png
 ---

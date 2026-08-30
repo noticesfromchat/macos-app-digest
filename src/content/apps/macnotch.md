@@ -6,4 +6,5 @@ tags: [menubar, dashboard, productivity, utility]
 categories: [mac-utilities-customization, productivity-workflow]
 source: Product Hunt and official homepage
 homepage: https://macnotch.io/
+icon: /app-icons/macnotch.png
 ---

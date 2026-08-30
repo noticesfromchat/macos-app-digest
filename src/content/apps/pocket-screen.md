@@ -6,4 +6,5 @@ tags: [windows, productivity, utility, privacy]
 categories: [mac-utilities-customization, productivity-workflow]
 source: Product Hunt launch and official homepage
 homepage: https://labs.toybird.com/apps/pocket-screen/
+icon: /app-icons/pocket-screen.png
 ---

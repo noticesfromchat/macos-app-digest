@@ -7,4 +7,5 @@ categories: [writing-notes-reading, productivity-workflow, mac-utilities-customi
 collections: [community-favorites]
 source: MacStories review and official homepage
 homepage: https://tapbots.com/pastebot/
+icon: /app-icons/pastebot.png
 ---

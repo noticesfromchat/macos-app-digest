@@ -6,4 +6,5 @@ tags: [research, files, ai, local, productivity]
 categories: [files-research-documents, ai-agents, productivity-workflow]
 source: Product Hunt recent Mac launches and official homepage
 homepage: https://www.theodorehq.com/muse/
+icon: /app-icons/muse.png
 ---

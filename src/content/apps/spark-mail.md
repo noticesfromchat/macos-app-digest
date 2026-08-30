@@ -6,4 +6,5 @@ tags: [ai, automation, productivity, messages, cli]
 categories: [ai-agents, productivity-workflow, writing-notes-reading, developer-tools]
 source: MacStories review, Spark CLI documentation and official homepage
 homepage: https://sparkmailapp.com/
+icon: /app-icons/spark-mail.png
 ---

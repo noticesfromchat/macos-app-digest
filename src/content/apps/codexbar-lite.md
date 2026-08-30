@@ -6,4 +6,5 @@ tags: [menubar, developer, ai, open-source]
 categories: [mac-utilities-customization, developer-tools, ai-agents]
 source: Product Hunt recent Mac launch and official homepage
 homepage: https://getcodexbar.xyz/
+icon: /app-icons/codexbar-lite.png
 ---

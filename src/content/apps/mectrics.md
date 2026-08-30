@@ -6,4 +6,5 @@ tags: [menubar, monitoring, open-source, utility, developer]
 categories: [mac-utilities-customization, developer-tools]
 source: Product Hunt recent Mac launch and official homepage
 homepage: https://mectrics.app/
+icon: /app-icons/mectrics.png
 ---

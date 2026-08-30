@@ -6,4 +6,5 @@ tags: [utility, remote, files, productivity, privacy]
 categories: [mac-utilities-customization, files-research-documents, productivity-workflow]
 source: Product Hunt Mac discovery and official homepage
 homepage: https://andromeld.catchingnow.com/
+icon: /app-icons/andromeld.png
 ---

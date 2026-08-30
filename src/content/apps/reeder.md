@@ -7,4 +7,5 @@ categories: [writing-notes-reading, productivity-workflow]
 collections: [editors-picks]
 source: Editor selection and official Reeder product information
 homepage: https://reederapp.com/
+icon: /app-icons/reeder.png
 ---

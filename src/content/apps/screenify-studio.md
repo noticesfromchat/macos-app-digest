@@ -6,4 +6,5 @@ tags: [capture, audio, productivity, utility]
 categories: [files-research-documents, mac-utilities-customization, productivity-workflow]
 source: Product Hunt launch listing and official Screenify Studio homepage
 homepage: https://www.screenify.studio/
+icon: /app-icons/screenify-studio.png
 ---

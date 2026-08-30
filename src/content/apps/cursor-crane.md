@@ -6,4 +6,6 @@ tags: [keyboard, windows, automation, productivity, accessibility]
 categories: [mac-utilities-customization, productivity-workflow]
 source: Product Hunt recent Mac launches and official homepage
 homepage: https://cursorcrane.expressionloss.com/
+icon: /app-icons/cursor-crane.svg
+iconStyle: contain
 ---

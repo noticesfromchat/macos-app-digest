@@ -6,4 +6,6 @@ tags: [notes, writing, local, ai, markdown]
 categories: [writing-notes-reading, ai-agents]
 source: r/macapps release discussion and official homepage
 homepage: https://nodes-web.com/
+icon: /app-icons/nodes.svg
+iconStyle: contain
 ---

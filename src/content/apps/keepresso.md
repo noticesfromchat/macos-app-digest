@@ -6,4 +6,5 @@ tags: [menubar, automation, utility, open-source, developer]
 categories: [mac-utilities-customization, productivity-workflow, developer-tools]
 source: Product Hunt Mac launch and official homepage
 homepage: https://keepresso.com/
+icon: /app-icons/keepresso.png
 ---

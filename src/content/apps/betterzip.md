@@ -6,4 +6,5 @@ tags: [files, utility, automation, finder]
 categories: [files-research-documents, mac-utilities-customization, productivity-workflow]
 source: r/macapps community discussion and official BetterZip 6 release information
 homepage: https://macitbetter.com/
+icon: /app-icons/betterzip.png
 ---

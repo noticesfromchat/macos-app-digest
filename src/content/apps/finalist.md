@@ -6,4 +6,5 @@ tags: [productivity, tasks, notes, writing]
 categories: [productivity-workflow, writing-notes-reading]
 source: MacStories sponsor feature and official Finalist 4 release information
 homepage: https://www.finalist.works/
+icon: /app-icons/finalist.png
 ---

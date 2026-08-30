@@ -6,4 +6,5 @@ tags: [files, ai, local, research, productivity]
 categories: [files-research-documents, ai-agents, productivity-workflow]
 source: r/macapps July 2026 App Pile and official homepage
 homepage: https://anti.ltd/filemaster
+icon: /app-icons/filemaster.png
 ---

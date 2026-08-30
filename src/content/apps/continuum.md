@@ -6,4 +6,5 @@ tags: [notes, productivity, privacy, local]
 categories: [writing-notes-reading, productivity-workflow, mac-utilities-customization]
 source: Product Hunt recent Mac launches and official homepage
 homepage: https://roland.leth.ro/projects/continuum
+icon: /app-icons/continuum.png
 ---

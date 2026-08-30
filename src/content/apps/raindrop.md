@@ -7,4 +7,5 @@ categories: [files-research-documents, writing-notes-reading, productivity-workf
 collections: [editors-picks]
 source: Editor selection and official Raindrop product information
 homepage: https://raindrop.io/
+icon: /app-icons/raindrop.png
 ---

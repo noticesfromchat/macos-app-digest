@@ -6,4 +6,5 @@ tags: [clipboard, ai, menubar, open-source]
 categories: [writing-notes-reading, ai-agents, mac-utilities-customization]
 source: GitHub search and repository
 homepage: https://github.com/saihgupr/SmartClipboard
+icon: /app-icons/smartclipboard.png
 ---

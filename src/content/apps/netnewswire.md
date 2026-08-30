@@ -7,4 +7,5 @@ categories: [writing-notes-reading, productivity-workflow]
 collections: [community-favorites]
 source: Official homepage and recurring Mac community recommendations
 homepage: https://netnewswire.com/
+icon: /app-icons/netnewswire.png
 ---

@@ -6,4 +6,5 @@ tags: [downloads, utility, automation, open-source]
 categories: [files-research-documents, mac-utilities-customization, productivity-workflow]
 source: r/macapps August App Pile moderator pick and canonical GitHub repository
 homepage: https://github.com/nimbold/Firelink
+icon: /app-icons/firelink.png
 ---

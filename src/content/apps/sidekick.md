@@ -6,4 +6,5 @@ tags: [ai, automation, productivity, agent]
 categories: [ai-agents, productivity-workflow]
 source: Product Hunt Mac recent launches and official homepage
 homepage: https://sidekick-os.online/
+icon: /app-icons/sidekick.png
 ---

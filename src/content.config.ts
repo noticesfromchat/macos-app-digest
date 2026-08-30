@@ -17,7 +17,9 @@ const apps = defineCollection({
       }),
     collections: z.array(z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)).max(10).optional(),
     source: z.string().min(1).max(140),
-    homepage: z.string().url()
+    homepage: z.string().url(),
+    icon: z.string().regex(/^\/[A-Za-z0-9/_-]+\.(?:png|jpg|jpeg|webp|svg|ico)$/).optional(),
+    iconStyle: z.enum(['plain', 'backed', 'contain']).default('plain')
   })
 });
 
