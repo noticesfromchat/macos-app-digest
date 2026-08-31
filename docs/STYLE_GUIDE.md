@@ -17,16 +17,13 @@ The site should feel like a small, premium editorial publication for experienced
 
 ### Motion
 
-- The site is calm but not static. Content fades in as the reader reaches it, at one
-  duration and one curve everywhere: 400ms, opacity only, no stagger and no directional
-  movement. A cascade that sweeps across a grid was tried and removed.
-- A new page or component that renders content sections or app cards opts in with
-  `data-reveal` or `data-reveal-items`, or it will be the only page that does not fade.
-- The homepage hero is the one exception and stays still.
-- The divider buoy and the source-note timeline are the only motion with a voice.
-  Do not add a third.
-- See The Passing Waypoint Rule in `DESIGN.md` for the full rule and the reasoning, and
-  the Scroll reveal section of `AGENTS.md` for the implementation contract.
+- The site is calm and close to still. Motion is reserved, not decorative.
+- The divider buoy and the source-note timeline are the only motion with a voice on an
+  issue page, alongside the light on the Editor's Pick card in the hero. Do not add a
+  fourth.
+- The homepage hero band itself stays still.
+- See The Struck Light Rule in `DESIGN.md` for the pick card, and the easing tokens in
+  the Motion section there for everything else.
 
 ### Editorial punctuation
 
@@ -313,8 +310,7 @@ Complete every item before merging a new issue:
 - [ ] Copy meets the editorial limits, avoids Oxford commas, avoids em dashes and en
       dashes, and uses role-based editor attribution.
 - [ ] Light mode, dark mode, mobile layout, keyboard access and reduced motion remain
-      intact. Scroll reveal fires on every section, and content is visible with
-      JavaScript disabled.
+      intact.
 - [ ] `npm run validate` passes, including the repository privacy check.
 - [ ] `npm run build` passes.
 - [ ] Required GitHub checks and the Netlify Deploy Preview succeed.

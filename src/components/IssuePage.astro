@@ -66,7 +66,7 @@ const IssueHeading = homepage ? 'p' : 'h1';
   </header>
   {issue.sections.map((section, index) => (
     <>
-      <section id={index === 0 ? 'new-discoveries' : undefined} class="section" data-reveal>
+      <section id={index === 0 ? 'new-discoveries' : undefined} class="section">
         <div class="section-heading">
           <p class="eyebrow">{section.eyebrow}</p>
           <h2>{section.title}</h2>
@@ -88,7 +88,7 @@ const IssueHeading = homepage ? 'p' : 'h1';
     <BrandMark class="content-divider-mark" ping={true} />
   </div>
 
-  <section class="section video-section" data-reveal>
+  <section class="section video-section">
     <div class="section-heading">
       <p class="eyebrow">Video of the Week</p>
       <h2>{issue.video.title}</h2>
@@ -100,7 +100,7 @@ const IssueHeading = homepage ? 'p' : 'h1';
     </article>
   </section>
 
-  <section class="section" data-reveal>
+  <section class="section">
     <div class="section-heading">
       <p class="eyebrow">Weekend Reading</p>
       <h2>Three reads for Mac context</h2>

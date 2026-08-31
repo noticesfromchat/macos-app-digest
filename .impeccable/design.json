@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-31T15:58:03Z",
+  "generatedAt": "2026-08-31T16:05:46Z",
   "title": "Design System: App Waypoint",
   "extensions": {
     "colorMeta": {
@@ -246,11 +246,6 @@
         "name": "ease-gleam",
         "value": "11s linear infinite",
         "purpose": "The Editor's Pick edge gleam; paused off screen."
-      },
-      {
-        "name": "ease-dissolve",
-        "value": "900ms cubic-bezier(.37, 0, .63, 1)",
-        "purpose": "Opacity-only reveals. Spreads the change evenly, where ease-settle front-loads it and reads as a flash."
       }
     ],
     "breakpoints": [
@@ -338,8 +333,7 @@
       "Beacon blue reserved for actions and current states.",
       "Serif headlines, system-sans utility.",
       "Soft 10-18px radii and ambient shadows.",
-      "Dense content organized through cards, chips, and careful spacing.",
-      "Content fades in as the reader reaches it; the hero alone stays still."
+      "Dense content organized through cards, chips, and careful spacing."
     ],
     "rules": [
       {
@@ -388,11 +382,6 @@
         "section": "components"
       },
       {
-        "name": "The Passing Waypoint Rule",
-        "body": "Content fades in as the reader reaches it, at one duration and one curve for the whole site: 900ms on --ease-dissolve, opacity only. No stagger, no directional movement, no per-section variation; a staggered cascade across a grid reads as a left-to-right sweep and was removed for that reason. One IntersectionObserver in BaseLayout.astro drives every page. Pages opt in with data-reveal to fade a section, or data-reveal-items to fade each child where one long grid of cards is the whole page. Three properties are load-bearing: the hiding class is added by script so content ships visible; it is an animation filling backwards rather than a transition, because a transition would declare opacity and transform on the card and outrank the hover contract for the rest of the session; and each target is released as it fires. Reduced motion is guarded in both the observer and a media block. The divider buoy and the source-note timeline remain the only motion with a voice, and the hero does not move at all. The trigger differs by viewport: a ratio threshold scales with the element, and a phone section runs ~1450px against ~650px on desktop, so at 0.1 the mobile heading sat on screen transparent for 243px of scroll before snapping in. Narrow viewports (<=920px) trigger on the leading edge instead, which is height-independent, and fade over 1200ms rather than 900ms. A fade takes a different curve from a movement: ease-settle puts 75% of its change into the first fifth of the run, which reads as a flash on opacity however long the duration. --ease-dissolve, cubic-bezier(.37, 0, .63, 1), spreads it evenly. Use it for anything that only changes opacity and keep ease-settle for anything that moves.",
-        "section": "motion"
-      },
-      {
         "name": "The Plain Dash Rule",
         "body": "Public editorial copy uses no em dash and no en dash. Restructure to a period, a comma, a colon, or parentheses, and set number and date ranges with a plain hyphen. Outside the rule: page-title separators, which are an indexed SEO and publishing convention; quoted external titles in source notes and reading lists, where changing the punctuation misquotes the source; and code comments, which no reader sees. The rule covers the site's public copy, not the repository's own documentation. The vendored taste-skill states a blanket ban covering titles too; this narrower rule governs here and that skill is left unedited so it stays diffable against upstream.",
         "section": "typography"
@@ -414,8 +403,7 @@
       "Do keep shadows soft and ambient.",
       "Do let serif headlines carry the editorial voice while system sans handles utility.",
       "Do keep the defining tag or collection locked when it is the page\u2019s own context.",
-      "Do keep the uppercase eyebrow above section and card headings. General design guidance treats a kicker above a heading as filler; here it is load-bearing house style, it names the issue section, the pick and the current-issue block, and it is the documented Label role. This is a deliberate, standing exception.",
-      "Do mark new sections and card grids with data-reveal or data-reveal-items so a new page fades in like the rest of the site."
+      "Do keep the uppercase eyebrow above section and card headings. General design guidance treats a kicker above a heading as filler; here it is load-bearing house style, it names the issue section, the pick and the current-issue block, and it is the documented Label role. This is a deliberate, standing exception."
     ],
     "donts": [
       "Don't introduce loud secondary colors just to add energy.",
@@ -424,14 +412,11 @@
       "Don't use tinted text as neutral gray on colored surfaces.",
       "Don't make chips, filters, or buttons feel like separate UI worlds.",
       "Don't let the brand wordmark typography spread into body copy.",
-      "Don't stagger, slide, or otherwise vary the scroll reveal per section. One fade, one duration, one curve, everywhere.",
-      "Don't write the reveal's hidden state into the markup. It is added by script so the page ships visible.",
       "Don't use em dashes or en dashes in public editorial copy.",
       "Don't let the Editor's Pick accent leave that one card, or reach a link, control or state. It is light, not a second accent.",
       "Don't hand-write an iconAccent. Generate it so every pick lands in the same lightness and chroma band.",
       "Don't fill a control with the accent. The dark theme's blue is a foreground colour; as a ground it fails contrast and becomes the brightest thing on the page.",
-      "Don't set a local eyebrow gap. Use --eyebrow-gap so every labelled block on the site is bound the same way.",
-      "Don't fade opacity on ease-settle. That curve carries momentum for things that move; on opacity it front-loads the change into a flash."
+      "Don't set a local eyebrow gap. Use --eyebrow-gap so every labelled block on the site is bound the same way."
     ]
   }
 }
