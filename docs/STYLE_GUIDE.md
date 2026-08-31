@@ -243,6 +243,11 @@ recognition without making cards feel like an app-store grid.
 - Do not rely on extra card padding, a white backing or `contain` fitting to
   compensate for a source image that is framed poorly. Adjust the local asset,
   choose a better official source or ask the editor for direction.
+- An icon exported onto an opaque canvas rather than onto transparency shows its
+  background in the corners: invisible in dark mode, a hard frame around the mark in
+  light. Check the corners of a new icon, not just how it looks in the theme you are
+  in. App Store assets on Apple's own CDN are official product files and are usually
+  exported correctly.
 - During icon review, flag any app whose icon appears too small, over-cropped,
   blurry, off-center, backed by a visible unwanted edge, mismatched to the app's
   identity or otherwise visibly weaker than the source. If the correct treatment is

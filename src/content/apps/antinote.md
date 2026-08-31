@@ -8,5 +8,5 @@ collections: [editors-picks, community-favorites]
 source: Editor's Pick and official homepage
 homepage: https://antinote.io/
 icon: /app-icons/antinote.png
-iconAccent: "#00a171"
+iconAccent: "#00a16e"
 ---
