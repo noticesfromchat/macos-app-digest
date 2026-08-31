@@ -18,9 +18,12 @@ The site should feel like a small, premium editorial publication for experienced
 ### Motion
 
 - The site is calm and close to still. Motion is reserved, not decorative.
-- The divider buoy and the source-note timeline are the only motion with a voice on an
-  issue page, alongside the light on the Editor's Pick card in the hero. Do not add a
-  fourth.
+- The divider buoy, the source-note timeline and the light on the Editor's Pick card
+  are the motion with a voice on an issue page. Do not add a fourth.
+- The two wave bands are the exception, because they are not asking to be noticed. They
+  swell without anything travelling, below the still water level, paused off screen and
+  stopped under reduced motion. See The Swell Rule in `DESIGN.md`. Motion that wants
+  attention still needs to earn it; ambience is held to a different test.
 - The homepage hero band itself stays still.
 - See The Struck Light Rule in `DESIGN.md` for the pick card, and the easing tokens in
   the Motion section there for everything else.

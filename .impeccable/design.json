@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-31T20:46:12Z",
+  "generatedAt": "2026-08-31T23:06:26Z",
   "title": "Design System: App Waypoint",
   "extensions": {
     "colorMeta": {
@@ -260,6 +260,11 @@
         "name": "ease-gleam",
         "value": "11s linear infinite",
         "purpose": "The Editor's Pick edge gleam; paused off screen."
+      },
+      {
+        "name": "swell",
+        "value": "23s and 31s, ~18fps",
+        "purpose": "The hero and divider wave bands breathing. Ambient, never travelling."
       }
     ],
     "breakpoints": [
@@ -429,6 +434,11 @@
         "name": "The Target Floor Rule",
         "body": "Anything a reader taps carries a minimum target: 24px, and the 44px the control system already gives every pill on a coarse pointer. Footer navigation, the explore section links, the carousel's directory link and the feature card's outbound link were all the text line box alone, 16 to 21px. An icon link too small to grow, like the Editor's Pick mark beside an app name, gets its hit area expanded around it instead, and stops at 24 so it does not start taking taps meant for the title. A link inside a sentence is exempt and stays inline.",
         "section": "components"
+      },
+      {
+        "name": "The Swell Rule",
+        "body": "Both wave bands breathe. Crests hold their positions while the height of the water and the weight of its second harmonic settle and return, on periods of 23 and 31 seconds that do not divide into one another. Nothing travels, which is what separates a sea that is present from one that is performing, and it lets the loop run at about eighteen frames a second. The still painting is the high-water mark rather than the midpoint and the swell only calms below it, because the band was tuned so the topmost crest clears its canvas by 7px and a symmetric swing flattened the crests against the edge. Each band draws only while on screen, the loop stops when the tab is hidden, and reduced motion leaves the water painted once. Canvas sizing is split from drawing so the loop never reallocates a backing store.",
+        "section": "motion"
       }
     ],
     "dos": [
@@ -455,7 +465,8 @@
       "Don't apply saturate() to a whole card to knock back its icon. It drains the card's own surface and takes it off the palette's hue.",
       "Don't derive an app's fallback icon or colour in a component. Both come from src/data/app-icon.ts, or the surfaces drift apart.",
       "Don't hard-code an overlay scrim. It is --scrim, and a dark scrim over a light page reads as a dimmed screen rather than frosted glass.",
-      "Don't ship a tap target at the height of its text. A nav link is a target, not prose."
+      "Don't ship a tap target at the height of its text. A nav link is a target, not prose.",
+      "Don't swing an ambient animation either side of its still state without checking the still state was not already at the edge of its canvas."
     ]
   }
 }

@@ -289,7 +289,13 @@ Four things hold it inside the design system:
 
 Because the card rests at Hover Lift rather than Ambient Card, it cannot answer the pointer with elevation the way The One Hover Rule describes. It answers with light instead: an accent-tinted depth under the card. Both loops pause when the card is off screen and stop entirely under reduced motion.
 
-**The buoy stays the one authored moment.** The mark on the content divider flashes once as the reader passes it, and the source-note timeline draws itself in sequence. Those are deliberate and they are the only motion on the page with a voice, alongside the light on the Editor's Pick card. The hero band does not move at all: it sits above the fold, there is no passage to mark, and its atmosphere is painted once.
+**The buoy stays the one authored moment.** The mark on the content divider flashes once as the reader passes it, and the source-note timeline draws itself in sequence. Those are deliberate and they are the motion on the page with a voice, alongside the light on the Editor's Pick card.
+
+**The Swell Rule.** The water moves, and it is the only thing on the page that moves without wanting to be noticed. Both wave bands, the hero's waterline and the content divider's, breathe: the crests hold their positions while the height of the water and the weight of its second harmonic settle and return, on periods of 23 and 31 seconds that do not divide into one another, so the band never repeats a state the eye can catch.
+
+Three things keep it ambient rather than a fourth animation competing for attention. **Nothing travels**, which is what separates a sea that is present from one that is performing, and it is also why the loop can run at roughly eighteen frames a second: the change between frames is far below what anyone can resolve, and a third of the frames costs a third of the work. **The still painting is the high-water mark**, not the midpoint; the swell only ever calms below it. That is not an aesthetic choice but a structural one, because the band was already tuned so the topmost crest clears its canvas by 7px, and a swing either side of the still level spent that margin and flattened the crests against the edge. **Each band is drawn only while it is on screen**, the loop stops when the tab is hidden, and reduced motion leaves the water painted once and still.
+
+The hero previously stated that its atmosphere never moved. That was true of the star field, which is still painted once, and it is the right instinct for a page that should feel calm. It was wrong about the water: a harbour whose sea is frozen reads as a photograph of a harbour.
 
 ## Components
 
@@ -387,7 +393,7 @@ A full-bleed band whose content sits on the shared page shell, so the wordmark a
 - **Structure:** identity (wordmark, wave rule, tagline) over a hairline, then the issue block; the Editor's Pick renders beside it as a real `AppCard`, the only card in the fold.
 - **Atmosphere:** two drawn layers — a star field (night only) and an engraved wave band. All canvas, no image request, painted once and repainted only on theme change or resize. The day sky above the water stays empty; a cloud bank was drawn there and removed for adding noise rather than calm.
 - **The waterline.** The band's ground fades to the page colour across the wave band and the strokes taper to nothing, so the hero ends on the colour the next section begins with. A single `--sea-h` drives the canvas height, the bottom padding, and the fade distance.
-- **Motion:** the band and its atmosphere are still. Its atmosphere is painted once rather than animated, and there is no load-in entrance. The Editor's Pick card is the single moving thing in the fold, under The Struck Light Rule, and it earns that by being the one app the issue is arguing for.
+- **Motion:** the star field is painted once and never moves, and there is no load-in entrance. The waterline swells under The Swell Rule, quietly enough that it reads as atmosphere rather than as animation. The Editor's Pick card is the one thing in the fold that moves for attention, under The Struck Light Rule, and it earns that by being the app the issue is arguing for.
 - **Call to action:** two anchors, one hidden per breakpoint. Above 920px *Start Reading* goes to the first section; below it — where the pick has stacked underneath — it goes to the pick. 920px is where the hero collapses to one column, so the swap and the stack happen together.
 
 ## Do's and Don'ts
