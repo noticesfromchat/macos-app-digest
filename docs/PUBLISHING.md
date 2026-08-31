@@ -88,7 +88,11 @@ Preview review.
 18. Review new or changed icons in light mode, dark mode and mobile before asking for
     approval. Confirm square app icons do not show unwanted backing edges,
     transparent icons remain legible and archived issue pages still render their app
-    cards cleanly after any all-app icon rollout.
+    cards cleanly after any all-app icon rollout. If any icon appears too small,
+    over-cropped, blurry, off-center, visually mismatched or otherwise not faithful
+    to the app's real icon, record the problem and ask the editor whether to crop the
+    local asset, find a better official source, change `iconStyle` or use the
+    first-category fallback.
 19. Push the release candidate once, wait for required GitHub checks and the Netlify
     Deploy Preview to succeed, then review the Deploy Preview.
 20. Ask the editor for final approval to use that reviewed release candidate for

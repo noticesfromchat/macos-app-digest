@@ -200,6 +200,16 @@ recognition without making cards feel like an app-store grid.
   icons use contained fitting and should not crop important artwork.
 - Use `iconStyle: contain` for non-square logos or wide/tall marks that should avoid
   cropping but do not need a white backing.
+- If an icon source includes an app icon inside a larger canvas, crop the local asset
+  so the app's own rounded-square shape fills the available icon slot. Do not rely on
+  extra card padding or backing to compensate for a source image with excessive outer
+  whitespace.
+- During icon review, flag any app whose icon appears too small, over-cropped,
+  blurry, off-center, backed by a visible unwanted edge, mismatched to the app's
+  identity or otherwise visibly weaker than the source. If the correct treatment is
+  not obvious, note the specific problem and ask the editor whether to crop the
+  asset, find a better official source, switch `iconStyle` or use the category
+  fallback.
 - When no suitable official icon is available, omit the app's `icon` field. App
   cards will render the app's first category icon in a stable fallback color from
   the missing-icon palette: green `#2F8F5B`, orange `#C66A22`, blue `#2F75D6`,
