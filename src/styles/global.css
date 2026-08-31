@@ -771,10 +771,10 @@ a { color: inherit; }
    separates it from the taxonomy below. Rank comes from position, the mark and
    the weight of the label, not from colour. */
 .app-detail-honours {
-  gap: 10px;
+  gap: 12px;
   /* Separated from the taxonomy by space alone. A rule here reads as a container
      seam and competes with the honour it is meant to set apart. */
-  padding-bottom: 8px;
+  padding-bottom: 18px;
 }
 
 .app-detail-category-list { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }
@@ -793,10 +793,22 @@ a { color: inherit; }
   text-decoration: none;
   transition: color 180ms ease;
 }
-.app-detail-category-row:hover,
-.app-detail-category-row:focus-visible { color: var(--accent); outline: 0; }
+.app-detail-category-row:hover { color: var(--accent); }
+/* Colour alone is not a focus indicator, and outline: 0 removed the one the
+   browser supplies. Both rail link types take the ring the carousel already uses. */
+.app-detail-category-row:focus-visible,
+.collection-badge:focus-visible {
+  color: var(--accent);
+  outline: 2px solid color-mix(in srgb, var(--accent) 38%, transparent);
+  outline-offset: 3px;
+  border-radius: 8px;
+}
 .app-detail-category-mark { display: inline-flex; align-items: center; justify-content: center; }
 .app-detail-category-mark svg { width: 19px; height: 19px; }
+/* Named by its own eyebrow like every other group in the rail, and given more air
+   than they get. It stays in the rail's utility voice: rank comes from the label
+   sitting in ink at weight 700 where a category label sits muted at 600, from the
+   44px row against their 34px, and from leading the rail. */
 .collection-badge {
   display: grid;
   grid-template-columns: 34px minmax(0, 1fr);
@@ -819,8 +831,7 @@ a { color: inherit; }
   color: inherit;
 }
 .collection-badge-label { min-width: 0; }
-.collection-badge:hover,
-.collection-badge:focus-visible { color: var(--accent); outline: 0; }
+.collection-badge:hover { color: var(--accent); }
 .collection-badge-icon,
 .app-detail-category-icon,
 .category-directory-icon,
@@ -834,6 +845,9 @@ a { color: inherit; }
 .category-directory-icon svg,
 .explore-category-icon svg,
 .explore-collection-icon svg { width: 18px; height: 18px; }
+/* Same size as a category mark, so the two render the same 1.58px stroke: lucide
+   scales its stroke with the glyph, and any size difference here would put one
+   icon family at two weights in a single column. */
 .collection-badge-icon svg { width: 19px; height: 19px; }
 .app-detail-best-for { max-width: var(--measure); }
 .app-detail-best-for p:not(.eyebrow) { margin: 10px 0 0; color: var(--muted); font-size: 1rem; line-height: 1.55; }

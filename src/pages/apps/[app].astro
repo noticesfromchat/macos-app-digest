@@ -138,6 +138,7 @@ const appSchema = [
       <aside class="app-detail-rail" aria-label="App details">
         {appCollections.length > 0 && (
           <div class="app-detail-rail-group app-detail-honours">
+            <p class="eyebrow">Collections</p>
             {appCollections.map((collection) => (
               <a class="collection-badge" href={`/collections/${collection.slug}/`}>
                 <span class="collection-badge-icon" aria-hidden="true">
