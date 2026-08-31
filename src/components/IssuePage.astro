@@ -251,7 +251,14 @@ const IssueHeading = homepage ? 'p' : 'h1';
         const harmonic = 0.4 * (1 - 0.35 * (0.5 + 0.5 * Math.sin((seconds / 31) * Math.PI * 2 + l * 0.2)));
         const a = (amp * (1 - t * 0.45) + 2) * swell;
         const wl = 60 + l * 14;
-        const phase = l * 0.9;
+        /* Crests travel, and this is what makes the band read as water rather than as
+           a picture of water. The swell alone moved a crest about 5px over 23 seconds,
+           roughly a clock's minute hand, which is running but invisible. Nearer lines
+           run faster than far ones, 11px a second down to 6, so the band has depth and
+           the lines never march in step. Travel shifts phase only, so it cannot affect
+           the amplitude the top margin depends on. */
+        const travel = seconds * ((11 - t * 5) / wl);
+        const phase = l * 0.9 + travel;
         c.ctx.beginPath();
         for (let x = 0; x <= c.w; x += 4) {
           const y = baseY
@@ -291,13 +298,13 @@ const IssueHeading = homepage ? 'p' : 'h1';
       drawWaves(dividerSea, DIVIDER_WATER, elapsed);
     };
 
-    /* The swell runs at roughly eighteen frames a second. Nothing travels, so the
-       change between frames is far below what anyone can resolve, and a third of the
-       frames costs a third of the work. Each band is drawn only while it is on
-       screen, and the whole loop stops when the tab is hidden or the reader has asked
-       for reduced motion. */
+    /* Each band is drawn only while it is on screen, and the whole loop stops when the
+       tab is hidden or the reader has asked for reduced motion. */
     const stillness = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const FRAME_MS = 55;
+    /* 30fps rather than 18. Nothing travelled before, so a third of the frames was
+       imperceptible; a moving crest at 18fps judders, and at this speed 30 gives about
+       a third of a pixel between frames. */
+    const FRAME_MS = 33;
     const onScreen = new Set();
     let frameId = null;
     let lastFrame = 0;
@@ -334,6 +341,12 @@ const IssueHeading = homepage ? 'p' : 'h1';
         onScreen.size ? startSwell() : stopSwell();
       }, { threshold: 0 });
       [sea, dividerSea].filter(Boolean).forEach((canvas) => watching.observe(canvas));
+    } else {
+      /* Without an observer there is nothing to populate onScreen, and the loop would
+         refuse to start at all. Animate both bands and rely on the tab-visibility
+         check alone. */
+      [sea, dividerSea].filter(Boolean).forEach((canvas) => onScreen.add(canvas));
+      startSwell();
     }
 
     document.addEventListener('visibilitychange', () => {

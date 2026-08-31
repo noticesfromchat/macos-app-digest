@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-31T23:06:26Z",
+  "generatedAt": "2026-08-31T23:12:18Z",
   "title": "Design System: App Waypoint",
   "extensions": {
     "colorMeta": {
@@ -263,7 +263,7 @@
       },
       {
         "name": "swell",
-        "value": "23s and 31s, ~18fps",
+        "value": "23s and 31s swell, 6-11px/s travel, 30fps",
         "purpose": "The hero and divider wave bands breathing. Ambient, never travelling."
       }
     ],
@@ -437,7 +437,7 @@
       },
       {
         "name": "The Swell Rule",
-        "body": "Both wave bands breathe. Crests hold their positions while the height of the water and the weight of its second harmonic settle and return, on periods of 23 and 31 seconds that do not divide into one another. Nothing travels, which is what separates a sea that is present from one that is performing, and it lets the loop run at about eighteen frames a second. The still painting is the high-water mark rather than the midpoint and the swell only calms below it, because the band was tuned so the topmost crest clears its canvas by 7px and a symmetric swing flattened the crests against the edge. Each band draws only while on screen, the loop stops when the tab is hidden, and reduced motion leaves the water painted once. Canvas sizing is split from drawing so the loop never reallocates a backing store.",
+        "body": "Both wave bands breathe. Crests hold their positions while the height of the water and the weight of its second harmonic settle and return, on periods of 23 and 31 seconds that do not divide into one another. Crests travel, nearer lines faster than far ones at 11px a second down to 6, and that travel is what reads as water: the amplitude swell alone moved a crest 5px over 23 seconds, which is running and invisible. It stays ambient by being slow, a crest taking over two minutes to cross the band, not by being imperceptible. The still painting is the high-water mark rather than the midpoint and the swell only calms below it, because the band was tuned so the topmost crest clears its canvas by 7px and a symmetric swing flattened the crests against the edge. Each band draws only while on screen, the loop stops when the tab is hidden, and reduced motion leaves the water painted once. Canvas sizing is split from drawing so the loop never reallocates a backing store.",
         "section": "motion"
       }
     ],
