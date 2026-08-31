@@ -28,6 +28,30 @@ or regenerating any page or issue, also read and follow
 
 ## Required workflow
 
+**Documentation first, always.** Read the relevant documentation before making any
+decision, not only before writing code. This includes decisions about approach,
+branching, where a rule belongs, and whether something is already solved here. A
+decision made from general knowledge or from another project's conventions, when this
+repository documents its own, is a defect even when the resulting code works. Assume a
+convention exists and go find it before inventing one.
+
+The minimum read for any presentation or content change:
+
+| Document | Owns |
+|---|---|
+| `docs/STYLE_GUIDE.md` | Visual system, page structure, responsive and interaction rules, editorial punctuation, publishing conventions |
+| `DESIGN.md` | Tokens, named house rules, motion, the committed visual world |
+| `docs/DEVELOPMENT.md` | Local-to-production path, validation, preview and deploy contract |
+| `docs/GIT_BRANCHING.md` | Branching, release branches, what Netlify can and cannot preview |
+| `docs/ISSUE_TEMPLATE.md` | App and issue frontmatter |
+| `docs/PUBLISHING.md` | Weekly release work |
+
+When adding a rule or convention, put it where its siblings already live. Editorial
+punctuation belongs in `docs/STYLE_GUIDE.md` beside the Oxford comma rule and is
+enforced by `scripts/check-editorial-style.mjs`. Design rules belong in `DESIGN.md` as
+named rules, and in `.impeccable/design.json` so `context.mjs` surfaces them. A rule
+documented somewhere new, next to nothing related, will not be found again.
+
 1. Start from the latest `main` and create a short-lived task branch. Never make a
    production change directly on `main`.
 2. Read the task-relevant documentation before making changes.

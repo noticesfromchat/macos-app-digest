@@ -264,15 +264,26 @@ const graph = [
         const targets = [...sections, ...items];
         if (!targets.length) return;
 
-        const arriving = new IntersectionObserver((entries, observer) => {
+        const arriving = new IntersectionObserver((entries) => {
           for (const entry of entries) {
-            if (!entry.isIntersecting) continue;
-            entry.target.classList.add('is-visible');
-            observer.unobserve(entry.target);
+            if (entry.isIntersecting) reveal(entry.target);
           }
         }, { rootMargin: '0px 0px -12% 0px', threshold: 0.1 });
 
+        function reveal(target) {
+          target.classList.add('is-visible');
+          arriving.unobserve(target);
+        }
+
         for (const target of targets) arriving.observe(target);
+
+        /* Keyboard access. Tabbing can carry focus into a section the reader has
+           not scrolled to yet, and an unrevealed section is transparent. Reveal
+           on the way in so focus never lands on something invisible. */
+        document.addEventListener('focusin', (event) => {
+          const target = event.target.closest('[data-reveal], [data-reveal-items] > *');
+          if (target && !target.classList.contains('is-visible')) reveal(target);
+        });
       })();
     </script>
     <script is:inline>

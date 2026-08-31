@@ -19,6 +19,15 @@ The site should feel like a small, premium editorial publication for experienced
 
 - Do not use Oxford commas in App Waypoint editorial copy. In lists of three or
   more, write `A, B and C`, not `A, B, and C`.
+- Do not use em dashes or en dashes in App Waypoint editorial copy. Restructure to a
+  period, a comma, a colon or parentheses. Date and number ranges take a plain hyphen:
+  `August 5-19, 2026`, not `August 5-19, 2026` with an en dash.
+- Three things sit outside the rule. Page-title separators are an indexed SEO and
+  publishing convention, so `Archive - App Waypoint` keeps its em dash. Quoted external
+  titles in source notes and Weekend Reading keep the source's own punctuation, because
+  changing it misquotes the source. Code comments are not copy.
+- `npm run validate` enforces this across `src/content`, skipping `title:` lines so
+  quoted external titles pass. See The Plain Dash Rule in `DESIGN.md` for the reasoning.
 
 ## 2. Standard Issue Structure
 
