@@ -243,6 +243,12 @@ recognition without making cards feel like an app-store grid.
 - Do not rely on extra card padding, a white backing or `contain` fitting to
   compensate for a source image that is framed poorly. Adjust the local asset,
   choose a better official source or ask the editor for direction.
+- Check that a new icon is what its extension claims. One file was a Windows ICO
+  named `.png`: browsers sniff the content so it rendered, but the repository's own
+  tooling could not read it, and an ICO's largest layer is usually 48px, which is
+  favicon territory rather than a product icon.
+- Keep icons at 8-bit. A 16-bit PNG carries no visible benefit at these sizes and one
+  was 4.1MB on its own, for a mark that renders at 76px at most. 512px is generous.
 - An icon exported onto an opaque canvas rather than onto transparency shows its
   background in the corners: invisible in dark mode, a hard frame around the mark in
   light. Check the corners of a new icon, not just how it looks in the theme you are
