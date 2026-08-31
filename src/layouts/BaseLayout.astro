@@ -264,11 +264,23 @@ const graph = [
         const targets = [...sections, ...items];
         if (!targets.length) return;
 
+        /* A ratio threshold scales with the element, and a section on a phone is
+           more than twice the height of the same section on a desktop. At 0.1 a
+           1457px mobile section only fires once its top has travelled 243px up
+           the screen, so the heading sits there fully transparent and then snaps
+           in. Narrow viewports trigger on the leading edge instead, which is
+           height-independent, and take a longer fade to match. Desktop keeps the
+           timing it already has. The choice is made once, like the site's other
+           observers; a resize across the breakpoint keeps the initial config. */
+        const narrow = window.matchMedia('(max-width: 920px)').matches;
+
         const arriving = new IntersectionObserver((entries) => {
           for (const entry of entries) {
             if (entry.isIntersecting) reveal(entry.target);
           }
-        }, { rootMargin: '0px 0px -12% 0px', threshold: 0.1 });
+        }, narrow
+          ? { rootMargin: '0px', threshold: 0 }
+          : { rootMargin: '0px 0px -12% 0px', threshold: 0.1 });
 
         function reveal(target) {
           target.classList.add('is-visible');

@@ -273,6 +273,8 @@ Motion is used sparingly and always to mark passage: where the reader is in a pa
 - `data-reveal` fades the element itself. Use it where a page is built from sections: the issue spine, the explore rows, the app-detail related block.
 - `data-reveal-items` fades each child instead. Use it where one long grid of cards is the whole page, as on the tag, category, collection, and all-apps directories, where the card rather than the section is the unit the reader arrives at.
 
+The trigger differs by viewport, and has to. A ratio threshold scales with the element, and a section on a phone runs to about 1,450px against roughly 650px for the same section on a desktop, so one threshold fires at two different moments. At 0.1 a mobile section only fired once its top had travelled 243px up the screen, leaving the heading on screen and fully transparent before it snapped in. Narrow viewports (920px and below, the site's own collapse breakpoint) therefore trigger on the element's leading edge instead, which is height-independent, and fade over 620ms rather than 400ms so the block reads as arriving rather than switching on. Desktop keeps the ratio trigger it already had.
+
 Three properties of the implementation are load-bearing and should not be changed casually:
 
 1. **Content ships visible.** The `is-motion-ready` class that hides content is added by script, never written into the markup. A failed script, an old browser, or a crawler gets a finished page instead of an empty one.

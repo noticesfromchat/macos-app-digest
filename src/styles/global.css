@@ -1764,6 +1764,12 @@ a { color: inherit; }
      a hairline would read as a seam between two halves of the same block. */
   .app-detail-rail { padding-top: 2px; }
 
+  /* The reveal fires on the leading edge here, so the fade runs while the block is
+     still arriving. A little longer than the desktop 400ms so it reads as content
+     coming up rather than switching on. */
+  [data-reveal].is-visible,
+  [data-reveal-items] > .is-visible { animation-duration: 620ms; }
+
   .site-header { min-height: 76px; }
   .brand-mark { width: 42px; height: 42px; }
   /* Stacked, the wave stops being the hero's floor and becomes a divider

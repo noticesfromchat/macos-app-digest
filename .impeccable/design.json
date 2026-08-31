@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-31T04:30:03Z",
+  "generatedAt": "2026-08-31T15:50:40Z",
   "title": "Design System: App Waypoint",
   "extensions": {
     "colorMeta": {
@@ -384,7 +384,7 @@
       },
       {
         "name": "The Passing Waypoint Rule",
-        "body": "Content fades in as the reader reaches it, at one duration and one curve for the whole site: 400ms on cubic-bezier(.16, 1, .3, 1), opacity only. No stagger, no directional movement, no per-section variation; a staggered cascade across a grid reads as a left-to-right sweep and was removed for that reason. One IntersectionObserver in BaseLayout.astro drives every page. Pages opt in with data-reveal to fade a section, or data-reveal-items to fade each child where one long grid of cards is the whole page. Three properties are load-bearing: the hiding class is added by script so content ships visible; it is an animation filling backwards rather than a transition, because a transition would declare opacity and transform on the card and outrank the hover contract for the rest of the session; and each target is released as it fires. Reduced motion is guarded in both the observer and a media block. The divider buoy and the source-note timeline remain the only motion with a voice, and the hero does not move at all.",
+        "body": "Content fades in as the reader reaches it, at one duration and one curve for the whole site: 400ms on cubic-bezier(.16, 1, .3, 1), opacity only. No stagger, no directional movement, no per-section variation; a staggered cascade across a grid reads as a left-to-right sweep and was removed for that reason. One IntersectionObserver in BaseLayout.astro drives every page. Pages opt in with data-reveal to fade a section, or data-reveal-items to fade each child where one long grid of cards is the whole page. Three properties are load-bearing: the hiding class is added by script so content ships visible; it is an animation filling backwards rather than a transition, because a transition would declare opacity and transform on the card and outrank the hover contract for the rest of the session; and each target is released as it fires. Reduced motion is guarded in both the observer and a media block. The divider buoy and the source-note timeline remain the only motion with a voice, and the hero does not move at all. The trigger differs by viewport: a ratio threshold scales with the element, and a phone section runs ~1450px against ~650px on desktop, so at 0.1 the mobile heading sat on screen transparent for 243px of scroll before snapping in. Narrow viewports (<=920px) trigger on the leading edge instead, which is height-independent, and fade over 620ms rather than 400ms.",
         "section": "motion"
       },
       {
