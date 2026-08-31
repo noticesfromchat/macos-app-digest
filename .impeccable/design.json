@@ -236,6 +236,16 @@
         "name": "ease-arrive",
         "value": "400ms cubic-bezier(.16, 1, .3, 1)",
         "purpose": "The site-wide scroll reveal: content fades in once, as the reader reaches it."
+      },
+      {
+        "name": "ease-drift",
+        "value": "28s ease-in-out infinite",
+        "purpose": "The Editor's Pick wash drifting across the hero card; paused off screen."
+      },
+      {
+        "name": "ease-gleam",
+        "value": "11s linear infinite",
+        "purpose": "The Editor's Pick edge gleam; paused off screen."
       }
     ],
     "breakpoints": [
@@ -381,6 +391,11 @@
         "name": "The Plain Dash Rule",
         "body": "Public editorial copy uses no em dash and no en dash. Restructure to a period, a comma, a colon, or parentheses, and set number and date ranges with a plain hyphen. Outside the rule: page-title separators, which are an indexed SEO and publishing convention; quoted external titles in source notes and reading lists, where changing the punctuation misquotes the source; and code comments, which no reader sees. The rule covers the site's public copy, not the repository's own documentation. The vendored taste-skill states a blanket ban covering titles too; this narrower rule governs here and that skill is left unedited so it stays diffable against upstream.",
         "section": "typography"
+      },
+      {
+        "name": "The Struck Light Rule",
+        "body": "The Editor's Pick card in the hero is lit by the featured app's own colour, and that light moves: a wide wash drifting across the card over 28s and a gleam travelling its edge over 11s, both on pseudo-elements of that one card. It is reserved for the one app an issue argues for. The colour is normalised, never raw: icon hues across picks run from saturated magenta to near-black, so scripts/extract-icon-accent.mjs fixes every pick to one lightness and chroma in OKLCh and commits the result to the app record as iconAccent. The Beacon Rule survives because the colour is light on one card and never reaches a link, control or state. A pick with no usable icon has no iconAccent and renders the ordinary card. The wash sits on its own layer at negative z-index rather than in the card background, because the shared hover contract sets the background shorthand and an intermediate custom property stops the drift resolving. Both loops pause off screen and stop under reduced motion.",
+        "section": "motion"
       }
     ],
     "dos": [
@@ -401,7 +416,9 @@
       "Don't let the brand wordmark typography spread into body copy.",
       "Don't stagger, slide, or otherwise vary the scroll reveal per section. One fade, one duration, one curve, everywhere.",
       "Don't write the reveal's hidden state into the markup. It is added by script so the page ships visible.",
-      "Don't use em dashes or en dashes in public editorial copy."
+      "Don't use em dashes or en dashes in public editorial copy.",
+      "Don't let the Editor's Pick accent leave that one card, or reach a link, control or state. It is light, not a second accent.",
+      "Don't hand-write an iconAccent. Generate it so every pick lands in the same lightness and chroma band."
     ]
   }
 }

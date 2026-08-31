@@ -90,8 +90,14 @@ section spine. When present, it renders between `Trending` and `Old Favorites`.
 - It uses the standard section eyebrow and heading, followed by one full-width card.
 - The full-width card displays the Lucide `book-heart` icon beside the app title when
   the app belongs to the `editors-picks` collection. The icon links to
-  `/collections/editors-picks/`. Otherwise the card's existing layout, typography,
-  spacing and styling remain unchanged.
+  `/collections/editors-picks/`.
+- In the homepage hero only, the pick card carries the Struck Light treatment: it is lit
+  by the featured app's own colour, drawn from the app record's `iconAccent`. The colour
+  belongs to that one card and never reaches a link, control or state. Everywhere else,
+  including the pick as it appears on an archived issue page, the card's layout,
+  typography, spacing and styling remain unchanged.
+- A pick whose app has no `iconAccent` renders the ordinary card. That is a valid result,
+  not a missing step. See The Struck Light Rule in `DESIGN.md`.
 - The app description is followed by `Best for`, then the issue-specific “Why it was
   chosen” note, tags and source information.
 - The “Why it was chosen” heading and copy align flush left with the rest of the card.
@@ -246,6 +252,13 @@ recognition without making cards feel like an app-store grid.
   the most representative category first when an app depends on the fallback. The
   fallback color is stable from the app ID so cards do not reshuffle visually between
   builds.
+- An app that may be featured as an Editor's Pick also carries `iconAccent`, the colour
+  its hero card is lit with. Generate it with `node scripts/extract-icon-accent.mjs
+  <app-id> --write` rather than choosing a value by hand, so every pick lands in the same
+  lightness and chroma band. The script reads PNG icons; an SVG icon or an icon with no
+  usable hue needs an editor decision, and leaving `iconAccent` off is a valid answer.
+- Review a new `iconAccent` on the homepage in light mode, dark mode and mobile. The
+  colour should read as light falling across the card, never as a coloured panel.
 - When an app appears in a new issue, check whether its app record already has a
   suitable icon. Add or update the icon during the same app-record pass when it is
   missing, generic, cropped, blurry or visually misleading.
@@ -281,6 +294,8 @@ Complete every item before merging a new issue:
 - [ ] Up and Coming contains exactly three eligible apps and records its sources.
 - [ ] Every app featured in the issue has a reviewed icon record, or a documented
       reason the icon is intentionally deferred.
+- [ ] The Editor's Pick app has a reviewed `iconAccent`, or a documented reason the pick
+      renders without the Struck Light treatment.
 - [ ] The issue includes an `rss` block with a concise issue-specific title and the
       standard `Read this issue` CTA.
 - [ ] The built `/rss.xml` feed includes every published issue exactly once, newest-

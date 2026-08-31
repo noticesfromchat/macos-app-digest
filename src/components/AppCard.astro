@@ -31,6 +31,10 @@ const fallbackColor = missingIconColors[
 ];
 const fallbackCategory = !app.icon ? getCategoryBySlug(app.categories[0]) : undefined;
 const hasIconVisual = Boolean(app.icon || fallbackCategory);
+/* The issue's Editor's Pick lights the hero card in its own colour. Only the hero
+   pick reads it, and only when the app record carries a reviewed value, so a pick
+   with no icon or an undecodable one simply renders the ordinary card. */
+const pickAccent = isHero && editorNote ? app.iconAccent : undefined;
 ---
 <article
   class:list={[
@@ -38,8 +42,9 @@ const hasIconVisual = Boolean(app.icon || fallbackCategory);
     'app-card',
     app.icon ? `app-icon-${app.iconStyle}` : undefined,
     fallbackCategory ? ['app-icon-fallback', `app-icon-color-${fallbackColor}`] : undefined,
-    { 'editors-pick-card': editorNote, 'hero-pick-card': isHero }
+    { 'editors-pick-card': editorNote, 'hero-pick-card': isHero, 'has-pick-accent': pickAccent }
   ]}
+  style={pickAccent ? `--pick-accent: ${pickAccent};` : undefined}
   data-app-name={app.name}
   data-featured-date={featuredDate}
   data-tags={app.tags.join(' ')}

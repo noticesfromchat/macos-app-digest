@@ -285,6 +285,19 @@ const graph = [
           if (target && !target.classList.contains('is-visible')) reveal(target);
         });
       })();
+
+      /* The Editor's Pick gleam runs continuously, so it is paused whenever the
+         card is off screen. A loop nobody can see is a loop that should not run. */
+      (() => {
+        const pick = document.querySelector('.hero-pick-card.has-pick-accent');
+        if (!pick || !('IntersectionObserver' in window)) return;
+
+        const watching = new IntersectionObserver((entries) => {
+          for (const entry of entries) pick.classList.toggle('is-resting', !entry.isIntersecting);
+        }, { threshold: 0 });
+
+        watching.observe(pick);
+      })();
     </script>
     <script is:inline>
       const root = document.documentElement;

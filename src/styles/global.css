@@ -472,6 +472,142 @@ a { color: inherit; }
 
 .hero-pick-card .best-for p { margin: 0; color: var(--muted); }
 .hero-pick-card .tag-list { margin-top: auto; padding-top: 22px; }
+/* Struck Light. The Editor's Pick is the one app the issue argues for, so in the
+   hero it is lit by its own colour: a bounded halo behind the icon and a slow
+   gleam travelling the card's edge, the way light moves across a struck plate.
+
+   The colour is the featured app's, normalised. A raw brand colour cannot be used
+   here, because across the current picks the dominant hues run from a saturated
+   magenta to a near-black brown and the card would read at a different weight
+   every issue. scripts/extract-icon-accent.mjs fixes every pick to one lightness
+   and chroma in OKLCh, and the reviewed result is committed to the app record. An
+   issue whose pick has no usable icon carries no accent and renders the ordinary
+   card, so this never half-applies.
+
+   The Beacon Rule still holds: blue keeps actions, links and focus. This colour is
+   light on one card, not a second accent, and it never reaches a control. */
+@property --pick-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+/* Where the light currently sits inside the card. Animated, so the colour drifts
+   instead of pooling in one corner. */
+@property --pick-x {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 26%;
+}
+
+@property --pick-y {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 20%;
+}
+
+/* The halo is a background layer rather than a pseudo-element, so it is clipped by
+   the card's own radius and can never paint over the content above it. */
+.hero-pick-card.has-pick-accent {
+  /* A wide, soft brush rather than a disc: at this radius the colour has no edge
+     of its own, so what the reader notices is the card being lit, not a shape
+     sitting behind the text. It drifts slowly so the light never pools. */
+  /* The wash lives on its own layer rather than in the card's background. The
+     shared hover contract sets the background shorthand, which would drop a
+     background-image, and routing the gradient through an intermediate custom
+     property stops the drift resolving at all. A layer avoids both. */
+  isolation: isolate;
+  /* The one card in the fold the issue is arguing for; it rests proud of the rest. */
+  box-shadow: var(--shadow-hover);
+}
+
+/* Negative z-index inside the card's own stacking context, so the wash paints
+   above the card's surface and below every word on it. */
+.hero-pick-card.has-pick-accent::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    116% 96% at var(--pick-x) var(--pick-y),
+    color-mix(in srgb, var(--pick-accent) 13%, transparent),
+    color-mix(in srgb, var(--pick-accent) 5%, transparent) 38%,
+    transparent 70%
+  );
+  animation: pick-drift 28s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Long enough that the movement is felt rather than watched. */
+@keyframes pick-drift {
+  0%   { --pick-x: 24%; --pick-y: 18%; }
+  25%  { --pick-x: 72%; --pick-y: 32%; }
+  50%  { --pick-x: 64%; --pick-y: 76%; }
+  75%  { --pick-x: 28%; --pick-y: 58%; }
+  100% { --pick-x: 24%; --pick-y: 18%; }
+}
+
+.hero-pick-card.has-pick-accent .app-icon-frame {
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--pick-accent) 30%, transparent),
+    0 6px 18px color-mix(in srgb, var(--pick-accent) 22%, transparent);
+}
+
+.hero-pick-card.has-pick-accent .editors-pick-icon { color: var(--pick-accent); }
+
+/* The gleam. A conic sweep masked down to the card's own edge, so what travels is
+   a highlight on the rim rather than a glowing box. Without mask compositing the
+   ring cannot be cut out of the gradient, so the whole effect is withheld rather
+   than shipped as a coloured rectangle. */
+@supports ((mask-composite: exclude) or (-webkit-mask-composite: xor)) {
+  .hero-pick-card.has-pick-accent::before {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    /* The ring sits outside the card's 1px border, so its radius is the card's own
+       plus the overhang. Stated as the relationship rather than as a magic number. */
+    --pick-rim: 1.5px;
+    inset: calc(var(--pick-rim) * -1);
+    padding: var(--pick-rim);
+    border-radius: calc(12px + var(--pick-rim));
+    background: conic-gradient(
+      from var(--pick-angle),
+      color-mix(in srgb, var(--pick-accent) 16%, transparent) 0deg,
+      color-mix(in srgb, var(--pick-accent) 96%, transparent) 26deg,
+      color-mix(in srgb, var(--pick-accent) 52%, transparent) 58deg,
+      color-mix(in srgb, var(--pick-accent) 16%, transparent) 108deg,
+      color-mix(in srgb, var(--pick-accent) 16%, transparent) 360deg
+    );
+    /* Two stencils, the inner one subtracted, leaving only the rim. currentColor is
+       used purely as opaque paint; the mask reads its alpha, never its hue. */
+    -webkit-mask: linear-gradient(currentColor 0 0) content-box, linear-gradient(currentColor 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(currentColor 0 0) content-box, linear-gradient(currentColor 0 0);
+    mask-composite: exclude;
+    animation: pick-gleam 11s linear infinite;
+    pointer-events: none;
+  }
+}
+
+/* Slow enough to be noticed rather than watched. */
+@keyframes pick-gleam {
+  to { --pick-angle: 360deg; }
+}
+
+/* A loop the reader cannot see is a loop that should not run. */
+.hero-pick-card.has-pick-accent.is-resting::before,
+.hero-pick-card.has-pick-accent.is-resting::after { animation-play-state: paused; }
+
+[data-theme="dark"] .hero-pick-card.has-pick-accent::after {
+  background: radial-gradient(
+    116% 96% at var(--pick-x) var(--pick-y),
+    color-mix(in srgb, var(--pick-accent) 24%, transparent),
+    color-mix(in srgb, var(--pick-accent) 9%, transparent) 40%,
+    transparent 72%
+  );
+}
+
 .editor-note-label {
   margin-bottom: 8px;
   color: var(--accent);
@@ -1548,6 +1684,16 @@ a { color: inherit; }
   .feature-card:hover,
   .archive-card:hover,
   .app-detail-category-card:hover { border-color: color-mix(in srgb, var(--accent) 42%, var(--line)); background: var(--surface); box-shadow: var(--shadow-hover); }
+
+  /* That shorthand would drop the pick card's wash, and the card already rests at
+     Hover Lift, so it needs its own answer to the pointer. The light gives it: the
+     drift continues and the accent gains depth under the card. */
+  .hero-pick-card.has-pick-accent:hover,
+  .hero-pick-card.has-pick-accent:focus-within {
+    box-shadow:
+      var(--shadow-hover),
+      0 16px 44px color-mix(in srgb, var(--pick-accent) 24%, transparent);
+  }
 }
 
 @media (max-width: 920px) {
@@ -1798,4 +1944,6 @@ a { color: inherit; }
   [data-reveal-items].is-motion-ready > * { opacity: 1; }
   [data-reveal].is-visible,
   [data-reveal-items] > .is-visible { animation: none; }
+  .hero-pick-card.has-pick-accent::before,
+  .hero-pick-card.has-pick-accent::after { animation: none; }
 }

@@ -8,4 +8,5 @@ collections: [editors-picks]
 source: Editor selection and official Raindrop product information
 homepage: https://raindrop.io/
 icon: /app-icons/raindrop.png
+iconAccent: "#008ed8"
 ---

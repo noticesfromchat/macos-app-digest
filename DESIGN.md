@@ -277,6 +277,17 @@ Three properties of the implementation are load-bearing and should not be change
 
 Reduced motion is guarded twice: the observer never arms itself, and a `@media (prefers-reduced-motion: reduce)` block restores full opacity for a reader who turns the preference on after the page has loaded.
 
+**The Struck Light Rule.** The Editor's Pick card in the hero is lit by the featured app's own colour, and that light moves. Two continuous animations, both on pseudo-elements of that one card: a wide, soft wash that drifts across the interior over 28s, and a gleam that travels the card's edge over 11s like light crossing a struck plate. Nothing else on the site does this, and nothing else should; the effect is reserved for the one app an issue argues for.
+
+Four things hold it inside the design system:
+
+1. **The colour is normalised, never raw.** Across the current picks the dominant icon hues run from a fully saturated magenta to a near-black brown. `scripts/extract-icon-accent.mjs` fixes every pick to one lightness and chroma in OKLCh, so the card reads at the same weight whichever app is featured. The result is committed to the app record as `iconAccent` and reviewed like an icon.
+2. **The Beacon Rule survives.** Blue still owns actions, links, focus and active states. The pick colour is light on a single card. It never reaches a control, a link or a state.
+3. **It degrades to nothing.** A pick whose icon is absent, an SVG, or carries no usable hue has no `iconAccent`, and the card renders exactly as it did before. The treatment never half-applies.
+4. **The wash is its own layer.** It sits on a pseudo-element at negative z-index inside the card's stacking context, not in the card's background. The shared hover contract sets the `background` shorthand, which would drop a background image, and routing the gradient through an intermediate custom property stops the drift resolving at all. Both were real bugs; the layer avoids both.
+
+Because the card rests at Hover Lift rather than Ambient Card, it cannot answer the pointer with elevation the way The One Hover Rule describes. It answers with light instead: an accent-tinted depth under the card. Both loops pause when the card is off screen and stop entirely under reduced motion.
+
 **The buoy stays the one authored moment.** The mark on the content divider flashes once as the reader passes it, and the source-note timeline draws itself in sequence. Those are deliberate and they are the only motion on the page with a voice. The section fades are quiet on purpose so that nothing competes with them. The hero does not move at all: it sits above the fold, there is no passage to mark, and its atmosphere is painted once.
 
 **Adding a page.** A new page that renders app cards or content sections gets the matching attribute in its markup and needs nothing else registered. A page whose sections are left unmarked simply will not fade, which reads as broken beside the pages that do. The archive index and the category index are currently unmarked on purpose: they list issue cards and category cards rather than app cards.
@@ -341,7 +352,7 @@ A full-bleed band whose content sits on the shared page shell, so the wordmark a
 - **Structure:** identity (wordmark, wave rule, tagline) over a hairline, then the issue block; the Editor's Pick renders beside it as a real `AppCard`, the only card in the fold.
 - **Atmosphere:** two drawn layers — a star field (night only) and an engraved wave band. All canvas, no image request, painted once and repainted only on theme change or resize. The day sky above the water stays empty; a cloud bank was drawn there and removed for adding noise rather than calm.
 - **The waterline.** The band's ground fades to the page colour across the wave band and the strokes taper to nothing, so the hero ends on the colour the next section begins with. A single `--sea-h` drives the canvas height, the bottom padding, and the fade distance.
-- **Motion:** none, and this is the one documented exception to The Passing Waypoint Rule. Everything below the fold fades in as the reader reaches it; the hero does not, because it sits above the fold, there is no passage to mark, and its atmosphere is drawn once rather than animated. Do not add a load-in entrance here to make it match the sections below.
+- **Motion:** the band and its atmosphere are still, and that stillness is the documented exception to The Passing Waypoint Rule. Everything below the fold fades in as the reader reaches it; the hero does not, because it sits above the fold, there is no passage to mark, and its atmosphere is painted once rather than animated. Do not add a load-in entrance here to make it match the sections below. The Editor's Pick card is the single moving thing in the fold, under The Struck Light Rule, and it earns that by being the one app the issue is arguing for.
 - **Call to action:** two anchors, one hidden per breakpoint. Above 920px *Start Reading* goes to the first section; below it — where the pick has stacked underneath — it goes to the pick. 920px is where the hero collapses to one column, so the swap and the stack happen together.
 
 ## Do's and Don'ts
@@ -365,3 +376,5 @@ A full-bleed band whose content sits on the shared page shell, so the wordmark a
 - **Don't** stagger, slide, or otherwise vary the scroll reveal per section. One fade, one duration, one curve, everywhere.
 - **Don't** write the reveal's hidden state into the markup. It is added by script so the page ships visible.
 - **Don't** use em dashes or en dashes in public editorial copy.
+- **Don't** let the Editor's Pick accent leave that one card, or reach a link, control or state. It is light, not a second accent.
+- **Don't** hand-write an `iconAccent`. Generate it so every pick lands in the same lightness and chroma band.

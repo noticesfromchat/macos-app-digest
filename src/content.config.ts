@@ -19,7 +19,11 @@ const apps = defineCollection({
     source: z.string().min(1).max(140),
     homepage: z.string().url(),
     icon: z.string().regex(/^\/[A-Za-z0-9/_-]+\.(?:png|jpg|jpeg|webp|svg|ico)$/).optional(),
-    iconStyle: z.enum(['plain', 'backed', 'contain']).default('plain')
+    iconStyle: z.enum(['plain', 'backed', 'contain']).default('plain'),
+    /* The light an Editor's Pick strikes in the hero. Normalised from the app's own
+       icon to a fixed lightness and chroma, so every pick reads at the same weight.
+       Only the pick card uses it. Generate with scripts/extract-icon-accent.mjs. */
+    iconAccent: z.string().regex(/^#[0-9a-f]{6}$/).optional()
   })
 });
 

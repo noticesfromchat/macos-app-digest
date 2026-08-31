@@ -9,4 +9,5 @@ source: Editor selection and official Tuna product information
 homepage: https://tunaformac.com/
 icon: /app-icons/tuna.png
 iconStyle: backed
+iconAccent: "#d05a68"
 ---
