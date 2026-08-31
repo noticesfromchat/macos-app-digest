@@ -767,9 +767,11 @@ a { color: inherit; }
 .app-detail-category-list { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }
 .app-detail-category-row {
   display: grid;
-  grid-template-columns: 26px minmax(0, 1fr);
+  /* Same icon column and gap as the collection badge above it, so every mark in
+     the rail sits on one centre axis and every label starts at the same x. */
+  grid-template-columns: 34px minmax(0, 1fr);
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   min-height: 34px;
   color: var(--muted);
   font-size: var(--type-meta);
@@ -781,7 +783,7 @@ a { color: inherit; }
 .app-detail-category-row:hover,
 .app-detail-category-row:focus-visible { color: var(--accent); outline: 0; }
 .app-detail-category-mark { display: inline-flex; align-items: center; justify-content: center; }
-.app-detail-category-mark svg { width: 17px; height: 17px; }
+.app-detail-category-mark svg { width: 19px; height: 19px; }
 .collection-badge {
   display: grid;
   grid-template-columns: 34px minmax(0, 1fr);
