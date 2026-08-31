@@ -1353,6 +1353,13 @@ a { color: inherit; }
 .explore-carousel-card-slot[data-position="-1"] .app-icon-frame,
 .explore-carousel-card-slot[data-position="1"] .app-icon-frame { filter: saturate(.15); }
 
+/* Faded on the contents, never on the slot or the card. The card's own background
+   stays fully opaque at every position, which is what keeps the outgoing card from
+   showing through the incoming one as the two cross. */
+.explore-carousel-card-slot .app-card > * { transition: opacity 320ms ease; }
+.explore-carousel-card-slot[data-position="-1"] .app-card > *,
+.explore-carousel-card-slot[data-position="1"] .app-card > * { opacity: .7; }
+
 /* Recessed by mixing the card toward the surface behind it, which is the theme's own
    colour, so the result is always on the palette's hue. Light moves toward Shell
    Strong and dark toward the page ground, because dark's strong surface is lighter
