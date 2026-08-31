@@ -249,6 +249,11 @@ recognition without making cards feel like an app-store grid.
   not obvious, note the specific problem and ask the editor whether to crop the
   asset, find a better official source, switch `iconStyle` or use the category
   fallback.
+- Both halves of the fallback, the mark and the colour, come from
+  `src/data/app-icon.ts`: `fallbackIconCategory` and `fallbackIconColor`. Do not derive
+  either again in a component. The app detail page did, filtering the global category
+  list, which returns an app's categories in the global order rather than the record's,
+  so two apps showed one mark on their cards and a different one on their detail page.
 - When no suitable official icon is available, omit the app's `icon` field. App
   cards will render the app's first category icon in a stable fallback color from
   the missing-icon palette: green `#2F8F5B`, orange `#C66A22`, blue `#2F75D6`,

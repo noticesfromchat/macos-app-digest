@@ -281,7 +281,11 @@ issue.
 - Do not show a separate `Read article` link beneath reading cards.
 - Tag pills remain quiet, grayscale metadata rather than primary calls to action.
 - Dark-mode card emphasis remains grayscale, not blue.
-- Card rows on desktop align titles, tags, sources and lower content consistently.
+- App cards share one height on a page and their regions line up across the whole
+  grid, not only within a row. This is subgrid, not per-region `min-height` budgets.
+  See The One Card Height Rule in `DESIGN.md`. Reading cards are the exception.
+- App cards show no source credit. The record's `source` field is editorial
+  provenance, not reader-facing copy.
 - Mobile cards expand naturally with content.
 - The site header uses the App Waypoint buoy logo. Large page headings use text only, with no emoji.
 - The theme toggle is icon-only with no pill, no text and no emoji.

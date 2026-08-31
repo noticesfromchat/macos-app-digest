@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-31T17:10:04Z",
+  "generatedAt": "2026-08-31T18:01:18Z",
   "title": "Design System: App Waypoint",
   "extensions": {
     "colorMeta": {
@@ -400,6 +400,11 @@
         "name": "The One Card Height Rule",
         "body": "Every app card on a page is the same height and their regions line up across the whole grid, not just within a row. The grid defines three repeating tracks and each card spans them as a subgrid. Floors are what the tallest record actually needs, measured across all 102: 230/149/122 at the narrowest three-column width, 205/99/88 above 1100px. The first and last include the card's 24px padding, since a subgrid item's padding comes out of the tracks it spans. minmax rather than fixed, so a longer future record makes its own band taller instead of clipping. This replaced per-region min-height budgets, which any card that overflowed one, usually a second line of tags, pushed out of step with its row. Reading cards are the exception and align on their own terms: they carry .app-card but hold three parts inside a wrapper, so card and wrapper both subgrid onto the shared rows, and they take no floors so a card is as tall as the longest of the three and no taller.",
         "section": "components"
+      },
+      {
+        "name": "The Carousel Stack Rule",
+        "body": "The explore carousel's centre card is the same object as a directory card, 376x424, and the track's height follows it rather than being a number of its own. A flanking card sits between the page and the centre so it reads as set back: dark at luminance 21 between 18 and 26, light at 246 between 236 and 255. Light carries no dimming filter, its palette being near-neutral by design, so brightness only drags toward grey. Desaturation belongs to the app icon, not the card: saturate() on the slot drains the card's surface too and turned a 63% navy into a 16% grey. Opacity is binary, 0 off stage and 1 on it, with the fade on the card's contents, because a slot fading up while its z-index has already jumped to the front lets the outgoing card show through the incoming one. Only the centre carries --carousel-drag, in the responsive overrides as well as the base rule. Icons are primed in a window of -2 to +2, because every off-stage slot is hidden and stacked and a lazy icon has no reason to fetch until its card arrives.",
+        "section": "components"
       }
     ],
     "dos": [
@@ -422,7 +427,9 @@
       "Don't hand-write an iconAccent. Generate it so every pick lands in the same lightness and chroma band.",
       "Don't fill a control with the accent. The dark theme's blue is a foreground colour; as a ground it fails contrast and becomes the brightest thing on the page.",
       "Don't set a local eyebrow gap. Use --eyebrow-gap so every labelled block on the site is bound the same way.",
-      "Don't align cards with per-region min-heights. They are guesses, and content that outgrows one knocks its whole row out of step."
+      "Don't align cards with per-region min-heights. They are guesses, and content that outgrows one knocks its whole row out of step.",
+      "Don't apply saturate() to a whole card to knock back its icon. It drains the card's own surface and takes it off the palette's hue.",
+      "Don't derive an app's fallback icon or colour in a component. Both come from src/data/app-icon.ts, or the surfaces drift apart."
     ]
   }
 }
