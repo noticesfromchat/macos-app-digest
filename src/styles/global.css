@@ -1292,9 +1292,13 @@ a { color: inherit; }
   transform-origin: center center;
   opacity: 0;
   pointer-events: none;
-  transition: transform 320ms cubic-bezier(.16, 1, .3, 1), opacity 220ms ease;
+  transition: transform 320ms cubic-bezier(.16, 1, .3, 1), opacity 220ms ease, filter 320ms ease;
 }
-.explore-carousel-card-slot[data-position] { visibility: visible; }
+/* Every staged slot is fully opaque. Opacity is only ever 0 or 1 here: a slot that
+   fades up from a partial value while its z-index has already jumped to the front is
+   what let the outgoing card show through the incoming one mid-swipe. Recession is
+   carried by colour instead, below. */
+.explore-carousel-card-slot[data-position] { visibility: visible; opacity: 1; }
 .explore-carousel-card-slot .app-card {
   min-height: 450px;
   height: 100%;
@@ -1318,17 +1322,48 @@ a { color: inherit; }
   box-shadow: none;
   filter: none;
 }
+/* The flanking cards hold their place while the centre is dragged. They carry no
+   --carousel-drag, so the stack stays put and only the card under the finger moves. */
 .explore-carousel-card-slot[data-position="-1"] {
   z-index: 3;
-  transform: translateX(calc(-50% - 60% + var(--carousel-drag))) translateY(18px) rotate(-5deg) scale(.94);
-  opacity: 1;
+  transform: translateX(calc(-50% - 60%)) translateY(18px) rotate(-5deg) scale(.94);
   pointer-events: auto;
 }
 .explore-carousel-card-slot[data-position="1"] {
   z-index: 3;
-  transform: translateX(calc(-50% + 60% + var(--carousel-drag))) translateY(18px) rotate(5deg) scale(.94);
-  opacity: 1;
+  transform: translateX(calc(-50% + 60%)) translateY(18px) rotate(5deg) scale(.94);
   pointer-events: auto;
+}
+/* The flanking cards are context, not content, so their colour is knocked back and
+   they sit further into the page. Desaturated rather than greyed: full grayscale
+   takes the surface off the palette's hue entirely, turning a 212deg harbour navy
+   into a flat rgb(26,26,26), which reads as foreign against the page. saturate(.2)
+   holds the card on its own axis, 214deg against a 212deg base, while dropping a
+   vivid app icon from full saturation to about a third. The slot's is-dragging rule
+   kills the transition, so none of this runs mid-gesture. */
+.explore-carousel-card-slot[data-position="-1"],
+.explore-carousel-card-slot[data-position="1"] { filter: saturate(.2) brightness(.94); }
+
+/* Recessed by mixing the card toward the surface behind it, which is the theme's own
+   colour, so the result is always on the palette's hue. Light moves toward Shell
+   Strong and dark toward the page ground, because dark's strong surface is lighter
+   than its card and would push the wrong way. */
+.explore-carousel-card-slot[data-position="-1"] .app-card,
+.explore-carousel-card-slot[data-position="1"] .app-card {
+  background: color-mix(in srgb, var(--surface) 55%, var(--surface-strong));
+}
+
+/* Dark recedes by staying navy, not by going black. Mixing 45% toward the page
+   ground and then dimming to .82 painted rgb(6,16,30) at luminance 15, against a
+   ground of 10 and a centre of 26: it collapsed into the page and read as black.
+   A quarter of the way to the ground with almost no dimming lands at rgb(9,23,40),
+   luminance 21, holding the centre card's own 63% saturation. */
+[data-theme="dark"] .explore-carousel-card-slot[data-position="-1"],
+[data-theme="dark"] .explore-carousel-card-slot[data-position="1"] { filter: saturate(.2) brightness(.95); }
+
+[data-theme="dark"] .explore-carousel-card-slot[data-position="-1"] .app-card,
+[data-theme="dark"] .explore-carousel-card-slot[data-position="1"] .app-card {
+  background: color-mix(in srgb, var(--surface) 75%, var(--bg));
 }
 .explore-carousel-viewport.is-dragging .explore-carousel-card-slot { transition: none; }
 .explore-carousel-arrow {
@@ -1877,10 +1912,10 @@ a { color: inherit; }
   }
   .explore-carousel-viewport { padding: 14px 18px 10px; }
   .explore-carousel-card-slot[data-position="-1"] {
-    transform: translateX(calc(-50% - 52% + var(--carousel-drag))) translateY(16px) rotate(-4deg) scale(.92);
+    transform: translateX(calc(-50% - 52%)) translateY(16px) rotate(-4deg) scale(.92);
   }
   .explore-carousel-card-slot[data-position="1"] {
-    transform: translateX(calc(-50% + 52% + var(--carousel-drag))) translateY(16px) rotate(4deg) scale(.92);
+    transform: translateX(calc(-50% + 52%)) translateY(16px) rotate(4deg) scale(.92);
   }
   .explore-carousel-arrow {
     justify-self: center;
@@ -1935,10 +1970,10 @@ a { color: inherit; }
     padding: 20px 18px;
   }
   .explore-carousel-card-slot[data-position="-1"] {
-    transform: translateX(calc(-50% - 58% + var(--carousel-drag))) translateY(16px) rotate(-4deg) scale(.92);
+    transform: translateX(calc(-50% - 58%)) translateY(16px) rotate(-4deg) scale(.92);
   }
   .explore-carousel-card-slot[data-position="1"] {
-    transform: translateX(calc(-50% + 58% + var(--carousel-drag))) translateY(16px) rotate(4deg) scale(.92);
+    transform: translateX(calc(-50% + 58%)) translateY(16px) rotate(4deg) scale(.92);
   }
   .directory-toolbar { flex-wrap: wrap; row-gap: 12px; }
   .directory-controls { flex: 1 1 100%; }

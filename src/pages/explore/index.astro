@@ -487,6 +487,19 @@ const exploreData = {
         });
       };
 
+      /* Every slot but the three on stage is hidden and stacked at the same point, so
+         a lazy icon has no reason to fetch until its card arrives. That is why icons
+         turned up late, or not at all, part way through a swipe. Prime a window either
+         side of the centre instead: roughly five images in flight rather than 98 on
+         load, and the next card's mark is already cached before it is needed. */
+      const primeCarouselIcons = () => {
+        for (const offset of [-2, -1, 0, 1, 2]) {
+          const index = (carouselIndex + offset + carouselItems.length) % carouselItems.length;
+          const icon = carouselItems[index]?.querySelector('.app-icon');
+          if (icon && icon.loading === 'lazy') icon.loading = 'eager';
+        }
+      };
+
       const paintCarousel = () => {
         if (!carouselTrack || !carouselCards.length || !carouselItems.length) return;
         carouselCards.forEach((card) => setCardPosition(card, null));
@@ -494,6 +507,7 @@ const exploreData = {
           const itemIndex = (carouselIndex + position + carouselItems.length) % carouselItems.length;
           setCardPosition(carouselItems[itemIndex], position);
         });
+        primeCarouselIcons();
       };
 
       const goToNext = () => {
