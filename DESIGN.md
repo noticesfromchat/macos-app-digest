@@ -230,6 +230,8 @@ The type system is split between a classic editorial serif for the headlines and
 
 **The One Page Title Rule.** Every page opens the same way: the title in Headline at `--type-page-title`, hard against the shell's `--page-start-space`, with no margin of its own, and the dek 15px beneath it at `--type-dek`. App detail pages are not an exception — the app name is a page title, not a bigger thing. A page that wants more presence gets it from its composition below the fold, never from a private type scale.
 
+**The Plain Dash Rule.** Public editorial copy uses no em dash and no en dash. Restructure to a period, a comma, a colon, or parentheses, and set number and date ranges with a plain hyphen: `August 5-19, 2026`, not `August 5–19, 2026`. The em dash is the clearest tell of machine-drafted prose, and this publication is human-led by design. Three things sit outside the rule and stay as they are. Page-title separators are an SEO and publishing convention and are indexed, so `Archive — App Waypoint` is correct. Quoted external titles in source notes and reading lists keep their own punctuation, because changing it misquotes the source. Code comments are not copy and no reader sees them. The rule governs the site's public copy, not this repository's documentation. General frontend guidance in `.agents/skills/taste-skill` states a blanket zero-tolerance ban covering titles as well; that is a marketing-page heuristic, this narrower rule is what governs here, and the vendored skill is deliberately left unedited so it stays diffable against upstream.
+
 **The Serif-Utility Split.** Serif type carries the editorial voice; the system sans carries the operational voice. Mixing them casually weakens both jobs.
 
 ## Layout
@@ -257,6 +259,27 @@ Depth is soft and ambient rather than structural. Surfaces stay flat at rest, th
 The shape language is rounded but disciplined. Cards use 12px corners, search overlays sit at 14px on mobile and 18px on desktop, and control menus stay close to 10px so they feel compact rather than playful. Buttons and tag chips go all the way to pills, while the logo and footer mark stay circular. The result is friendly without becoming bubbly.
 
 The system prefers clipped rectangles, thin borders, and deliberate rounding over ornate silhouettes. Geometry stays stable so the content can carry the personality.
+
+## Motion
+
+Motion is used sparingly and always to mark passage: where the reader is in a page, and what they have just reached. The vocabulary is four easing tokens and everything on the site uses one of them. `ease-standard` (180ms) for routine state changes on buttons, links, and cards. `ease-quick` (120ms) for micro-feedback such as search-result highlighting. `ease-emphasis` (240ms) for the hero-aware header states. `ease-settle` (320ms on `cubic-bezier(.16, 1, .3, 1)`) for card hover elevation, an exponential ease-out that settles instead of snapping.
+
+**The Passing Waypoint Rule.** Content fades in as the reader reaches it, at one duration and one curve for the whole site: 400ms on `cubic-bezier(.16, 1, .3, 1)`, opacity only. No stagger, no directional movement, no per-section variation. A staggered cascade across a grid reads as a left-to-right sweep and was tried and removed for exactly that reason. One `IntersectionObserver` in `BaseLayout.astro` drives every page, and pages opt in through two attributes:
+
+- `data-reveal` fades the element itself. Use it where a page is built from sections: the issue spine, the explore rows, the app-detail related block.
+- `data-reveal-items` fades each child instead. Use it where one long grid of cards is the whole page, as on the tag, category, collection, and all-apps directories, where the card rather than the section is the unit the reader arrives at.
+
+Three properties of the implementation are load-bearing and should not be changed casually:
+
+1. **Content ships visible.** The `is-motion-ready` class that hides content is added by script, never written into the markup. A failed script, an old browser, or a crawler gets a finished page instead of an empty one.
+2. **It is an animation, not a transition.** A transition would have to declare `opacity` and `transform` on the card itself, and that declaration outranks `.app-card:hover` for the rest of the session, silently breaking The One Hover Rule. The keyframe fills `backwards`, so it leaves no value behind once it has run and the hover contract survives intact.
+3. **Each target is released as it fires.** A fully read page is observing nothing.
+
+Reduced motion is guarded twice: the observer never arms itself, and a `@media (prefers-reduced-motion: reduce)` block restores full opacity for a reader who turns the preference on after the page has loaded.
+
+**The buoy stays the one authored moment.** The mark on the content divider flashes once as the reader passes it, and the source-note timeline draws itself in sequence. Those are deliberate and they are the only motion on the page with a voice. The section fades are quiet on purpose so that nothing competes with them. The hero does not move at all: it sits above the fold, there is no passage to mark, and its atmosphere is painted once.
+
+**Adding a page.** A new page that renders app cards or content sections gets the matching attribute in its markup and needs nothing else registered. A page whose sections are left unmarked simply will not fade, which reads as broken beside the pages that do. The archive index and the category index are currently unmarked on purpose: they list issue cards and category cards rather than app cards.
 
 ## Components
 
@@ -329,6 +352,7 @@ A full-bleed band whose content sits on the shared page shell, so the wordmark a
 - **Do** keep shadows soft and ambient.
 - **Do** let serif headlines carry the editorial voice while system sans handles utility.
 - **Do** keep the defining tag or collection locked when it is the page’s own context.
+- **Do** mark new sections and card grids with `data-reveal` or `data-reveal-items` so a new page fades in like the rest of the site.
 - **Do** keep the uppercase eyebrow above section and card headings. General design guidance treats a kicker above a heading as filler; here it is load-bearing house style — it names the issue section, the pick, and the current-issue block, and it is the documented Label role. This is a deliberate, standing exception.
 
 ### Don't:
@@ -338,3 +362,6 @@ A full-bleed band whose content sits on the shared page shell, so the wordmark a
 - **Don't** use tinted text as neutral gray on colored surfaces.
 - **Don't** make chips, filters, or buttons feel like separate UI worlds.
 - **Don't** let the brand wordmark typography spread into body copy.
+- **Don't** stagger, slide, or otherwise vary the scroll reveal per section. One fade, one duration, one curve, everywhere.
+- **Don't** write the reveal's hidden state into the markup. It is added by script so the page ships visible.
+- **Don't** use em dashes or en dashes in public editorial copy.

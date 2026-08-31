@@ -263,6 +263,36 @@ issue.
 - The theme toggle is icon-only with no pill, no text and no emoji.
 - Do not introduce emoji as interface icons.
 - Do not add visual clutter or icons to every card.
+- Public editorial copy uses no em dash and no en dash; date and number ranges take a plain
+  hyphen. Page titles, quoted external titles and code comments are outside the rule. See
+  The Plain Dash Rule in `DESIGN.md`.
+- Content fades in as the reader scrolls. A new page or component that renders content
+  sections or app cards must opt in, or it will be the only page that does not fade. See
+  The Passing Waypoint Rule in `DESIGN.md`.
+
+## Scroll reveal
+
+One `IntersectionObserver` in `src/layouts/BaseLayout.astro` drives the reveal on every page.
+There is nothing to register: add the attribute to the markup and the observer finds it.
+
+- `data-reveal` on a `<section>` fades that section as the reader reaches it. Use it where a
+  page is built from sections, as on issue pages, explore and the app-detail related block.
+- `data-reveal-items` on a grid fades each child instead. Use it where one long grid of cards
+  is the whole page, as in `AppDirectory.astro`, which serves the tag, category, collection
+  and all-apps pages.
+
+Do not change these three without reading The Passing Waypoint Rule in `DESIGN.md` first:
+
+1. The hiding class is added by script, never in the markup, so every page ships visible to a
+   crawler or a browser whose script failed.
+2. The reveal is a keyframe animation filling `backwards`, not a transition. A transition
+   declares `opacity` and `transform` on the card and then outranks `.app-card:hover` for the
+   rest of the session, which silently breaks The One Hover Rule.
+3. Reduced motion is guarded twice, in the observer and in a `@media` block.
+
+`IntersectionObserver` callbacks do not fire in a hidden document, so a headless or
+background preview pane cannot verify this. The same is true of the pre-existing divider buoy
+and source-note timeline. Verify scroll behavior in a real, visible browser window.
 
 ## Change safety
 
