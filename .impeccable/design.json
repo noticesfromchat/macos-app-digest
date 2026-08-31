@@ -323,7 +323,8 @@
       "Beacon blue reserved for actions and current states.",
       "Serif headlines, system-sans utility.",
       "Soft 10-18px radii and ambient shadows.",
-      "Dense content organized through cards, chips, and careful spacing."
+      "Dense content organized through cards, chips, and careful spacing.",
+      "Content fades in as the reader reaches it; the hero alone stays still."
     ],
     "rules": [
       {
@@ -387,7 +388,9 @@
       "Do reuse the shared page shell so archive, tag, collection, about, and app pages line up.",
       "Do keep shadows soft and ambient.",
       "Do let serif headlines carry the editorial voice while system sans handles utility.",
-      "Do keep the defining tag or collection locked when it is the page\u2019s own context."
+      "Do keep the defining tag or collection locked when it is the page\u2019s own context.",
+      "Do keep the uppercase eyebrow above section and card headings. General design guidance treats a kicker above a heading as filler; here it is load-bearing house style, it names the issue section, the pick and the current-issue block, and it is the documented Label role. This is a deliberate, standing exception.",
+      "Do mark new sections and card grids with data-reveal or data-reveal-items so a new page fades in like the rest of the site."
     ],
     "donts": [
       "Don't introduce loud secondary colors just to add energy.",
@@ -395,7 +398,10 @@
       "Don't replace the soft shadow system with hard offsets or heavy glow.",
       "Don't use tinted text as neutral gray on colored surfaces.",
       "Don't make chips, filters, or buttons feel like separate UI worlds.",
-      "Don't let the brand wordmark typography spread into body copy."
+      "Don't let the brand wordmark typography spread into body copy.",
+      "Don't stagger, slide, or otherwise vary the scroll reveal per section. One fade, one duration, one curve, everywhere.",
+      "Don't write the reveal's hidden state into the markup. It is added by script so the page ships visible.",
+      "Don't use em dashes or en dashes in public editorial copy."
     ]
   }
 }

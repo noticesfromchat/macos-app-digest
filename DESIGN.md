@@ -341,7 +341,7 @@ A full-bleed band whose content sits on the shared page shell, so the wordmark a
 - **Structure:** identity (wordmark, wave rule, tagline) over a hairline, then the issue block; the Editor's Pick renders beside it as a real `AppCard`, the only card in the fold.
 - **Atmosphere:** two drawn layers — a star field (night only) and an engraved wave band. All canvas, no image request, painted once and repainted only on theme change or resize. The day sky above the water stays empty; a cloud bank was drawn there and removed for adding noise rather than calm.
 - **The waterline.** The band's ground fades to the page colour across the wave band and the strokes taper to nothing, so the hero ends on the colour the next section begins with. A single `--sea-h` drives the canvas height, the bottom padding, and the fade distance.
-- **Motion:** none. The hero is still; its atmosphere is drawn once and does not animate.
+- **Motion:** none, and this is the one documented exception to The Passing Waypoint Rule. Everything below the fold fades in as the reader reaches it; the hero does not, because it sits above the fold, there is no passage to mark, and its atmosphere is drawn once rather than animated. Do not add a load-in entrance here to make it match the sections below.
 - **Call to action:** two anchors, one hidden per breakpoint. Above 920px *Start Reading* goes to the first section; below it — where the pick has stacked underneath — it goes to the pick. 920px is where the hero collapses to one column, so the swap and the stack happen together.
 
 ## Do's and Don'ts
