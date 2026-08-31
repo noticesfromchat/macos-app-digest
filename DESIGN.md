@@ -350,10 +350,12 @@ The filter menu is a compact popover, not a modal. It is designed to support fas
 - **States:** disabled controls mark the defining tag or collection so the page cannot be unselected away from itself.
 
 ### Search Modal
-Search is a centered overlay with a frosted dark backdrop and a bright, controlled surface.
+Search is a centered overlay over a frosted backdrop, with a bright, controlled surface.
 - **Shape:** 18px radius on desktop, 14px on mobile.
 - **Structure:** input row, result count, then a scrollable result list.
 - **Behavior:** the backdrop blurs, the modal remains narrow enough to feel deliberate, the app index loads on demand, and results behave like normal focusable links rather than a custom combobox.
+
+**The One Scrim Rule.** Search, the navigation menu and the subscribe dialog share one backdrop, `--scrim`, and it follows the theme. All three were a near-black navy in both themes, which is right over a dark page and turns a light one grey; light now takes Harbor Fog at 62%, so the page stays bright and the blur does the obscuring. The blur is the same in all three at `blur(12px) saturate(110%)`; the nav menu had drifted to 10px for no reason anyone recorded. A panel separates from the scrim on its own shadow, not on the scrim being dark.
 
 ### App Detail Page
 The detail page answers three questions in order: what is this, is it for me, and where do I get it. The masthead carries that path and the rail carries everything that files the app rather than describes it.
