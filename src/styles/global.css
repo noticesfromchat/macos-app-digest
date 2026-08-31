@@ -1339,14 +1339,17 @@ a { color: inherit; }
 .explore-carousel-viewport.is-dragging { cursor: grabbing; user-select: none; }
 .explore-carousel-track {
   position: relative;
-  min-height: 468px;
+  /* the centre card's 424px plus the 18px the flanking cards are dropped by */
+  min-height: 442px;
   background: transparent;
 }
 .explore-carousel-card-slot {
   position: absolute;
   top: 0;
   left: 50%;
-  width: min(430px, calc(100% - 220px));
+  /* The same footprint as a card in the directory grid, so the carousel reads as
+     the same object rather than an outsized cousin. */
+  width: min(376px, calc(100% - 220px));
   visibility: hidden;
   background: transparent;
   box-shadow: none;
@@ -1362,7 +1365,7 @@ a { color: inherit; }
    carried by colour instead, below. */
 .explore-carousel-card-slot[data-position] { visibility: visible; opacity: 1; }
 .explore-carousel-card-slot .app-card {
-  min-height: 450px;
+  min-height: 424px;
   height: 100%;
   padding: 28px;
   background: var(--surface);
@@ -1408,8 +1411,8 @@ a { color: inherit; }
    painted rgb(18,21,25), which is the grey that looked out of place. The card now
    only dims, so it keeps its blue, and the vivid element, the app icon, is the thing
    that drains. */
-.explore-carousel-card-slot[data-position="-1"],
-.explore-carousel-card-slot[data-position="1"] { filter: brightness(.94); }
+/* Light needs no dimming filter. Its palette is near-neutral by design, so
+   brightness only drags the card toward grey; the recession is a surface change. */
 
 .explore-carousel-card-slot .app-icon-frame { transition: filter 320ms ease; }
 .explore-carousel-card-slot[data-position="-1"] .app-icon-frame,
@@ -1422,13 +1425,14 @@ a { color: inherit; }
 .explore-carousel-card-slot[data-position="-1"] .app-card > *,
 .explore-carousel-card-slot[data-position="1"] .app-card > * { opacity: .7; }
 
-/* Recessed by mixing the card toward the surface behind it, which is the theme's own
-   colour, so the result is always on the palette's hue. Light moves toward Shell
-   Strong and dark toward the page ground, because dark's strong surface is lighter
-   than its card and would push the wrong way. */
+/* A flanking card sits between the page and the centre card in both themes, which
+   is what makes it read as set back rather than as a smudge. Light was darker than
+   its own page ground, 230 against 236, so it lost all surface identity and looked
+   grey; Drift Mist puts it at 246, between the page's 236 and the white centre's
+   255, and stays on the fog axis. */
 .explore-carousel-card-slot[data-position="-1"] .app-card,
 .explore-carousel-card-slot[data-position="1"] .app-card {
-  background: color-mix(in srgb, var(--surface) 55%, var(--surface-strong));
+  background: var(--bg);
 }
 
 /* Dark recedes by staying navy, not by going black. Mixing 45% toward the page
