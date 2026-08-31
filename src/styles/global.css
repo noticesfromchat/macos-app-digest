@@ -1341,8 +1341,17 @@ a { color: inherit; }
    holds the card on its own axis, 214deg against a 212deg base, while dropping a
    vivid app icon from full saturation to about a third. The slot's is-dragging rule
    kills the transition, so none of this runs mid-gesture. */
+/* Desaturation belongs on the icons, not the card. saturate() on the slot hits the
+   card's own surface as well: on dark it took the 63%-saturated navy down to 16% and
+   painted rgb(18,21,25), which is the grey that looked out of place. The card now
+   only dims, so it keeps its blue, and the vivid element, the app icon, is the thing
+   that drains. */
 .explore-carousel-card-slot[data-position="-1"],
-.explore-carousel-card-slot[data-position="1"] { filter: saturate(.2) brightness(.94); }
+.explore-carousel-card-slot[data-position="1"] { filter: brightness(.94); }
+
+.explore-carousel-card-slot .app-icon-frame { transition: filter 320ms ease; }
+.explore-carousel-card-slot[data-position="-1"] .app-icon-frame,
+.explore-carousel-card-slot[data-position="1"] .app-icon-frame { filter: saturate(.15); }
 
 /* Recessed by mixing the card toward the surface behind it, which is the theme's own
    colour, so the result is always on the palette's hue. Light moves toward Shell
@@ -1359,7 +1368,7 @@ a { color: inherit; }
    A quarter of the way to the ground with almost no dimming lands at rgb(9,23,40),
    luminance 21, holding the centre card's own 63% saturation. */
 [data-theme="dark"] .explore-carousel-card-slot[data-position="-1"],
-[data-theme="dark"] .explore-carousel-card-slot[data-position="1"] { filter: saturate(.2) brightness(.95); }
+[data-theme="dark"] .explore-carousel-card-slot[data-position="1"] { filter: brightness(.95); }
 
 [data-theme="dark"] .explore-carousel-card-slot[data-position="-1"] .app-card,
 [data-theme="dark"] .explore-carousel-card-slot[data-position="1"] .app-card {
