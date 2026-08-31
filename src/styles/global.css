@@ -34,6 +34,9 @@
   --line: rgba(9, 35, 66, 0.2);
   --accent: #0862d8;
   --accent-hover: #004caf;
+  /* An eyebrow names the block beneath it, so the gap that binds the two is one
+     value for the whole site. Any surface that sets its own drifts out of the pair. */
+  --eyebrow-gap: 11px;
   --header-bg: rgba(244, 246, 249, 0.96);
   --shadow: 0 18px 55px rgba(27, 35, 42, 0.08);
   --shadow-hover: 0 26px 68px rgba(27, 35, 42, 0.11);
@@ -215,7 +218,7 @@ a { color: inherit; }
 }
 
 .eyebrow {
-  margin: 0 0 11px;
+  margin: 0 0 var(--eyebrow-gap);
   color: var(--accent);
   font-size: var(--type-label);
   font-weight: 800;
@@ -453,7 +456,6 @@ a { color: inherit; }
 .editor-note p { margin: 0; }
 
 .home-hero-pick { display: flex; flex-direction: column; }
-.home-hero-pick .eyebrow { margin-bottom: 11px; }
 .home-hero-pick-title { display: none; }
 .home-hero-pick .hero-pick-card { flex: 1; }
 
@@ -763,19 +765,20 @@ a { color: inherit; }
 .app-detail-masthead > .dek { margin-top: 15px; }
 .app-detail-masthead > .app-detail-best-for { margin-top: 26px; }
 
-.app-detail-rail { display: grid; gap: 22px; min-width: 0; }
-.app-detail-rail-group { display: grid; gap: 12px; min-width: 0; }
+/* One rhythm for the whole rail, on the documented spacing scale: xl between
+   groups, md from an eyebrow to the content it names. Every group is built the
+   same way, so the space before each eyebrow is the same space. */
+.app-detail-rail { display: grid; gap: 24px; min-width: 0; }
+.app-detail-rail-group { display: grid; gap: var(--eyebrow-gap); min-width: 0; }
 .app-detail-rail-group .eyebrow { margin: 0; }
 
 /* The rarest fact on the page sits at the top of the rail, over the rule that
    separates it from the taxonomy below. Rank comes from position, the mark and
    the weight of the label, not from colour. */
-.app-detail-honours {
-  gap: 12px;
-  /* Separated from the taxonomy by space alone. A rule here reads as a container
-     seam and competes with the honour it is meant to set apart. */
-  padding-bottom: 18px;
-}
+/* Separated from the taxonomy by space alone. A rule here reads as a container
+   seam and competes with the honour it is meant to set apart, and extra padding
+   here was what made the gap before Categories 40px against the 22px before Tags. */
+.app-detail-honour-list { display: grid; gap: 2px; }
 
 .app-detail-category-list { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }
 .app-detail-category-row {
@@ -850,7 +853,7 @@ a { color: inherit; }
    icon family at two weights in a single column. */
 .collection-badge-icon svg { width: 19px; height: 19px; }
 .app-detail-best-for { max-width: var(--measure); }
-.app-detail-best-for p:not(.eyebrow) { margin: 10px 0 0; color: var(--muted); font-size: 1rem; line-height: 1.55; }
+.app-detail-best-for p:not(.eyebrow) { margin: 0; color: var(--muted); font-size: 1rem; line-height: 1.55; }
 .app-detail-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 24px; }
 .app-detail-actions .button { gap: 8px; }
 .app-detail-actions .button svg { width: 1em; height: 1em; }
@@ -1728,16 +1731,19 @@ a { color: inherit; }
 }
 
 @media (hover: hover) and (pointer: fine) {
+  /* The One Hover Rule: rest at Ambient Card, cross to Hover Lift over 320ms on
+     the exponential ease-out, under a fine pointer only. */
   .app-card,
   .feature-card,
-  .archive-card,
+  .archive-card { transition: box-shadow 320ms cubic-bezier(.16, 1, .3, 1), border-color 320ms cubic-bezier(.16, 1, .3, 1), background-color 320ms cubic-bezier(.16, 1, .3, 1); }
   .app-card:hover,
   .feature-card:hover,
-  .archive-card:hover,
+  .archive-card:hover { border-color: color-mix(in srgb, var(--accent) 42%, var(--line)); background: var(--surface); box-shadow: var(--shadow-hover); }
 
   /* That shorthand would drop the pick card's wash, and the card already rests at
      Hover Lift, so it needs its own answer to the pointer. The light gives it: the
-     drift continues and the accent gains depth under the card. */
+     drift continues and the accent gains depth under the card, crossing on the same
+     320ms the rule above establishes. */
   .hero-pick-card.has-pick-accent:hover,
   .hero-pick-card.has-pick-accent:focus-within {
     box-shadow:

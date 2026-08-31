@@ -139,14 +139,16 @@ const appSchema = [
         {appCollections.length > 0 && (
           <div class="app-detail-rail-group app-detail-honours">
             <p class="eyebrow">Collections</p>
-            {appCollections.map((collection) => (
-              <a class="collection-badge" href={`/collections/${collection.slug}/`}>
-                <span class="collection-badge-icon" aria-hidden="true">
-                  <MetaIcon name={collection.icon} />
-                </span>
-                <span class="collection-badge-label">{collectionLabels[collection.slug]}</span>
-              </a>
-            ))}
+            <div class="app-detail-honour-list">
+              {appCollections.map((collection) => (
+                <a class="collection-badge" href={`/collections/${collection.slug}/`}>
+                  <span class="collection-badge-icon" aria-hidden="true">
+                    <MetaIcon name={collection.icon} />
+                  </span>
+                  <span class="collection-badge-label">{collectionLabels[collection.slug]}</span>
+                </a>
+              ))}
+            </div>
           </div>
         )}
 

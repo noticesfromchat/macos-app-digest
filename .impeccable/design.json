@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-31T04:25:04Z",
+  "generatedAt": "2026-08-31T04:30:03Z",
   "title": "Design System: App Waypoint",
   "extensions": {
     "colorMeta": {
@@ -396,6 +396,11 @@
         "name": "The Struck Light Rule",
         "body": "The Editor's Pick card in the hero is lit by the featured app's own colour, and that light moves: a wide wash drifting across the card over 28s and a gleam travelling its edge over 11s, both on pseudo-elements of that one card. It is reserved for the one app an issue argues for. The colour is normalised, never raw: icon hues across picks run from saturated magenta to near-black, so scripts/extract-icon-accent.mjs fixes every pick to one lightness and chroma in OKLCh and commits the result to the app record as iconAccent. The Beacon Rule survives because the colour is light on one card and never reaches a link, control or state. A pick with no usable icon has no iconAccent and renders the ordinary card. The wash sits on its own layer at negative z-index rather than in the card background, because the shared hover contract sets the background shorthand and an intermediate custom property stops the drift resolving. Both loops pause off screen and stop under reduced motion.",
         "section": "motion"
+      },
+      {
+        "name": "The Eyebrow Binding Rule",
+        "body": "An eyebrow names the block beneath it, so the gap binding the two is one value for the whole site: --eyebrow-gap, 11px, used whether it comes from the .eyebrow margin in normal flow or from a grid gap. The rhythm is two values, not one: 11px binds an eyebrow to its content, 24px separates one labelled group from the next. That contrast is what lets a rail read as three groups without a rule drawn between them. A surface that sets its own number drifts out of the pair. 11px sits between the sm and md spacing steps; it is the established value across every surface, held in a token rather than repeated.",
+        "section": "layout"
       }
     ],
     "dos": [
@@ -419,7 +424,8 @@
       "Don't use em dashes or en dashes in public editorial copy.",
       "Don't let the Editor's Pick accent leave that one card, or reach a link, control or state. It is light, not a second accent.",
       "Don't hand-write an iconAccent. Generate it so every pick lands in the same lightness and chroma band.",
-      "Don't fill a control with the accent. The dark theme's blue is a foreground colour; as a ground it fails contrast and becomes the brightest thing on the page."
+      "Don't fill a control with the accent. The dark theme's blue is a foreground colour; as a ground it fails contrast and becomes the brightest thing on the page.",
+      "Don't set a local eyebrow gap. Use --eyebrow-gap so every labelled block on the site is bound the same way."
     ]
   }
 }
