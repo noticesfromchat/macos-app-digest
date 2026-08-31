@@ -410,20 +410,20 @@ a { color: inherit; }
    usual culprit, pushed everything below it out of step with the rest of the row.
    Older engines keep the budgets through the @supports fallback. */
 @supports (grid-template-rows: subgrid) {
-  .grid > .app-card {
+  .grid > .app-card:not(.reading-card) {
     display: grid;
     grid-row: span 3;
     grid-template-rows: subgrid;
     row-gap: 16px;
   }
 
-  .grid > .app-card .app-summary,
-  .grid > .app-card .best-for,
-  .grid > .app-card .tag-list { min-height: 0; }
+  .grid > .app-card:not(.reading-card) .app-summary,
+  .grid > .app-card:not(.reading-card) .best-for,
+  .grid > .app-card:not(.reading-card) .tag-list { min-height: 0; }
 
   /* the row gap now carries the separation these were providing */
-  .grid > .app-card .app-summary { margin-bottom: 0; }
-  .grid > .app-card .tag-list { padding-top: 0; align-content: start; }
+  .grid > .app-card:not(.reading-card) .app-summary { margin-bottom: 0; }
+  .grid > .app-card:not(.reading-card) .tag-list { padding-top: 0; align-content: start; }
 
   /* One card height per page, not just per row. Giving the parent's three repeating
      tracks a floor makes every band match, so a card agrees with the one two rows
@@ -440,16 +440,33 @@ a { color: inherit; }
      Reading cards are excluded throughout. They carry .app-card as well, but hold a
      single child rather than three, so spanning three rows left them with two empty
      ones and a card half again as tall as the app cards beside them. */
-  .grid:has(> .app-card) {
+  .grid:has(> .app-card:not(.reading-card)) {
     grid-auto-rows: minmax(230px, auto) minmax(149px, auto) minmax(122px, auto);
   }
 
   /* Above 1100px the content column has stopped growing, so the budget settles. */
   @media (min-width: 1100px) {
-    .grid:has(> .app-card) {
+    .grid:has(> .app-card:not(.reading-card)) {
       grid-auto-rows: minmax(205px, auto) minmax(99px, auto) minmax(88px, auto);
     }
   }
+
+  /* Reading cards get the same treatment on their own terms. Their three parts sit
+     inside a wrapper, so the card and the wrapper both subgrid onto the shared rows.
+     No floors here: a reading card should be as tall as the longest of the three and
+     no taller, which is what its min-heights were faking, badly, by reserving three
+     lines for a one-line title. */
+  .grid > .reading-card,
+  .grid > .reading-card > div {
+    display: grid;
+    grid-row: span 3;
+    grid-template-rows: subgrid;
+    row-gap: 10px;
+  }
+
+  .grid > .reading-card h3,
+  .grid > .reading-card .reading-source,
+  .grid > .reading-card .reading-description { min-height: 0; }
 }
 
 .editors-pick-card {
