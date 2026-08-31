@@ -49,7 +49,6 @@ const toExploreApp = (entry: (typeof apps)[number]) => ({
   bestFor: entry.data.bestFor,
   tags: entry.data.tags,
   categories: entry.data.categories,
-  source: entry.data.source,
   homepage: entry.data.homepage,
   icon: entry.data.icon,
   iconStyle: entry.data.iconStyle
@@ -389,7 +388,6 @@ const exploreData = {
           <div class="tag-list" aria-label="App tags">
             ${app.tags.map((tag) => `<a class="tag" href="/tags/${escapeHTML(tag)}/">${escapeHTML(tag)}</a>`).join('')}
           </div>
-          <p class="source-line"><strong>Source:</strong> ${escapeHTML(app.source)}</p>
         </article>
       `;
       };

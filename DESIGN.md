@@ -308,11 +308,17 @@ Tag chips are compact chips rather than buttons. They read as metadata first.
 - **State:** hover and focus tint the chip toward blue without making it feel selected. The label takes the accent's *hover* value, not the accent itself, so the text still clears 4.5:1 against the tinted pill (5.50:1) — the plain accent lands at 3.89:1 there and is not legible enough.
 
 ### Cards
-Cards are the primary container language for apps, readings, and archive entries. Apparatus — source notes and other secondary matter — is set as footnotes under a hairline instead, so a card always means a thing worth looking at rather than a thing worth reading past.
+Cards are the primary container language for apps, readings, and archive entries. Apparatus — source notes and other secondary matter — is set as footnotes under a hairline instead, so a card always means a thing worth looking at rather than a thing worth reading past. An app card carries three regions and nothing else: the summary, the best-for line, and the tags. It used to end with a source credit; that was provenance for the editor rather than information for the reader, and removing it took a whole region off every card.
 - **Corner Style:** 12px radius on most cards.
 - **Background:** the surface color — white by day — with a faint border and soft shadow.
 - **Internal Padding:** usually 24px, with denser or looser variants where the content demands it.
 - **Behavior:** hover deepens the shadow and shifts the border toward blue on pointer devices, settling over 320ms rather than snapping.
+
+**The One Card Height Rule.** Every app card on a page is the same height, and the regions inside them line up across the whole grid rather than only within a row. The grid defines three repeating tracks and each card spans them as a subgrid, so a card agrees with the one beside it and the one two rows below it.
+
+The floors are what the tallest record in the catalogue actually needs, measured across all 102: `230/149/122` where the three columns are narrowest, settling to `205/99/88` above 1100px once the content column stops growing. The first and last include the card's 24px padding, because a subgrid item's padding comes out of the tracks it spans. They are `minmax(floor, auto)` rather than fixed heights, so a future record that outgrows its budget makes its own band taller instead of being clipped.
+
+This replaced a set of fixed `min-height` budgets on each region. Those were guesses, and any card that overflowed one — a second line of tags was the usual culprit — pushed everything below it out of step with the rest of the row. Reading cards are excluded: they carry `.app-card` too, but hold a single child rather than three.
 
 **The One Hover Rule.** Every card that leads somewhere shares one hover contract: rest at Ambient Card, move to Hover Lift and a border of `color-mix(in srgb, var(--accent) 42%, var(--line))`, cross over 320ms on `cubic-bezier(.16, 1, .3, 1)`, and do it only under `(hover: hover) and (pointer: fine)`. App cards, feature cards, reading cards, archive rows, category directory rows, and the app-detail category cards are all on it. A card that carries a category accent keeps that accent in its resting border and gives it up on hover; nothing else about the contract changes per card type.
 

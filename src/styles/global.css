@@ -402,6 +402,56 @@ a { color: inherit; }
 
 .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 
+/* Cards in a row line up by sharing the row's tracks, not by guessing heights.
+   Each card spans three rows of the parent grid and adopts them as a subgrid, so
+   the description, the best-for line and the tags all start on the same line as
+   their neighbours however long the copy runs. The min-heights this replaces were
+   fixed budgets, and any card that overflowed one, a second line of tags being the
+   usual culprit, pushed everything below it out of step with the rest of the row.
+   Older engines keep the budgets through the @supports fallback. */
+@supports (grid-template-rows: subgrid) {
+  .grid > .app-card {
+    display: grid;
+    grid-row: span 3;
+    grid-template-rows: subgrid;
+    row-gap: 16px;
+  }
+
+  .grid > .app-card .app-summary,
+  .grid > .app-card .best-for,
+  .grid > .app-card .tag-list { min-height: 0; }
+
+  /* the row gap now carries the separation these were providing */
+  .grid > .app-card .app-summary { margin-bottom: 0; }
+  .grid > .app-card .tag-list { padding-top: 0; align-content: start; }
+
+  /* One card height per page, not just per row. Giving the parent's three repeating
+     tracks a floor makes every band match, so a card agrees with the one two rows
+     below it as well as the one beside it.
+
+     The floors are what the tallest record in the catalogue actually needs, measured
+     across all 102 of them. Note the first and last include the card's 24px padding:
+     a subgrid item's padding comes out of the tracks it spans, so track one carries
+     the summary plus the top padding and track three the tags plus the bottom.
+
+     minmax rather than a fixed height, so a future record that outgrows its budget
+     makes its own band taller instead of being clipped.
+
+     Reading cards are excluded throughout. They carry .app-card as well, but hold a
+     single child rather than three, so spanning three rows left them with two empty
+     ones and a card half again as tall as the app cards beside them. */
+  .grid:has(> .app-card) {
+    grid-auto-rows: minmax(230px, auto) minmax(149px, auto) minmax(122px, auto);
+  }
+
+  /* Above 1100px the content column has stopped growing, so the budget settles. */
+  @media (min-width: 1100px) {
+    .grid:has(> .app-card) {
+      grid-auto-rows: minmax(205px, auto) minmax(99px, auto) minmax(88px, auto);
+    }
+  }
+}
+
 .editors-pick-card {
   min-height: 0;
   display: grid;
@@ -410,8 +460,7 @@ a { color: inherit; }
     "summary"
     "best"
     "note"
-    "tags"
-    "source";
+    "tags";
   row-gap: 0;
   padding: clamp(24px, 3vw, 34px);
 }
@@ -425,7 +474,6 @@ a { color: inherit; }
   border-top: 1px solid var(--line);
 }
 .editors-pick-card .tag-list { grid-area: tags; min-height: 0; margin-top: 20px; padding-top: 0; }
-.editors-pick-card .source-line { grid-area: source; min-height: 0; padding-top: 14px; }
 .editor-note { padding-left: 0; border-left: 0; }
 .editor-note p { margin: 0; }
 
@@ -685,15 +733,12 @@ a { color: inherit; }
 .app-summary { min-height: 136px; margin-bottom: 16px; }
 .best-for { min-height: 96px; font-size: 1rem; }
 .best-for strong,
-.source-line strong,
 .reading-source strong { color: var(--text); }
 
 .tag-list { display: flex; min-height: 86px; flex-wrap: wrap; align-content: flex-start; gap: 6px; padding-top: 12px; }
 .tag { display: inline-flex; width: fit-content; align-items: center; margin: 0; padding: 7px 10px; border: 0; border-radius: 999px; background: var(--chip); color: var(--muted); font-size: var(--type-label); font-weight: 700; line-height: 1.15; text-decoration: none; text-transform: lowercase; transition: color 180ms ease, background-color 180ms ease; }
 .tag:hover,
 .tag:focus-visible { background: color-mix(in srgb, var(--chip) 82%, var(--accent)); color: var(--accent-hover); }
-.source-line { min-height: 52px; padding-top: 14px; color: var(--muted); font-size: var(--type-meta); }
-.source-line strong { color: inherit; }
 .reading-card h3 { min-height: 108px; }
 .reading-card .reading-source { min-height: 30px; }
 .reading-card .reading-description { min-height: 108px; }
@@ -1741,20 +1786,6 @@ a { color: inherit; }
 .directory-grid { margin-top: 16px; }
 .directory-grid .app-card[hidden] { display: none; }
 
-@media (min-width: 921px) {
-  @supports (grid-template-rows: subgrid) {
-    .directory-grid .app-card {
-      display: grid;
-      grid-row: span 4;
-      grid-template-columns: minmax(0, 1fr);
-      grid-template-rows: subgrid;
-    }
-    .directory-grid .app-summary { margin-bottom: 0; }
-    .directory-grid .tag-list { min-height: 74px; padding-top: 0; }
-    .directory-grid .source-line { min-height: 38px; padding-top: 0; }
-  }
-}
-
 @media (hover: hover) and (pointer: fine) {
   /* The One Hover Rule: rest at Ambient Card, cross to Hover Lift over 320ms on
      the exponential ease-out, under a fine pointer only. */
@@ -1837,7 +1868,6 @@ a { color: inherit; }
   .app-summary,
   .best-for,
   .tag-list,
-  .source-line,
   .reading-card h3,
   .reading-card .reading-source,
   .reading-card .reading-description { min-height: 0; }
@@ -1922,8 +1952,7 @@ a { color: inherit; }
     -webkit-line-clamp: 4;
     line-clamp: 4;
   }
-  .explore-carousel-card-slot .tag-list,
-  .explore-carousel-card-slot .source-line {
+  .explore-carousel-card-slot .tag-list {
     display: none;
   }
   .explore-carousel-viewport { padding: 14px 18px 10px; }

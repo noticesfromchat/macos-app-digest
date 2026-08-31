@@ -96,7 +96,9 @@ section spine. When present, it renders between `Trending` and `Old Favorites`.
 - A pick whose app has no `iconAccent` renders the ordinary card. That is a valid result,
   not a missing step. See The Struck Light Rule in `DESIGN.md`.
 - The app description is followed by `Best for`, then the issue-specific “Why it was
-  chosen” note, tags and source information.
+  chosen” note, then tags. App cards do not show a source credit: the app record's
+  `source` field is editorial provenance for the review process, not reader-facing
+  copy, and it is still required on every record.
 - The “Why it was chosen” heading and copy align flush left with the rest of the card.
   A horizontal divider may separate the note, but do not indent it or use a vertical
   rule.

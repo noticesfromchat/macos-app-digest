@@ -106,5 +106,4 @@ const pickAccent = isHero && editorNote ? app.iconAccent : undefined;
   <div class="tag-list" aria-label="App tags">
     {app.tags.map((tag) => <a class="tag" href={`/tags/${tag}/`}>{tag}</a>)}
   </div>
-  {!isHero && <p class="source-line"><strong>Source:</strong> {app.source}</p>}
 </article>

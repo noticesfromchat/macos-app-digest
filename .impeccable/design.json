@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-31T16:05:46Z",
+  "generatedAt": "2026-08-31T16:56:21Z",
   "title": "Design System: App Waypoint",
   "extensions": {
     "colorMeta": {
@@ -395,6 +395,11 @@
         "name": "The Eyebrow Binding Rule",
         "body": "An eyebrow names the block beneath it, so the gap binding the two is one value for the whole site: --eyebrow-gap, 11px, used whether it comes from the .eyebrow margin in normal flow or from a grid gap. The rhythm is two values, not one: 11px binds an eyebrow to its content, 24px separates one labelled group from the next. That contrast is what lets a rail read as three groups without a rule drawn between them. A surface that sets its own number drifts out of the pair. 11px sits between the sm and md spacing steps; it is the established value across every surface, held in a token rather than repeated.",
         "section": "layout"
+      },
+      {
+        "name": "The One Card Height Rule",
+        "body": "Every app card on a page is the same height and their regions line up across the whole grid, not just within a row. The grid defines three repeating tracks and each card spans them as a subgrid. Floors are what the tallest record actually needs, measured across all 102: 230/149/122 at the narrowest three-column width, 205/99/88 above 1100px. The first and last include the card's 24px padding, since a subgrid item's padding comes out of the tracks it spans. minmax rather than fixed, so a longer future record makes its own band taller instead of clipping. This replaced per-region min-height budgets, which any card that overflowed one, usually a second line of tags, pushed out of step with its row. Reading cards are excluded: they carry .app-card but hold one child, not three.",
+        "section": "components"
       }
     ],
     "dos": [
@@ -416,7 +421,8 @@
       "Don't let the Editor's Pick accent leave that one card, or reach a link, control or state. It is light, not a second accent.",
       "Don't hand-write an iconAccent. Generate it so every pick lands in the same lightness and chroma band.",
       "Don't fill a control with the accent. The dark theme's blue is a foreground colour; as a ground it fails contrast and becomes the brightest thing on the page.",
-      "Don't set a local eyebrow gap. Use --eyebrow-gap so every labelled block on the site is bound the same way."
+      "Don't set a local eyebrow gap. Use --eyebrow-gap so every labelled block on the site is bound the same way.",
+      "Don't align cards with per-region min-heights. They are guesses, and content that outgrows one knocks its whole row out of step."
     ]
   }
 }
