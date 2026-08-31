@@ -305,10 +305,11 @@ Buttons are quiet, pill-shaped workhorses: obvious, tactile, and not over-embell
 **The Two Control Heights.** Every pill control is built the same way — inline-flex, a `min-height`, horizontal padding, no vertical padding — and stands at one of two heights: **44px** for a primary action and **38px** for a secondary one, rising to 44px on coarse pointers. Rank comes from the height and the fill, never from a different construction. A control that sets vertical padding instead of a min-height will drift out of the pair the moment its type changes.
 
 ### Collection Badges
-The collection badge on an app detail page is a link to a curated collection: a 38px outlined pill carrying an icon and a Title-case name.
-- **Style:** transparent fill over the page, 1px `--line` border, ink text at Metadata weight, pill radius, 14px horizontal padding.
-- **Rank:** it sits directly above the primary button in the app-detail stack, and reads as the quieter of the pair — same pill, one height down, no fill.
-- **State:** hover and focus move the border toward blue and tint the label, the same move a card makes.
+The collection badge on an app detail page is a link to a curated collection, and it is the rarest fact on that page: six of a hundred apps carry one. It is an honour marker, not a chip. It was a 38px outlined pill sitting above the primary button, where it read as a second, weaker control; it now opens the detail rail.
+- **Style:** a 34px ring in blue holding the collection's mark, beside the collection name in ink at Metadata weight 700. No pill, no fill, no border around the label.
+- **Rank:** first item in the rail, above Categories and Tags. Rank comes from position, the ring and the weight of the label, never from a colour of its own. Its own row is 44px against the 34px category rows beneath it.
+- **Separation:** space alone divides it from the taxonomy below. A rule there reads as a container seam and competes with the thing it is meant to set apart.
+- **State:** hover and focus tint the label blue and fill the ring faintly, the same move a card makes.
 
 ### Tag Chips
 Tag chips are compact chips rather than buttons. They read as metadata first.
@@ -344,6 +345,13 @@ Search is a centered overlay with a frosted dark backdrop and a bright, controll
 - **Structure:** input row, result count, then a scrollable result list.
 - **Behavior:** the backdrop blurs, the modal remains narrow enough to feel deliberate, the app index loads on demand, and results behave like normal focusable links rather than a custom combobox.
 
+### App Detail Page
+The detail page answers three questions in order: what is this, is it for me, and where do I get it. The masthead carries that path and the rail carries everything that files the app rather than describes it.
+- **Masthead:** the app's own icon and the page title form one lockup, the icon scaling from 56px to 76px against the title's cap height at the documented `md` radius. Then the dek, then Best For, then the single Homepage button. An app with no icon takes its first category's mark on the documented missing-icon colour, stable from the app ID so a card and its detail page always agree.
+- **Rail:** a 272px column holding the collection badge, then Categories, then Tags. It occupies what used to be empty space beside a 900px masthead on a 1160px page.
+- **Taxonomy rank:** categories are the most generic fact an app carries and read at Metadata scale in muted ink, as 34px rows with their marks. They were 22.4px serif inside 80px bordered cards, which made the least meaningful metadata the largest thing on the page after the title. Tags stay chips at Label scale. Nothing here outranks the app's own name, dek or Best For.
+- **Collapse:** at 920px, where the whole site drops to one column, the rail stacks under the masthead and keeps its DOM order, so reading and focus order do not change. No rule divides them, and none divides the badge from the taxonomy: inside the rail the separation is space. The only rule on the page closes the hero against the related apps below.
+
 ### Homepage Hero
 
 There is one hero. Issue pages render the same composition as the homepage; the only difference is which element carries the `h1` and whether the eyebrow reads *Current* or *Archived issue*.
@@ -378,3 +386,4 @@ A full-bleed band whose content sits on the shared page shell, so the wordmark a
 - **Don't** use em dashes or en dashes in public editorial copy.
 - **Don't** let the Editor's Pick accent leave that one card, or reach a link, control or state. It is light, not a second accent.
 - **Don't** hand-write an `iconAccent`. Generate it so every pick lands in the same lightness and chroma band.
+- **Don't** let taxonomy outrank identity. On any page, an app's categories and tags are quieter than its name, its dek and what it is best for.

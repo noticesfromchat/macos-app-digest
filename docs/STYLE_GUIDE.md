@@ -153,6 +153,15 @@ section spine. When present, it renders between `Trending` and `Old Favorites`.
   issue files or hand-authored page markup.
 - Detail pages may show related apps based on shared tags and compact links to related
   tag landing pages.
+- The page is a masthead and a rail. The masthead carries the app's icon and name as one
+  lockup, then the dek, Best For and the Homepage button. The rail carries the collection
+  badge, categories and tags. At 920px the rail stacks under the masthead.
+- The app's icon appears beside the page title. An app with no icon uses its first
+  category's mark on the missing-icon colour, exactly as its cards do.
+- Metadata never outranks identity. Categories read at Metadata scale as compact rows,
+  tags as Label-scale chips, and the collection badge leads the rail because it is the
+  rarest fact on the page. See the App Detail Page and Collection Badges entries in
+  `DESIGN.md`.
 
 ## 7. Weekend Reading
 

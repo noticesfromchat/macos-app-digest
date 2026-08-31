@@ -717,29 +717,99 @@ a { color: inherit; }
 .feature-card a { color: var(--accent); font-weight: 700; }
 
 .app-detail-page { padding: var(--page-start-space) 0 36px; }
-.app-detail-hero { max-width: 900px; padding: 0 0 var(--section-space); }
-.app-detail-meta-flow { display: grid; gap: 16px; margin-top: 24px; }
-.app-detail-collections { display: flex; flex-wrap: wrap; gap: 10px; }
-.collection-badge {
-  display: inline-flex;
+/* The detail page reads: what is this, is it for me, go and get it. The masthead
+   carries that path. Everything that files the app rather than describes it sits
+   in the rail, which also puts the right half of the fold to work. The rail is
+   fixed and the masthead flexible, so the prose measure stays honest at any width. */
+.app-detail-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 272px;
+  align-items: start;
+  gap: clamp(32px, 5vw, 72px);
+  padding: 0 0 var(--section-space);
+  border-bottom: 1px solid var(--line);
+}
+.app-detail-masthead { min-width: 0; max-width: 900px; }
+
+.app-detail-identity {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
-  gap: 8px;
-  min-height: 38px;
-  padding: 0 14px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--surface) 94%, transparent);
+  gap: clamp(16px, 1.8vw, 22px);
+}
+/* Sized against the page title's cap height so the two read as one lockup. */
+.app-detail-app-icon {
+  width: clamp(56px, 6vw, 76px);
+  height: clamp(56px, 6vw, 76px);
+  border-radius: 12px;
+}
+.app-detail-identity h1 { margin: 0; }
+
+/* The One Page Title Rule's 15px gap, measured from the lockup rather than the
+   title alone, then a generous step before Best For so the two do not run together. */
+.app-detail-masthead > .dek { margin-top: 15px; }
+.app-detail-masthead > .app-detail-best-for { margin-top: 26px; }
+
+.app-detail-rail { display: grid; gap: 22px; min-width: 0; }
+.app-detail-rail-group { display: grid; gap: 12px; min-width: 0; }
+.app-detail-rail-group .eyebrow { margin: 0; }
+
+/* The rarest fact on the page sits at the top of the rail, over the rule that
+   separates it from the taxonomy below. Rank comes from position, the mark and
+   the weight of the label, not from colour. */
+.app-detail-honours {
+  gap: 10px;
+  /* Separated from the taxonomy by space alone. A rule here reads as a container
+     seam and competes with the honour it is meant to set apart. */
+  padding-bottom: 8px;
+}
+
+.app-detail-category-list { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }
+.app-detail-category-row {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  min-height: 34px;
+  color: var(--muted);
+  font-size: var(--type-meta);
+  font-weight: 600;
+  line-height: 1.3;
+  text-decoration: none;
+  transition: color 180ms ease;
+}
+.app-detail-category-row:hover,
+.app-detail-category-row:focus-visible { color: var(--accent); outline: 0; }
+.app-detail-category-mark { display: inline-flex; align-items: center; justify-content: center; }
+.app-detail-category-mark svg { width: 17px; height: 17px; }
+.collection-badge {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
   color: var(--text);
   font-size: var(--type-meta);
   font-weight: 700;
-  line-height: 1.15;
+  line-height: 1.2;
   text-decoration: none;
+  transition: color 180ms ease;
 }
-.collection-badge:hover,
-.collection-badge:focus-visible {
-  border-color: color-mix(in srgb, var(--accent) 42%, var(--line));
+.collection-badge-icon {
+  width: 34px;
+  height: 34px;
+  border: 1px solid color-mix(in srgb, var(--accent) 34%, var(--line));
+  border-radius: 999px;
   color: var(--accent);
-  outline: 0;
+  transition: border-color 180ms ease, background-color 180ms ease;
+}
+.collection-badge-label { min-width: 0; }
+.collection-badge:hover,
+.collection-badge:focus-visible { color: var(--accent); outline: 0; }
+.collection-badge:hover .collection-badge-icon,
+.collection-badge:focus-visible .collection-badge-icon {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
 }
 .collection-badge-icon,
 .app-detail-category-icon,
@@ -773,49 +843,7 @@ a { color: inherit; }
 .app-detail-panel > div { min-width: 0; }
 .app-detail-panel p:not(.eyebrow) { max-width: var(--measure); margin: 14px 0 0; color: var(--muted); font-size: 1rem; line-height: 1.55; }
 .app-detail-tags { min-height: 0; padding-top: 3px; }
-.app-detail-taxonomy { padding: 0 0 var(--section-space); border-bottom: 1px solid var(--line); }
-.app-detail-category-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-}
-.app-detail-category-card {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: center;
-  gap: 14px;
-  padding: 18px;
-  border: 1px solid color-mix(in srgb, var(--category-accent) 32%, var(--line));
-  border-radius: 12px;
-  background: var(--surface);
-  box-shadow: var(--shadow);
-  color: var(--text);
-  text-decoration: none;
-}
-/* Hover lives with the other cards, under the pointer query; focus is unconditional
-   so keyboard users get the same lift on coarse-pointer devices. */
-.app-detail-category-card:focus-visible {
-  border-color: color-mix(in srgb, var(--accent) 42%, var(--line));
-  box-shadow: var(--shadow-hover);
-  outline: 0;
-}
-.app-detail-category-icon {
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  background: color-mix(in srgb, var(--category-accent) 78%, var(--surface));
-  color: color-mix(in srgb, var(--text) 82%, var(--accent));
-}
-.app-detail-category-copy { min-width: 0; }
-.app-detail-category-copy strong {
-  display: block;
-  font-family: var(--display);
-  font-size: 1.4rem;
-  font-weight: 600;
-  line-height: 1.08;
-}
-.app-detail-tag-stack { margin-top: 18px; }
-.app-detail-tag-stack .tag-list { min-height: 0; padding-top: 0; }
+.app-detail-tags { min-height: 0; padding-top: 0; }
 .app-detail-section { width: 100%; padding-right: 0; padding-left: 0; }
 .app-detail-related-grid .app-card:nth-child(n + 7) { display: none; }
 
@@ -1679,11 +1707,9 @@ a { color: inherit; }
   .app-card,
   .feature-card,
   .archive-card,
-  .app-detail-category-card { transition: box-shadow 320ms cubic-bezier(.16, 1, .3, 1), border-color 320ms cubic-bezier(.16, 1, .3, 1), background-color 320ms cubic-bezier(.16, 1, .3, 1); }
   .app-card:hover,
   .feature-card:hover,
   .archive-card:hover,
-  .app-detail-category-card:hover { border-color: color-mix(in srgb, var(--accent) 42%, var(--line)); background: var(--surface); box-shadow: var(--shadow-hover); }
 
   /* That shorthand would drop the pick card's wash, and the card already rests at
      Hover Lift, so it needs its own answer to the pointer. The light gives it: the
@@ -1697,6 +1723,17 @@ a { color: inherit; }
 }
 
 @media (max-width: 920px) {
+  /* 920px is where the whole site drops to one column, so the rail stacks under
+     the masthead here too. It stays after the copy in DOM order, so reading and
+     focus order do not change when the columns collapse. */
+  .app-detail-hero {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+  }
+  /* No rule here either. The 28px the collapse already opens up is the separation;
+     a hairline would read as a seam between two halves of the same block. */
+  .app-detail-rail { padding-top: 2px; }
+
   .site-header { min-height: 76px; }
   .brand-mark { width: 42px; height: 42px; }
   /* Stacked, the wave stops being the hero's floor and becomes a divider
@@ -1921,9 +1958,11 @@ a { color: inherit; }
   .app-card,
   .feature-card,
   .archive-card,
-  .app-detail-category-card,
   .explore-category-link,
   .app-card h3 a,
+  .app-detail-category-row,
+  .collection-badge,
+  .collection-badge-icon,
   .tag,
   .button,
   .theme-toggle,

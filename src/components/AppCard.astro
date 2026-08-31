@@ -2,6 +2,7 @@
 import type { CollectionEntry } from 'astro:content';
 import MetaIcon from './MetaIcon.astro';
 import { getCategoryBySlug } from '../data/categories';
+import { fallbackIconColor } from '../data/app-icon';
 
 type App = CollectionEntry<'apps'>['data'];
 const { app, appId, editorNote, featuredDate, variant = 'default' } = Astro.props as {
@@ -15,20 +16,7 @@ const isHero = variant === 'hero';
 const showEditorsPickIcon = Boolean(
   editorNote && app.collections?.includes('editors-picks')
 );
-const missingIconColors = ['green', 'orange', 'blue', 'purple', 'pink'] as const;
-const colorSeed = appId ?? app.name;
-let fallbackColorHash = 0;
-for (const char of colorSeed) {
-  fallbackColorHash = Math.imul(31, fallbackColorHash) + char.charCodeAt(0);
-}
-fallbackColorHash ^= fallbackColorHash >>> 16;
-fallbackColorHash = Math.imul(fallbackColorHash, 0x7feb352d);
-fallbackColorHash ^= fallbackColorHash >>> 15;
-fallbackColorHash = Math.imul(fallbackColorHash, 0x846ca68b);
-fallbackColorHash ^= fallbackColorHash >>> 16;
-const fallbackColor = missingIconColors[
-  (fallbackColorHash >>> 0) % missingIconColors.length
-];
+const fallbackColor = fallbackIconColor(appId ?? app.name);
 const fallbackCategory = !app.icon ? getCategoryBySlug(app.categories[0]) : undefined;
 const hasIconVisual = Boolean(app.icon || fallbackCategory);
 /* The issue's Editor's Pick lights the hero card in its own colour. Only the hero

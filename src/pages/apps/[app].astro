@@ -1,9 +1,9 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
-import { ArrowUpRight } from 'lucide-astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AppCard from '../../components/AppCard.astro';
 import MetaIcon from '../../components/MetaIcon.astro';
+import { fallbackIconColor } from '../../data/app-icon';
 import {
   categories,
   collectionLabels,
@@ -31,6 +31,16 @@ const appCategories = categories.filter((category) =>
 const appCollections = collectionMeta.filter((collection) =>
   app.data.collections?.includes(collection.slug)
 );
+
+/* The identity block carries the same icon a card does, so the classes and the
+   fallback palette are shared rather than re-derived. iconStyle governs fitting;
+   an app with no icon falls back to its first category's mark. */
+const fallbackCategory = !app.data.icon ? appCategories[0] : undefined;
+const iconClass = app.data.icon
+  ? `app-icon-${app.data.iconStyle}`
+  : fallbackCategory
+    ? `app-icon-fallback app-icon-color-${fallbackIconColor(app.id)}`
+    : undefined;
 
 // Pool of the most category-related apps, most-related first. The client shuffles
 // this pool on each load; CSS shows only the first six, so no-JS visitors still get
@@ -76,59 +86,93 @@ const appSchema = [
   structuredData={appSchema}
 >
   <article class="page-shell app-detail-page">
+    {/* Masthead and rail. The reading path is: what is this, is it for me, go and
+        get it. The masthead carries that path and nothing else. Everything that
+        files the app rather than describes it moves to the rail, which also puts
+        the previously empty right half of the fold to work. Below 920px, where the
+        site collapses to one column everywhere else, the rail stacks under the
+        masthead and stays in reading order. */}
     <header class="app-detail-hero">
-      <h1>{app.data.name}</h1>
-      <p class="dek">{app.data.description}</p>
-      <div class="app-detail-meta-flow">
+      <div class="app-detail-masthead">
+        <div class:list={['app-detail-identity', iconClass]}>
+          {app.data.icon && (
+            <div class="app-icon-frame app-detail-app-icon" aria-hidden="true">
+              <img class="app-icon" src={app.data.icon} alt="" fetchpriority="high" decoding="async" />
+            </div>
+          )}
+          {fallbackCategory && (
+            <div class="app-icon-frame app-detail-app-icon missing-app-icon-frame" aria-hidden="true">
+              <MetaIcon name={fallbackCategory.icon} />
+            </div>
+          )}
+          <h1>{app.data.name}</h1>
+        </div>
+        <p class="dek">{app.data.description}</p>
+        <div class="app-detail-best-for">
+          <p class="eyebrow">Best For</p>
+          <p>{app.data.bestFor}</p>
+        </div>
+        <div class="app-detail-actions">
+          {/* The house arrow, as the Primary Button component specifies it: an inset
+              head against a full-length shaft at the site's 1.7 stroke. Lucide's
+              ArrowUpRight was drawing a head across the whole box at stroke 2,
+              heavier than every other mark on the site. */}
+          <a class="button" href={app.data.homepage} target="_blank" rel="noreferrer">
+            Homepage
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.7"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="m7 17 10-10" />
+              <path d="M9 7h8v8" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <aside class="app-detail-rail" aria-label="App details">
         {appCollections.length > 0 && (
-          <div class="app-detail-collections" aria-label="Collections">
+          <div class="app-detail-rail-group app-detail-honours">
             {appCollections.map((collection) => (
               <a class="collection-badge" href={`/collections/${collection.slug}/`}>
                 <span class="collection-badge-icon" aria-hidden="true">
                   <MetaIcon name={collection.icon} />
                 </span>
-                <span>{collectionLabels[collection.slug]}</span>
+                <span class="collection-badge-label">{collectionLabels[collection.slug]}</span>
               </a>
             ))}
           </div>
         )}
-        <div class="app-detail-best-for">
-          <p class="eyebrow">Best For</p>
-          <p>{app.data.bestFor}</p>
-        </div>
-      </div>
-      <div class="app-detail-actions">
-        <a class="button" href={app.data.homepage} target="_blank" rel="noreferrer">Homepage <ArrowUpRight aria-hidden="true" /></a>
-      </div>
-    </header>
 
-    <section class="app-detail-taxonomy">
-      <div class="section-heading">
-        <p class="eyebrow">Categories</p>
-      </div>
-      <div class="app-detail-category-grid" aria-label="App categories">
-        {appCategories.map((category) => (
-          <a
-            class="app-detail-category-card"
-            href={`/categories/${category.slug}/`}
-            style={`--category-accent: ${category.accent};`}
-          >
-            <span class="app-detail-category-icon" aria-hidden="true">
-              <MetaIcon name={category.icon} />
-            </span>
-            <span class="app-detail-category-copy">
-              <strong>{category.title}</strong>
-            </span>
-          </a>
-        ))}
-      </div>
-      <div class="app-detail-tag-stack">
-        <p class="eyebrow">Tags</p>
-        <div class="tag-list app-detail-tags" aria-label="App tags">
-          {app.data.tags.map((tag) => <a class="tag" href={`/tags/${tag}/`}>{tag}</a>)}
+        <div class="app-detail-rail-group">
+          <p class="eyebrow">Categories</p>
+          <ul class="app-detail-category-list">
+            {appCategories.map((category) => (
+              <li>
+                <a class="app-detail-category-row" href={`/categories/${category.slug}/`}>
+                  <span class="app-detail-category-mark" aria-hidden="true">
+                    <MetaIcon name={category.icon} />
+                  </span>
+                  <span>{category.title}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
-      </div>
-    </section>
+
+        <div class="app-detail-rail-group">
+          <p class="eyebrow">Tags</p>
+          <div class="tag-list app-detail-tags" aria-label="App tags">
+            {app.data.tags.map((tag) => <a class="tag" href={`/tags/${tag}/`}>{tag}</a>)}
+          </div>
+        </div>
+      </aside>
+    </header>
 
     {relatedApps.length > 0 && (
       <section class="section app-detail-section" data-reveal>
