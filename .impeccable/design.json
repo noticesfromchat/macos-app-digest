@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-31T18:01:18Z",
+  "generatedAt": "2026-08-31T18:56:08Z",
   "title": "Design System: App Waypoint",
   "extensions": {
     "colorMeta": {
@@ -398,7 +398,7 @@
       },
       {
         "name": "The One Card Height Rule",
-        "body": "Every app card on a page is the same height and their regions line up across the whole grid, not just within a row. The grid defines three repeating tracks and each card spans them as a subgrid. Floors are what the tallest record actually needs, measured across all 102: 230/149/122 at the narrowest three-column width, 205/99/88 above 1100px. The first and last include the card's 24px padding, since a subgrid item's padding comes out of the tracks it spans. minmax rather than fixed, so a longer future record makes its own band taller instead of clipping. This replaced per-region min-height budgets, which any card that overflowed one, usually a second line of tags, pushed out of step with its row. Reading cards are the exception and align on their own terms: they carry .app-card but hold three parts inside a wrapper, so card and wrapper both subgrid onto the shared rows, and they take no floors so a card is as tall as the longest of the three and no taller.",
+        "body": "Every app card on a page is the same height and their regions line up across the whole grid, not just within a row. The grid defines three repeating tracks and each card spans them as a subgrid. Floors are what the tallest record actually needs, measured across all 102: 230/149/122 at the narrowest three-column width, 205/99/88 above 1100px. The first and last include the card's 24px padding, since a subgrid item's padding comes out of the tracks it spans. minmax rather than fixed, so a longer future record makes its own band taller instead of clipping. This replaced per-region min-height budgets, which any card that overflowed one, usually a second line of tags, pushed out of step with its row. Reading cards are the exception and align on their own terms: they carry .app-card but hold three parts inside a wrapper, so card and wrapper both subgrid onto the shared rows, and they take no floors so a card is as tall as the longest of the three and no taller. The floors apply only where the grid is multi-column: below 921px each card is its own height, because a single column has no neighbour to agree with and the budgets, sized for a 270px card, added a median 159px per card and 17,000px of scrolling on a phone.",
         "section": "components"
       },
       {

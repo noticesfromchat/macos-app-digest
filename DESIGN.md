@@ -316,7 +316,9 @@ Cards are the primary container language for apps, readings, and archive entries
 
 **The One Card Height Rule.** Every app card on a page is the same height, and the regions inside them line up across the whole grid rather than only within a row. The grid defines three repeating tracks and each card spans them as a subgrid, so a card agrees with the one beside it and the one two rows below it.
 
-The floors are what the tallest record in the catalogue actually needs, measured across all 102: `230/149/122` where the three columns are narrowest, settling to `205/99/88` above 1100px once the content column stops growing. The first and last include the card's 24px padding, because a subgrid item's padding comes out of the tracks it spans. They are `minmax(floor, auto)` rather than fixed heights, so a future record that outgrows its budget makes its own band taller instead of being clipped.
+The floors are what the tallest record in the catalogue actually needs, measured across all 102: `230/149/122` where the three columns are narrowest, settling to `205/99/88` above 1100px once the content column stops growing.
+
+**The floors only apply where the grid is multi-column.** Below 921px each card is its own height. A single column has no neighbour to agree with, so a floor buys nothing there and costs a great deal: the budgets are sized for a card about 270px wide, while a one-column card is 351px and wraps far less, so on a phone they were adding a median of 159px to every card and 17,000px of scrolling to the directory. The first and last include the card's 24px padding, because a subgrid item's padding comes out of the tracks it spans. They are `minmax(floor, auto)` rather than fixed heights, so a future record that outgrows its budget makes its own band taller instead of being clipped.
 
 This replaced a set of fixed `min-height` budgets on each region. Those were guesses, and any card that overflowed one — a second line of tags was the usual culprit — pushed everything below it out of step with the rest of the row.
 

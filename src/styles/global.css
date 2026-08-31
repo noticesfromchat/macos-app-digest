@@ -440,8 +440,16 @@ a { color: inherit; }
      Reading cards are excluded throughout. They carry .app-card as well, but hold a
      single child rather than three, so spanning three rows left them with two empty
      ones and a card half again as tall as the app cards beside them. */
-  .grid:has(> .app-card:not(.reading-card)) {
-    grid-auto-rows: minmax(230px, auto) minmax(149px, auto) minmax(122px, auto);
+  /* Only where the grid is actually multi-column. A single column has no neighbour
+     to agree with, so a floor buys nothing and costs a great deal: the budgets are
+     sized for the narrowest three-column case, where a card is about 270px wide,
+     while a one-column card is 351px and wraps far less. Applied on a phone they
+     added a median of 159px to every card and 17,000px of scrolling to the
+     directory. Below 921px each card is its own height. */
+  @media (min-width: 921px) {
+    .grid:has(> .app-card:not(.reading-card)) {
+      grid-auto-rows: minmax(230px, auto) minmax(149px, auto) minmax(122px, auto);
+    }
   }
 
   /* Above 1100px the content column has stopped growing, so the budget settles. */
