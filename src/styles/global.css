@@ -266,16 +266,26 @@ a { color: inherit; }
   padding: 0 23px;
   border: 1px solid var(--accent);
   border-radius: 999px;
-  background: var(--accent);
-  color: white;
+  /* Outlined, not filled. The dark theme's blue is tuned to be legible as ink on
+     the dark surface, so using it as ground put white text at 2.62:1 and made the
+     button the brightest object on the page. As a label on the page surface the
+     same blue clears AA in both themes, and the action reads as considered rather
+     than bolted on. */
+  background: transparent;
+  color: var(--accent);
   font-size: 1rem;
   font-weight: 500;
   text-decoration: none;
-  transition: background-color 180ms ease, border-color 180ms ease, transform 180ms ease;
+  transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease, transform 180ms ease;
 }
 
 .button:hover,
-.button:focus-visible { border-color: var(--accent-hover); background: var(--accent-hover); transform: translateY(-1px); }
+.button:focus-visible {
+  border-color: var(--accent-hover);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  color: var(--accent-hover);
+  transform: translateY(-1px);
+}
 .button.secondary { border-color: var(--line); background: transparent; color: var(--text); }
 .button.secondary:hover,
 .button.secondary:focus-visible { border-color: var(--text); background: color-mix(in srgb, var(--surface) 50%, transparent); }
@@ -723,7 +733,10 @@ a { color: inherit; }
    fixed and the masthead flexible, so the prose measure stays honest at any width. */
 .app-detail-hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 272px;
+  /* 400px holds 95% of the catalogue's tag sets on one line, measured across all
+     102 apps: median 311px, p95 399px. The longest set needs 473px, and buying
+     that last 2% would cost 60px of the prose column. */
+  grid-template-columns: minmax(0, 1fr) 400px;
   align-items: start;
   gap: clamp(32px, 5vw, 72px);
   padding: 0 0 var(--section-space);
@@ -797,22 +810,17 @@ a { color: inherit; }
   text-decoration: none;
   transition: color 180ms ease;
 }
+/* Built exactly like a category mark: no container, the glyph simply inherits the
+   row's colour and turns blue with it on hover. A ring here made the mark itself
+   the loud thing; the honour's rank comes from its label and its position. */
 .collection-badge-icon {
   width: 34px;
   height: 34px;
-  border: 1px solid color-mix(in srgb, var(--accent) 34%, var(--line));
-  border-radius: 999px;
-  color: var(--accent);
-  transition: border-color 180ms ease, background-color 180ms ease;
+  color: inherit;
 }
 .collection-badge-label { min-width: 0; }
 .collection-badge:hover,
 .collection-badge:focus-visible { color: var(--accent); outline: 0; }
-.collection-badge:hover .collection-badge-icon,
-.collection-badge:focus-visible .collection-badge-icon {
-  border-color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 10%, transparent);
-}
 .collection-badge-icon,
 .app-detail-category-icon,
 .category-directory-icon,
@@ -822,11 +830,11 @@ a { color: inherit; }
   align-items: center;
   justify-content: center;
 }
-.collection-badge-icon svg,
 .app-detail-category-icon svg,
 .category-directory-icon svg,
 .explore-category-icon svg,
 .explore-collection-icon svg { width: 18px; height: 18px; }
+.collection-badge-icon svg { width: 19px; height: 19px; }
 .app-detail-best-for { max-width: var(--measure); }
 .app-detail-best-for p:not(.eyebrow) { margin: 10px 0 0; color: var(--muted); font-size: 1rem; line-height: 1.55; }
 .app-detail-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 24px; }
@@ -1964,7 +1972,6 @@ a { color: inherit; }
   .app-card h3 a,
   .app-detail-category-row,
   .collection-badge,
-  .collection-badge-icon,
   .tag,
   .button,
   .theme-toggle,

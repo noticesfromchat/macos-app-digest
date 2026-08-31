@@ -272,9 +272,9 @@
       "name": "Primary Button",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "The main call to action, used for obvious next steps.",
+      "description": "The main call to action, outlined rather than filled so the accent stays legible as ink in both themes.",
       "html": "<button class=\"ds-btn ds-btn-primary\">Homepage <svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"m7 17 10-10\"></path><path d=\"M9 7h8v8\"></path></svg></button>",
-      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 23px; border: 1px solid var(--accent); border-radius: 999px; background: var(--accent); color: #fff; font-family: inherit; font-size: .9rem; font-weight: 500; text-decoration: none; transition: background-color 180ms ease, border-color 180ms ease, transform 180ms ease; } .ds-btn-primary svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; } .ds-btn-primary:hover, .ds-btn-primary:focus-visible { border-color: var(--accent-hover); background: var(--accent-hover); transform: translateY(-1px); outline: 0; }"
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 23px; border: 1px solid var(--accent); border-radius: 999px; background: transparent; color: var(--accent); font-family: inherit; font-size: .9rem; font-weight: 500; text-decoration: none; transition: background-color 180ms ease, border-color 180ms ease, transform 180ms ease; } .ds-btn-primary svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; } .ds-btn-primary:hover, .ds-btn-primary:focus-visible { border-color: var(--accent-hover); background: color-mix(in srgb, var(--accent) 10%, transparent); color: var(--accent-hover); transform: translateY(-1px); outline: 0; }"
     },
     {
       "name": "Secondary Button",
@@ -379,7 +379,7 @@
       },
       {
         "name": "The Two Control Heights",
-        "body": "Every pill control is inline-flex with a min-height and horizontal padding only, at 44px for a primary action or 38px for a secondary one (44px on coarse pointers). Rank comes from height and fill, not from a different construction, and a button is as wide as its label.",
+        "body": "Every pill control is inline-flex with a min-height and horizontal padding only, at 44px for a primary action or 38px for a secondary one (44px on coarse pointers). Rank comes from height and from whether the border and label carry the accent or the neutral line, never from a fill and never from a different construction, and a button is as wide as its label. Nothing on the site is a filled control: the dark theme's blue is tuned to read as ink on the dark surface, so using it as a ground put white text at 2.62:1.",
         "section": "components"
       },
       {
@@ -418,7 +418,8 @@
       "Don't write the reveal's hidden state into the markup. It is added by script so the page ships visible.",
       "Don't use em dashes or en dashes in public editorial copy.",
       "Don't let the Editor's Pick accent leave that one card, or reach a link, control or state. It is light, not a second accent.",
-      "Don't hand-write an iconAccent. Generate it so every pick lands in the same lightness and chroma band."
+      "Don't hand-write an iconAccent. Generate it so every pick lands in the same lightness and chroma band.",
+      "Don't fill a control with the accent. The dark theme's blue is a foreground colour; as a ground it fails contrast and becomes the brightest thing on the page."
     ]
   }
 }

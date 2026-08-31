@@ -297,17 +297,17 @@ Because the card rests at Hover Lift rather than Ambient Card, it cannot answer 
 ### Buttons
 Buttons are quiet, pill-shaped workhorses: obvious, tactile, and not over-embellished.
 - **Shape:** 999px pill for the primary and secondary CTA buttons.
-- **Primary:** blue fill, white text, 44px minimum height, 23px horizontal padding, and a small icon gap. A button is as wide as its label — never a fixed box padded out to a round number.
+- **Primary:** outlined, not filled. A 1px blue border and a blue label over the page, 44px minimum height, 23px horizontal padding, and a small icon gap. A button is as wide as its label — never a fixed box padded out to a round number. It carried a blue fill with white text until the dark palette exposed why that could not hold: Buoy Blue is tuned to be legible as ink *on* the dark surface, so inverting it into a ground put white text at 2.62:1, well under AA, and made the button the brightest object on the page. As a label the same blue clears AA in both themes (5.17:1 light, 7.54:1 dark).
 - **Hover / Focus:** the blue deepens on hover, and focus is handled with a clear accessible outline rather than a visual stunt.
 - **Secondary:** transparent fill, ink text, and a borderless or low-border utility presence.
 - **Icon Buttons:** the header search, archive, and theme controls are 38px squares on desktop, but expand to 44px targets on mobile and coarse-pointer devices.
 
-**The Two Control Heights.** Every pill control is built the same way — inline-flex, a `min-height`, horizontal padding, no vertical padding — and stands at one of two heights: **44px** for a primary action and **38px** for a secondary one, rising to 44px on coarse pointers. Rank comes from the height and the fill, never from a different construction. A control that sets vertical padding instead of a min-height will drift out of the pair the moment its type changes.
+**The Two Control Heights.** Every pill control is built the same way — inline-flex, a `min-height`, horizontal padding, no vertical padding — and stands at one of two heights: **44px** for a primary action and **38px** for a secondary one, rising to 44px on coarse pointers. Rank comes from the height and from whether the border and label carry the accent or the neutral line, never from a fill and never from a different construction. Nothing on the site is a filled control. A control that sets vertical padding instead of a min-height will drift out of the pair the moment its type changes.
 
 ### Collection Badges
 The collection badge on an app detail page is a link to a curated collection, and it is the rarest fact on that page: six of a hundred apps carry one. It is an honour marker, not a chip. It was a 38px outlined pill sitting above the primary button, where it read as a second, weaker control; it now opens the detail rail.
-- **Style:** a 34px ring in blue holding the collection's mark, beside the collection name in ink at Metadata weight 700. No pill, no fill, no border around the label.
-- **Rank:** first item in the rail, above Categories and Tags. Rank comes from position, the ring and the weight of the label, never from a colour of its own. Its own row is 44px against the 34px category rows beneath it.
+- **Style:** the collection's mark beside its name in ink at Metadata weight 700. Built exactly like a category row: no container, no ring, no fill, and the glyph simply inherits the row's colour and turns blue with it on hover. A ring around the mark made the mark the loud thing rather than the honour.
+- **Rank:** first item in the rail, above Categories and Tags. Rank comes from position, from the label sitting in ink at weight 700 where a category label sits muted at 600, and from a 44px row against the category rows' 34px. Never from a colour of its own.
 - **Separation:** space alone divides it from the taxonomy below. A rule there reads as a container seam and competes with the thing it is meant to set apart.
 - **State:** hover and focus tint the label blue and fill the ring faintly, the same move a card makes.
 
@@ -348,8 +348,9 @@ Search is a centered overlay with a frosted dark backdrop and a bright, controll
 ### App Detail Page
 The detail page answers three questions in order: what is this, is it for me, and where do I get it. The masthead carries that path and the rail carries everything that files the app rather than describes it.
 - **Masthead:** the app's own icon and the page title form one lockup, the icon scaling from 56px to 76px against the title's cap height at the documented `md` radius. Then the dek, then Best For, then the single Homepage button. An app with no icon takes its first category's mark on the documented missing-icon colour, stable from the app ID so a card and its detail page always agree.
-- **Rail:** a 272px column holding the collection badge, then Categories, then Tags. It occupies what used to be empty space beside a 900px masthead on a 1160px page.
+- **Rail:** a 400px column holding the collection badge, then Categories, then Tags. It occupies what used to be empty space beside a 900px masthead on a 1160px page. The width is set by the tag chips: measured across all 102 apps a tag set needs 311px at the median and 399px at the 95th percentile, so 400px keeps 95% of the catalogue on a single line. The longest set needs 473px, and buying that last 2% would cost 60px of the prose column.
 - **Taxonomy rank:** categories are the most generic fact an app carries and read at Metadata scale in muted ink, as 34px rows with their marks. They were 22.4px serif inside 80px bordered cards, which made the least meaningful metadata the largest thing on the page after the title. Tags stay chips at Label scale. Nothing here outranks the app's own name, dek or Best For.
+- **One axis:** every mark in the rail shares a centre and every label starts at the same x, because the badge and the category rows use the same 34px icon column and 12px gap. Their glyphs are both 19px.
 - **Collapse:** at 920px, where the whole site drops to one column, the rail stacks under the masthead and keeps its DOM order, so reading and focus order do not change. No rule divides them, and none divides the badge from the taxonomy: inside the rail the separation is space. The only rule on the page closes the hero against the related apps below.
 
 ### Homepage Hero
