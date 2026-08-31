@@ -23,7 +23,12 @@ const apps = defineCollection({
     /* The light an Editor's Pick strikes in the hero. Normalised from the app's own
        icon to a fixed lightness and chroma, so every pick reads at the same weight.
        Only the pick card uses it. Generate with scripts/extract-icon-accent.mjs. */
-    iconAccent: z.string().regex(/^#[0-9a-f]{6}$/).optional()
+    iconAccent: z.string().regex(/^#[0-9a-f]{6}$/).optional(),
+    /* Which category's mark an icon-less app falls back to. The default is the first
+       entry in categories, but that line is derived from tags and rewritten by
+       scripts/sync-app-categories.mjs, so it cannot carry an editorial decision.
+       This can. It must name one of the app's own categories. */
+    iconCategory: categoryEnum.optional()
   })
 });
 

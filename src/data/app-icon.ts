@@ -31,7 +31,11 @@ export function fallbackIconColor(seed: string): MissingIconColor {
  * That returns the app's categories in the global order, so an app whose record
  * led with a later category showed one mark on its cards and another on its
  * detail page. */
-export function fallbackIconCategory(app: { icon?: string; categories: string[] }) {
+export function fallbackIconCategory(app: {
+  icon?: string;
+  categories: string[];
+  iconCategory?: string;
+}) {
   if (app.icon) return undefined;
-  return getCategoryBySlug(app.categories[0]);
+  return getCategoryBySlug(app.iconCategory ?? app.categories[0]);
 }

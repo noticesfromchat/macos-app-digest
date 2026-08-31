@@ -272,10 +272,16 @@ recognition without making cards feel like an app-store grid.
 - The fallback icon is intentional editorial metadata, not a temporary broken state.
   Use it when the available homepage, repository, marketplace or search-result image
   is generic, blurry, cropped, misleading or not clearly owned by the app.
-- Fallback tiles use the first entry in the app record's `categories` array, so place
-  the most representative category first when an app depends on the fallback. The
-  fallback color is stable from the app ID so cards do not reshuffle visually between
-  builds.
+- Fallback tiles use the first entry in the app record's `categories` array, unless the
+  editor directs otherwise with `iconCategory`. That field names which category's mark
+  an icon-less app should carry, and it must be one of the app's own categories.
+- Direct it with `iconCategory`, never by reordering `categories`. That line is derived
+  from the app's tags and rewritten by `scripts/sync-app-categories.mjs`, so a manual
+  reorder fails validation and would be overwritten on the next sync. MapOS is the
+  worked example: its tags put `ai-agents` first, but it is a map app, so it carries
+  `iconCategory: productivity-workflow`.
+- The fallback color is stable from the app ID rather than the category, so directing
+  the mark does not change the colour and cards do not reshuffle between builds.
 - An app that may be featured as an Editor's Pick also carries `iconAccent`, the colour
   its hero card is lit with. Generate it with `node scripts/extract-icon-accent.mjs
   <app-id> --write` rather than choosing a value by hand, so every pick lands in the same

@@ -49,6 +49,7 @@ const toExploreApp = (entry: (typeof apps)[number]) => ({
   bestFor: entry.data.bestFor,
   tags: entry.data.tags,
   categories: entry.data.categories,
+  iconCategory: entry.data.iconCategory,
   homepage: entry.data.homepage,
   icon: entry.data.icon,
   iconStyle: entry.data.iconStyle
@@ -344,7 +345,7 @@ const exploreData = {
       };
 
       const renderFallbackIcon = (app) => {
-        const categorySlug = app.categories?.[0];
+        const categorySlug = app.iconCategory ?? app.categories?.[0];
         const iconName = categorySlug ? data.categoryIcons?.[categorySlug] : undefined;
         const paths = iconName ? iconPaths[iconName] : undefined;
         if (!paths) return '';
