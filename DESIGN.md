@@ -26,6 +26,12 @@ colors:
   sea-ink-day: "9 35 66"
   sea-ink-night: "226 236 250"
 typography:
+  mono:
+    fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace'
+    fontSize: "0.94rem"
+    fontWeight: 400
+    lineHeight: 1.35
+    letterSpacing: "0"
   display:
     fontFamily: 'Iowan Old Style, Baskerville, "Times New Roman", serif'
     fontSize: "clamp(4rem, 8vw, 6rem)"
@@ -96,7 +102,9 @@ rounded:
   xs: "8px"
   sm: "10px"
   md: "12px"
-  lg: "18px"
+  ml: "14px"
+  lg: "16px"
+  xl: "18px"
   pill: "999px"
 spacing:
   xs: "6px"
@@ -236,7 +244,7 @@ The rhythm is two values, not one. **11px binds an eyebrow to its content; 24px 
 
 **The Plain Dash Rule.** Public editorial copy uses no em dash and no en dash. Restructure to a period, a comma, a colon, or parentheses, and set number and date ranges with a plain hyphen: `August 5-19, 2026`, not `August 5–19, 2026`. The em dash is the clearest tell of machine-drafted prose, and this publication is human-led by design. Three things sit outside the rule and stay as they are. Page-title separators are an SEO and publishing convention and are indexed, so `Archive — App Waypoint` is correct. Quoted external titles in source notes and reading lists keep their own punctuation, because changing it misquotes the source. Code comments are not copy and no reader sees them. The rule governs the site's public copy, not this repository's documentation. General frontend guidance in `.agents/skills/taste-skill` states a blanket zero-tolerance ban covering titles as well; that is a marketing-page heuristic, this narrower rule is what governs here, and the vendored skill is deliberately left unedited so it stays diffable against upstream.
 
-**The Serif-Utility Split.** Serif type carries the editorial voice; the system sans carries the operational voice. Mixing them casually weakens both jobs.
+**The Serif-Utility Split.** Serif type carries the editorial voice; the system sans carries the operational voice. Mixing them casually weakens both jobs. The mono face is the third voice and the narrowest: it is for data a reader might copy, which today means the RSS feed URL and nothing else. It is not a costume for looking technical.
 
 ## Layout
 
@@ -260,7 +268,9 @@ Depth is soft and ambient rather than structural. Surfaces stay flat at rest, th
 
 ## Shapes
 
-The shape language is rounded but disciplined. Cards use 12px corners, search overlays sit at 14px on mobile and 18px on desktop, and control menus stay close to 10px so they feel compact rather than playful. Buttons and tag chips go all the way to pills, while the logo and footer mark stay circular. The result is friendly without becoming bubbly.
+The shape language is rounded but disciplined. Two radii sit outside the scale on purpose: the app icon frames at 11px and 13px are proportional to the icon they hold, roughly 22% of its side, which is what keeps a rendered mark reading as a macOS icon rather than a rounded box.
+
+ Cards use 12px corners, search overlays sit at 14px on mobile and 18px on desktop, and control menus stay close to 10px so they feel compact rather than playful. Buttons and tag chips go all the way to pills, while the logo and footer mark stay circular. The result is friendly without becoming bubbly.
 
 The system prefers clipped rectangles, thin borders, and deliberate rounding over ornate silhouettes. Geometry stays stable so the content can carry the personality.
 
@@ -290,6 +300,10 @@ Buttons are quiet, pill-shaped workhorses: obvious, tactile, and not over-embell
 - **Hover / Focus:** the blue deepens on hover, and focus is handled with a clear accessible outline rather than a visual stunt.
 - **Secondary:** transparent fill, ink text, and a borderless or low-border utility presence.
 - **Icon Buttons:** the header search, archive, and theme controls are 38px squares on desktop, but expand to 44px targets on mobile and coarse-pointer devices.
+
+**The Target Floor Rule.** Anything a reader taps carries a minimum target: 24px, and the 44px the control system already gives every pill on a coarse pointer. This is not only for pills. Footer navigation, the explore section links, the carousel's directory link and the feature card's outbound link were each the height of their own text, 16 to 21px, because a bare link has no box unless it is given one.
+
+An icon link too small to grow gets its hit area expanded around it instead of being padded out, so the line it sits in is undisturbed. The Editor's Pick mark beside an app name works that way, and stops at 24px rather than 44px because a larger area would start taking taps meant for the title. A link inside a sentence is exempt and stays inline; the RSS link in the subscribe copy is the one that qualifies.
 
 **The Two Control Heights.** Every pill control is built the same way — inline-flex, a `min-height`, horizontal padding, no vertical padding — and stands at one of two heights: **44px** for a primary action and **38px** for a secondary one, rising to 44px on coarse pointers. Rank comes from the height and from whether the border and label carry the accent or the neutral line, never from a fill and never from a different construction. Nothing on the site is a filled control. A control that sets vertical padding instead of a min-height will drift out of the pair the moment its type changes.
 

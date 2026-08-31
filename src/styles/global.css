@@ -45,6 +45,10 @@
   --scrim: rgba(232, 236, 241, 0.62);
   --shadow: 0 18px 55px rgba(27, 35, 42, 0.08);
   --shadow-hover: 0 26px 68px rgba(27, 35, 42, 0.11);
+  /* A dialog lifts off a scrimmed page, so it needs more than card elevation. The
+     vocabulary had no token for it and the three overlays each invented their own
+     black. Light keeps the same ink the other shadows use rather than pure black. */
+  --shadow-modal: 0 30px 90px rgba(27, 35, 42, 0.18);
   --radius: 16px;
   --content-width: 1160px;
   --content-inset: 40px;
@@ -82,6 +86,7 @@
   --scrim: rgba(2, 11, 24, 0.52);
   --shadow: 0 20px 60px rgba(0, 0, 0, 0.24);
   --shadow-hover: 0 28px 72px rgba(0, 0, 0, 0.42);
+  --shadow-modal: 0 30px 90px rgba(0, 0, 0, 0.44);
   --sea-ink: 226 236 250;
   --sea-alpha: .22;
 }
@@ -523,7 +528,6 @@ a { color: inherit; }
   border-radius: 13px;
 }
 .hero-pick-card h3 { font-size: var(--type-subhead); letter-spacing: -.02em; line-height: 1.08; }
-.hero-pick-card .pick-desc,
 .hero-pick-card .app-summary p { font-size: 1rem; }
 
 .hero-pick-card .editor-note { margin-top: 22px; padding-top: 0; border-top: 0; }
@@ -749,6 +753,7 @@ a { color: inherit; }
   gap: .2em;
 }
 .editors-pick-icon-link {
+  position: relative;
   display: inline-flex;
   flex: 0 0 auto;
   width: .9em;
@@ -756,6 +761,20 @@ a { color: inherit; }
   color: var(--accent);
   transition: color 180ms ease;
 }
+/* The mark is .9em, well under a usable target. The hit area is grown to 24px
+   around it rather than the box itself, which would disturb the title's line. It
+   stops at 24 rather than 44 because the icon sits beside the app name and a
+   larger area would start taking taps meant for the title. */
+.editors-pick-icon-link::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 24px;
+  height: 24px;
+  transform: translate(-50%, -50%);
+}
+
 .editors-pick-icon-link:hover,
 .editors-pick-icon-link:focus-visible { color: var(--accent-hover); }
 .editors-pick-icon { width: 100%; height: 100%; }
@@ -776,7 +795,16 @@ a { color: inherit; }
 
 .feature-card { padding: 28px; }
 .feature-card p { max-width: var(--measure); margin: 0 0 14px; color: var(--muted); }
-.feature-card a { color: var(--accent); font-weight: 700; }
+/* A standalone link on its own line is a target, not prose, so it carries the
+   minimum. The inline RSS link in the subscribe copy is left alone: WCAG exempts a
+   target sitting inside a sentence, and padding one out would break the line. */
+.feature-card a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  color: var(--accent);
+  font-weight: 700;
+}
 
 .app-detail-page { padding: var(--page-start-space) 0 36px; }
 /* The detail page reads: what is this, is it for me, go and get it. The masthead
@@ -886,18 +914,12 @@ a { color: inherit; }
 .collection-badge-label { min-width: 0; }
 .collection-badge:hover { color: var(--accent); }
 .collection-badge-icon,
-.app-detail-category-icon,
-.category-directory-icon,
-.explore-category-icon,
-.explore-collection-icon {
+.category-directory-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
-.app-detail-category-icon svg,
-.category-directory-icon svg,
-.explore-category-icon svg,
-.explore-collection-icon svg { width: 18px; height: 18px; }
+.category-directory-icon svg { width: 18px; height: 18px; }
 /* Same size as a category mark, so the two render the same 1.58px stroke: lucide
    scales its stroke with the glyph, and any size difference here would put one
    icon family at two weights in a single column. */
@@ -907,19 +929,6 @@ a { color: inherit; }
 .app-detail-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 24px; }
 .app-detail-actions .button { gap: 8px; }
 .app-detail-actions .button svg { width: 1em; height: 1em; }
-.app-detail-panel {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(28px, 5vw, 72px);
-  width: 100%;
-  max-width: none;
-  align-items: start;
-  padding: 0 0 var(--section-space);
-  border-bottom: 1px solid var(--line);
-}
-.app-detail-panel > div { min-width: 0; }
-.app-detail-panel p:not(.eyebrow) { max-width: var(--measure); margin: 14px 0 0; color: var(--muted); font-size: 1rem; line-height: 1.55; }
-.app-detail-tags { min-height: 0; padding-top: 3px; }
 .app-detail-tags { min-height: 0; padding-top: 0; }
 .app-detail-section { width: 100%; padding-right: 0; padding-left: 0; }
 .app-detail-related-grid .app-card:nth-child(n + 7) { display: none; }
@@ -1488,6 +1497,9 @@ a { color: inherit; }
   gap: 0;
 }
 .explore-carousel-directory-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
   border: 0;
   background: transparent;
   color: var(--accent);
@@ -1498,6 +1510,10 @@ a { color: inherit; }
   text-transform: uppercase;
   cursor: pointer;
 }
+@media (pointer: coarse) {
+  .explore-carousel-directory-link { min-height: 44px; }
+}
+
 .explore-carousel-directory-link:hover,
 .explore-carousel-directory-link:focus-visible {
   color: var(--accent-hover);
@@ -1510,6 +1526,9 @@ a { color: inherit; }
   text-align: center;
 }
 .explore-more a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
   color: var(--accent);
   font-size: var(--type-meta);
   font-weight: 800;
@@ -1517,6 +1536,11 @@ a { color: inherit; }
   text-decoration: none;
   text-transform: uppercase;
 }
+@media (pointer: coarse) {
+  .feature-card a,
+  .explore-more a { min-height: 44px; }
+}
+
 .explore-more a:hover,
 .explore-more a:focus-visible { color: var(--accent-hover); text-decoration: underline; text-underline-offset: 3px; }
 
@@ -1928,7 +1952,6 @@ a { color: inherit; }
   .app-detail-page { padding: var(--page-start-space) 0 36px; }
   .app-detail-hero { padding: 0 0 24px; }
   .app-detail-actions { flex-direction: column; align-items: flex-start; }
-  .app-detail-category-grid,
   .explore-subscribe-card { grid-template-columns: 1fr; }
   .explore-utility-grid { grid-template-columns: 1fr; }
   .explore-utility-tags-panel { border-top: 1px solid var(--line); border-left: 0; }
@@ -1949,8 +1972,6 @@ a { color: inherit; }
     height: 44px;
     justify-self: start;
   }
-  .app-detail-panel { grid-template-columns: 1fr; }
-  .app-detail-panel { gap: 24px; }
   .explore-carousel-stage {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;

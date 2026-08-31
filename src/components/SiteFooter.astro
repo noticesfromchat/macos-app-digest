@@ -51,8 +51,14 @@ const { current = '' } = Astro.props;
     white-space: nowrap;
   }
 
+  /* A nav link is a target, not prose, so it carries one: 24px to clear WCAG 2.2's
+     minimum, and the 44px the design system already gives every control on a coarse
+     pointer. These were the text line box alone, 21px tall. */
   .site-footer a,
   .site-footer nav button {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
     padding: 0;
     border: 0;
     background: transparent;
@@ -77,6 +83,11 @@ const { current = '' } = Astro.props;
   .site-footer nav button:focus-visible {
     outline: 2px solid color-mix(in srgb, var(--accent) 34%, transparent);
     outline-offset: 4px;
+  }
+
+  @media (pointer: coarse) {
+    .site-footer a,
+    .site-footer nav button { min-height: 44px; }
   }
 
   @media (max-width: 680px) {

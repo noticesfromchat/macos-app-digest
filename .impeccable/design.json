@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-31T19:36:03Z",
+  "generatedAt": "2026-08-31T20:01:22Z",
   "title": "Design System: App Waypoint",
   "extensions": {
     "colorMeta": {
@@ -187,6 +187,10 @@
       "brand": {
         "displayName": "Brand",
         "purpose": "The Seamless and Philippine wordmark role only."
+      },
+      "mono": {
+        "displayName": "Mono",
+        "purpose": "Data a reader might copy. Today that is the RSS feed URL and nothing else; it is not a costume for looking technical."
       }
     },
     "shadows": [
@@ -209,6 +213,16 @@
         "name": "night-hover",
         "value": "0 28px 72px rgba(0, 0, 0, 0.42)",
         "purpose": "Dark-theme hover elevation."
+      },
+      {
+        "name": "modal",
+        "value": "0 30px 90px rgba(27, 35, 42, 0.18)",
+        "purpose": "Dialogs lifting off a scrimmed page: search, the navigation menu, the subscribe dialog."
+      },
+      {
+        "name": "night-modal",
+        "value": "0 30px 90px rgba(0, 0, 0, 0.44)",
+        "purpose": "The same dialogs in the dark theme."
       }
     ],
     "motion": [
@@ -410,6 +424,11 @@
         "name": "The One Scrim Rule",
         "body": "Search, the navigation menu and the subscribe dialog share one backdrop token, --scrim, and it follows the theme. All three were a near-black navy in both themes, which is right over a dark page and turns a light one grey; light takes Harbor Fog at 62% so the page stays bright and the blur does the obscuring. Blur is identical across the three at blur(12px) saturate(110%). A panel separates from the scrim on its own shadow, not on the scrim being dark.",
         "section": "components"
+      },
+      {
+        "name": "The Target Floor Rule",
+        "body": "Anything a reader taps carries a minimum target: 24px, and the 44px the control system already gives every pill on a coarse pointer. Footer navigation, the explore section links, the carousel's directory link and the feature card's outbound link were all the text line box alone, 16 to 21px. An icon link too small to grow, like the Editor's Pick mark beside an app name, gets its hit area expanded around it instead, and stops at 24 so it does not start taking taps meant for the title. A link inside a sentence is exempt and stays inline.",
+        "section": "components"
       }
     ],
     "dos": [
@@ -435,7 +454,8 @@
       "Don't align cards with per-region min-heights. They are guesses, and content that outgrows one knocks its whole row out of step.",
       "Don't apply saturate() to a whole card to knock back its icon. It drains the card's own surface and takes it off the palette's hue.",
       "Don't derive an app's fallback icon or colour in a component. Both come from src/data/app-icon.ts, or the surfaces drift apart.",
-      "Don't hard-code an overlay scrim. It is --scrim, and a dark scrim over a light page reads as a dimmed screen rather than frosted glass."
+      "Don't hard-code an overlay scrim. It is --scrim, and a dark scrim over a light page reads as a dimmed screen rather than frosted glass.",
+      "Don't ship a tap target at the height of its text. A nav link is a target, not prose."
     ]
   }
 }

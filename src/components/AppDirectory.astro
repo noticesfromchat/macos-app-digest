@@ -68,6 +68,10 @@ const sortedApps = [...apps].sort((a, b) =>
   data-default-type={defaultFilterType}
   data-default-value={defaultFilterValue}
 >
+  {/* The page title is the h1 and every card title is an h3, so without this the
+      directory skipped a level. It names the region for a screen reader and keeps
+      the outline whole; there is no visible heading here by design. */}
+  <h2 class="sr-only">Apps</h2>
   <div class:list={['directory-toolbar', !showFilterMenu && 'directory-toolbar--no-filter']}>
     <p class="directory-count" aria-live="polite" data-directory-count>
       {apps.length} {apps.length === 1 ? 'app' : 'apps'}
