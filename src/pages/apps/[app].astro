@@ -3,7 +3,7 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AppCard from '../../components/AppCard.astro';
 import MetaIcon from '../../components/MetaIcon.astro';
-import { fallbackIconColor } from '../../data/app-icon';
+import { fallbackIconColor, fallbackIconCategory } from '../../data/app-icon';
 import {
   categories,
   collectionLabels,
@@ -35,7 +35,7 @@ const appCollections = collectionMeta.filter((collection) =>
 /* The identity block carries the same icon a card does, so the classes and the
    fallback palette are shared rather than re-derived. iconStyle governs fitting;
    an app with no icon falls back to its first category's mark. */
-const fallbackCategory = !app.data.icon ? appCategories[0] : undefined;
+const fallbackCategory = fallbackIconCategory(app.data);
 const iconClass = app.data.icon
   ? `app-icon-${app.data.iconStyle}`
   : fallbackCategory
