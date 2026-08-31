@@ -104,6 +104,13 @@ Use `iconStyle: plain` for finished square app icons. Use `backed` for transpare
 or loose artwork that needs a white backing, and `contain` for non-square marks that
 should avoid cropping without adding a backing.
 
+Before accepting an icon, confirm the app's actual mark or native rounded-square icon
+visually fills the fixed app-card slot. Flag icons that appear too small,
+over-cropped, blurry, off-center, backed by an unwanted visible edge, mismatched to
+the app's identity or weaker than the source. If the fix is unclear, ask the editor
+whether to crop the local asset, find a better official source, change `iconStyle` or
+use the category fallback.
+
 If no suitable official icon is available, omit `icon` and `iconStyle`; app cards
 will use the app's first category icon with the approved missing-icon color palette.
 Because fallback icons use the first category, order `categories` with the most
