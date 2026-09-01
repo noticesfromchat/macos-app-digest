@@ -76,3 +76,8 @@
   from = "/tags/cloud/"
   to = "/apps/duckdisk/"
   status = 301
+
+[[redirects]]
+  from = "/tags/icloud/"
+  to = "/tags/rss/"
+  status = 301

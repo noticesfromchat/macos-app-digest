@@ -39,6 +39,15 @@ Every tag with one app gets one of four verdicts.
 Prefer durable reader intent over implementation detail. Ask what a reader would type
 to find the app, not what the app's release notes list.
 
+Watch for **attribute tags** — tags describing how an app works rather than what it is.
+They are the hardest failure to spot, because each individual use looks correct. The
+test is consistency: if the tag would honestly apply to a dozen records but sits on two,
+it is describing plumbing, and the two records that carry it are arbitrary. `export` and
+`icloud` both failed this test. `local` and `open-source` are the deliberate exceptions:
+they are attributes too, but they carry real editorial weight for this audience, so they
+stay unmapped, are excluded from `getPopularTags`, and are applied to every record that
+qualifies rather than to a handful.
+
 ## 3. Protected tags
 
 These tags carry a single app on purpose. Do not retire them in a routine audit, and do
@@ -72,7 +81,8 @@ is already covered.
 | `library` | Vague. It could mean an ebook library, a bookmark library or a media library, and the app holding it already carried the precise tag. | `ebooks`, `reading`, or `research` |
 | `documentation` | One letter from `documents`, which means something else. Two tags that near-collide are a navigation problem, not a taxonomy. | `capture` for workflow-capture tools; `documents` for document handling |
 | `export` | A feature, not an identity. Many apps export something; tagging one of them for it describes the release notes, not the app. | Nothing. Tag what the app *is* |
-| `cloud` | Vague, and it half-collides with `icloud`. A local-first catalog will not grow it. | `files`, or `icloud` for Apple sync specifically |
+| `cloud` | Vague, and it half-collides with `icloud`. A local-first catalog will not grow it. | `files` |
+| `icloud` | Plumbing, not identity, and applied inconsistently: only two records carried it while `finalist` syncs across Mac, iPhone, iPad and Watch, and `hyperduck`, `choclift` and `raindrop` are all cross-device, none of them tagged. Sync is how an app works, not what it is. | Nothing. Tag what the app *is* |
 
 Removing a tag from one record is not retirement. A tag is retired only when no app
 carries it and it has been removed from `src/data/categories.ts`. When that happens, add
@@ -117,7 +127,8 @@ change that alters category order, confirm whether the affected records carry ic
 
 Retiring a tag removes its `/tags/{tag}/` route. `netlify.toml` already carries 301s for
 retired category routes; add one per retired tag in the same change. Point it at the
-successor tag where one exists, otherwise at the sole app's detail page.
+successor tag where one exists; otherwise at the sole app's detail page, or — when
+several records carried the tag — at the strongest tag those records still share.
 
 ## 8. Report, then apply
 
