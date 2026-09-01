@@ -15,6 +15,19 @@ or regenerating any page or issue, also read and follow
 - Markdown files under `src/content/` are the source of truth for editorial content.
 - Existing published pages are useful references, but the style guide takes precedence when older markup conflicts with current standards.
 
+### Vendored skills
+
+- `.claude/skills/seo/` is the [Agentic SEO Skill](https://github.com/Bhanunamikaze/Agentic-SEO-Skill)
+  (MIT), vendored for SEO audits of the site and of the GitHub repository. It is third-party
+  code: review the diff when updating it, and do not edit it in place.
+- Its analysis scripts need Python packages this repository does not otherwise use.
+  Install them only if you intend to run those scripts:
+  `python3 -m pip install --user requests beautifulsoup4 lxml`.
+- The skill is tooling, not site content. It is never built, never copied into `dist/`, and
+  must not be treated as a source of truth for editorial or presentation decisions —
+  `docs/STYLE_GUIDE.md` and `DESIGN.md` still govern those, and an SEO recommendation that
+  conflicts with them is a conflict to raise, not to apply.
+
 ## Astro content model
 
 - Apps live in `src/content/apps/*.md`.
