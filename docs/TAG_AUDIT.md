@@ -1,0 +1,114 @@
+# Tag Audit
+
+How App Waypoint audits its app tags. `docs/STYLE_GUIDE.md` section 5 sets the rule;
+this file sets the method. Run an audit every four issues, and any time the tag count
+grows faster than the catalog.
+
+An audit produces a report for editorial review. It does not change app records on its
+own. Approval happens first, in a before/after map.
+
+## 1. Take the census
+
+Tags live in the `tags:` array of each file in `src/content/apps/`. Categories are
+derived from those tags by `src/data/categories.ts` and rewritten into each record by
+`scripts/sync-app-categories.mjs`. Never hand-edit a `categories:` line.
+
+Three numbers start the audit:
+
+- how many apps carry each tag;
+- which tags carry exactly one app;
+- which tags map to no category, and which mapped tags now carry no apps.
+
+The last one matters because retiring a tag is what creates a dead map entry, and the
+validator does not catch it. `scripts/validate-content.mjs` checks that each record's
+categories match its tags. It does not check the reverse.
+
+## 2. Judge each single-app tag
+
+Every tag with one app gets one of four verdicts.
+
+- **Spread.** The tag is sound and other apps qualify. Read each candidate's
+  `description` and `bestFor` before proposing it; never match on the app name.
+- **Merge.** A near-duplicate of an existing tag, such as a singular beside a plural.
+  Retag the app onto the surviving tag and retire the duplicate.
+- **Retire.** No second home, and the tag is redundant, vague, too narrow, or a feature
+  rather than an identity. A tag that would honestly apply to a dozen apps but is
+  applied to one is a feature, not a discovery tag.
+- **Keep.** One app, deliberately. See protected tags below.
+
+Prefer durable reader intent over implementation detail. Ask what a reader would type
+to find the app, not what the app's release notes list.
+
+## 3. Protected tags
+
+These tags carry a single app on purpose. Do not retire them in a routine audit, and do
+not stretch other records onto them to inflate the count. Removing one requires an
+explicit editorial decision recorded in the audit report.
+
+| Tag | Sole app | Why it is protected |
+| --- | --- | --- |
+| `health` | touchgrass | `netlify.toml` redirects the retired `/categories/thrive/` to `/tags/health/`. Retiring the tag turns a live 301 into a 404. |
+| `finance` | stockdock | The only tag that states what the app is. Already excluded from `getPopularTags`, so it never crowds discovery surfaces. |
+| `maps` | mapos | The only tag that states what the app is. `STYLE_GUIDE.md` cites mapos as the worked example for `iconCategory`; the record is deliberately unusual. |
+| `database` | fluentdb | Precise, high reader intent, and an explicit member of Developer Tools. |
+| `backup` | superduper | Durable reader intent with an obvious growth path. Backup tools are a standing Mac category. |
+| `downloads` | firelink | As above. Do not stretch it onto apps that merely mention downloads as a trigger condition. |
+| `ebooks` | tomo | Precise where a broader tag would be vague. Monitor: if still a single app after two audits, consider folding into `reading`. |
+
+A protected tag is not permanent. It is a tag whose single-app status has already been
+argued and settled, so a later audit does not relitigate it by default.
+
+## 4. Watch the tag budget
+
+`AGENTS.md` sets 3–5 tags per app, hard maximum 6; the schema enforces 2–6. An audit
+that adds tags must not quietly spend every record's headroom.
+
+When a record would reach six, name its weakest tag rather than accepting the ceiling.
+Rank weakness by:
+
+1. **Reach.** A tag on 45 of 102 apps carries far less discovery signal than one on 4.
+   `utility` and `productivity` are the broadest tags in the catalog and are usually the
+   weakest thing on any record holding them.
+2. **Redundancy.** A tag whose category is already reached by another tag on the same
+   record adds a page entry but no category. Dropping it costs nothing structurally.
+3. **Accuracy.** A tag that is the *sole* source of a category the app does not really
+   belong to is worse than weak; it is wrong, and dropping it corrects the taxonomy.
+
+Check the category effect before dropping. Removing a tag that is the only route to a
+category changes that record's category set, which is an editorial decision, not a
+cleanup.
+
+## 5. Maintain the category map
+
+`src/data/categories.ts` gives each category a `tags` array. A tag in no array still
+works as a tag page; it simply contributes nothing to category derivation. That is
+correct for attributes such as `local` and `open-source`, and for apps with no natural
+category home.
+
+When retiring a tag, remove it from any category array in the same change. When a
+functional tag accumulates several apps and maps nowhere, propose a home for it and
+state which records would gain a category.
+
+Category order within a record is derived from the app's own tag order and decides the
+fallback mark for an app with no `icon:` and no `iconCategory:`. Before proposing any
+change that alters category order, confirm whether the affected records carry icons.
+
+## 6. Redirect what you retire
+
+Retiring a tag removes its `/tags/{tag}/` route. `netlify.toml` already carries 301s for
+retired category routes; add one per retired tag in the same change. Point it at the
+successor tag where one exists, otherwise at the sole app's detail page.
+
+## 7. Report, then apply
+
+Produce a before/after map covering every affected record and every category-map edit,
+and get editorial approval before touching app records. Once approved:
+
+```bash
+npm run sync:categories
+npm run validate
+npm run build
+```
+
+`sync:categories` rewrites every `categories:` line from tags, so it runs after both the
+app-record edits and the `categories.ts` edits, never between them.

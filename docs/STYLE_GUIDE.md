@@ -142,6 +142,11 @@ section spine. When present, it renders between `Trending` and `Old Favorites`.
 - Run a tag audit every four issues, and produce a before/after map for editorial
   review before changing app records. Remove or consolidate tags that are redundant,
   too narrow, vague, or unlikely to remain useful as the catalog grows.
+- `docs/TAG_AUDIT.md` is the method: how to take the census, how to judge a tag that
+  carries a single app, how to rank the weakest tag on a record at the six-tag ceiling,
+  and how to keep `src/data/categories.ts` and the Netlify redirects in step.
+- Some single-app tags are protected and must not be retired in a routine audit. The
+  list and the reason for each is in `docs/TAG_AUDIT.md`.
 
 ## 6. App detail pages
 

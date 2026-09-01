@@ -114,7 +114,9 @@ the single production deployment point. Follow the complete workflow in
 - Every app placed in an `Old Favorites` section must include `community-favorites`
   in its app record's `collections` array. Preserve any existing collection entries.
 - During the Thursday check, audit existing tags for underuse, duplication, vague
-  labels, overly narrow labels and apps that appear mistagged or undertagged.
+  labels, overly narrow labels and apps that appear mistagged or undertagged. Follow
+  `docs/TAG_AUDIT.md`, which defines the method, the protected single-app tags and the
+  rule for a record at the six-tag ceiling.
 - Ask whether the editor wants any changes to existing app records before preparing
   the release candidate. Check the Notion
   [Editor's Picks note](https://app.notion.com/p/Editor-s-Picks-3c8d6482d47f80c4bbc6ce99ed84d908?source=copy_link)

@@ -58,7 +58,7 @@ export const categories: Category[] = [
     slug: 'productivity-workflow',
     title: 'Productivity & Workflow',
     description: 'Task managers, reminders, automation and scheduling tools that help Mac users reduce friction in repeat work.',
-    tags: ['productivity', 'tasks', 'reminders', 'automation', 'calendar'],
+    tags: ['productivity', 'tasks', 'reminders', 'automation', 'calendar', 'shortcuts'],
     icon: 'route',
     accent: 'color-mix(in srgb, var(--accent) 11%, var(--surface-strong))'
   },
