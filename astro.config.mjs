@@ -5,5 +5,6 @@ export default defineConfig({
   site: 'https://appwaypoint.netlify.app',
   output: 'static',
   trailingSlash: 'always',
+  devToolbar: { enabled: false },
   integrations: [sitemap()]
 });
