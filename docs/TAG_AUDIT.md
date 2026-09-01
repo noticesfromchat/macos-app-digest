@@ -133,7 +133,17 @@ several records carried the tag — at the strongest tag those records still sha
 ## 8. Report, then apply
 
 Produce a before/after map covering every affected record and every category-map edit,
-and get editorial approval before touching app records. Once approved:
+and get editorial approval before touching app records.
+
+An audit ends in dozens of small yes-or-no calls, so collect them on a **decision
+sheet** rather than in prose: one card per decision, each carrying the tag diff, the
+resulting tag count and the verified category effect, with approve, reject and a
+free-text alternative. Every option on the sheet must already be checked for category
+drift and icon-fallback impact — a decision sheet offers verified changes, not guesses.
+Work through it in one pass afterwards, and **delete the sheet once every decision is
+resolved**; a sheet still showing decisions that have shipped misleads the next reader.
+
+Once approved:
 
 ```bash
 npm run sync:categories

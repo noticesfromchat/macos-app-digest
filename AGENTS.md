@@ -52,6 +52,16 @@ enforced by `scripts/check-editorial-style.mjs`. Design rules belong in `DESIGN.
 named rules, and in `.impeccable/design.json` so `context.mjs` surfaces them. A rule
 documented somewhere new, next to nothing related, will not be found again.
 
+**Collect multi-part approvals on a decision sheet.** When work produces more than two
+or three choices for the editor — audit findings, app-record changes, review comments,
+a migration — do not ask for them in prose. Publish one sheet with a card per decision,
+each carrying the concrete change and its already-verified consequence, and an approve,
+reject or free-text alternative. Present only options whose effects have been checked;
+a sheet is for verified changes, not guesses. Apply the answers in one pass, then
+**delete the sheet as part of finishing the work** — a sheet still listing decisions
+that have shipped misleads whoever reads it next. `docs/TAG_AUDIT.md` section 8 shows
+the pattern in use.
+
 1. Start from the latest `main` and create a short-lived task branch. Never make a
    production change directly on `main`.
 2. Read the task-relevant documentation before making changes.
