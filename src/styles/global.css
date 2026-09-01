@@ -513,7 +513,21 @@ a { color: inherit; }
 .editor-note p { margin: 0; }
 
 .home-hero-pick { display: flex; flex-direction: column; }
-.home-hero-pick-title { display: none; }
+
+/* Hidden from sight above 920px, where the eyebrow and the card carry the meaning, but
+   never hidden from the outline. `display: none` here took the h2 out of the document
+   entirely, so the desktop homepage ran h1 straight to the app card's h3 and broke the
+   heading sequence on exactly the widths most readers use. The clip pattern keeps the
+   level in place for assistive technology at every width. */
+.home-hero-pick-title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
 .home-hero-pick .hero-pick-card { flex: 1; }
 
 .hero-pick-card .app-summary { margin-bottom: 0; }
@@ -983,6 +997,24 @@ a { color: inherit; }
    just finished the issue should meet a section, not a footnote. */
 .issue-outro { margin-bottom: 88px; }
 
+/* The publication's promise, and the one control that acts on it, above the browse
+   routes rather than below them. The cadence was stated once in the hero and nowhere
+   else, so a reader who had just finished an issue met eight links and no way to be
+   told about the next one. */
+.issue-outro-cadence {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 24px;
+  margin: 0 0 24px;
+}
+
+.issue-outro-cadence p {
+  margin: 0;
+  color: var(--muted);
+  font-size: var(--type-meta);
+}
+
 .issue-outro-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -996,13 +1028,20 @@ a { color: inherit; }
   padding: 28px;
 }
 
+/* A card heading here names the card; it does not carry the content. It used to be set
+   at subhead, which made the two emptiest phrases in the block its loudest type and left
+   the featured issue's own title smaller than that issue's dek. Label rank puts the
+   ranking back the right way up: the section title leads, the card says which door this
+   is, and the issue itself is the largest thing inside the card. */
 .issue-outro-card h3 {
-  margin: 0 0 22px;
-  font-family: var(--display);
-  font-size: var(--type-subhead);
-  font-weight: 500;
-  letter-spacing: -.02em;
-  line-height: 1.1;
+  margin: 0 0 18px;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: var(--type-label);
+  font-weight: 800;
+  letter-spacing: .1em;
+  line-height: 1;
+  text-transform: uppercase;
 }
 
 /* One issue told in full, then the ones before it as bare lines. The rank is the
@@ -1141,8 +1180,7 @@ a { color: inherit; }
 /* Number and date are one label for one issue, so they are one target, and the
    featured line and the list rows are the same target because they mean the same
    thing. */
-.issue-outro-issue { margin: 0; }
-.issue-outro-issue,
+.issue-outro-issue { margin: 0; font-size: 1.38rem; }
 .issue-outro-more { font-size: var(--type-meta); }
 .issue-outro-issue a {
   display: inline-flex;
@@ -1162,7 +1200,16 @@ a { color: inherit; }
   text-decoration: none;
   transition: color 180ms ease;
 }
-.issue-outro-issue strong,
+/* Display serif at 1.38rem, matching `.archive-card strong`: the same issue met on two
+   pages should not be two different objects. The date stays at metadata scale beside it
+   so the pairing still reads as one label rather than two headings. */
+.issue-outro-issue strong {
+  font-family: var(--display);
+  font-weight: 600;
+  letter-spacing: -.01em;
+}
+.issue-outro-issue .issue-outro-sep,
+.issue-outro-issue time { font-size: var(--type-meta); }
 .issue-outro-more strong { font-weight: 700; }
 .issue-outro-issue time,
 .issue-outro-more time { color: var(--muted); font-weight: 600; transition: color 180ms ease; }
@@ -1250,10 +1297,13 @@ a { color: inherit; }
   outline-offset: 4px;
 }
 
-/* Every standalone target in the pair takes the coarse-pointer minimum. Read now is
-   the deliberate exception: it lives inside the dek's line box. */
+/* Every standalone target takes the coarse-pointer minimum, except the featured issue
+   line. Its anchor is already stretched over the whole entry, so it is a 120px target
+   before any minimum applies, and a `min-height` there would buy nothing while inflating
+   the line box inside a group whose only separator is its spacing ratio. That inflation
+   pushed the gap within the group past the gap between groups on every touch device,
+   which inverted the proximity the card relies on. */
 @media (pointer: coarse) {
-  .issue-outro-issue a,
   .issue-outro-more a,
   .issue-outro-list a,
   .issue-outro-link { min-height: 44px; }
@@ -2082,7 +2132,13 @@ a { color: inherit; }
   .home-hero-pick { order: 3; }
   .home-hero + .section { border-top: 1px solid var(--line); }
   .home-hero-pick-title {
-    display: block;
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip: auto;
+    clip-path: none;
+    white-space: normal;
     margin: 0 0 22px;
     font-family: var(--display);
     font-size: var(--type-subhead);

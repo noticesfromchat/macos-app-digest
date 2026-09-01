@@ -400,6 +400,13 @@ A full-bleed band whose content sits on the shared page shell, so the wordmark a
 - **Atmosphere:** two drawn layers — a star field (night only) and an engraved wave band. The stars stop at the water, and the horizon is measured from the sea canvas rather than taken as a fraction of the hero's height. Below 920px the sea stops being absolutely positioned and becomes a block in the flow with the Editor's Pick beneath it, so a fixed fraction put stars under the waterline on every phone. All canvas, no image request, painted once and repainted only on theme change or resize. The day sky above the water stays empty; a cloud bank was drawn there and removed for adding noise rather than calm.
 - **The waterline.** The band's ground fades to the page colour across the wave band and the strokes taper to nothing, so the hero ends on the colour the next section begins with. A single `--sea-h` drives the canvas height, the bottom padding, and the fade distance.
 - **Motion:** the star field is painted once and never moves, and there is no load-in entrance. The waterline swells under The Swell Rule, quietly enough that it reads as atmosphere rather than as animation. The Editor's Pick card is the one thing in the fold that moves for attention, under The Struck Light Rule, and it earns that by being the app the issue is arguing for.
+- **The pick title is clipped, never removed.** Above 920px the eyebrow and the card carry
+  the meaning, so `One app worth a closer look` is not shown, but it is hidden with the
+  `sr-only` clip rather than `display: none`. Removing it took the h2 out of the document
+  and ran the desktop homepage straight from h1 to the app card's h3, a heading-sequence
+  break that existed only at the widths most readers use and disappeared on mobile, which is
+  why review kept missing it. A heading that orders the outline stays in the outline at every
+  width.
 - **Call to action:** two anchors, one hidden per breakpoint. Above 920px *Start Reading* goes to the first section; below it — where the pick has stacked underneath — it goes to the pick. 920px is where the hero collapses to one column, so the swap and the stack happen together.
 
 ### End-of-Issue Closer
@@ -422,17 +429,41 @@ looking unlike the site is a worse failure than looking prominent. It now takes 
 section grammar. Restraint on this page is expressed by the cards' own contents, not by
 opting out of the page's language.
 
+- **The cadence comes first.** Under the section title, above the cards, one line naming
+  the Friday rhythm and a `Subscribe` button on the shared RSS dialog. The closer shipped
+  without it, and a critique on 2026-09-01 named the omission its worst fault: a reader who
+  has just finished an issue is asking when the next one arrives, and the page answered with
+  eight browse links while the cadence sat 5,400px away in the hero, stated once. The promise
+  and the control that acts on it now precede the routes rather than following them.
+- **Two destinations, two names.** The card links read `Archive` and `Explore Apps`, exactly
+  as the header and footer name them. They read `Browse archives` and `Explore all apps`
+  until the same critique observed that four labels for two destinations, inside one screen,
+  make a reader wonder whether they differ.
 - **Topology:** two peer cards, not a primary and a secondary. The archive is a route
   through time and the catalogue a route through subject; a reader who has finished an issue
   may want either, and nothing in the content ranks them. They share a row and their onward
   links share a baseline, pinned with `margin-top: auto` so the pair agrees across the gap
   however unequal the content above it.
 - **Which issues the archive card names:** the three newest that are not the one being read.
-  The first is featured, with its dek and a `Read now`; the other two are bare linked lines.
-  On the homepage that resolves to the previous three; on an archived page it pulls in the
-  current issue, which is the more useful pointer from a page a reader arrived at late. One
+  The first is featured, with its dek; the other two are bare linked lines.
+  On the homepage that resolves to the previous three; on an archived page it pulls in newer
+  issues, which is the more useful pointer from a page a reader arrived at late. One
   rule, and it degrades cleanly: with no other issue the card does not render and the row
   collapses to the catalogue alone.
+- **The heading follows the contents, not the other way round.** Because that rule offers
+  newer issues on an archived page, a fixed `View past issues` was false on six of the eight
+  issue pages, most starkly on the oldest, which offered Issues 08, 07 and 06 as the reader's
+  past. The card reads `View past issues` only when every issue it offers predates the one
+  being read, and `Recent issues` otherwise. The selection rule was right; the label was
+  lying about it.
+- **Type ranks content over label.** The section title leads, each card heading names its
+  door at label rank, and the largest thing inside a card is its content. The headings were
+  set at subhead first, which inverted the order: `View past issues` and `Explore Mac Apps`
+  became the loudest type in the block while the featured issue's own title sat smaller than
+  its dek. A card heading carries nothing the section title has not already said, so it is a
+  label; the featured issue takes display serif at 1.38rem, the treatment the identical
+  object already has on `/archive/`, because one object met on two pages should not be two
+  objects.
 - **The rank is the dek.** One issue argues for itself; the ones before it only need to be
   reachable. That split is also what balances the pair. A single issue left 73px of dead space
   under it, and two full issues moved the same hole into the catalogue card. One featured plus
@@ -451,10 +482,17 @@ opting out of the page's language.
   action, competing with `Browse archives` directly beneath it. Each card now ends on exactly
   one accent link, and the block carries the click. The one cost is that the dek can no longer
   be selected as text, which is the ordinary price of a stretched link and the same trade the
-  app cards already make. Every target outside that block takes the 44px coarse-pointer
-  minimum.
+  app cards already make.
+
+  Every target outside that block takes the 44px coarse-pointer minimum, and the block itself
+  deliberately does not. It carried one briefly, which bought nothing, since the stretched
+  anchor is already a 120px target, while inflating the issue line's box until the gap inside
+  the featured group exceeded the gap between that group and the chain. On every touch device
+  that inverted the proximity this card depends on, its only separator being the spacing
+  ratio. A minimum height does not belong on an element whose neighbours are grouped by
+  rhythm.
 - **Grouping by rhythm, not by rule.** Inside the archive card, 10px binds an issue's line to
-  its own dek and 28px separates one issue from the next. The ratio does the grouping, so the
+  its own dek and 22px separates the featured issue from the chain below it. The ratio does the grouping, so the
   card needs no internal hairline; the catalogue card uses one only because collections are a
   different kind of door from categories, not merely the next item.
 - **Inside the catalogue card:** all six categories in a two-column grid, then a hairline,
@@ -492,6 +530,18 @@ opting out of the page's language.
   the page changes shape once rather than twice. The category grid drops to one column at
   520px. Every row clears 24px, and 44px on a coarse pointer, as a nav target rather than
   prose.
+
+### Not Found
+
+Every route that does not exist renders `src/pages/404.astro` on the same page shell as the
+rest of the site: page title, dek, then four ways out — the current issue as the one
+outlined button, then the archive, Explore, and the search dialog as text links.
+
+It exists because the archive is meant to be permanent while the tag routes are not. Five
+tags were retired and redirected in a single week against a hand-maintained list in
+`netlify.toml`, and any rule that gets missed used to land a reader on the host's own grey
+error page: no brand, no navigation, no way back, on a property whose whole asset is trust.
+A dead link now stays inside the publication.
 
 ## Do's and Don'ts
 
