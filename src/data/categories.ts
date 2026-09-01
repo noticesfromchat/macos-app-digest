@@ -42,7 +42,7 @@ export const categories: Category[] = [
     slug: 'files-research-documents',
     title: 'Files, Research & Documents',
     description: 'Tools for finding, capturing, annotating, exporting and organizing the documents and files that keep work moving.',
-    tags: ['files', 'finder', 'documents', 'research', 'pdf', 'ebooks', 'backup', 'downloads', 'capture', 'airdrop'],
+    tags: ['files', 'finder', 'documents', 'research', 'pdf', 'ebooks', 'backup', 'downloads', 'capture', 'airdrop', 'quicklook'],
     icon: 'folder-search',
     accent: 'color-mix(in srgb, var(--accent) 8%, var(--surface-strong))'
   },
