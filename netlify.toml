@@ -49,3 +49,30 @@
   from = "/categories/tweak/"
   to = "/categories/mac-utilities-customization/"
   status = 301
+
+# Retired tag routes (2026-09-01 tag audit). Point at the successor tag where one
+# exists, otherwise at the sole app that carried the tag.
+[[redirects]]
+  from = "/tags/agent/"
+  to = "/tags/agents/"
+  status = 301
+
+[[redirects]]
+  from = "/tags/library/"
+  to = "/tags/ebooks/"
+  status = 301
+
+[[redirects]]
+  from = "/tags/documentation/"
+  to = "/tags/capture/"
+  status = 301
+
+[[redirects]]
+  from = "/tags/export/"
+  to = "/apps/imessage-tui/"
+  status = 301
+
+[[redirects]]
+  from = "/tags/cloud/"
+  to = "/apps/duckdisk/"
+  status = 301

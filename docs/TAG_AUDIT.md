@@ -60,14 +60,11 @@ argued and settled, so a later audit does not relitigate it by default.
 
 ## 4. Retired tags
 
-These tags are approved for retirement by the 2026-09-01 audit. Do not add one to a new
-app record, and do not reintroduce one, without an explicit editorial reason recorded in
-the pull request. The replacement column is the tag to reach for instead; in most cases
-the reader intent is already covered.
-
-Five records still carry these tags pending the record-level retagging (`sidekick`,
-`tomo`, `stepshot`, `imessage-tui`, `duckdisk`). The decision is settled; only the edits
-are outstanding. Nothing new should take a tag from this table in the meantime.
+These tags were retired by the 2026-09-01 audit. No app carries them, they are out of
+`src/data/categories.ts`, and `netlify.toml` redirects their old routes. Do not add one
+to a new app record without an explicit editorial reason recorded in the pull request.
+The replacement column is the tag to reach for instead; in most cases the reader intent
+is already covered.
 
 | Retired tag | Why | Use instead |
 | --- | --- | --- |

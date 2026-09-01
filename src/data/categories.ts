@@ -26,7 +26,7 @@ export const categories: Category[] = [
     slug: 'ai-agents',
     title: 'AI & Agents',
     description: 'Local models, agent tools and AI-powered search that make Mac workflows more capable without losing focus.',
-    tags: ['ai', 'agents', 'agent', 'search'],
+    tags: ['ai', 'agents', 'search'],
     icon: 'sparkles',
     accent: 'color-mix(in srgb, var(--accent) 12%, var(--surface-strong))'
   },
@@ -42,7 +42,7 @@ export const categories: Category[] = [
     slug: 'files-research-documents',
     title: 'Files, Research & Documents',
     description: 'Tools for finding, capturing, annotating, exporting and organizing the documents and files that keep work moving.',
-    tags: ['files', 'finder', 'documents', 'research', 'pdf', 'ebooks', 'library', 'backup', 'downloads', 'capture', 'airdrop', 'export', 'cloud'],
+    tags: ['files', 'finder', 'documents', 'research', 'pdf', 'ebooks', 'backup', 'downloads', 'capture', 'airdrop'],
     icon: 'folder-search',
     accent: 'color-mix(in srgb, var(--accent) 8%, var(--surface-strong))'
   },
