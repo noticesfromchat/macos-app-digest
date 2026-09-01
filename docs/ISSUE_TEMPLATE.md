@@ -82,6 +82,11 @@ Create new apps at `src/content/apps/app-slug.md`.
 Each app file automatically generates `/apps/app-slug/`; do not create that page
 manually.
 
+Check `docs/TAG_AUDIT.md` before choosing `tags`. Prefer a tag the catalog already uses,
+and do not take one from its retired list without an editorial reason in the pull
+request. Do not hand-write the `categories:` line; `npm run sync:categories` derives it
+from the tags.
+
 ```yaml
 ---
 name: App Name

@@ -205,6 +205,10 @@ These limits protect card alignment and are not optional unless the complete car
 - `bestFor`: one sentence, preferably 85–150 characters; hard maximum 180 characters.
 - `tags`: 3–5 concise lowercase tags; hard maximum 6.
 - Individual tag: preferably one word; hard maximum 20 characters.
+- Before adding a tag to any app record, check `docs/TAG_AUDIT.md`. Reuse an existing
+  tag wherever one already covers the reader intent, and never use a tag from its
+  retired list without an explicit editorial reason stated in the pull request. A new
+  tag that applies to one app is a feature, not a discovery tag.
 - `source`: preferably 25–80 characters; hard maximum 110 characters.
 - `homepage`: official app homepage or canonical project page.
 

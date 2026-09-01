@@ -58,7 +58,30 @@ explicit editorial decision recorded in the audit report.
 A protected tag is not permanent. It is a tag whose single-app status has already been
 argued and settled, so a later audit does not relitigate it by default.
 
-## 4. Watch the tag budget
+## 4. Retired tags
+
+These tags are approved for retirement by the 2026-09-01 audit. Do not add one to a new
+app record, and do not reintroduce one, without an explicit editorial reason recorded in
+the pull request. The replacement column is the tag to reach for instead; in most cases
+the reader intent is already covered.
+
+Five records still carry these tags pending the record-level retagging (`sidekick`,
+`tomo`, `stepshot`, `imessage-tui`, `duckdisk`). The decision is settled; only the edits
+are outstanding. Nothing new should take a tag from this table in the meantime.
+
+| Retired tag | Why | Use instead |
+| --- | --- | --- |
+| `agent` | A singular duplicate of `agents`, which already existed and mapped to the same category. Two spellings split one idea across two tag pages. | `agents` |
+| `library` | Vague. It could mean an ebook library, a bookmark library or a media library, and the app holding it already carried the precise tag. | `ebooks`, `reading`, or `research` |
+| `documentation` | One letter from `documents`, which means something else. Two tags that near-collide are a navigation problem, not a taxonomy. | `capture` for workflow-capture tools; `documents` for document handling |
+| `export` | A feature, not an identity. Many apps export something; tagging one of them for it describes the release notes, not the app. | Nothing. Tag what the app *is* |
+| `cloud` | Vague, and it half-collides with `icloud`. A local-first catalog will not grow it. | `files`, or `icloud` for Apple sync specifically |
+
+Removing a tag from one record is not retirement. A tag is retired only when no app
+carries it and it has been removed from `src/data/categories.ts`. When that happens, add
+the Netlify redirect described in section 7 and add a row here.
+
+## 5. Watch the tag budget
 
 `AGENTS.md` sets 3–5 tags per app, hard maximum 6; the schema enforces 2–6. An audit
 that adds tags must not quietly spend every record's headroom.
@@ -78,7 +101,7 @@ Check the category effect before dropping. Removing a tag that is the only route
 category changes that record's category set, which is an editorial decision, not a
 cleanup.
 
-## 5. Maintain the category map
+## 6. Maintain the category map
 
 `src/data/categories.ts` gives each category a `tags` array. A tag in no array still
 works as a tag page; it simply contributes nothing to category derivation. That is
@@ -93,13 +116,13 @@ Category order within a record is derived from the app's own tag order and decid
 fallback mark for an app with no `icon:` and no `iconCategory:`. Before proposing any
 change that alters category order, confirm whether the affected records carry icons.
 
-## 6. Redirect what you retire
+## 7. Redirect what you retire
 
 Retiring a tag removes its `/tags/{tag}/` route. `netlify.toml` already carries 301s for
 retired category routes; add one per retired tag in the same change. Point it at the
 successor tag where one exists, otherwise at the sole app's detail page.
 
-## 7. Report, then apply
+## 8. Report, then apply
 
 Produce a before/after map covering every affected record and every category-map edit,
 and get editorial approval before touching app records. Once approved:
