@@ -4,6 +4,7 @@ import { getCollection } from 'astro:content';
 import { categories, collections } from '../data/categories';
 import AppCard from './AppCard.astro';
 import MetaIcon from './MetaIcon.astro';
+import SubscribeCard from './SubscribeCard.astro';
 import BrandMark from './BrandMark.astro';
 import WaveRule from './WaveRule.astro';
 import ReadingCard from './ReadingCard.astro';
@@ -140,19 +141,6 @@ const outroCategories = [...categories].sort((a, b) =>
       <p class="eyebrow">Keep Exploring</p>
       <h2>Past issues and the full catalog</h2>
     </div>
-    {/* The question a reader has on finishing an issue is when the next one arrives,
-        not where else to click. It gets answered before the browse routes, not after. */}
-    <div class="issue-outro-cadence">
-      <p>A new issue every Friday.</p>
-      <button
-        class="button"
-        type="button"
-        aria-haspopup="dialog"
-        aria-expanded="false"
-        aria-controls="rss-feed-modal"
-        data-rss-open
-      >Subscribe</button>
-    </div>
     <div class="issue-outro-grid">
       {featuredIssue && (
         <article class="card issue-outro-card">
@@ -211,6 +199,11 @@ const outroCategories = [...categories].sort((a, b) =>
         <a class="issue-outro-link" href="/explore/">Explore Apps</a>
       </article>
     </div>
+    {/* The same card the Explore page carries. A reader who has just finished an issue is
+        asking when the next one arrives, and the answer should be the same object wherever
+        the question comes up. It closes the section rather than opening it, so the page
+        ends on the ask instead of on a list of places to go. */}
+    <SubscribeCard headingLevel={3} />
   </section>
 </article>
 

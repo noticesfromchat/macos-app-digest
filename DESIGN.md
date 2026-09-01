@@ -429,12 +429,27 @@ looking unlike the site is a worse failure than looking prominent. It now takes 
 section grammar. Restraint on this page is expressed by the cards' own contents, not by
 opting out of the page's language.
 
-- **The cadence comes first.** Under the section title, above the cards, one line naming
-  the Friday rhythm and a `Subscribe` button on the shared RSS dialog. The closer shipped
-  without it, and a critique on 2026-09-01 named the omission its worst fault: a reader who
-  has just finished an issue is asking when the next one arrives, and the page answered with
-  eight browse links while the cadence sat 5,400px away in the hero, stated once. The promise
-  and the control that acts on it now precede the routes rather than following them.
+- **The subscribe card closes the section.** A critique on 2026-09-01 named the missing
+  subscribe offer the closer's worst fault: a reader who has just finished an issue is asking
+  when the next one arrives, and the page answered with eight browse links while the cadence
+  sat 5,400px away in the hero, stated once.
+
+  The first repair was a line of copy and a button opening the RSS dialog. It was replaced by
+  the Explore page's own subscribe card, extracted to `SubscribeCard.astro` and used in both
+  places. The same question deserves the same object wherever it comes up, and the card
+  answers it in one step: the feed URL is on the page with a copy control, where the button
+  only opened a dialog that then showed it. It sits below the two cards on the grid's own
+  16px, so the page ends on the ask rather than on a list of places to go.
+
+  The card renders `h2` on Explore, where it is a section heading with nothing above it, and
+  `h3` at subhead size in the closer, which already carries its own `h2`. Two display serif
+  headings at section-title size inside one section read as two sections, and the outline
+  should not gain a second `h2` either. That is the only thing the two placements do not
+  share.
+
+  It costs height: the closer runs 1,506px at 375px against 1,163px before. On a phone that
+  is most of two screens after a long read, and it is the known price of answering the
+  question properly rather than in a line.
 - **Two destinations, two names.** The card links read `Archive` and `Explore Apps`, exactly
   as the header and footer name them. They read `Browse archives` and `Explore all apps`
   until the same critique observed that four labels for two destinations, inside one screen,

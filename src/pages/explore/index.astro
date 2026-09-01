@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import { Check, ChevronLeft, ChevronRight, Copy, Rss } from 'lucide-astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AppCard from '../../components/AppCard.astro';
+import SubscribeCard from '../../components/SubscribeCard.astro';
 import MetaIcon from '../../components/MetaIcon.astro';
 import {
   categories,
@@ -36,7 +37,6 @@ const sortedCategories = [...categories].sort((a, b) =>
   a.title.localeCompare(b.title, undefined, { sensitivity: 'base' })
 );
 const popularTags = getPopularTags(apps.map((entry) => entry.data));
-const rssFeedUrl = new URL('/rss.xml', Astro.site).href;
 const collectionDescriptions: Record<string, string> = {
   'editors-picks': 'Editor-selected standouts with distinctive utility, polish or an especially memorable point of view.',
   'community-favorites': 'Apps Mac readers keep recommending for dependable workflows, practical value and repeat use.'
@@ -197,31 +197,7 @@ const exploreData = {
     </section>
 
     <section class="section explore-section explore-rss-section">
-      <article class="card explore-subscribe-card">
-        <div class="explore-subscribe-heading">
-          <span class="explore-subscribe-icon" aria-hidden="true">
-            <Rss />
-          </span>
-          <h2>Apps delivered every Friday</h2>
-        </div>
-        <div class="explore-subscribe-content">
-          <p class="explore-subscribe-body">We love <a href="/tags/rss/">RSS</a> and want to make it easy for you to subscribe. Copy the URL and paste it into your favorite RSS reader to subscribe.</p>
-          <div class="rss-url-card explore-subscribe-url">
-            <code class="rss-url-value">{rssFeedUrl}</code>
-            <button
-              class="rss-copy-button"
-              type="button"
-              aria-label="Copy RSS feed URL"
-              data-rss-inline-copy
-              data-rss-inline-url={rssFeedUrl}
-            >
-              <Copy class="rss-copy-icon" aria-hidden="true" data-rss-inline-copy-icon />
-              <Check class="rss-copy-check" aria-hidden="true" hidden data-rss-inline-copy-check />
-              <span class="sr-only" data-rss-inline-label>Copy RSS feed URL</span>
-            </button>
-          </div>
-        </div>
-      </article>
+      <SubscribeCard />
     </section>
 
     {categoryModules.map((category) => (
@@ -415,49 +391,6 @@ const exploreData = {
       renderSelection('[data-explore-grid="community-favorites"]', communityFavorites);
       categorySelections.forEach((selection, slug) => {
         renderSelection(`[data-explore-grid="category-${slug}"]`, selection);
-      });
-
-      const copyText = async (value) => {
-        try {
-          await navigator.clipboard.writeText(value);
-          return true;
-        } catch {
-          const input = document.createElement('textarea');
-          input.value = value;
-          input.setAttribute('readonly', '');
-          input.style.position = 'fixed';
-          input.style.opacity = '0';
-          document.body.appendChild(input);
-          input.select();
-          const copied = document.execCommand('copy');
-          document.body.removeChild(input);
-          return copied;
-        }
-      };
-
-      const inlineCopyButton = document.querySelector('[data-rss-inline-copy]');
-      const inlineCopyIcon = document.querySelector('[data-rss-inline-copy-icon]');
-      const inlineCopyCheck = document.querySelector('[data-rss-inline-copy-check]');
-      const inlineCopyLabel = document.querySelector('[data-rss-inline-label]');
-      inlineCopyButton?.addEventListener('click', async () => {
-        const value = inlineCopyButton.getAttribute('data-rss-inline-url') || '';
-        const copied = value ? await copyText(value) : false;
-        inlineCopyButton.classList.toggle('is-copied', copied);
-        if (inlineCopyLabel) {
-          inlineCopyLabel.textContent = copied ? 'Copied RSS feed URL' : 'Copy RSS feed URL';
-          inlineCopyButton.setAttribute('aria-label', inlineCopyLabel.textContent);
-        }
-        inlineCopyIcon?.toggleAttribute('hidden', copied);
-        inlineCopyCheck?.toggleAttribute('hidden', !copied);
-        window.setTimeout(() => {
-          inlineCopyButton.classList.remove('is-copied');
-          if (inlineCopyLabel) {
-            inlineCopyLabel.textContent = 'Copy RSS feed URL';
-            inlineCopyButton.setAttribute('aria-label', 'Copy RSS feed URL');
-          }
-          inlineCopyIcon?.removeAttribute('hidden');
-          inlineCopyCheck?.setAttribute('hidden', '');
-        }, 2000);
       });
 
       const carouselTrack = document.querySelector('[data-carousel-track]');

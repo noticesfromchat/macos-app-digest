@@ -997,28 +997,25 @@ a { color: inherit; }
    just finished the issue should meet a section, not a footnote. */
 .issue-outro { margin-bottom: 88px; }
 
-/* The publication's promise, and the one control that acts on it, above the browse
-   routes rather than below them. The cadence was stated once in the hero and nowhere
-   else, so a reader who had just finished an issue met eight links and no way to be
-   told about the next one. */
-.issue-outro-cadence {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 14px 24px;
-  margin: 0 0 24px;
-}
-
-.issue-outro-cadence p {
-  margin: 0;
-  color: var(--muted);
-  font-size: var(--type-meta);
-}
-
 .issue-outro-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
+}
+
+/* The subscribe card sits under the pair on the same 16px the grid uses between them, so
+   the three read as one block. Its heading drops to subhead here: on Explore it is a
+   section title with nothing above it, but in the closer a second display serif heading at
+   section-title size would read as a second section rather than as part of this one. */
+.issue-outro .explore-subscribe-card { margin-top: 16px; }
+.issue-outro .explore-subscribe-card h3 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: var(--type-subhead);
+  font-weight: 500;
+  letter-spacing: -.03em;
+  line-height: 1.05;
+  text-wrap: balance;
 }
 
 .issue-outro-card {
