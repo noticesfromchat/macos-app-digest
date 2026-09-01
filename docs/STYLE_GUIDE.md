@@ -18,8 +18,10 @@ The site should feel like a small, premium editorial publication for experienced
 ### Motion
 
 - The site is calm and close to still. Motion is reserved, not decorative.
-- The divider buoy, the source-note timeline and the light on the Editor's Pick card
-  are the motion with a voice on an issue page. Do not add a fourth.
+- The divider buoy, the archive timeline in the Keep Exploring closer and the light on
+  the Editor's Pick card are the motion with a voice on an issue page. Do not add a
+  fourth. The timeline is the same sequence that used to draw the source notes; it moved
+  to the past-issue list on 2026-09-01 when that section retired.
 - The two wave bands are the exception, because they are not asking to be noticed. They
   swell without anything travelling, below the still water level, paused off screen and
   stopped under reduced motion. See The Swell Rule in `DESIGN.md`. Motion that wants
@@ -38,9 +40,21 @@ The site should feel like a small, premium editorial publication for experienced
 - Three things sit outside the rule. Page-title separators are an indexed SEO and
   publishing convention, so `Archive - App Waypoint` keeps its em dash. Quoted external
   titles in source notes and Weekend Reading keep the source's own punctuation, because
-  changing it misquotes the source. Code comments are not copy.
-- `npm run validate` enforces this across `src/content`, skipping `title:` lines so
-  quoted external titles pass. See The Plain Dash Rule in `DESIGN.md` for the reasoning.
+  changing it misquotes the source; source notes are no longer published, but they are
+  still written and still validated, so the exception still governs how they are
+  recorded. Code comments are not copy.
+- A middle dot separates an issue number from its date in the `Keep Exploring` closer:
+  `Issue 07 · August 21, 2026`, set with U+00B7. It sits at half height, so it divides
+  two facts without reading as a word on the baseline, and it is not a dash, so
+  `npm run validate` does not flag it. Use it for that pairing only. It is not general
+  editorial punctuation and should not appear in a dek, a description or a note.
+- `npm run validate` enforces both rules across `src/content`, `src/pages`,
+  `src/components`, `src/layouts` and `src/data`, so copy written straight into a
+  component or a layout is checked like copy written into an issue file. The exemptions
+  live in the checker rather than in the choice of folders: comments are stripped before
+  a line is tested, with block state carried across lines so a multi-line comment stays
+  exempt, and any line assigning or passing a `title` keeps its dash. See The Plain Dash
+  Rule in `DESIGN.md` for the reasoning.
 
 ## 2. Standard Issue Structure
 
@@ -64,6 +78,18 @@ the release candidate.
 
 The optional `editorsPick` module is the only app feature outside the regular
 section spine. When present, it renders between `Trending` and `Old Favorites`.
+
+Below the spine every issue closes the same way, in this order: `Video of the Week`,
+`Weekend Reading`, then the `Keep Exploring` closer. The first two are authored in the
+issue's frontmatter like any other section. The closer is not. It is generated from the
+content collections, naming the three most recent issues the reader is not currently on
+and all six categories, so it needs no frontmatter, no per-issue decision and no review.
+Do not write it into an issue file and do not treat its absence from the template as an
+omission.
+
+The closer replaced the `Source Notes` section on 2026-09-01. `sourceNotes` is still
+recorded in every issue's frontmatter as the editorial audit trail, and nothing renders
+it. See End-of-Issue Closer in `DESIGN.md` for the structure and the reasoning.
 
 ## 3. Optional Editor's Pick
 
@@ -329,7 +355,8 @@ Complete every item before merging a new issue:
       app belongs to the `community-favorites` collection.
 - [ ] Weekend Reading contains three direct article links, with at least two focused
       primarily on apps, workflows or app developers.
-- [ ] Up and Coming contains exactly three eligible apps and records its sources.
+- [ ] Up and Coming contains exactly three eligible apps and records its sources in
+      `sourceNotes`, which is kept for review and is not rendered on the site.
 - [ ] Every app featured in the issue has a reviewed icon record, or a documented
       reason the icon is intentionally deferred.
 - [ ] The Editor's Pick app has a reviewed `iconAccent`, or a documented reason the pick

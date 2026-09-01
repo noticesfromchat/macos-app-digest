@@ -1,6 +1,9 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+import { categories, collections } from '../data/categories';
 import AppCard from './AppCard.astro';
+import MetaIcon from './MetaIcon.astro';
 import BrandMark from './BrandMark.astro';
 import WaveRule from './WaveRule.astro';
 import ReadingCard from './ReadingCard.astro';
@@ -23,6 +26,19 @@ const issueLabel = String(Number(issue.number)).padStart(2, '0');
 const editorsPick = issue.editorsPick ? appsById.get(issue.editorsPick.app) : undefined;
 const Wordmark = homepage ? 'h1' : 'p';
 const IssueHeading = homepage ? 'p' : 'h1';
+
+/* The closer offers the newest issue that is not the one being read: on the homepage
+   that is the previous issue, and on an archived page it is the current one, which is
+   the more useful pointer from a page the reader arrived at late. */
+const allIssues = [...await getCollection('issues')].sort((a, b) =>
+  b.data.slug.localeCompare(a.data.slug)
+);
+const [featuredIssue, ...olderIssues] = allIssues.filter((entry) => entry.data.slug !== issue.slug);
+const compactIssues = olderIssues.slice(0, 2);
+const formatIssueNumber = (number: string) => String(Number(number)).padStart(2, '0');
+const outroCategories = [...categories].sort((a, b) =>
+  a.title.localeCompare(b.title, undefined, { sensitivity: 'base' })
+);
 ---
 
 <article class="issue">
@@ -110,17 +126,73 @@ const IssueHeading = homepage ? 'p' : 'h1';
     </div>
   </section>
 
-  <section class="note">
-    <h2>Source Notes</h2>
-    <p>This issue was selected from the following sources, with every app homepage checked before publishing.</p>
-    <ul class="source-timeline" data-source-timeline>
-      {issue.sourceNotes.map((note, index) => (
-        <li style={`--source-index: ${index};`}>
-          <span class="source-timeline-marker" aria-hidden="true"></span>
-          <span class="source-timeline-copy">{note}</span>
-        </li>
-      ))}
-    </ul>
+  {/* An issue ends, the publication does not. Two peer destinations: back through
+      the archive, or sideways into the catalog. Same section grammar as every
+      other block on the page, so it reads as part of the issue rather than as
+      apparatus stuck to the bottom of it. */}
+  <section class="section issue-outro">
+    <div class="section-heading">
+      <p class="eyebrow">Keep Exploring</p>
+      <h2>Past issues and the full catalog</h2>
+    </div>
+    <div class="issue-outro-grid">
+      {featuredIssue && (
+        <article class="card issue-outro-card">
+          <h3>View past issues</h3>
+          <div class="issue-outro-entry">
+            <p class="issue-outro-issue">
+              <a href={`/issues/${featuredIssue.data.slug}/`}>
+                <strong>Issue {formatIssueNumber(featuredIssue.data.number)}</strong>
+                <span class="issue-outro-sep" aria-hidden="true">·</span>
+                <time datetime={featuredIssue.data.slug}>{featuredIssue.data.date}</time>
+              </a>
+            </p>
+            <p class="issue-outro-dek">{featuredIssue.data.dek}</p>
+          </div>
+          {compactIssues.length > 0 && (
+            <ul class="issue-outro-more" data-issue-timeline>
+              {compactIssues.map((entry, index) => (
+                <li style={`--issue-index: ${index};`}>
+                  <span class="issue-outro-buoy" aria-hidden="true"></span>
+                  <a href={`/issues/${entry.data.slug}/`}>
+                    <span class="issue-outro-more-copy">
+                      <strong>Issue {formatIssueNumber(entry.data.number)}</strong>
+                      <span class="issue-outro-sep" aria-hidden="true">·</span>
+                      <time datetime={entry.data.slug}>{entry.data.date}</time>
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+          <a class="issue-outro-link" href="/archive/">Browse archives</a>
+        </article>
+      )}
+      <article class="card issue-outro-card">
+        <h3>Explore Mac Apps</h3>
+        <ul class="issue-outro-list issue-outro-categories">
+          {outroCategories.map((category) => (
+            <li>
+              <a href={`/categories/${category.slug}/`}>
+                <span class="issue-outro-icon" aria-hidden="true"><MetaIcon name={category.icon} /></span>
+                <span>{category.title}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <ul class="issue-outro-list issue-outro-collections">
+          {collections.map((collection) => (
+            <li>
+              <a href={`/collections/${collection.slug}/`}>
+                <span class="issue-outro-icon" aria-hidden="true"><MetaIcon name={collection.icon} /></span>
+                <span>{collection.title}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <a class="issue-outro-link" href="/explore/">Explore all apps</a>
+      </article>
+    </div>
   </section>
 </article>
 
@@ -146,18 +218,20 @@ const IssueHeading = homepage ? 'p' : 'h1';
     passing.observe(waypoint);
   }
 
-  const sourceTimeline = document.querySelector('[data-source-timeline]');
+  /* The same lights, on the route back through the archive. Each buoy comes up in
+     turn and the line runs down to the next, once, as the card is reached. */
+  const issueTimeline = document.querySelector('[data-issue-timeline]');
 
-  if (sourceTimeline && !stillness.matches && 'IntersectionObserver' in window) {
-    sourceTimeline.classList.add('is-motion-ready');
-    const sourcePassing = new IntersectionObserver((entries, observer) => {
+  if (issueTimeline && !stillness.matches && 'IntersectionObserver' in window) {
+    issueTimeline.classList.add('is-motion-ready');
+    const arriving = new IntersectionObserver((entries, observer) => {
       for (const entry of entries) {
         if (!entry.isIntersecting) continue;
         entry.target.classList.add('is-visible');
         observer.unobserve(entry.target);
       }
-    }, { rootMargin: '-18% 0px -12% 0px', threshold: 0.12 });
-    sourcePassing.observe(sourceTimeline);
+    }, { rootMargin: '-12% 0px -12% 0px', threshold: 0.25 });
+    arriving.observe(issueTimeline);
   }
 
   const sky = document.querySelector('.home-hero-sky');

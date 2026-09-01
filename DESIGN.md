@@ -242,7 +242,7 @@ The rhythm is two values, not one. **11px binds an eyebrow to its content; 24px 
 
 **The One Page Title Rule.** Every page opens the same way: the title in Headline at `--type-page-title`, hard against the shell's `--page-start-space`, with no margin of its own, and the dek 15px beneath it at `--type-dek`. App detail pages are not an exception — the app name is a page title, not a bigger thing. A page that wants more presence gets it from its composition below the fold, never from a private type scale.
 
-**The Plain Dash Rule.** Public editorial copy uses no em dash and no en dash. Restructure to a period, a comma, a colon, or parentheses, and set number and date ranges with a plain hyphen: `August 5-19, 2026`, not `August 5–19, 2026`. The em dash is the clearest tell of machine-drafted prose, and this publication is human-led by design. Three things sit outside the rule and stay as they are. Page-title separators are an SEO and publishing convention and are indexed, so `Archive — App Waypoint` is correct. Quoted external titles in source notes and reading lists keep their own punctuation, because changing it misquotes the source. Code comments are not copy and no reader sees them. The rule governs the site's public copy, not this repository's documentation. General frontend guidance in `.agents/skills/taste-skill` states a blanket zero-tolerance ban covering titles as well; that is a marketing-page heuristic, this narrower rule is what governs here, and the vendored skill is deliberately left unedited so it stays diffable against upstream.
+**The Plain Dash Rule.** Public editorial copy uses no em dash and no en dash. Restructure to a period, a comma, a colon, or parentheses, and set number and date ranges with a plain hyphen: `August 5-19, 2026`, not `August 5–19, 2026`. The em dash is the clearest tell of machine-drafted prose, and this publication is human-led by design. Three things sit outside the rule and stay as they are. Page-title separators are an SEO and publishing convention and are indexed, so `Archive — App Waypoint` is correct. Quoted external titles in source notes and reading lists keep their own punctuation, because changing it misquotes the source; source notes stopped being published on 2026-09-01 but are still written and still validated, so the exception still governs how they are recorded. Code comments are not copy and no reader sees them. The rule governs the site's public copy, not this repository's documentation. General frontend guidance in `.agents/skills/taste-skill` states a blanket zero-tolerance ban covering titles as well; that is a marketing-page heuristic, this narrower rule is what governs here, and the vendored skill is deliberately left unedited so it stays diffable against upstream.
 
 **The Serif-Utility Split.** Serif type carries the editorial voice; the system sans carries the operational voice. Mixing them casually weakens both jobs. The mono face is the third voice and the narrowest: it is for data a reader might copy, which today means the RSS feed URL and nothing else. It is not a costume for looking technical.
 
@@ -289,7 +289,7 @@ Four things hold it inside the design system:
 
 Because the card rests at Hover Lift rather than Ambient Card, it cannot answer the pointer with elevation the way The One Hover Rule describes. It answers with light instead: an accent-tinted depth under the card. Both loops pause when the card is off screen and stop entirely under reduced motion.
 
-**The buoy stays the one authored moment.** The mark on the content divider flashes once as the reader passes it, and the source-note timeline draws itself in sequence. Those are deliberate and they are the motion on the page with a voice, alongside the light on the Editor's Pick card.
+**The buoy stays the one authored moment.** The mark on the content divider flashes once as the reader passes it. That is deliberate, and it is the motion on the page with a voice, alongside the light on the Editor's Pick card and the archive timeline in the closer. That third one is the sequence that used to draw the source notes: it retired with them on 2026-09-01 and came back the same day on the list of past issues, which is the thing it was always describing. A buoy chain marks a route, and a route back through the archive is a truer subject for it than a list of research sources ever was. The move was not an animation being owed a replacement; it was the animation finding its content.
 
 **The Swell Rule.** The water moves, and it is the only thing on the page that moves without wanting to be noticed. Both wave bands, the hero's waterline and the content divider's, breathe: the crests hold their positions while the height of the water and the weight of its second harmonic settle and return, on periods of 23 and 31 seconds that do not divide into one another, so the band never repeats a state the eye can catch.
 
@@ -334,7 +334,7 @@ Tag chips are compact chips rather than buttons. They read as metadata first.
 - **State:** hover and focus tint the chip toward blue without making it feel selected. The label takes the accent's *hover* value, not the accent itself, so the text still clears 4.5:1 against the tinted pill (5.50:1) — the plain accent lands at 3.89:1 there and is not legible enough.
 
 ### Cards
-Cards are the primary container language for apps, readings, and archive entries. Apparatus — source notes and other secondary matter — is set as footnotes under a hairline instead, so a card always means a thing worth looking at rather than a thing worth reading past. An app card carries three regions and nothing else: the summary, the best-for line, and the tags. It used to end with a source credit; that was provenance for the editor rather than information for the reader, and removing it took a whole region off every card.
+Cards are the primary container language for apps, readings, and archive entries. Apparatus and secondary matter are set under a hairline instead, so a card always means a thing worth looking at rather than a thing worth reading past. An app card carries three regions and nothing else: the summary, the best-for line, and the tags. It used to end with a source credit; that was provenance for the editor rather than information for the reader, and removing it took a whole region off every card.
 - **Corner Style:** 12px radius on most cards.
 - **Background:** the surface color — white by day — with a faint border and soft shadow.
 - **Internal Padding:** usually 24px, with denser or looser variants where the content demands it.
@@ -401,6 +401,97 @@ A full-bleed band whose content sits on the shared page shell, so the wordmark a
 - **The waterline.** The band's ground fades to the page colour across the wave band and the strokes taper to nothing, so the hero ends on the colour the next section begins with. A single `--sea-h` drives the canvas height, the bottom padding, and the fade distance.
 - **Motion:** the star field is painted once and never moves, and there is no load-in entrance. The waterline swells under The Swell Rule, quietly enough that it reads as atmosphere rather than as animation. The Editor's Pick card is the one thing in the fold that moves for attention, under The Struck Light Rule, and it earns that by being the app the issue is arguing for.
 - **Call to action:** two anchors, one hidden per breakpoint. Above 920px *Start Reading* goes to the first section; below it — where the pick has stacked underneath — it goes to the pick. 920px is where the hero collapses to one column, so the swap and the stack happen together.
+
+### End-of-Issue Closer
+
+An issue ends; the publication does not. The foot of every issue page, on the homepage and
+on every archived issue alike, carries a `Keep Exploring` section holding two cards: one
+into the archive, one into the app catalogue.
+
+It replaced the Source Notes section on 2026-09-01. Those notes listed where the week's
+picks came from, and the argument against them is the one already made for the app card's
+source credit in Cards above: provenance for the editor rather than information for the
+reader, and carrying no links, so they asked to be trusted rather than checked. The notes
+are still written into each issue's frontmatter, where they remain the editorial audit
+trail. What changed is that the last thing a reader meets is a way further in.
+
+**It is a section, not a footnote.** A first version set it in a quieter register, on the
+reasoning that a way out should not compete with the issue. That was wrong in practice: it
+read as foreign to a page whose every other block carries an eyebrow, a title and cards, and
+looking unlike the site is a worse failure than looking prominent. It now takes the ordinary
+section grammar. Restraint on this page is expressed by the cards' own contents, not by
+opting out of the page's language.
+
+- **Topology:** two peer cards, not a primary and a secondary. The archive is a route
+  through time and the catalogue a route through subject; a reader who has finished an issue
+  may want either, and nothing in the content ranks them. They share a row and their onward
+  links share a baseline, pinned with `margin-top: auto` so the pair agrees across the gap
+  however unequal the content above it.
+- **Which issues the archive card names:** the three newest that are not the one being read.
+  The first is featured, with its dek and a `Read now`; the other two are bare linked lines.
+  On the homepage that resolves to the previous three; on an archived page it pulls in the
+  current issue, which is the more useful pointer from a page a reader arrived at late. One
+  rule, and it degrades cleanly: with no other issue the card does not render and the row
+  collapses to the catalogue alone.
+- **The rank is the dek.** One issue argues for itself; the ones before it only need to be
+  reachable. That split is also what balances the pair. A single issue left 73px of dead space
+  under it, and two full issues moved the same hole into the catalogue card. One featured plus
+  two bare lines brings the two cards to 349px against 342px, and the residual worst case is
+  27px at 960px where the dek takes an extra line. The list is the adjustable part: if the
+  cards drift apart, change how many bare lines it carries, not the featured issue's copy.
+- **The featured block is one target.** Title, date and dek are a single link to that issue:
+  the title's anchor stretches over the whole entry with a pseudo-element rather than a second
+  overlay anchor, so the block is clickable while the accessible name stays the issue's own
+  line and the card gains no duplicate link. It overhangs the entry by 6px and 8px, giving a
+  120px hit area, and still clears the buoy chain below it by 16px so those rows keep their
+  own clicks.
+
+  An earlier version closed the dek with a `Read now` link instead. It read as stray emphasis
+  in the middle of prose and put a second accent item in a card that should have one call to
+  action, competing with `Browse archives` directly beneath it. Each card now ends on exactly
+  one accent link, and the block carries the click. The one cost is that the dek can no longer
+  be selected as text, which is the ordinary price of a stretched link and the same trade the
+  app cards already make. Every target outside that block takes the 44px coarse-pointer
+  minimum.
+- **Grouping by rhythm, not by rule.** Inside the archive card, 10px binds an issue's line to
+  its own dek and 28px separates one issue from the next. The ratio does the grouping, so the
+  card needs no internal hairline; the catalogue card uses one only because collections are a
+  different kind of door from categories, not merely the next item.
+- **Inside the catalogue card:** all six categories in a two-column grid, then a hairline,
+  then the two collections. Collections are a different kind of door from categories, so they
+  are separated rather than appended as two more rows. Every row carries its `MetaIcon` at
+  20px in `--muted`, label and icon crossing to the accent together on hover.
+- **No counts.** An early draft put an app count beside each category. The six hold 33, 23,
+  27, 67, 71 and 26 apps against a catalogue of 102, because apps carry several categories at
+  once. The numbers neither sum to anything a reader can trust nor separate the doors: two of
+  the six describe most of the catalogue. Names alone.
+- **No whole-card hover.** The shared card hover in Cards answers a pointer for a card that
+  is one target. The catalogue card holds nine, and lifting the whole surface would promise a
+  click the card does not honour. The rows and the onward links answer individually instead.
+  This is the one place a card deliberately sits out that contract.
+- **Colour:** labels take `--text` and both onward links take `--accent`, so the two links
+  that leave the section are the ones the Beacon Rule lights.
+- **Motion:** one moment, in the archive card only, and it is the buoy's own. Each row
+  rises out of the water rather than wiping in from the side: up from 15px, past the mark
+  to -4.5px, then settling through 2.5, -1.4 and 0.7. The amplitudes halve each pass,
+  which is what a damped float does and what keeps the settle reading as water rather than
+  as a bounce. The ring and its label carry the same keyframes on the same delay, so the
+  row floats as one object instead of two things out of phase; the second row follows
+  420ms behind the first, and the connector draws down between them once both ends are up.
+  The animation rides an inner span rather than the link itself, so a focus ring is never
+  transformed with it. The connector's geometry is written against 50% and 100% of a row
+  rather than fixed pixels, so it still meets the next buoy when the rows grow to the 44px
+  touch minimum, clearing it by 2.5px at both ends. The ring's inner ground is `--surface`,
+  not `--bg`: this buoy floats on a card. Under reduced motion the chain renders in its
+  resting state with no animation at all. The catalogue card stays still. See The Buoy Rule
+  in Motion.
+- **Separator:** a middle dot between the issue number and its date, in both the featured
+  line and the chain. It sits at half height, so it divides the two facts without landing
+  on the baseline as another word would, and it is hidden from assistive technology.
+- **Responsive:** two cards become one column at 920px, where the hero already collapses, so
+  the page changes shape once rather than twice. The category grid drops to one column at
+  520px. Every row clears 24px, and 44px on a coarse pointer, as a nav target rather than
+  prose.
 
 ## Do's and Don'ts
 

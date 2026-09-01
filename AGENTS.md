@@ -244,7 +244,8 @@ These limits protect card alignment and are not optional unless the complete car
 - Video description: one sentence, preferably 120–220 characters; hard maximum 260 characters.
 - Reading title: hard maximum 110 characters.
 - Reading description: one sentence, preferably 100–190 characters; hard maximum 220 characters.
-- Source note: hard maximum 140 characters.
+- Source note: hard maximum 140 characters. Unpublished since 2026-09-01, so the limit
+  keeps the record readable rather than fitting a layout.
 
 If text exceeds a preferred range, rewrite it before adjusting CSS. Exceeding a hard maximum requires an explicit exception and visual review.
 
@@ -293,7 +294,9 @@ issue.
   any eligible moderator selections, followed by verified alternates.
 - Do not duplicate an app elsewhere in the same issue. If a selected app already
   appears in another section, move it into `Up and Coming` rather than listing it twice.
-- Credit every source used for the final slate in `sourceNotes`.
+- Credit every source used for the final slate in `sourceNotes`. The field is recorded,
+  not published: the issue page stopped rendering source notes on 2026-09-01, and they
+  remain in frontmatter as the editorial audit trail.
 
 ## Editor attribution
 

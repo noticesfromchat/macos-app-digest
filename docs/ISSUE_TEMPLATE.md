@@ -70,6 +70,7 @@ readings:
     publication: Publication
     description: Write one concise 12-35 word sentence describing the value of the article.
     url: https://example.com/article-three
+# Recorded, not rendered. Kept as the editorial audit trail since 2026-09-01.
 sourceNotes:
   - Discovery source or research note
   - Official app homepages were checked before publishing
@@ -170,7 +171,7 @@ moderator-authored selections, but must not repeat an app from the immediately
 preceding issue. Replace repeats or unavailable selections with verified discoveries
 from Product Hunt's recent Mac launches or another approved source. Verify official
 links, reuse existing app records, create missing records and credit every source used
-in `sourceNotes`. Do not substitute apps based solely on raw votes.
+in `sourceNotes`, which is recorded for review rather than published. Do not substitute apps based solely on raw votes.
 
 ## When the user supplies an Editor's Pick
 

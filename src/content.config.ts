@@ -64,7 +64,10 @@ const issues = defineCollection({
       description: z.string().min(40).max(240),
       url: z.string().url()
     })).min(1).max(5),
-    sourceNotes: z.array(z.string().min(1).max(180)).min(1).max(10)
+    /* Recorded, not published. The issue page stopped rendering source notes on
+       2026-09-01; they stay in frontmatter as the editorial audit trail, the same
+       way an app record's `source` field is provenance rather than reader copy. */
+    sourceNotes: z.array(z.string().min(1).max(180)).min(1).max(10).optional()
   })
 });
 

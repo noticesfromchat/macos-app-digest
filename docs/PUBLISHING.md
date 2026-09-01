@@ -82,7 +82,10 @@ Preview review.
     by source type when useful. Avoid internal agent or process wording such as
     “checked against records,” “during the research pass,” or “before preparing the
     release candidate.” Keep validation, duplicate checks and workflow details in
-    Production Notes instead of Source Notes.
+    Production Notes instead of Source Notes. `sourceNotes` is recorded but no longer
+    rendered: the issue page dropped the Source Notes section on 2026-09-01 in favour of
+    the Keep Exploring closer, and the field is now provenance for review, the same way an
+    app record's `source` field already was. Keep writing it to the same standard.
 17. Run `npm run validate` and `npm run build`, fix every error and verify the built
     `/rss.xml` feed includes the new issue correctly.
 18. Review new or changed icons in light mode, dark mode and mobile before asking for
