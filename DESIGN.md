@@ -313,7 +313,7 @@ Buttons are quiet, pill-shaped workhorses: obvious, tactile, and not over-embell
 - **Secondary:** transparent fill, ink text, and a borderless or low-border utility presence.
 - **Icon Buttons:** the header search and theme controls are 44px circles on desktop, mobile and coarse-pointer devices.
 
-**The Target Floor Rule.** Anything a reader taps carries a minimum target: 24px, and the 44px the control system already gives every pill on a coarse pointer. This is not only for pills. Footer navigation, the explore section links, the carousel's directory link and the feature card's outbound link were each the height of their own text, 16 to 21px, because a bare link has no box unless it is given one.
+**The Target Floor Rule.** Anything a reader taps carries a minimum target: 24px, and the 44px the control system already gives every pill on a coarse pointer. This is not only for pills. Footer navigation, the explore section links and the feature card's outbound link were each the height of their own text, 16 to 21px, because a bare link has no box unless it is given one.
 
 An icon link too small to grow gets its hit area expanded around it instead of being padded out, so the line it sits in is undisturbed. The Editor's Pick mark beside an app name works that way, and stops at 24px rather than 44px because a larger area would start taking taps meant for the title. A link inside a sentence is exempt and stays inline; the RSS link in the subscribe copy is the one that qualifies.
 
@@ -326,7 +326,7 @@ The collection badge on an app detail page is a link to a curated collection, an
 - **Named, like its neighbours.** The group carries a `Collections` eyebrow and 18px of clear space beneath it. It was the only unlabelled group in the rail, which is why it read as orphaned: every other group on the site is named by an eyebrow, and this one had opted out of the house's own strongest device. Setting the names in the display serif at Title was tried for the same reason and rejected; the rail keeps one voice.
 - **Marks:** 19px, the same as a category mark. Lucide scales its stroke with the glyph, so an icon set larger here would render a heavier stroke and put one icon family at two weights in a single column.
 - **Separation:** space alone divides it from the taxonomy below. A rule there reads as a container seam and competes with the thing it is meant to set apart.
-- **State:** hover tints the label blue and the mark follows it. Focus adds the accent outline the carousel already uses, because colour alone is not a focus indicator.
+- **State:** hover tints the label blue and the mark follows it. Focus adds the accent outline, because colour alone is not a focus indicator.
 
 ### Tag Chips
 Tag chips are compact chips rather than buttons. They read as metadata first.
@@ -352,16 +352,57 @@ This replaced a set of fixed `min-height` budgets on each region. Those were gue
 
 **The One Hover Rule.** Every card that leads somewhere shares one hover contract: rest at Ambient Card, move to Hover Lift and a border of `color-mix(in srgb, var(--accent) 42%, var(--line))`, cross over 320ms on `cubic-bezier(.16, 1, .3, 1)`, and do it only under `(hover: hover) and (pointer: fine)`. App cards, feature cards, reading cards, archive rows, and category directory rows are all on it, the last two through `.archive-card`. A card that carries a category accent keeps that accent in its resting border and gives it up on hover; nothing else about the contract changes per card type.
 
-Three things are deliberately outside it. The app-detail rail's category rows are links in a list rather than cards, so they answer the pointer with the accent over 180ms and take no lift; they were bordered cards until the rail replaced them. Cards that are containers rather than destinations — the explore utility and subscribe cards, which hold their own links and controls — stay flat, because a lift would promise a click the card does not accept. And the explore carousel suppresses the lift on its stacked cards, since a shadow change fights the rotation and depth the stack is already using to say the same thing.
+Three things are deliberately outside it. The app-detail rail's category rows are links in a list rather than cards, so they answer the pointer with the accent over 180ms and take no lift; they were bordered cards until the rail replaced them. Cards that are containers rather than destinations — the explore utility and subscribe cards, which hold their own links and controls — stay flat, because a lift would promise a click the card does not accept.
 
-### Browse-all Carousel
-The explore page ends in a stack of three app cards, one centred and two rotated behind it, that the reader swipes through. The centre card is the same object as a card in the directory grid, at the same 376x424 footprint, so the module reads as the grid at an angle rather than an outsized cousin. The track's height follows the card plus the 18px the flanking cards are dropped by; it is not a number of its own.
+### Explore Directory
 
-- **Recession:** a flanking card sits between the page and the centre card, which is what makes it read as set back rather than as a smudge. Dark lands at luminance 21 between the page's 18 and the centre's 26; light takes Drift Mist at 246 between the page's 236 and the white centre's 255. Light carries no dimming filter: that palette is near-neutral by design, so brightness can only drag a card toward grey, and the surface change does the work instead.
-- **Desaturation belongs to the icon, not the card.** `saturate()` on the slot drains the card's own surface too: on dark it took a 63%-saturated navy down to 16% and painted a flat grey. The card only dims; the app icon takes `saturate(.15)`, and the card's contents fade to `.7`.
-- **Opacity is binary, 0 off stage and 1 on it.** A slot that fades up from a partial value while its z-index has already jumped to the front lets the outgoing card show through the incoming one mid-swipe. The fade lives on the card's contents, so the card's own background stays fully opaque at every position.
-- **Only the centre follows the drag.** The flanking cards carry no `--carousel-drag`, so the stack holds still and only the card under the finger moves. This has to hold in the responsive overrides as well as the base rule.
-- **Icons are primed in a window.** Every slot but the three on stage is hidden and stacked at the same point, so a lazy icon has no reason to fetch until its card arrives, and icons turned up late or not at all part way through a swipe. `paintCarousel` marks the slots from -2 to +2 as eager: roughly five images in flight rather than 98 on load.
+Explore carries the catalogue itself, not a sample of it: the taxonomy card, then
+`AppDirectory` over all 102 apps with the count, filter and sort the tag, collection and
+category pages already use. One component, four pages.
+
+It replaced a Browse-all Carousel on 2026-09-01. That was a rotated three-card stack with
+drag, arrows and 102 slots, and a critique the same day found it answered "show me
+everything" with a device that showed one thing per gesture: 101 interactions to see the
+catalogue, on the page whose whole job is browsing. It also cost the site its own motion
+rule, being the most kinetic object on a site the style guide calls calm and close to
+still, on the page with the least editorial reason for movement.
+
+Two further problems went out with it, both by deletion rather than repair. The page had
+picked its sample apps randomly at build and then randomly *again* in the browser,
+overwriting all eight grids, so a reader who followed a card and pressed Back met a
+different Explore and the publication appeared to change its mind about what it
+recommended. And the client renderer carried a hand-copied duplicate of `AppCard.astro`
+that had already drifted from it. Removing the shelves removed the renderer, and the
+renderer took both with it.
+
+- **Order:** taxonomy, then catalogue. The card teaches the six lanes; the directory is
+  the thing itself. The subscribe card closes the page rather than interrupting it at a
+  third of the way down, where it used to sit between two app shelves.
+- **The count is stated.** The hero names the catalogue size and the directory toolbar
+  repeats it live as filters narrow. The page previously never said how many apps existed.
+- **A batch at a time.** Rendering all 102 cards at once made the page 16,700px at 1280
+  and 41,800px on a phone, worse than the sampled version it replaced. `AppDirectory` now
+  ships the whole catalogue to the document and shows the first 24, with a control that
+  reveals the next 24. Explore came back to 5,300px on desktop and 12,000px on a phone,
+  which is shorter than the eight-shelf page ever was while holding everything.
+
+  The mechanism is deliberately not virtualization. Every card stays in the document, so
+  crawlers, the search index and a reader without JavaScript get the whole catalogue; only
+  visibility changes. The cap is applied in CSS at parse time and handed to the script on
+  load, so the first paint is already short rather than collapsing from full height once
+  the module runs, and a `noscript` block lifts the cap entirely when there is no script to
+  take over. Filtering resets to the first batch because it is a new result set; sorting
+  keeps the batch and recomputes which cards fall inside it.
+
+  It serves all four directory pages, not just Explore. The 71-app Productivity category
+  went from about 35 screens on a phone to 12.
+
+- **Where the reveal puts the keyboard.** Focus moves to the first newly revealed card,
+  which takes a `-1` tabindex so it can receive focus without becoming a tab stop, putting
+  the next Tab inside the new run. Not to anything inside the card: a card's full-surface
+  link is deliberately `tabindex="-1"` and `aria-hidden="true"` for mouse convenience, so
+  focusing it would land the keyboard on a node hidden from assistive technology, and the
+  only other named link in a card leaves the site.
 
 ### Site Header and Navigation
 The header is sticky, translucent, and restrained. The brand wordmark uses the same editorial serif as the headline system, while the icon controls stay compact and monochrome until hover or focus gives them blue.

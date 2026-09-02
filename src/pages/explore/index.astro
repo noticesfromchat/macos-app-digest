@@ -1,8 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
-import { Check, ChevronLeft, ChevronRight, Copy, Rss } from 'lucide-astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import AppCard from '../../components/AppCard.astro';
+import AppDirectory from '../../components/AppDirectory.astro';
 import SubscribeCard from '../../components/SubscribeCard.astro';
 import MetaIcon from '../../components/MetaIcon.astro';
 import {
@@ -12,26 +11,17 @@ import {
   getPopularTags
 } from '../../data/categories';
 
-const shuffled = <T,>(items: T[]) => {
-  const output = [...items];
+/* Two things, in this order: the taxonomy, then the catalogue itself.
+   The page used to run to eight screens by sampling three apps from each of eight
+   shelves and closing on a carousel that surfaced one app per gesture, which meant the
+   browse index never actually contained the thing it indexed: every child page carried
+   a count, a filter and a sort that its own parent did not. `AppDirectory` is the same
+   component the tag, collection and category pages already use, so Explore now has at
+   least as much power as anything below it.
 
-  for (let index = output.length - 1; index > 0; index -= 1) {
-    const swapIndex = Math.floor(Math.random() * (index + 1));
-    [output[index], output[swapIndex]] = [output[swapIndex], output[index]];
-  }
-
-  return output;
-};
-
-const pickRandom = <T extends { id: string }>(
-  items: T[],
-  count: number,
-  excludedIds = new Set<string>()
-) => {
-  const available = items.filter((item) => !excludedIds.has(item.id));
-  return shuffled(available).slice(0, count);
-};
-
+   Deleting the shelves took the client renderer with them, and with it a second random
+   selection that overwrote the server's on every load, and a hand-copied card template
+   that had already drifted from `AppCard.astro`. */
 const apps = await getCollection('apps');
 const sortedCategories = [...categories].sort((a, b) =>
   a.title.localeCompare(b.title, undefined, { sensitivity: 'base' })
@@ -41,67 +31,17 @@ const collectionDescriptions: Record<string, string> = {
   'editors-picks': 'Editor-selected standouts with distinctive utility, polish or an especially memorable point of view.',
   'community-favorites': 'Apps Mac readers keep recommending for dependable workflows, practical value and repeat use.'
 };
-
-const toExploreApp = (entry: (typeof apps)[number]) => ({
-  id: entry.id,
-  name: entry.data.name,
-  description: entry.data.description,
-  bestFor: entry.data.bestFor,
-  tags: entry.data.tags,
-  categories: entry.data.categories,
-  iconCategory: entry.data.iconCategory,
-  homepage: entry.data.homepage,
-  icon: entry.data.icon,
-  iconStyle: entry.data.iconStyle
-});
-
-const editorsPicksPool = apps.filter((entry) => entry.data.collections?.includes('editors-picks'));
-const communityFavoritesPool = apps.filter((entry) => entry.data.collections?.includes('community-favorites'));
-
-const editorsPicks = pickRandom(editorsPicksPool, 3);
-const communityFavorites = pickRandom(
-  communityFavoritesPool,
-  3,
-  new Set(editorsPicks.map((entry) => entry.id))
-);
-const categoryModules = sortedCategories.map((category) => ({
-  ...category,
-  apps: pickRandom(
-    apps.filter((entry) => entry.data.categories.includes(category.slug)),
-    3
-  )
-}));
-const browseCarouselApps = shuffled(apps);
-
-const getInitialCarouselPosition = (index: number, itemCount: number) => {
-  if (index <= 1) return index;
-  if (index === itemCount - 1) return -1;
-  return undefined;
-};
-
-const exploreData = {
-  categoryIcons: Object.fromEntries(categories.map((category) => [category.slug, category.icon])),
-  editorsPicks: editorsPicksPool.map(toExploreApp),
-  communityFavorites: communityFavoritesPool.map(toExploreApp),
-  categories: sortedCategories.map((category) => ({
-    slug: category.slug,
-    apps: apps
-      .filter((entry) => entry.data.categories.includes(category.slug))
-      .map(toExploreApp)
-  }))
-};
-
 ---
 <BaseLayout
   title="Explore Mac Apps — App Waypoint"
-  description="Explore App Waypoint through editorial collections, popular tags and six browse categories built from the Mac app catalog."
+  description="Browse every Mac app App Waypoint has recommended, by category, collection or tag, with the full catalog filterable and sortable on one page."
   current="explore"
 >
   <section class="page-shell archive-page explore-page">
     <header class="explore-hero">
       <h1>Explore Apps</h1>
       <p class="dek">
-        Browse App Waypoint through Mac apps chosen by hand, surfaced by the community and organized to make worthwhile software easier to discover.
+        {apps.length} hand-picked Mac apps from every issue, browsable by category, collection or tag.
       </p>
     </header>
 
@@ -168,408 +108,15 @@ const exploreData = {
       </article>
     </section>
 
-    <section class="section explore-section">
+    <section class="section explore-section explore-directory-section">
       <div class="section-heading">
-        <h2>Editor's Picks</h2>
+        <h2>All apps</h2>
       </div>
-      <div class="grid" data-explore-grid="editors-picks">
-        {editorsPicks.map((entry) => (
-          <AppCard app={entry.data} appId={entry.id} />
-        ))}
-      </div>
-      <p class="explore-more">
-        <a href="/collections/editors-picks/">More Editor's Picks</a>
-      </p>
-    </section>
-
-    <section class="section explore-section">
-      <div class="section-heading">
-        <h2>Community Favorites</h2>
-      </div>
-      <div class="grid" data-explore-grid="community-favorites">
-        {communityFavorites.map((entry) => (
-          <AppCard app={entry.data} appId={entry.id} />
-        ))}
-      </div>
-      <p class="explore-more">
-        <a href="/collections/community-favorites/">More Community Favorites</a>
-      </p>
+      <AppDirectory apps={apps} />
     </section>
 
     <section class="section explore-section explore-rss-section">
       <SubscribeCard />
     </section>
-
-    {categoryModules.map((category) => (
-      <section class="section explore-section">
-        <div class="section-heading">
-          <h2>{category.title}</h2>
-        </div>
-        <div class="grid" data-explore-grid={`category-${category.slug}`}>
-          {category.apps.map((entry) => (
-            <AppCard app={entry.data} appId={entry.id} />
-          ))}
-        </div>
-        <p class="explore-more">
-          <a href={`/categories/${category.slug}/`}>More {category.title}</a>
-        </p>
-      </section>
-    ))}
-
-    <section class="section explore-section">
-      <div class="section-heading">
-        <h2>Browse all apps</h2>
-      </div>
-      <p class="explore-section-dek">
-        Still scrolling? Swipe left or right to browse all apps.
-      </p>
-      <div class="explore-carousel-shell">
-        <div class="explore-carousel-stage">
-          <button class="explore-carousel-arrow is-prev" type="button" data-carousel-prev aria-label="Previous app">
-            <ChevronLeft aria-hidden="true" />
-          </button>
-          <div
-            class="explore-carousel-viewport"
-            data-carousel-viewport
-            role="region"
-            aria-label="Browse all apps carousel"
-            tabindex="0"
-          >
-            <div class="explore-carousel-track" data-carousel-track>
-              {browseCarouselApps.map((entry, index) => {
-                const position = getInitialCarouselPosition(index, browseCarouselApps.length);
-                return (
-                  <div
-                    class="explore-carousel-card-slot"
-                    data-carousel-item
-                    data-position={position}
-                    aria-hidden={position === 0 ? 'false' : 'true'}
-                  >
-                    <AppCard app={entry.data} appId={entry.id} />
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-          <button class="explore-carousel-arrow is-next" type="button" data-carousel-next aria-label="Next app">
-            <ChevronRight aria-hidden="true" />
-          </button>
-        </div>
-      </div>
-    </section>
   </section>
-
-  <script
-    type="application/json"
-    id="explore-random-data"
-    set:html={JSON.stringify(exploreData).replaceAll('<', '\\u003c')}
-  />
-  <script is:inline type="module">
-    const dataElement = document.getElementById('explore-random-data');
-    if (dataElement?.textContent) {
-      const data = JSON.parse(dataElement.textContent);
-
-      const escapeHTML = (value) =>
-        String(value)
-          .replaceAll('&', '&amp;')
-          .replaceAll('<', '&lt;')
-          .replaceAll('>', '&gt;')
-          .replaceAll('"', '&quot;')
-          .replaceAll("'", '&#39;');
-
-      const shuffle = (items) => {
-        const output = [...items];
-
-        for (let index = output.length - 1; index > 0; index -= 1) {
-          const swapIndex = Math.floor(Math.random() * (index + 1));
-          [output[index], output[swapIndex]] = [output[swapIndex], output[index]];
-        }
-
-        return output;
-      };
-
-      const pickRandom = (items, count, excludedIds = new Set()) => {
-        const available = items.filter((item) => !excludedIds.has(item.id));
-        return shuffle(available).slice(0, count);
-      };
-
-      const missingIconColors = ['green', 'orange', 'blue', 'purple', 'pink'];
-      const iconPaths = {
-        sparkles: '<path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .962 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.582a.5.5 0 0 1 0 .962L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.962 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/>',
-        'code-2': '<path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/>',
-        'folder-search': '<path d="M10.5 20H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H20a2 2 0 0 1 2 2v3"/><circle cx="17" cy="17" r="3"/><path d="m21 21-1.5-1.5"/>',
-        'sliders-horizontal': '<line x1="21" x2="14" y1="4" y2="4"/><line x1="10" x2="3" y1="4" y2="4"/><line x1="21" x2="12" y1="12" y2="12"/><line x1="8" x2="3" y1="12" y2="12"/><line x1="21" x2="16" y1="20" y2="20"/><line x1="12" x2="3" y1="20" y2="20"/><line x1="14" x2="14" y1="2" y2="6"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="16" x2="16" y1="18" y2="22"/>',
-        route: '<circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/>',
-        'notebook-pen': '<path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4"/><path d="M2 6h4"/><path d="M2 10h4"/><path d="M2 14h4"/><path d="M2 18h4"/><path d="M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"/>'
-      };
-
-      const getFallbackColor = (app) => {
-        const seed = app.id || app.name;
-        let hash = 0;
-        for (const char of seed) {
-          hash = Math.imul(31, hash) + char.charCodeAt(0);
-        }
-        hash ^= hash >>> 16;
-        hash = Math.imul(hash, 0x7feb352d);
-        hash ^= hash >>> 15;
-        hash = Math.imul(hash, 0x846ca68b);
-        hash ^= hash >>> 16;
-        return missingIconColors[(hash >>> 0) % missingIconColors.length];
-      };
-
-      const renderFallbackIcon = (app) => {
-        const categorySlug = app.iconCategory ?? app.categories?.[0];
-        const iconName = categorySlug ? data.categoryIcons?.[categorySlug] : undefined;
-        const paths = iconName ? iconPaths[iconName] : undefined;
-        if (!paths) return '';
-
-        return `
-            <div class="app-icon-frame missing-app-icon-frame" aria-hidden="true">
-              <svg class="missing-app-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
-                ${paths}
-              </svg>
-            </div>
-          `;
-      };
-
-      const renderCard = (app) => {
-        const fallbackIconMarkup = app.icon ? '' : renderFallbackIcon(app);
-        const hasIconVisual = Boolean(app.icon || fallbackIconMarkup);
-        const iconClass = app.icon
-          ? ` app-icon-${escapeHTML(app.iconStyle || 'plain')}`
-          : (fallbackIconMarkup ? ` app-icon-fallback app-icon-color-${escapeHTML(getFallbackColor(app))}` : '');
-        const imageIconMarkup = app.icon
-          ? `
-            <div class="app-icon-frame" aria-hidden="true">
-              <img class="app-icon" src="${escapeHTML(app.icon)}" alt="" loading="lazy" decoding="async">
-            </div>
-          `
-          : '';
-        const iconMarkup = imageIconMarkup || fallbackIconMarkup;
-        const summaryClass = hasIconVisual ? 'app-summary has-app-icon' : 'app-summary';
-
-        return `
-        <article class="card app-card${iconClass}" data-app-name="${escapeHTML(app.name)}">
-          <a class="app-card-link" href="/apps/${escapeHTML(app.id)}/" tabindex="-1" aria-hidden="true"></a>
-          <div class="${summaryClass}">
-            <div class="app-summary-heading">
-              ${iconMarkup}
-              <h3><a href="/apps/${escapeHTML(app.id)}/">${escapeHTML(app.name)}</a></h3>
-            </div>
-            <p class="app-description">${escapeHTML(app.description)}</p>
-          </div>
-          <p class="best-for"><strong>Best for:</strong> ${escapeHTML(app.bestFor)}</p>
-          <div class="tag-list" aria-label="App tags">
-            ${app.tags.map((tag) => `<a class="tag" href="/tags/${escapeHTML(tag)}/">${escapeHTML(tag)}</a>`).join('')}
-          </div>
-        </article>
-      `;
-      };
-
-      const renderSelection = (selector, selection) => {
-        const grid = document.querySelector(selector);
-        if (!grid) return;
-        grid.innerHTML = selection.map(renderCard).join('');
-      };
-
-      const editorsPicks = pickRandom(data.editorsPicks, 3);
-      const communityFavorites = pickRandom(
-        data.communityFavorites,
-        3,
-        new Set(editorsPicks.map((app) => app.id))
-      );
-      const categorySelections = new Map();
-
-      data.categories.forEach((category) => {
-        categorySelections.set(category.slug, pickRandom(category.apps, 3));
-      });
-
-      renderSelection('[data-explore-grid="editors-picks"]', editorsPicks);
-      renderSelection('[data-explore-grid="community-favorites"]', communityFavorites);
-      categorySelections.forEach((selection, slug) => {
-        renderSelection(`[data-explore-grid="category-${slug}"]`, selection);
-      });
-
-      const carouselTrack = document.querySelector('[data-carousel-track]');
-      const carouselCards = [...document.querySelectorAll('[data-carousel-item]')];
-      const carouselPrev = document.querySelector('[data-carousel-prev]');
-      const carouselNext = document.querySelector('[data-carousel-next]');
-      const carouselViewport = document.querySelector('[data-carousel-viewport]');
-
-      let carouselItems = shuffle(carouselCards);
-      let carouselIndex = 0;
-      let activePointerId = null;
-      let mouseDragging = false;
-      let pointerStartX = 0;
-      let pointerDeltaX = 0;
-      let suppressClick = false;
-      let pointerDownTarget = null;
-
-      const setCardPosition = (card, position) => {
-        const isCenter = position === 0;
-        if (position === null) card.removeAttribute('data-position');
-        else card.setAttribute('data-position', String(position));
-        card.setAttribute('aria-hidden', isCenter ? 'false' : 'true');
-        card.querySelectorAll('a, button').forEach((control) => {
-          if (isCenter) control.removeAttribute('tabindex');
-          else control.setAttribute('tabindex', '-1');
-        });
-      };
-
-      /* Every slot but the three on stage is hidden and stacked at the same point, so
-         a lazy icon has no reason to fetch until its card arrives. That is why icons
-         turned up late, or not at all, part way through a swipe. Prime a window either
-         side of the centre instead: roughly five images in flight rather than 98 on
-         load, and the next card's mark is already cached before it is needed. */
-      const primeCarouselIcons = () => {
-        for (const offset of [-2, -1, 0, 1, 2]) {
-          const index = (carouselIndex + offset + carouselItems.length) % carouselItems.length;
-          const icon = carouselItems[index]?.querySelector('.app-icon');
-          if (icon && icon.loading === 'lazy') icon.loading = 'eager';
-        }
-      };
-
-      const paintCarousel = () => {
-        if (!carouselTrack || !carouselCards.length || !carouselItems.length) return;
-        carouselCards.forEach((card) => setCardPosition(card, null));
-        [-1, 0, 1].forEach((position) => {
-          const itemIndex = (carouselIndex + position + carouselItems.length) % carouselItems.length;
-          setCardPosition(carouselItems[itemIndex], position);
-        });
-        primeCarouselIcons();
-      };
-
-      const goToNext = () => {
-        carouselIndex = (carouselIndex + 1) % carouselItems.length;
-        paintCarousel();
-      };
-
-      const goToPrev = () => {
-        carouselIndex = (carouselIndex - 1 + carouselItems.length) % carouselItems.length;
-        paintCarousel();
-      };
-
-      const beginDrag = (clientX) => {
-        pointerStartX = clientX;
-        pointerDeltaX = 0;
-        suppressClick = false;
-        carouselViewport?.classList.add('is-dragging');
-      };
-
-      const updateDrag = (clientX) => {
-        if (!carouselViewport) return;
-        const limit = carouselViewport.clientWidth * 0.34;
-        pointerDeltaX = Math.max(-limit, Math.min(limit, clientX - pointerStartX));
-        carouselViewport.style.setProperty('--carousel-drag', `${pointerDeltaX}px`);
-      };
-
-      const endDrag = () => {
-        if (!carouselViewport) return;
-        const threshold = Math.min(72, carouselViewport.clientWidth * 0.14);
-        suppressClick = Math.abs(pointerDeltaX) > 8;
-        carouselViewport.classList.remove('is-dragging');
-        carouselViewport.style.setProperty('--carousel-drag', '0px');
-        if (pointerDeltaX <= -threshold) goToNext();
-        else if (pointerDeltaX >= threshold) goToPrev();
-        window.setTimeout(() => { suppressClick = false; }, 0);
-      };
-
-      carouselPrev?.addEventListener('click', goToPrev);
-      carouselNext?.addEventListener('click', goToNext);
-
-      carouselViewport?.addEventListener('pointerdown', (event) => {
-        if (event.button !== 0 || activePointerId !== null) return;
-        activePointerId = event.pointerId;
-        pointerDownTarget = event.target;
-        beginDrag(event.clientX);
-      });
-
-      carouselViewport?.addEventListener('pointermove', (event) => {
-        if (event.pointerId !== activePointerId) return;
-        updateDrag(event.clientX);
-        if (Math.abs(pointerDeltaX) > 4) {
-          if (!carouselViewport.hasPointerCapture(event.pointerId)) {
-            carouselViewport.setPointerCapture(event.pointerId);
-          }
-          event.preventDefault();
-        }
-      });
-
-      const finishDrag = (event) => {
-        if (event.pointerId !== activePointerId) return;
-        if (carouselViewport.hasPointerCapture(event.pointerId)) {
-          carouselViewport.releasePointerCapture(event.pointerId);
-        }
-        activePointerId = null;
-        endDrag();
-        if (event.type === 'pointercancel') pointerDownTarget = null;
-      };
-
-      carouselViewport?.addEventListener('pointerup', finishDrag);
-      carouselViewport?.addEventListener('pointercancel', finishDrag);
-      carouselViewport?.addEventListener('mousedown', (event) => {
-        if (event.button !== 0 || activePointerId !== null) return;
-        mouseDragging = true;
-        beginDrag(event.clientX);
-      });
-      window.addEventListener('mousemove', (event) => {
-        if (!mouseDragging || activePointerId !== null) return;
-        updateDrag(event.clientX);
-        if (Math.abs(pointerDeltaX) > 4) event.preventDefault();
-      });
-      window.addEventListener('mouseup', () => {
-        if (!mouseDragging || activePointerId !== null) return;
-        mouseDragging = false;
-        endDrag();
-      });
-      carouselViewport?.querySelectorAll('a').forEach((link) => {
-        link.setAttribute('draggable', 'false');
-        link.addEventListener('dragstart', (event) => event.preventDefault());
-      });
-      carouselViewport?.addEventListener('click', (event) => {
-        const clickOrigin = pointerDownTarget || event.target;
-        pointerDownTarget = null;
-
-        if (suppressClick) {
-          event.preventDefault();
-          event.stopPropagation();
-          return;
-        }
-        const sideCard = clickOrigin.closest?.('[data-carousel-item][data-position="-1"], [data-carousel-item][data-position="1"]');
-        if (sideCard) {
-          event.preventDefault();
-          event.stopPropagation();
-          if (sideCard.getAttribute('data-position') === '-1') goToPrev();
-          else goToNext();
-          return;
-        }
-
-        const centerCard = clickOrigin.closest?.('[data-carousel-item][data-position="0"]');
-        const clickedLink = clickOrigin.closest?.('a');
-        const destination = clickedLink || centerCard?.querySelector('.app-card-link');
-        if (!centerCard || !destination) return;
-
-        event.preventDefault();
-        event.stopPropagation();
-        if (destination.target === '_blank') {
-          window.open(destination.href, '_blank', 'noopener,noreferrer');
-        } else {
-          window.location.assign(destination.href);
-        }
-      }, true);
-
-      carouselViewport?.addEventListener('keydown', (event) => {
-        if (event.key === 'ArrowLeft') {
-          event.preventDefault();
-          goToPrev();
-        }
-        if (event.key === 'ArrowRight') {
-          event.preventDefault();
-          goToNext();
-        }
-      });
-
-      paintCarousel();
-    }
-  </script>
 </BaseLayout>

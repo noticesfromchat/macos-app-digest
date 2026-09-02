@@ -144,9 +144,12 @@ it. See Issue Subscribe Card in `DESIGN.md` for the structure and the reasoning.
 
 ## 5. Tag and collection directories
 
-- Explore is the only browse index. Do not create standalone `/apps/`, `/tags/`,
-  `/collections/` or `/categories/` index pages; those roots should redirect to
-  `/explore/`.
+- Explore is the only browse index, and it contains the index: the taxonomy card over
+  `AppDirectory` across the whole catalogue. Do not create standalone `/apps/`, `/tags/`,
+  `/collections/` or `/categories/` index pages; those roots redirect to `/explore/`.
+- Explore must never be less capable than the pages beneath it. It carried no count, no
+  filter and no sort until 2026-09-01, while every tag, collection and category page had
+  all three.
 - Tag and collection pages share the same sortable app-directory component.
 - Apps default to A–Z order.
 - Available sorting options are A–Z, Z–A and Date featured.

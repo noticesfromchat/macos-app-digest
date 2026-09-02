@@ -58,6 +58,13 @@ const tagOptions = [
   .map((value) => ({ value, count: contextualTagCount(value) }))
   .filter((option) => option.count > 0);
 
+/* The directory renders every app so crawlers, the search index and a reader without
+   JavaScript all get the whole catalogue, then shows the first batch and reveals the rest
+   on request. Explore is the page that needs it: 102 cards in one column ran past 40,000px
+   on a phone. The cap is applied in CSS at parse time rather than by the script, so the
+   first paint is already short and the page does not collapse from full height once the
+   module runs. Keep this in step with the nth-child rule in global.css. */
+const DIRECTORY_BATCH = 24;
 const sortedApps = [...apps].sort((a, b) =>
   a.data.name.localeCompare(b.data.name, undefined, { sensitivity: 'base' })
 );
@@ -185,7 +192,7 @@ const sortedApps = [...apps].sort((a, b) =>
       </div>
     </div>
   </div>
-  <div class="grid directory-grid" data-app-grid>
+  <div class="grid directory-grid" data-app-grid data-directory-cap={DIRECTORY_BATCH}>
     {sortedApps.map((entry) => (
       <AppCard
         app={entry.data}
@@ -198,6 +205,17 @@ const sortedApps = [...apps].sort((a, b) =>
     No apps match every selected filter.
     <button type="button" class="filter-reset" data-filter-reset>Reset filters</button>
   </p>
+  <div class="directory-more">
+    <button type="button" class="button" hidden data-directory-more></button>
+  </div>
+  <noscript>
+    <style>
+      /* Without the script there is no way to reveal the rest, so nothing is hidden.
+         `flex` rather than `revert` because that is what .app-card sets on itself. */
+      .directory-grid[data-directory-cap] > * { display: flex; }
+      .directory-more { display: none; }
+    </style>
+  </noscript>
 </div>
 
 <script>
@@ -293,6 +311,7 @@ const sortedApps = [...apps].sort((a, b) =>
         });
 
         grid.append(...cards);
+        applyFilters();
       };
 
       const menu = registerMenu(sortMenu, sortTrigger, sortOptions, () => {
@@ -318,6 +337,13 @@ const sortedApps = [...apps].sort((a, b) =>
     const filterCount = directory.querySelector<HTMLElement>('[data-filter-count]');
     const directoryCount = directory.querySelector<HTMLElement>('[data-directory-count]');
     const emptyState = directory.querySelector<HTMLElement>('[data-directory-empty]');
+    const moreButton = directory.querySelector<HTMLButtonElement>('[data-directory-more]');
+
+    /* CSS held the first paint to one batch. From here the script owns visibility, so the
+       attribute comes off and the same cards stay hidden through `hidden` instead. */
+    const batchSize = Number(grid.dataset.directoryCap) || 24;
+    grid.removeAttribute('data-directory-cap');
+    let visibleLimit = batchSize;
     const resetButtons = [...directory.querySelectorAll<HTMLButtonElement>('[data-filter-reset]')];
 
     if (!filterMenu || !filterTrigger || !filterPanel) return;
@@ -356,18 +382,40 @@ const sortedApps = [...apps].sort((a, b) =>
       const selectedCollections = selected
         .filter((filter) => filter.dataset.filterType === 'collection')
         .map((filter) => filter.value);
-      let visibleCount = 0;
+      let matchCount = 0;
+      let shownCount = 0;
 
+      /* `cards` is kept in DOM order by the sort, so capping by match position shows the
+         first batch of whatever order is currently on screen. */
       cards.forEach((card) => {
         const matches = matchesFilterSet(card, selectedTags, selectedCollections);
-        card.hidden = !matches;
-        if (matches) visibleCount += 1;
+
+        if (!matches) {
+          card.hidden = true;
+          return;
+        }
+
+        matchCount += 1;
+        const withinLimit = matchCount <= visibleLimit;
+        card.hidden = !withinLimit;
+        if (withinLimit) shownCount += 1;
       });
 
+      const remaining = matchCount - shownCount;
+
       if (directoryCount) {
-        directoryCount.textContent = `${visibleCount} ${visibleCount === 1 ? 'app' : 'apps'}`;
+        const noun = matchCount === 1 ? 'app' : 'apps';
+        directoryCount.textContent = remaining > 0
+          ? `Showing ${shownCount} of ${matchCount} ${noun}`
+          : `${matchCount} ${noun}`;
       }
-      if (emptyState) emptyState.hidden = visibleCount > 0;
+      if (emptyState) emptyState.hidden = matchCount > 0;
+      if (moreButton) {
+        moreButton.hidden = remaining === 0;
+        if (remaining > 0) {
+          moreButton.textContent = `Show ${Math.min(batchSize, remaining)} more`;
+        }
+      }
 
       if (filterCount) {
         const isOnlyDefault = selected.length === 1 && isDefaultFilter(selected[0]);
@@ -413,6 +461,7 @@ const sortedApps = [...apps].sort((a, b) =>
 
     filters.forEach((filter) => {
       filter.addEventListener('change', () => {
+        visibleLimit = batchSize;
         applyFilters();
         if (filter.checked && !isDefaultFilter(filter)) closeMenu(menu, true);
       });
@@ -423,8 +472,32 @@ const sortedApps = [...apps].sort((a, b) =>
         filters.forEach((filter) => {
           filter.checked = isDefaultFilter(filter);
         });
+        visibleLimit = batchSize;
         applyFilters();
       });
+    });
+
+    moreButton?.addEventListener('click', () => {
+      const firstNewIndex = cards.filter((card) => !card.hidden).length;
+      visibleLimit += batchSize;
+      applyFilters();
+
+      /* Focus the card itself, not anything inside it. A card's full-surface link is
+         deliberately `tabindex="-1"` and `aria-hidden="true"` for mouse convenience, so
+         sending the keyboard there would land it on a node hidden from assistive
+         technology, and the only other named link in a card leaves the site. The article
+         takes a -1 tabindex so it can receive focus without becoming a tab stop, which
+         puts the next Tab inside the newly revealed run.
+
+         Focus never scrolls. The new cards render into the space the button was occupying,
+         so the reader is already looking at them; moving the viewport on top of that loses
+         their place instead of keeping it. */
+      const revealed = cards.filter((card) => !card.hidden)[firstNewIndex];
+
+      if (revealed) {
+        revealed.tabIndex = -1;
+        revealed.focus({ preventScroll: true });
+      }
     });
 
     applyFilters();

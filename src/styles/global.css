@@ -93,6 +93,14 @@
 
 * { box-sizing: border-box; }
 
+/* The `hidden` attribute has to win. The browser's own `[hidden] { display: none }` is a
+   plain element rule, so any class that sets a display beats it, and this stylesheet sets
+   one on nearly everything: `.button`, `.tag`, the card, the grid. That silently turns
+   `el.hidden = true` into a no-op, which is why nine separate `[hidden]` patches had grown
+   up around the file, one per component that had been bitten. This is the rule they were
+   all approximating. */
+[hidden] { display: none !important; }
+
 html {
   background: var(--page);
   scroll-behavior: smooth;
@@ -1267,197 +1275,8 @@ a { color: inherit; }
   padding-bottom: 0;
   border-top: 0;
 }
-.explore-section-dek {
-  max-width: var(--measure);
-  margin: 0 0 24px;
-  color: var(--muted);
-  font-size: var(--type-dek);
-  line-height: 1.58;
-}
-.explore-carousel-shell { display: grid; gap: 12px; }
-.explore-carousel-stage {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 12px;
-  background: transparent;
-}
-.explore-carousel-viewport {
-  overflow: hidden;
-  padding: 12px 42px 8px;
-  cursor: grab;
-  outline: 0;
-  touch-action: pan-y;
-  --carousel-drag: 0px;
-}
-.explore-carousel-viewport:focus-visible {
-  border-radius: 14px;
-  outline: 2px solid color-mix(in srgb, var(--accent) 38%, transparent);
-  outline-offset: 3px;
-}
-.explore-carousel-viewport.is-dragging { cursor: grabbing; user-select: none; }
-.explore-carousel-track {
-  position: relative;
-  /* the centre card's 424px plus the 18px the flanking cards are dropped by */
-  min-height: 442px;
-  background: transparent;
-}
-.explore-carousel-card-slot {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  /* The same footprint as a card in the directory grid, so the carousel reads as
-     the same object rather than an outsized cousin. */
-  width: min(376px, calc(100% - 220px));
-  visibility: hidden;
-  background: transparent;
-  box-shadow: none;
-  filter: none;
-  transform-origin: center center;
-  opacity: 0;
-  pointer-events: none;
-  transition: transform 320ms cubic-bezier(.16, 1, .3, 1), opacity 220ms ease, filter 320ms ease;
-}
-/* Every staged slot is fully opaque. Opacity is only ever 0 or 1 here: a slot that
-   fades up from a partial value while its z-index has already jumped to the front is
-   what let the outgoing card show through the incoming one mid-swipe. Recession is
-   carried by colour instead, below. */
-.explore-carousel-card-slot[data-position] { visibility: visible; opacity: 1; }
-.explore-carousel-card-slot .app-card {
-  min-height: 424px;
-  height: 100%;
-  padding: 28px;
-  background: var(--surface);
-  box-shadow: none;
-  filter: none;
-}
-.explore-carousel-card-slot .app-summary { min-height: 126px; }
-.explore-carousel-card-slot .best-for { min-height: 92px; }
-.explore-carousel-card-slot .tag-list { min-height: 78px; }
-.explore-carousel-card-slot[data-position="0"] {
-  z-index: 5;
-  transform: translateX(calc(-50% + var(--carousel-drag))) translateY(0) scale(1);
-  opacity: 1;
-  pointer-events: auto;
-}
-.explore-carousel-card-slot .app-card:hover,
-.explore-carousel-card-slot .app-card:focus-within {
-  background: var(--surface);
-  box-shadow: none;
-  filter: none;
-}
-/* The flanking cards hold their place while the centre is dragged. They carry no
-   --carousel-drag, so the stack stays put and only the card under the finger moves. */
-.explore-carousel-card-slot[data-position="-1"] {
-  z-index: 3;
-  transform: translateX(calc(-50% - 60%)) translateY(18px) rotate(-5deg) scale(.94);
-  pointer-events: auto;
-}
-.explore-carousel-card-slot[data-position="1"] {
-  z-index: 3;
-  transform: translateX(calc(-50% + 60%)) translateY(18px) rotate(5deg) scale(.94);
-  pointer-events: auto;
-}
-/* The flanking cards are context, not content, so their colour is knocked back and
-   they sit further into the page. Desaturated rather than greyed: full grayscale
-   takes the surface off the palette's hue entirely, turning a 212deg harbour navy
-   into a flat rgb(26,26,26), which reads as foreign against the page. saturate(.2)
-   holds the card on its own axis, 214deg against a 212deg base, while dropping a
-   vivid app icon from full saturation to about a third. The slot's is-dragging rule
-   kills the transition, so none of this runs mid-gesture. */
-/* Desaturation belongs on the icons, not the card. saturate() on the slot hits the
-   card's own surface as well: on dark it took the 63%-saturated navy down to 16% and
-   painted rgb(18,21,25), which is the grey that looked out of place. The card now
-   only dims, so it keeps its blue, and the vivid element, the app icon, is the thing
-   that drains. */
-/* Light needs no dimming filter. Its palette is near-neutral by design, so
-   brightness only drags the card toward grey; the recession is a surface change. */
-
-.explore-carousel-card-slot .app-icon-frame { transition: filter 320ms ease; }
-.explore-carousel-card-slot[data-position="-1"] .app-icon-frame,
-.explore-carousel-card-slot[data-position="1"] .app-icon-frame { filter: saturate(.15); }
-
-/* Faded on the contents, never on the slot or the card. The card's own background
-   stays fully opaque at every position, which is what keeps the outgoing card from
-   showing through the incoming one as the two cross. */
-.explore-carousel-card-slot .app-card > * { transition: opacity 320ms ease; }
-.explore-carousel-card-slot[data-position="-1"] .app-card > *,
-.explore-carousel-card-slot[data-position="1"] .app-card > * { opacity: .7; }
-
-/* A flanking card sits between the page and the centre card in both themes, which
-   is what makes it read as set back rather than as a smudge. Light was darker than
-   its own page ground, 230 against 236, so it lost all surface identity and looked
-   grey; Drift Mist puts it at 246, between the page's 236 and the white centre's
-   255, and stays on the fog axis. */
-.explore-carousel-card-slot[data-position="-1"] .app-card,
-.explore-carousel-card-slot[data-position="1"] .app-card {
-  background: var(--bg);
-}
-
-/* Dark recedes by staying navy, not by going black. Mixing 45% toward the page
-   ground and then dimming to .82 painted rgb(6,16,30) at luminance 15, against a
-   ground of 10 and a centre of 26: it collapsed into the page and read as black.
-   A quarter of the way to the ground with almost no dimming lands at rgb(9,23,40),
-   luminance 21, holding the centre card's own 63% saturation. */
-[data-theme="dark"] .explore-carousel-card-slot[data-position="-1"],
-[data-theme="dark"] .explore-carousel-card-slot[data-position="1"] { filter: brightness(.95); }
-
-[data-theme="dark"] .explore-carousel-card-slot[data-position="-1"] .app-card,
-[data-theme="dark"] .explore-carousel-card-slot[data-position="1"] .app-card {
-  background: color-mix(in srgb, var(--surface) 75%, var(--bg));
-}
-.explore-carousel-viewport.is-dragging .explore-carousel-card-slot { transition: none; }
-.explore-carousel-arrow {
-  display: grid;
-  width: 24px;
-  height: 24px;
-  padding: 0;
-  place-items: center;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  color: var(--accent);
-  cursor: pointer;
-}
-.explore-carousel-arrow svg { width: 18px; height: 18px; }
-.explore-carousel-arrow:hover,
-.explore-carousel-arrow:focus-visible {
-  color: var(--accent-hover);
-  outline: 0;
-}
-.explore-more {
-  margin: 18px 0 0;
-  text-align: center;
-}
-.explore-more a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 24px;
-  color: var(--accent);
-  font-size: var(--type-meta);
-  font-weight: 800;
-  letter-spacing: .06em;
-  text-decoration: none;
-  text-transform: uppercase;
-}
 @media (pointer: coarse) {
-  .feature-card a,
-  .explore-more a { min-height: 44px; }
-}
-
-.explore-more a:hover,
-.explore-more a:focus-visible { color: var(--accent-hover); text-decoration: underline; text-underline-offset: 3px; }
-
-@keyframes explore-card-in {
-  from {
-    opacity: 0;
-    filter: blur(8px);
-  }
-
-  to {
-    opacity: 1;
-    filter: blur(0);
-  }
+  .feature-card a { min-height: 44px; }
 }
 
 /* The measure belongs to the prose, not to the page: About's headings and
@@ -1733,6 +1552,18 @@ a { color: inherit; }
   color: var(--accent);
   outline: 0;
 }
+/* The first-paint cap. The script removes the attribute and takes over with `hidden`, so
+   this rule only ever governs the moment before the module runs, and the noscript block in
+   AppDirectory undoes it entirely when there is no script to take over. The 25 is
+   DIRECTORY_BATCH + 1; the two are kept in step by hand. */
+.directory-grid[data-directory-cap] > *:nth-child(n+25) { display: none; }
+
+.directory-more {
+  display: flex;
+  justify-content: center;
+  margin-top: 28px;
+}
+
 .directory-empty {
   display: flex;
   align-items: center;
@@ -1881,58 +1712,6 @@ a { color: inherit; }
     height: 44px;
     justify-self: start;
   }
-  .explore-carousel-stage {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
-  }
-  .explore-carousel-track { min-height: 360px; }
-  .explore-carousel-card-slot {
-    width: min(340px, calc(100% - 96px));
-  }
-  .explore-carousel-card-slot .app-card {
-    height: 340px;
-    min-height: 340px;
-    overflow: hidden;
-    padding: 22px;
-  }
-  .explore-carousel-card-slot .app-summary {
-    min-height: 0;
-    margin-bottom: 18px;
-  }
-  .explore-carousel-card-slot .app-summary p,
-  .explore-carousel-card-slot .best-for {
-    display: -webkit-box;
-    min-height: 0;
-    overflow: hidden;
-    line-height: 1.45;
-    -webkit-box-orient: vertical;
-  }
-  .explore-carousel-card-slot .app-summary p {
-    max-height: calc(1.45em * 4);
-    -webkit-line-clamp: 4;
-    line-clamp: 4;
-  }
-  .explore-carousel-card-slot .best-for {
-    max-height: calc(1.45em * 4);
-    -webkit-line-clamp: 4;
-    line-clamp: 4;
-  }
-  .explore-carousel-card-slot .tag-list {
-    display: none;
-  }
-  .explore-carousel-viewport { padding: 14px 18px 10px; }
-  .explore-carousel-card-slot[data-position="-1"] {
-    transform: translateX(calc(-50% - 52%)) translateY(16px) rotate(-4deg) scale(.92);
-  }
-  .explore-carousel-card-slot[data-position="1"] {
-    transform: translateX(calc(-50% + 52%)) translateY(16px) rotate(4deg) scale(.92);
-  }
-  .explore-carousel-arrow {
-    justify-self: center;
-  }
-  .explore-carousel-arrow.is-prev { order: 2; justify-self: end; }
-  .explore-carousel-arrow.is-next { order: 3; justify-self: start; }
-  .explore-carousel-viewport { grid-column: 1 / -1; order: 1; }
   .directory-toolbar { margin-top: 28px; }
 }
 
@@ -1970,21 +1749,6 @@ a { color: inherit; }
     width: 100%;
     max-width: none;
   }
-  .explore-carousel-track { min-height: 336px; }
-  .explore-carousel-card-slot {
-    width: min(320px, calc(100% - 78px));
-  }
-  .explore-carousel-card-slot .app-card {
-    height: 316px;
-    min-height: 316px;
-    padding: 20px 18px;
-  }
-  .explore-carousel-card-slot[data-position="-1"] {
-    transform: translateX(calc(-50% - 58%)) translateY(16px) rotate(-4deg) scale(.92);
-  }
-  .explore-carousel-card-slot[data-position="1"] {
-    transform: translateX(calc(-50% + 58%)) translateY(16px) rotate(4deg) scale(.92);
-  }
   .directory-toolbar { flex-wrap: wrap; row-gap: 12px; }
   .directory-controls { flex: 1 1 100%; }
   .directory-controls .directory-select { flex: 1 1 0; width: auto; }
@@ -2019,7 +1783,6 @@ a { color: inherit; }
   .feature-card:hover,
   .archive-card:hover,
   .theme-toggle:hover { transform: none; }
-  .explore-carousel-card-slot { transition: none; }
   .content-divider.is-lit .brand-mark-ping { animation: none; }
   .hero-pick-card.has-pick-accent::before,
   .hero-pick-card.has-pick-accent::after { animation: none; }
