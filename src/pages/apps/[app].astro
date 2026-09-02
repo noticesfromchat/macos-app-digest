@@ -81,7 +81,7 @@ const appSchema = [
 
 <BaseLayout
   title={`${app.data.name} for Mac — App Waypoint`}
-  description={`${app.data.description} ${app.data.bestFor}`}
+  description={app.data.metaDescription ?? app.data.description}
   current="app"
   structuredData={appSchema}
 >

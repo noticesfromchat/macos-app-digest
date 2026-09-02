@@ -16,6 +16,11 @@ const apps = defineCollection({
         message: 'categories must not contain duplicates'
       }),
     collections: z.array(z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)).max(10).optional(),
+    /* The SERP line. `description` is written for a card and runs to 240, past the
+       ~160 Google shows, so a page whose description would truncate sets this instead.
+       Only one app needs it today; the schema caps it at the limit rather than trusting
+       the writer to count. */
+    metaDescription: z.string().min(70).max(160).optional(),
     source: z.string().min(1).max(140),
     homepage: z.string().url(),
     icon: z.string().regex(/^\/[A-Za-z0-9/_-]+\.(?:png|jpg|jpeg|webp|svg|ico)$/).optional(),
@@ -39,6 +44,10 @@ const issues = defineCollection({
     slug: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
     date: z.string().min(1).max(40),
     dek: z.string().min(80).max(320),
+    /* The SERP line, when the dek runs past the ~160 Google shows. The dek is published
+       standfirst copy and is not shortened to suit a search result; this carries the
+       shorter form instead. Same contract as an app's metaDescription. */
+    metaDescription: z.string().min(70).max(160).optional(),
     rss: z.object({
       title: z.string().min(4).max(90),
       cta: z.string().min(4).max(40).default('Read this issue')

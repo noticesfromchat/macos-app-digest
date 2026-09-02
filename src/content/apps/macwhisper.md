@@ -5,6 +5,7 @@ bestFor: Researchers, journalists and operators who need accurate, private trans
 tags: [dictation, ai, local, writing, automation]
 categories: [writing-notes-reading, ai-agents, productivity-workflow]
 collections: [community-favorites]
+metaDescription: Transcribes recordings, meetings and system audio with local speech models, then handles speaker labeling, translation and structured exports.
 source: 9to5Mac workflow coverage and official homepage
 homepage: https://www.macwhisper.com/
 icon: /app-icons/macwhisper.png
