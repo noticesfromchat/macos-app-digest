@@ -1,6 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import { laneTrail } from '../../data/breadcrumb';
 import AppDirectory from '../../components/AppDirectory.astro';
 import { collectionLabels } from '../../data/categories';
 
@@ -32,12 +34,16 @@ const title = collectionLabels[collection as keyof typeof collectionLabels]
     .join(' ');
 const description = collectionDescriptions[collection]
   ?? `Explore ${title.toLowerCase()} for experienced Mac users, with concise recommendations and links to official developer websites.`;
+
+const trail = laneTrail(title);
 ---
 <BaseLayout
+  breadcrumb={trail}
   title={`${title} Mac Apps — App Waypoint`}
   description={description}
 >
   <section class="page-shell archive-page tag-page">
+    <Breadcrumb trail={trail} />
     <h1>{title}</h1>
     <p class="dek">{description}</p>
     <AppDirectory

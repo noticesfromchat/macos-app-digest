@@ -93,6 +93,75 @@
 
 * { box-sizing: border-box; }
 
+/* Breadcrumb. A text trail, not a drawn course: the site already carries its nautical
+   world in the buoy mark and the wave bands, and an August critique asked for one
+   restrained orientation cue and explicitly not badges or decorative clutter. The
+   waypoint idea is in the marking of the current position, which is the one thing a
+   chart does that a list of links does not.
+
+   It sits at the top of the page shell and the title follows 11px beneath it, which is
+   `--eyebrow-gap`: the trail names the page under it exactly as an eyebrow does, so it
+   takes the eyebrow's number rather than inventing one. */
+.breadcrumb {
+  margin: 0 0 var(--eyebrow-gap);
+  color: var(--muted);
+  font-size: var(--type-meta);
+  font-weight: 500;
+  line-height: 1.45;
+}
+.breadcrumb ol {
+  display: flex;
+  /* Wrap rather than truncate. The middle crumb is the one carrying the orientation,
+     so a trail that drops it to fit has given up the thing it exists for. */
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.breadcrumb li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.breadcrumb a {
+  /* The Target Floor Rule's 24px, reached with padding rather than a taller line, so the
+     trail keeps its own leading. */
+  display: inline-flex;
+  min-height: 24px;
+  align-items: center;
+  color: inherit;
+  text-decoration: none;
+  transition: color 180ms ease;
+}
+.breadcrumb a:hover,
+.breadcrumb a:focus-visible { color: var(--accent); }
+/* Recedes behind the crumbs without needing a token of its own, the same color-mix
+   the focus ring uses. */
+.breadcrumb-sep { color: color-mix(in srgb, var(--muted) 55%, transparent); }
+.breadcrumb-here {
+  display: inline-flex;
+  min-height: 24px;
+  align-items: center;
+  gap: 7px;
+  color: var(--text);
+}
+/* The position marker: one filled dot, the size of the buoy's light. It is the only
+   ornament here and it earns its place by saying which crumb is the page you are on. */
+/* An issue page opens on a full-bleed hero rather than a page shell, so its trail
+   borrows the shell to line up with the wordmark, and pays the page's own opening space
+   above itself since the hero's top padding sits below it. */
+.issue-breadcrumb-shell { padding-top: var(--page-start-space); }
+
+.breadcrumb-mark {
+  width: 5px;
+  height: 5px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
 /* The `hidden` attribute has to win. The browser's own `[hidden] { display: none }` is a
    plain element rule, so any class that sets a display beats it, and this stylesheet sets
    one on nearly everything: `.button`, `.tag`, the card, the grid. That silently turns

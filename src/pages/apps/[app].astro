@@ -1,6 +1,8 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import { appTrail } from '../../data/breadcrumb';
 import AppCard from '../../components/AppCard.astro';
 import MetaIcon from '../../components/MetaIcon.astro';
 import { fallbackIconColor, fallbackIconCategory } from '../../data/app-icon';
@@ -77,9 +79,12 @@ const appSchema = [
     mainEntityOfPage: appUrl
   }
 ];
+
+const trail = appTrail(app.data.name);
 ---
 
 <BaseLayout
+  breadcrumb={trail}
   title={`${app.data.name} for Mac — App Waypoint`}
   description={app.data.metaDescription ?? app.data.description}
   current="app"
@@ -92,6 +97,7 @@ const appSchema = [
         the previously empty right half of the fold to work. Below 920px, where the
         site collapses to one column everywhere else, the rail stacks under the
         masthead and stays in reading order. */}
+    <Breadcrumb trail={trail} />
     <header class="app-detail-hero">
       <div class="app-detail-masthead">
         <div class:list={['app-detail-identity', iconClass]}>

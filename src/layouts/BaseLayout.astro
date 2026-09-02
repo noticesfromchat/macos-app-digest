@@ -2,6 +2,7 @@
 import { Archive, Check, Compass, Copy, Info, Moon, Rss, Search, Sun, X } from 'lucide-astro';
 import BrandMark from '../components/BrandMark.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import { breadcrumbSchema, type Crumb } from '../data/breadcrumb';
 import '../styles/global.css';
 import '../styles/search.css';
 
@@ -13,7 +14,10 @@ const {
   publishedTime,
   socialImage = '/harbor-hero-clean.webp',
   socialImageAlt = 'App Waypoint, a weekly guide to curated Mac apps for experienced users.',
-  structuredData = []
+  structuredData = [],
+  /* The page's breadcrumb trail. The same array renders the visible list inside the
+     page, so the BreadcrumbList below always describes something a reader can see. */
+  breadcrumb = [] as Crumb[]
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -60,6 +64,7 @@ const graph = [
         url: canonical.href,
         isPartOf: { '@id': new URL('/#website', Astro.site).href }
       },
+  ...(breadcrumb.length > 1 ? [breadcrumbSchema(breadcrumb, Astro.site)] : []),
   ...structuredData
 ];
 ---

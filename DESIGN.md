@@ -243,7 +243,7 @@ The rhythm is two values, not one. **11px binds an eyebrow to its content; 24px 
 
 **The One Measure Rule.** All prose runs to `--measure` (52ch) and nothing else. Because `ch` scales with the element's own font size, the same token holds roughly seventy characters at the dek's 17.9px, at body's 16px, and at the footnote's 13.4px — a pixel column cannot do that, it just widens as the type shrinks. Every prose surface is on it: deks, About, footnotes, best-for, panel copy, feature-card copy, and category descriptions. A fixed-pixel `max-width` on running text is a bug.
 
-**The One Page Title Rule.** Every page opens the same way: the title in Headline at `--type-page-title`, hard against the shell's `--page-start-space`, with no margin of its own, and the dek 15px beneath it at `--type-dek`. App detail pages are not an exception — the app name is a page title, not a bigger thing. A page that wants more presence gets it from its composition below the fold, never from a private type scale.
+**The One Page Title Rule.** Every page opens the same way: the breadcrumb trail at the shell's `--page-start-space`, the title in Headline at `--type-page-title` 11px beneath it, and the dek 15px beneath that at `--type-dek`. The title carries no margin of its own; the trail owns the gap, at `--eyebrow-gap`, because it names the page under it exactly as an eyebrow does. Until 2026-09-02 the title itself sat hard against `--page-start-space` and nothing preceded it. That changed when the trail arrived, and it changed on every page at once rather than on the deep ones only, so the opening stayed one shape. App detail pages are not an exception — the app name is a page title, not a bigger thing. A page that wants more presence gets it from its composition below the fold, never from a private type scale.
 
 **The Plain Dash Rule.** Public editorial copy uses no em dash and no en dash. Restructure to a period, a comma, a colon, or parentheses, and set number and date ranges with a plain hyphen: `August 5-19, 2026`, not `August 5–19, 2026`. The em dash is the clearest tell of machine-drafted prose, and this publication is human-led by design. Three things sit outside the rule and stay as they are. Page-title separators are an SEO and publishing convention and are indexed, so `Archive — App Waypoint` is correct. Quoted external titles in source notes and reading lists keep their own punctuation, because changing it misquotes the source; source notes stopped being published on 2026-09-01 but are still written and still validated, so the exception still governs how they are recorded. Code comments are not copy and no reader sees them. The rule governs the site's public copy, not this repository's documentation. General frontend guidance in `.agents/skills/taste-skill` states a blanket zero-tolerance ban covering titles as well; that is a marketing-page heuristic, this narrower rule is what governs here, and the vendored skill is deliberately left unedited so it stays diffable against upstream.
 
@@ -460,6 +460,44 @@ renderer took both with it.
   link is deliberately `tabindex="-1"` and `aria-hidden="true"` for mouse convenience, so
   focusing it would land the keyboard on a node hidden from assistive technology, and the
   only other named link in a card leaves the site.
+
+### Breadcrumb
+
+A text trail above every page title on the 172 pages that sit below the root. It answers
+one question, where am I, and it is the third time that question has been asked: an August
+critique wanted "one restrained, product-specific orientation cue" and said explicitly not
+badges or decorative clutter, and a September critique scored Visibility of System Status
+2 of 4 citing no breadcrumbs and no sense of where an issue sits in the sequence.
+
+- **It is a trail, not a drawn course.** Sentence case at `--type-meta`, muted, middle-dot
+  separators. The site already carries its nautical world in the buoy lockup and the wave
+  bands; a rope, a compass or a chart line here would be a fourth voice saying the same
+  thing louder. The waypoint idea is in the marking of the current position, which is the
+  one thing a chart does that a list of links does not.
+- **One dot marks where you are.** The last crumb is not a link, carries `aria-current`,
+  and takes a 5px filled dot in the accent. That is the only ornament. It keeps The Beacon
+  Rule because a current-page marker is an active state, which is what the desktop nav
+  already uses the accent for.
+- **App pages route through Explore, not a category.** 92 of the 102 apps carry more than
+  one category and up to four, and the `categories` array is derived from tags by
+  `scripts/sync-app-categories.mjs`, so its first entry carries no editorial decision and
+  would change under the page without anyone choosing it. Explore is the honest parent: the
+  one page that holds every app. Trails are Home / Explore / App, Home / Archive / Issue,
+  Home / Explore / lane, and Home / Explore.
+- **The homepage has none.** It is the root, and it renders through the same `IssuePage`
+  component as an archived issue, so the trail is gated on the component's `homepage` flag
+  rather than on the route.
+- **The visible trail and the JSON-LD are one array.** `src/data/breadcrumb.ts` builds it,
+  the page passes it to both `BaseLayout` (which emits `BreadcrumbList` into the graph) and
+  the component. Google's guidance is that structured data describes what a reader can see,
+  and a single source is the only thing that keeps that true after the next edit. All 172
+  pages were verified to match name for name.
+- **It wraps rather than truncates.** The middle crumb is the one carrying the orientation,
+  so a trail that drops it to fit has given up the thing it exists for. The longest today,
+  Home / Explore / Files, Research & Documents, still holds one line at 375px.
+- **The issue page borrows the shell.** Its hero runs full bleed, so the trail sits in a
+  `.page-shell` wrapper to line up with the wordmark, and pays `--page-start-space` above
+  itself because the hero's own top padding sits below it.
 
 ### Site Header and Navigation
 The header is sticky, translucent, and restrained. The brand wordmark uses the same editorial serif as the headline system, while the icon controls stay compact and monochrome until hover or focus gives them blue.

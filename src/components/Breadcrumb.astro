@@ -1,0 +1,26 @@
+---
+import type { Crumb } from '../data/breadcrumb';
+
+const { trail } = Astro.props as { trail: Crumb[] };
+const last = trail.length - 1;
+---
+
+{trail.length > 1 && (
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <ol>
+      {trail.map((crumb, index) => (
+        <li>
+          {index > 0 && <span class="breadcrumb-sep" aria-hidden="true">·</span>}
+          {crumb.href && index !== last ? (
+            <a href={crumb.href}>{crumb.label}</a>
+          ) : (
+            <span class="breadcrumb-here" aria-current="page">
+              <span class="breadcrumb-mark" aria-hidden="true"></span>
+              {crumb.label}
+            </span>
+          )}
+        </li>
+      ))}
+    </ol>
+  </nav>
+)}

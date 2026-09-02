@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { issueTrail } from '../../data/breadcrumb';
 import IssuePage from '../../components/IssuePage.astro';
 
 export async function getStaticPaths() {
@@ -13,8 +14,11 @@ export async function getStaticPaths() {
 }
 
 const { issue, apps } = Astro.props;
+
+const trail = issueTrail(issue.data.number);
 ---
 <BaseLayout
+  breadcrumb={trail}
   title={`${issue.data.rss.title} — Issue ${issue.data.number} — App Waypoint`}
   description={issue.data.metaDescription ?? issue.data.dek}
   current="issue"
@@ -22,5 +26,5 @@ const { issue, apps } = Astro.props;
   publishedTime={issue.data.slug}
   socialImageAlt={`App Waypoint's Mac app digest for ${issue.data.date}.`}
 >
-  <IssuePage issue={issue.data} appEntries={apps} />
+  <IssuePage issue={issue.data} appEntries={apps} trail={trail} />
 </BaseLayout>

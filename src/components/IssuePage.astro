@@ -1,5 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import Breadcrumb from './Breadcrumb.astro';
+import type { Crumb } from '../data/breadcrumb';
 import AppCard from './AppCard.astro';
 import BrandMark from './BrandMark.astro';
 import SubscribeCard from './SubscribeCard.astro';
@@ -11,10 +13,12 @@ type AppEntry = CollectionEntry<'apps'>;
 
 const {
   homepage = false,
+  trail = [],
   issue,
   appEntries
 } = Astro.props as {
   homepage?: boolean;
+  trail?: Crumb[];
   issue: Issue;
   appEntries: AppEntry[];
 };
@@ -27,6 +31,11 @@ const IssueHeading = homepage ? 'p' : 'h1';
 ---
 
 <article class="issue">
+  {!homepage && (
+    <div class="page-shell issue-breadcrumb-shell">
+      <Breadcrumb trail={trail} />
+    </div>
+  )}
   <header class="home-hero">
     <canvas class="home-hero-sky" aria-hidden="true"></canvas>
     <canvas class="home-hero-sea" aria-hidden="true"></canvas>

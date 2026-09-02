@@ -1,6 +1,8 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import { laneTrail } from '../../data/breadcrumb';
 import AppDirectory from '../../components/AppDirectory.astro';
 import { categories, getCategoryBySlug } from '../../data/categories';
 
@@ -22,12 +24,16 @@ const { category, apps } = Astro.props as {
 };
 
 const resolvedCategory = getCategoryBySlug(category.slug) ?? category;
+
+const trail = laneTrail(resolvedCategory.title);
 ---
 <BaseLayout
+  breadcrumb={trail}
   title={`${resolvedCategory.title} Mac Apps — App Waypoint`}
   description={resolvedCategory.description}
 >
   <section class="page-shell archive-page tag-page">
+    <Breadcrumb trail={trail} />
     <h1>{resolvedCategory.title}</h1>
     <p class="dek">{resolvedCategory.description}</p>
     <AppDirectory apps={apps} />
