@@ -160,9 +160,25 @@ it. See Issue Subscribe Card in `DESIGN.md` for the structure and the reasoning.
   each count is the number of apps within that collection.
 - Omit filter options whose contextual count is zero. Options and counts are generated
   automatically from app content during each Astro build.
-- Place a compact grid toolbar immediately above the app cards on every viewport:
-  show the app count on the left and keep the sort control right-aligned.
-- Keep the toolbar visually connected to the grid with a 16px gap.
+- Place one always-visible directory-control group immediately above the app cards. The live
+  count leads, followed by the visible `Search apps` field, Filter and Sort. Collections and
+  Tags stay inside Filter. Keep the trigger labels as `Filter` and `Sort` regardless of
+  selection, and count only selected facets in the Filter badge.
+- The query narrows the current grid in place. It matches name, description, `bestFor`,
+  source and tags, reads from rendered card data and does not navigate when Enter is pressed.
+- Query, optional collection filters, optional tag filters and sort are shareable URL state.
+  Restore them on load and use `replaceState` while typing. Never duplicate or clear the
+  tag, collection or category already defined by the page path.
+- Keep the controls visually connected to the grid with a 16px gap and use compact 52px
+  desktop controls. When the app grid collapses to one column, give the count and search field
+  their own full rows, then split Filter and Sort across the row beneath them. Keep a 16px
+  mobile input floor.
+- On Explore, keep the full category descriptions on larger screens and category pages. Below
+  680px, substitute the approved shorter descriptions and remove fixed row height so the six
+  category links remain useful without delaying the catalogue. Put taxonomy explanations in
+  normal flow beneath their headings, never in overlays that cover the first result row.
+- When a query produces no results, name the query safely with `textContent` and offer to
+  clear only the query, preserving every other active filter.
 - Do not display a separate “Sort apps” label.
 - Prefer durable discovery tags over narrow implementation details. Before creating a
   new tag, check whether an existing tag already covers the reader intent. If a new

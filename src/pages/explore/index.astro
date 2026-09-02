@@ -27,6 +27,23 @@ const sortedCategories = [...categories].sort((a, b) =>
   a.title.localeCompare(b.title, undefined, { sensitivity: 'base' })
 );
 const popularTags = getPopularTags(apps.map((entry) => entry.data));
+
+/* An app carries several categories, so these do not partition the catalogue and will
+   not sum to its size. They answer "how much is behind this door", which is what a
+   reader picking a lane is asking, and the tag chips beside them have carried the same
+   kind of number all along. */
+const categoryCounts = new Map(
+  categories.map((category) => [
+    category.slug,
+    apps.filter((entry) => entry.data.categories.includes(category.slug)).length
+  ])
+);
+const collectionCounts = new Map(
+  collections.map((collection) => [
+    collection.slug,
+    apps.filter((entry) => entry.data.collections?.includes(collection.slug)).length
+  ])
+);
 const collectionDescriptions: Record<string, string> = {
   'editors-picks': 'Editor-selected standouts with distinctive utility, polish or an especially memorable point of view.',
   'community-favorites': 'Apps Mac readers keep recommending for dependable workflows, practical value and repeat use.'
@@ -41,7 +58,8 @@ const collectionDescriptions: Record<string, string> = {
     <header class="explore-hero">
       <h1>Explore Apps</h1>
       <p class="dek">
-        {apps.length} hand-picked Mac apps from every issue, browsable by category, collection or tag.
+        Hand-picked Mac apps from every issue, browsable by category, collection or tag.
+        Apps selected and added every Friday.
       </p>
     </header>
 
@@ -49,8 +67,9 @@ const collectionDescriptions: Record<string, string> = {
       <article class="card explore-utility-card explore-utility-combined-card explore-discovery-card">
         <div class="explore-discovery-layout">
           <section class="explore-discovery-categories">
-            <div class="section-heading">
+            <div class="section-heading explore-panel-heading">
               <h2>Categories</h2>
+              <p class="taxonomy-help-copy">Broad workflow areas that group related apps. An app can appear in more than one.</p>
             </div>
             <div class="explore-collection-list explore-category-list" aria-label="App Waypoint categories">
               {sortedCategories.map((category) => (
@@ -62,8 +81,16 @@ const collectionDescriptions: Record<string, string> = {
                     <MetaIcon name={category.icon} />
                   </span>
                   <span>
-                    <strong>{category.title}</strong>
-                    <small>{category.description}</small>
+                    <strong>
+                      {category.title}
+                      <span class="explore-discovery-count">({categoryCounts.get(category.slug)})</span>
+                    </strong>
+                    <small class="explore-category-description explore-category-description-desktop">
+                      {category.description}
+                    </small>
+                    <small class="explore-category-description explore-category-description-mobile">
+                      {category.mobileDescription}
+                    </small>
                   </span>
                 </a>
               ))}
@@ -72,8 +99,9 @@ const collectionDescriptions: Record<string, string> = {
 
           <div class="explore-utility-grid explore-discovery-lower-grid">
             <section class="explore-discovery-collections">
-              <div class="section-heading">
+              <div class="section-heading explore-panel-heading">
                 <h2>Collections</h2>
+                <p class="taxonomy-help-copy">Apps grouped by editorial judgment from the editor and community.</p>
               </div>
               <div class="explore-collection-list">
                 {collections.map((collection) => (
@@ -82,7 +110,10 @@ const collectionDescriptions: Record<string, string> = {
                       <MetaIcon name={collection.icon} />
                     </span>
                     <span>
-                      <strong>{collectionLabels[collection.slug]}</strong>
+                      <strong>
+                        {collectionLabels[collection.slug]}
+                        <span class="explore-discovery-count">({collectionCounts.get(collection.slug)})</span>
+                      </strong>
                       <small>{collectionDescriptions[collection.slug]}</small>
                     </span>
                   </a>
@@ -91,8 +122,9 @@ const collectionDescriptions: Record<string, string> = {
             </section>
 
             <section class="explore-utility-tags-panel">
-              <div class="section-heading">
+              <div class="section-heading explore-panel-heading">
                 <h2>Popular tags</h2>
+                <p class="taxonomy-help-copy">Specific features and capabilities for narrowing the catalog.</p>
               </div>
               <div class="tag-list explore-popular-tags" aria-label="Popular tags">
                 {popularTags.map(({ tag, count }) => (

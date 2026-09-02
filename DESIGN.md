@@ -229,7 +229,10 @@ The type system is split between a classic editorial serif for the headlines and
 - **Dek** (400, clamp(1.12rem, 1.4vw, 1.25rem), 1.58): the standfirst under a title, page or section. One clear step above body — never level with it — muted in colour, and identical everywhere. Delivered through `--type-dek`.
 - **Body** (400, 1rem, 1.55): descriptions, explanations, and editorial copy.
 - **Label** (800, .78rem, .1em, uppercase): eyebrows, small UI labels, control legends, and counts inside chips. There is no size below this one — a label that felt it needed to be smaller was drift, not a role.
-- **Metadata** (600, .84rem, 1.45): counts, sources, and secondary operational information.
+- **Control Label** (700, .84rem): the text on something you press — `.button`, and the Filter and Sort triggers. It is the only small role that is neither tracked nor uppercase, because a control is read as a word and not as a heading.
+- **Metadata** (600, .84rem, 1.45): counts, sources, and secondary operational information. The directory's live count is the tracked variant of this role, at 700 with .04em and muted, sitting one step *below* the controls beside it so a readout is not mistaken for something to press.
+
+**The two small roles use the opposite tokens to their names.** Control Label is delivered by `--type-meta` and the count's metadata variant by `--type-label`. This is backwards and it is deliberate for now: the tokens are plain sizes used across dozens of rules, and renaming them to match the roles is a site-wide pass, not a footnote to this one. Read the role from the entry above, never from the token name, and do not "correct" a measured page back toward the token that names it.
 - **Brand** (500, fluid 1.35-2rem): the App Waypoint wordmark set in the same editorial serif as the headline system.
 
 **The Even Rule Rule.** A horizontal rule carries the same space above it as below it. That space is `--section-space` — clamp(26px, 3.8vw, 40px), one value for the whole site — and it belongs to whatever sits on either side, which means a page's opening block pays the bottom half before the first divider. A rule that hugs the content above it is the tell that a block forgot to close on the rhythm. The rhythm is close rather than airy on purpose: the pages are dense and the rules are hairlines, so a wide gap reads as a gap rather than as a division. The only blocks that sit tighter are the ones that follow a drawn divider instead of a rule, where there is no rule to be symmetric with.
@@ -305,11 +308,40 @@ The hero previously stated that its atmosphere never moved. That was true of the
 
 ## Components
 
+### Resets
+
+Two declarations at the top of `global.css` are load-bearing for the whole site, and
+neither of them shows up anywhere on a rendered page.
+
+**`button { font-family: inherit }`.** A button does not inherit the page's font. Without
+this it falls back to the browser's own default, which on this site meant 23 buttons on
+Explore and 11 on an issue page silently rendering in Arial next to text set in the system
+sans. Only one of them had visible text, which is why it survived so long. Any new control
+element that can refuse inheritance belongs in this rule.
+
+**`[hidden] { display: none !important }`.** The browser's own `[hidden]` rule is the
+weakest kind of declaration there is, so any class that sets a `display` beats it and the
+attribute quietly stops working. That is how a reveal control came to read "Show 0 more":
+`.button` set `display: inline-flex`, and `hidden` did nothing. The site had collected
+nine ad-hoc `[hidden] { display: none }` patches before anyone noticed the pattern. The
+global rule is the fix; the `!important` is what makes it a rule rather than a tenth
+patch. **Do not write another element-specific `[hidden]` rule.** If one appears to be
+needed, something else is wrong. The last five were removed on 2026-09-02 for being
+unreachable.
+
 ### Buttons
 Buttons are quiet, pill-shaped workhorses: obvious, tactile, and not over-embellished.
 - **Shape:** 999px pill for the primary and secondary CTA buttons.
 - **Primary:** outlined, not filled. A 1px blue border and a blue label over the page, 44px minimum height, 23px horizontal padding, and a small icon gap. A button is as wide as its label — never a fixed box padded out to a round number. It carried a blue fill with white text until the dark palette exposed why that could not hold: Buoy Blue is tuned to be legible as ink *on* the dark surface, so inverting it into a ground put white text at 2.62:1, well under AA, and made the button the brightest object on the page. As a label the same blue clears AA in both themes (5.17:1 light, 7.54:1 dark).
 - **Hover / Focus:** the blue deepens on hover, and focus is handled with a clear accessible outline rather than a visual stunt.
+
+**Text fields are the exception to the focus outline.** The search modal's input and the
+directory's filter field both take `outline: 0` and no ring. A caret is already a focus
+indicator, and it is the one a person typing actually reads; an accent border around a
+field they have just clicked into announces something they know and draws the eye away
+from the text they are entering. The exception covers text inputs only. Every control
+without a caret, which is every button, chip, link and checkbox on the site, keeps its
+outline, because for those colour alone is not a focus indicator.
 - **Secondary:** transparent fill, ink text, and a borderless or low-border utility presence.
 - **Icon Buttons:** the header search and theme controls are 44px circles on desktop, mobile and coarse-pointer devices.
 
@@ -378,8 +410,33 @@ renderer took both with it.
 - **Order:** taxonomy, then catalogue. The card teaches the six lanes; the directory is
   the thing itself. The subscribe card closes the page rather than interrupting it at a
   third of the way down, where it used to sit between two app shelves.
-- **The count is stated.** The hero names the catalogue size and the directory toolbar
-  repeats it live as filters narrow. The page previously never said how many apps existed.
+- **The count is stated, once.** The directory's filter bar carries it and keeps it live as
+  filters narrow. The hero carried it too until 2026-09-02, which meant the page opened by
+  announcing a number and then restated it a screen later; the dek now describes what the
+  page holds and the count belongs to the control that changes it. The page previously
+  never said how many apps existed at all.
+- **The directory controls are a row, not a grid.** The live count leads and Search apps,
+  Filter and Sort sit at the end, pushed there by the count's own auto right margin. It was a
+  six-track grid until 2026-09-02, with the count spanning tracks 1-2, the menus at 5 and
+  6, and tracks 3 and 4 existing only as spacers. Six tracks for three items reads as a
+  layout right up until a fourth control arrives, and then it reads as a puzzle.
+  Text query is always visible because exact-app lookup should not require opening Filter
+  experimentally. Collections and Tags remain inside Filter. Filter and Sort keep stable
+  labels, and only collection and tag selections contribute to the Filter count badge. When
+  the card grid collapses, count and search each take a full row while Filter and Sort share
+  the row beneath them, preserving DOM and focus order. Each visible control stays flat with
+  a border and no lift.
+- **Mobile taxonomy keeps the lane, not the lecture.** Below 680px, Explore swaps each full
+  category description for its approved shorter line and removes the desktop row floor. The
+  full descriptions remain on larger screens and category pages. Categories, Collections and
+  Popular tags explain their roles in muted copy directly below each heading, in normal flow,
+  so help never covers the first link or depends on hover.
+- **Directory state is shareable.** Query, optional collections, optional tags and a
+  non-default sort are written to the query string and restored on load. Typing uses
+  `replaceState`, so the browser history does not receive one entry per character. A tag,
+  collection or category named by the path remains the page's immutable starting set;
+  tag and collection controls stay checked and disabled, and no path-defining value is
+  duplicated into the query string.
 - **A batch at a time.** Rendering all 102 cards at once made the page 16,700px at 1280
   and 41,800px on a phone, worse than the sampled version it replaced. `AppDirectory` now
   ships the whole catalogue to the document and shows the first 24, with a control that
@@ -411,11 +468,34 @@ The header is sticky, translucent, and restrained. The brand wordmark uses the s
 - **Hover / Active:** navigation links shift to the accent on hover, focus and current-page state. Icon controls stay circular and borderless, with the same accent response.
 - **Skip link:** every page starts with a hidden-until-focused skip link that lands on the main content landmark.
 
-### Directory Filter Menu
-The filter menu is a compact popover, not a modal. It is designed to support fast scanning and quick edits to the current page state.
-- **Shape:** 10px control radius with a clipped popover edge.
-- **Behavior:** the menu closes when an optional filter is chosen, but stays open when a filter is cleared.
-- **States:** disabled controls mark the defining tag or collection so the page cannot be unselected away from itself.
+### Directory Controls
+The controls are always visible above every `AppDirectory` grid. They narrow the current
+view in place and never compete with the Cmd+K search modal's navigation job.
+- **Query:** the visible Search apps field matches the same fields as site search: name,
+  description, Best For, source and tags. It reads the rendered card data, uses
+  `String.includes` and does not fetch the search index. There is nothing to submit because
+  the field filters on every keystroke, so Enter is prevented without navigating or moving
+  focus.
+- **Structure:** live count, visible search, then a Filter menu containing Collections and
+  Tags, followed by Sort. A flex row: the count leads at its natural width and
+  carries `margin: 0 auto 0 0`, which is what pushes the two menus to the end. The auto
+  margin has to live in the shorthand, because a separate `margin-right` above the block's
+  own `margin: 0` is silently reset by it and the controls collapse back to the left.
+- **Shape:** search is a flat 280px text field and each menu is a flat 12px surface at a
+  fixed 180px. The count is not a surface at all: no border, no fill and no padding. The
+  Filter panel opens under both menus and its edges land exactly on theirs: 376px wide at
+  `left: -1px`. Both numbers are corrections for the same thing. A
+  percentage width and a `left` offset on an absolutely positioned box are measured from
+  the containing block's *padding* box, which here is the trigger inside its own 1px
+  borders, so `200%` falls 4px short of the two 180px menus and `left: 0` starts the panel
+  a pixel inside the menu's left border. Until 2026-09-02 the rule paid neither back and
+  the panel hung 3px short of Sort's right edge.
+- **Behavior:** query, tags, collections and sort compose. Query and checkbox changes reset
+  the result batch to 24; sort keeps the current batch. Filter opens onto the first available
+  facet. Choosing an optional tag closes its menu, while clearing a tag leaves it open.
+- **States:** disabled controls mark the defining tag or collection so the page cannot be
+  unselected away from itself. The empty state names the query with `textContent` and clears
+  only that query, preserving other active filters.
 
 ### Search Modal
 Search is a centered overlay over a frosted backdrop, with a bright, controlled surface.
@@ -485,6 +565,24 @@ tags were retired and redirected in a single week against a hand-maintained list
 `netlify.toml`, and any rule that gets missed used to land a reader on the host's own grey
 error page: no brand, no navigation, no way back, on a property whose whole asset is trust.
 A dead link now stays inside the publication.
+
+### Search Surface Type
+
+The search modal, the mobile nav search and the RSS dialog run on their own type sizes
+rather than the page scale: the nav search at 1.05rem, the search input at
+`clamp(1.1rem, 2vw, 1.45rem)`, the two search-result treatments at 1.18rem and .9rem, and
+the RSS dialog heading at its own clamp on each of two breakpoints. Seven values in
+`src/styles/search.css`, all deliberate.
+
+They are deliberate because that surface is not the page. It opens over everything, it is
+read at arm's length in a hurry, and its input is the reference the directory filter bar
+now matches for height. Snapping them back onto the page scale would change how the modal
+and the dialog look in order to satisfy a detector advisory, which is the wrong way round.
+The mobile search input's explicit 16px is load-bearing for a different reason: anything
+smaller makes iOS Safari zoom the page when the field takes focus.
+
+The mechanical detector reports these seven as `design-system-font-size` advisories on
+every run. That is expected. Treat a change in the count as the signal, not the count.
 
 ## Do's and Don'ts
 

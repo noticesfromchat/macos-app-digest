@@ -101,6 +101,11 @@
    all approximating. */
 [hidden] { display: none !important; }
 
+/* A button does not inherit the page's family; left alone it renders in the UA default,
+   which is how a control came to be set in Arial beside cards in the system sans. Family
+   only, so every control keeps the size its own rule gives it. */
+button { font-family: inherit; }
+
 html {
   background: var(--page);
   scroll-behavior: smooth;
@@ -271,7 +276,6 @@ a { color: inherit; }
   transition: color 180ms ease, transform 180ms ease;
 }
 
-.theme-toggle svg[hidden] { display: none; }
 
 .theme-toggle:hover,
 .theme-toggle:focus-visible { color: var(--accent); transform: rotate(12deg); }
@@ -348,8 +352,13 @@ a { color: inherit; }
      than bolted on. */
   background: transparent;
   color: var(--accent);
-  font-size: 1rem;
-  font-weight: 500;
+  /* A button does not inherit the page's family, so without this it renders in the UA
+     default. Seven controls on Explore alone were setting themselves in Arial beside
+     cards in the system sans. `.feature-card a` already carries this for the same
+     reason. */
+  font-family: inherit;
+  font-size: var(--type-meta);
+  font-weight: 700;
   text-decoration: none;
   transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease, transform 180ms ease;
 }
@@ -1068,6 +1077,21 @@ a { color: inherit; }
 .explore-utility-combined-card { padding: 0; }
 .explore-utility-combined-card .explore-utility-grid { gap: 0; }
 .explore-utility-combined-card .explore-utility-grid > section { padding: 24px; }
+/* Each taxonomy explains itself in normal flow. The copy stays attached to the heading
+   it qualifies and never covers the first result row on hover, focus or touch. */
+.explore-panel-heading {
+  display: grid;
+  gap: 8px;
+}
+.taxonomy-help-copy {
+  max-width: var(--measure);
+  margin: 0;
+  color: var(--muted);
+  font-size: var(--type-meta);
+  font-weight: 500;
+  line-height: 1.45;
+}
+
 .explore-discovery-card {
   overflow: hidden;
   border-color: var(--line);
@@ -1122,15 +1146,33 @@ a { color: inherit; }
   transition: color 180ms ease, border-color 180ms ease, opacity 180ms ease;
 }
 .explore-discovery-icon svg { display: block; }
+/* Display leading, not body leading. At 1.55 these names were set to the rhythm of the
+   prose beneath them, where an app card title of the same face, size and weight sits at
+   1.15; the name floated away from the description it belongs to. */
 .explore-discovery-link strong {
   display: block;
   font-family: var(--display);
   font-size: 1.4rem;
   font-weight: 600;
+  line-height: 1.2;
   transition: color 180ms ease;
 }
+/* A real colour, not an opacity. The tag chip counts are dimmed with opacity .72, which
+   computes to 3.47:1 in light theme and fails AA; --muted holds 7.35:1 on this ground. */
+/* The count belongs to the name, so it inherits the name's face, size and weight and
+   differs only in colour. Set two steps down at .78em and weight 500 it read as a second
+   style dropped onto the line rather than part of the label. A real colour, not an
+   opacity: the tag chip counts are dimmed with opacity .72, which computes to 3.47:1 in
+   light theme and fails AA, where --muted holds 7.35:1 on this ground. */
+.explore-discovery-count {
+  color: var(--muted);
+  transition: color 180ms ease;
+}
+
 .explore-discovery-link:hover strong,
 .explore-discovery-link:focus-visible strong { color: var(--accent); }
+.explore-discovery-link:hover .explore-discovery-count,
+.explore-discovery-link:focus-visible .explore-discovery-count { color: var(--accent); }
 .explore-discovery-link:hover .explore-discovery-icon,
 .explore-discovery-link:focus-visible .explore-discovery-icon {
   color: var(--accent);
@@ -1143,18 +1185,29 @@ a { color: inherit; }
   font-size: 1rem;
   line-height: 1.45;
 }
+/* Both of these have to outrank `.explore-discovery-link small`, which owns `display`
+   for every description in a discovery row (the collection rows use it too, so the
+   `display: block` cannot simply move here). That rule is (0,1,1); a bare
+   `.explore-category-description-mobile` is (0,1,0) and loses to it, which is why the
+   desktop and mobile lines both rendered, at every width. A responsive swap under a
+   selector that already sets `display` has to be written at the same reach or it is
+   silently dead. */
+.explore-discovery-link small.explore-category-description-mobile { display: none; }
 .explore-popular-tags { min-height: 0; padding-top: 4px; }
 .explore-popular-tags .tag { gap: 6px; }
+/* A real colour, not an opacity. Dimmed with `opacity: .72` the count blended to 3.47:1
+   in light theme and failed AA at this size; --muted holds about 6.6:1 on the chip. The
+   category and collection counts in the discovery card are set the same way. */
 .explore-popular-tags .tag span {
-  color: inherit;
+  color: var(--muted);
   font-size: var(--type-label);
   font-variant-numeric: tabular-nums;
-  opacity: .72;
 }
 .explore-subscribe-card {
   display: grid;
   gap: 14px;
-  padding: clamp(22px, 3vw, 30px);
+  /* 24px, the padding every other card on the page uses. */
+  padding: 24px;
   border-color: var(--line);
   background: var(--surface);
   box-shadow: var(--shadow);
@@ -1196,10 +1249,24 @@ a { color: inherit; }
   font-size: 1rem;
   line-height: 1.55;
 }
+/* An inline link in a sentence is exempt from WCAG 2.5.8, and padding one out would
+   break the line it sits in. The hit area is expanded with a pseudo-element instead: the
+   link's own box stays 19px so the sentence is untouched, while what a finger can reach
+   is 24px. */
 .explore-subscribe-body a {
+  position: relative;
   color: inherit;
   text-decoration: underline;
   text-underline-offset: 3px;
+}
+.explore-subscribe-body a::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 0;
+  height: 24px;
+  transform: translateY(-50%);
 }
 .explore-subscribe-body a:hover,
 .explore-subscribe-body a:focus-visible { color: var(--accent); }
@@ -1316,57 +1383,131 @@ a { color: inherit; }
 .category-directory-card strong { font-size: 1.4rem; }
 .category-directory-card span { font-size: var(--type-meta); font-weight: 700; }
 .category-directory-card em { max-width: var(--measure); }
-.directory-toolbar {
+/* A row, not a six-track grid. The count leads and the controls sit at the end, pushed
+   there by the count's own auto margin. The grid version reserved six tracks for three
+   items and left tracks 3 and 4 empty purely as spacers, which reads as a layout until
+   a fourth control arrives and then reads as a puzzle. */
+.directory-filter-bar {
+  position: relative;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-wrap: wrap;
   gap: 16px;
+  align-items: stretch;
   margin-top: clamp(28px, 3.8vw, 40px);
 }
-.directory-count {
-  margin: 0;
+.directory-filter-bar > .directory-filter,
+.directory-filter-bar > .directory-sort { flex: 0 0 180px; }
+.directory-filter-bar--no-filters > .directory-sort { flex: 0 0 180px; }
+.directory-search {
+  display: grid;
+  flex: 0 1 280px;
+  grid-template-columns: auto minmax(0, 1fr);
+  min-width: 0;
+  min-height: 52px;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 13px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+}
+.directory-search svg {
+  width: 20px;
+  height: 20px;
   color: var(--muted);
-  font-size: var(--type-meta);
+}
+.directory-query-input {
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  outline: 0;
+}
+.directory-query-input::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
+.directory-query-input:disabled { cursor: not-allowed; }
+.filter-option input {
+  width: 15px;
+  height: 15px;
+  flex: none;
+  margin: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+.filter-option input:disabled { cursor: default; }
+/* The count reads out, it does not act. Given the card treatment it looked like a third
+   control sitting beside Filter and Sort, and a boxed, centred one at that. It keeps the
+   row's height so it still sits on the controls' centre line, and nothing else. */
+.directory-count {
+  display: flex;
+  min-height: 52px;
+  align-items: center;
+  justify-content: flex-start;
+  /* The auto right margin is what pushes the controls to the end of the row. It has to
+     live in the shorthand: a separate `margin-right` above this line was silently reset
+     by it. */
+  margin: 0 auto 0 0;
+  padding: 0;
+  color: var(--muted);
+  /* The metadata role: a step below the controls beside it, tracked and muted, so a
+     readout is not mistaken for something to press. */
+  font-size: var(--type-label);
   font-weight: 700;
   letter-spacing: .04em;
+  text-align: left;
   white-space: nowrap;
 }
 .directory-sort {
-  display: inline-flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 10px;
-  color: var(--muted);
-  font-size: var(--type-label);
-  font-weight: 800;
-  letter-spacing: .08em;
-  text-transform: uppercase;
+  display: flex;
+  min-width: 0;
+  min-height: 52px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
 }
 .directory-select {
   position: relative;
-  --control-width: 154px;
-  width: var(--control-width);
+  width: 100%;
+  min-width: 0;
   color: var(--text);
-  font-size: var(--type-label);
-  font-weight: 800;
+  /* The control-label role: metadata size at weight 700, shared with `.button`. These
+     triggers were a step smaller and two weights heavier than every other control. */
+  font-size: var(--type-meta);
+  font-weight: 700;
   letter-spacing: 0;
   text-align: left;
   text-transform: none;
 }
+.directory-filter-bar > .directory-select {
+  min-height: 52px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+}
 .directory-select-trigger {
   display: flex;
   width: 100%;
-  min-height: 38px;
+  min-height: 100%;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 7px 13px;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  background: var(--surface);
+  padding: 0 16px;
+  border: 0;
+  border-radius: 11px;
+  background: transparent;
   color: var(--text);
   font: inherit;
   cursor: pointer;
+}
+.directory-select-trigger:hover {
+  background: color-mix(in srgb, var(--surface-strong) 72%, transparent);
 }
 .directory-select-trigger svg {
   width: 16px;
@@ -1375,30 +1516,29 @@ a { color: inherit; }
   transition: transform 160ms ease;
 }
 .directory-select.is-open .directory-select-trigger {
-  position: relative;
-  z-index: 2;
-  border-bottom-color: transparent;
-  border-radius: 10px 10px 0 0;
+  background: color-mix(in srgb, var(--surface-strong) 72%, transparent);
 }
 .directory-select.is-open .directory-select-trigger svg { transform: rotate(180deg); }
 .directory-select-options {
   position: absolute;
   z-index: 20;
-  top: calc(100% - 1px);
+  /* 12px, the same gap the mobile nav menu leaves below the header edge. At 1px the
+     panel butted against its own trigger and the query field inside it read as part of
+     the button rather than as the top of a menu. */
+  top: calc(100% + 12px);
   right: 0;
   width: 100%;
   overflow: hidden;
   border: 1px solid var(--line);
-  border-top: 0;
-  border-radius: 0 0 10px 10px;
+  border-radius: 10px;
   background: var(--surface);
   box-shadow: var(--shadow);
 }
-.directory-select-options[hidden] { display: none; }
 .directory-select-options button {
   display: block;
   width: 100%;
-  padding: 10px 13px;
+  min-height: 38px;
+  padding: 0 13px;
   border: 0;
   background: transparent;
   color: var(--text);
@@ -1413,15 +1553,8 @@ a { color: inherit; }
   outline: 0;
 }
 .directory-select-trigger:focus-visible {
-  border-color: var(--accent);
-  outline: 2px solid color-mix(in srgb, var(--accent) 30%, transparent);
-  outline-offset: 2px;
-}
-.directory-controls {
-  display: inline-flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 10px;
+  outline: 2px solid var(--accent);
+  outline-offset: -3px;
 }
 .directory-filter-label {
   display: inline-flex;
@@ -1437,39 +1570,29 @@ a { color: inherit; }
   padding: 0 5px;
   border-radius: 999px;
   background: var(--surface-strong);
-  color: var(--muted);
+  color: var(--text);
   font-size: .75rem;
   font-variant-numeric: tabular-nums;
   font-weight: 700;
   line-height: 1;
 }
-.directory-filter-count[hidden] { display: none; }
 .directory-filter.has-custom-filters .directory-filter-count {
   background: color-mix(in srgb, var(--accent) 16%, transparent);
   color: var(--accent);
 }
 .directory-filter-panel {
-  width: 268px;
-  border-top: 1px solid var(--line);
-  border-radius: 10px 0 10px 10px;
-}
-.directory-filter.is-open .directory-select-trigger::after {
-  position: absolute;
-  right: 0;
-  bottom: -2px;
-  left: 0;
-  height: 2px;
-  background: var(--surface);
-  content: "";
-}
-.filter-note {
-  margin: 0;
-  padding: 11px 13px 9px;
-  border-bottom: 1px solid var(--line);
-  color: var(--muted);
-  font-size: .76rem;
-  font-weight: 400;
-  line-height: 1.45;
+  right: auto;
+  /* -1px, not 0: `left` is measured from the containing block's padding box, so `left: 0`
+     starts the panel one border inside the trigger and its hairline misses the trigger's
+     by a pixel the whole way down. */
+  left: -1px;
+  /* The panel spans both controls, so its right edge has to land on Sort's right edge.
+     A percentage on an absolutely positioned box resolves against the containing block's
+     PADDING box: the trigger inside its own 1px borders. So 200% measures 2 x 178px and
+     comes up 4px short of the two 180px triggers, and the added term owes the gap plus
+     those four pixels: 16 + 4 = 20, giving exactly the 376px the pair spans. The old
+     `+ 16px` rendered 372px and left the panel 3px inside Sort's right edge. */
+  width: calc(200% + 20px);
 }
 .filter-scroll {
   max-height: min(282px, 42vh);
@@ -1492,9 +1615,10 @@ a { color: inherit; }
 }
 .filter-option {
   display: flex;
+  min-height: 34px;
   align-items: center;
   gap: 10px;
-  padding: 7px 13px;
+  padding: 0 13px;
   color: var(--text);
   font-size: var(--type-label);
   font-weight: 700;
@@ -1510,14 +1634,6 @@ a { color: inherit; }
 .filter-option:has(input:disabled):hover {
   background: transparent;
 }
-.filter-option input {
-  width: 15px;
-  height: 15px;
-  flex: none;
-  margin: 0;
-  accent-color: var(--accent);
-  cursor: pointer;
-}
 .filter-option-name {
   flex: 1;
   min-width: 0;
@@ -1525,7 +1641,7 @@ a { color: inherit; }
 }
 .filter-option-count {
   flex: none;
-  color: var(--muted);
+  color: var(--text);
   font-size: .75rem;
   font-variant-numeric: tabular-nums;
 }
@@ -1536,7 +1652,8 @@ a { color: inherit; }
   border-top: 1px solid var(--line);
 }
 .filter-reset {
-  padding: 6px 11px;
+  min-height: 32px;
+  padding: 0 11px;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: transparent;
@@ -1550,7 +1667,8 @@ a { color: inherit; }
 .filter-reset:focus-visible {
   border-color: color-mix(in srgb, var(--accent) 42%, var(--line));
   color: var(--accent);
-  outline: 0;
+  outline: 2px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  outline-offset: 2px;
 }
 /* The first-paint cap. The script removes the attribute and takes over with `hidden`, so
    this rule only ever governs the moment before the module runs, and the noscript block in
@@ -1576,9 +1694,7 @@ a { color: inherit; }
   color: var(--muted);
   font-size: 1rem;
 }
-.directory-empty[hidden] { display: none; }
 .directory-grid { margin-top: 16px; }
-.directory-grid .app-card[hidden] { display: none; }
 
 @media (hover: hover) and (pointer: fine) {
   /* The One Hover Rule: rest at Ambient Card, cross to Hover Lift over 320ms on
@@ -1658,6 +1774,18 @@ a { color: inherit; }
   }
   
   .grid { grid-template-columns: 1fr; }
+  .directory-filter-bar,
+  .directory-filter-bar--no-filters {
+    gap: 12px;
+  }
+  .directory-count { width: 100%; margin: 0; }
+  .directory-search { flex: 1 1 100%; }
+  .directory-filter-bar > .directory-filter,
+  .directory-filter-bar > .directory-sort,
+  .directory-filter-bar--no-filters > .directory-sort { flex: 1 1 0; }
+  /* Same correction on the stacked row, where the triggers are flex: 1 1 0 and the pair
+     spans the whole bar: 12px gap + 4px of border. */
+  .directory-filter-panel { width: calc(200% + 16px); }
   .editors-pick-card {
     display: flex;
     min-height: auto;
@@ -1696,7 +1824,10 @@ a { color: inherit; }
   .explore-utility-grid { grid-template-columns: 1fr; }
   .explore-utility-tags-panel { border-top: 1px solid var(--line); border-left: 0; }
   .explore-category-list { grid-template-columns: 1fr; }
-  .explore-category-list { row-gap: 18px; }
+  .explore-category-list { row-gap: 12px; }
+  .explore-category-link { min-height: 0; }
+  .explore-discovery-link small.explore-category-description-desktop { display: none; }
+  .explore-discovery-link small.explore-category-description-mobile { display: block; }
   .explore-discovery-section { padding-top: 20px; padding-bottom: 0; }
   .explore-subscribe-heading { align-items: start; }
   .explore-page .explore-section:has(+ .explore-rss-section) { padding-bottom: 24px; }
@@ -1712,7 +1843,16 @@ a { color: inherit; }
     height: 44px;
     justify-self: start;
   }
-  .directory-toolbar { margin-top: 28px; }
+  .directory-filter-bar {
+    margin-top: 28px;
+  }
+  .directory-search { gap: 10px; padding: 10px 14px; }
+  .directory-search svg { width: 21px; height: 21px; }
+  .directory-query-input { font-size: 16px; }
+  .directory-search,
+  .directory-filter-bar > .directory-select,
+  .directory-sort,
+  .directory-count { min-height: 56px; }
 }
 
 @media (pointer: coarse) {
@@ -1721,10 +1861,12 @@ a { color: inherit; }
     height: 44px;
   }
   .collection-badge { min-height: 44px; }
+  .directory-select-options button,
+  .filter-option,
+  .filter-reset { min-height: 44px; }
 }
 
 @media (max-width: 560px) {
-  .directory-toolbar { position: relative; }
   .directory-filter { position: static; }
   .directory-filter-panel {
     top: calc(100% + 6px);
@@ -1732,11 +1874,6 @@ a { color: inherit; }
     left: 0;
     width: auto;
     border-top: 1px solid var(--line);
-    border-radius: 10px;
-  }
-  .directory-filter.is-open .directory-select-trigger::after { display: none; }
-  .directory-filter.is-open .directory-select-trigger {
-    border-bottom-color: var(--line);
     border-radius: 10px;
   }
 }
@@ -1748,21 +1885,6 @@ a { color: inherit; }
   .explore-subscribe-url {
     width: 100%;
     max-width: none;
-  }
-  .directory-toolbar { flex-wrap: wrap; row-gap: 12px; }
-  .directory-controls { flex: 1 1 100%; }
-  .directory-controls .directory-select { flex: 1 1 0; width: auto; }
-  .directory-toolbar--no-filter {
-    flex-wrap: nowrap;
-    align-items: flex-end;
-  }
-  .directory-toolbar--no-filter .directory-controls {
-    flex: 0 0 auto;
-    margin-left: auto;
-  }
-  .directory-toolbar--no-filter .directory-select {
-    flex: 0 0 auto;
-    width: var(--control-width);
   }
 }
 

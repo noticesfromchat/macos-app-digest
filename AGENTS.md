@@ -356,3 +356,30 @@ When modifying a shared component, layout, stylesheet, schema or documentation f
 - run a build and inspect the deploy preview when presentation may change
 
 If a requested change conflicts with the style guide, update the style guide in the same change or explain the conflict before proceeding.
+
+## Design Context
+
+Impeccable reads this section to build project-specific personas for `critique`. Everything
+here is drawn from PRODUCT.md and the style guide rather than invented; if the two disagree,
+PRODUCT.md wins and this section is the thing that is wrong.
+
+**Audience.** Experienced Mac users who already run a considered set of software. They are
+not looking for a first app in a category, they are deciding whether this week's pick earns
+a place next to something they already trust, so the question a page has to answer is what
+this app does that theirs does not. They arrive on a Friday, read on a Mac, and are
+comfortable with the platform's own conventions.
+
+**Job.** Discover useful Mac software and related reading, once a week, without having to
+sift. Success is a reader who returns next Friday.
+
+**Brand.** Editorial, practical and selective, never promotional. The edge is human
+curation: apps are chosen one at a time by an editor, and AI is editorial support and never
+the final decision-maker. Copy is human-led by design, which is what the Plain Dash Rule
+protects. The voice states a judgment and gives the reason for it.
+
+**What that implies for a critique.** Persuasion is not the mode here; this site does not
+sell, it recommends and expects to be checked. Trust comes from the selection being legible
+as a person's, from the reasoning being present, and from the catalogue being honest about
+its size and shape. Treat calm as a requirement rather than a preference: the most kinetic
+object on any page should be justifiable, and a device that moves for its own sake is a
+defect on a publication that asks to be read.

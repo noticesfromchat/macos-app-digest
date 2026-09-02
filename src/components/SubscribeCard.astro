@@ -1,5 +1,5 @@
 ---
-import { Check, Copy, Rss } from 'lucide-astro';
+import { Check, Copy, Rss, X } from 'lucide-astro';
 
 /* The subscribe offer, in one place. It began as inline markup on the Explore page and
    now closes issue pages too: a reader who has just finished an issue is asking when
@@ -33,6 +33,7 @@ const rssFeedUrl = new URL('/rss.xml', Astro.site).href;
       >
         <Copy class="rss-copy-icon" aria-hidden="true" data-rss-inline-copy-icon />
         <Check class="rss-copy-check" aria-hidden="true" hidden data-rss-inline-copy-check />
+        <X class="rss-copy-fail" aria-hidden="true" hidden data-rss-inline-copy-fail />
         <span class="sr-only" data-rss-inline-label>Copy RSS feed URL</span>
       </button>
     </div>
@@ -63,24 +64,35 @@ const rssFeedUrl = new URL('/rss.xml', Astro.site).href;
   for (const button of document.querySelectorAll('[data-rss-inline-copy]')) {
     const icon = button.querySelector('[data-rss-inline-copy-icon]');
     const check = button.querySelector('[data-rss-inline-copy-check]');
+    const fail = button.querySelector('[data-rss-inline-copy-fail]');
     const label = button.querySelector('[data-rss-inline-label]');
 
     button.addEventListener('click', async () => {
       const value = button.getAttribute('data-rss-inline-url') || '';
       const copied = value ? await copyText(value) : false;
+
+      /* A failed copy used to look exactly like an untouched button, which left the
+         only error path on the page silent. It now answers with a red cross for the
+         same two seconds the tick gets. */
       button.classList.toggle('is-copied', copied);
+      button.classList.toggle('is-copy-failed', !copied);
       if (label) {
-        label.textContent = copied ? 'Copied RSS feed URL' : 'Copy RSS feed URL';
+        label.textContent = copied
+          ? 'Copied RSS feed URL'
+          : 'Copy failed. Select the URL and copy it by hand.';
         button.setAttribute('aria-label', label.textContent);
       }
-      icon?.toggleAttribute('hidden', copied);
+      icon?.toggleAttribute('hidden', true);
       check?.toggleAttribute('hidden', !copied);
+      fail?.toggleAttribute('hidden', copied);
       window.setTimeout(() => {
         button.classList.remove('is-copied');
+        button.classList.remove('is-copy-failed');
         if (label) {
           label.textContent = 'Copy RSS feed URL';
           button.setAttribute('aria-label', 'Copy RSS feed URL');
         }
+        fail?.setAttribute('hidden', '');
         icon?.removeAttribute('hidden');
         check?.setAttribute('hidden', '');
       }, 2000);

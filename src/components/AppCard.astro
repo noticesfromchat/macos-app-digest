@@ -22,6 +22,13 @@ const hasIconVisual = Boolean(app.icon || fallbackCategory);
    pick reads it, and only when the app record carries a reviewed value, so a pick
    with no icon or an undecodable one simply renders the ordinary card. */
 const pickAccent = isHero && editorNote ? app.iconAccent : undefined;
+const directorySearchText = [
+  app.name,
+  app.description,
+  app.bestFor,
+  app.source,
+  ...app.tags
+].join(' ');
 ---
 <article
   class:list={[
@@ -36,6 +43,7 @@ const pickAccent = isHero && editorNote ? app.iconAccent : undefined;
   data-featured-date={featuredDate}
   data-tags={app.tags.join(' ')}
   data-collections={(app.collections ?? []).join(' ')}
+  data-search-text={directorySearchText}
 >
   {appId && <a class="app-card-link" href={`/apps/${appId}/`} tabindex="-1" aria-hidden="true"></a>}
   <div class:list={['app-summary', { 'has-app-icon': hasIconVisual }]}>
