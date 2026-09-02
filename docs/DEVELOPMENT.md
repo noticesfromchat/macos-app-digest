@@ -20,6 +20,25 @@ directory, local workspace location or machine-specific absolute path.
 ## 2. Develop locally
 
 Install dependencies once with `npm ci`, then use `npm run dev` for local review.
+
+**Check for a running dev server before starting one.** A server is very often already
+up, because the editor keeps one running while reviewing. Check first:
+
+```bash
+curl -s -o /dev/null -w '%{http_code}\n' http://localhost:4321/
+```
+
+A `200` means one is already serving; use it. If nothing answers, start your own with
+`npm run dev`.
+
+Starting a second server does not fail loudly. Astro takes the next free port, so you end
+up reviewing `:4322` while the editor is looking at `:4321`, and the two disagree the
+moment either of you edits a file. Preview tooling that expects 4321 will error instead,
+which is the better outcome only because it is visible.
+
+Do not kill or restart a server you did not start. A change that needs a restart to take
+effect, anything in `astro.config.mjs` among them, is reported to the editor to restart
+rather than restarted for them.
 Astro Content Collections are the editorial source of truth:
 
 - app records: `src/content/apps/*.md`

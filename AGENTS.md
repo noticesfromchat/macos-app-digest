@@ -329,6 +329,17 @@ issue.
 
 ## Change safety
 
+### Local dev server
+
+- Check whether a dev server is already running before starting one:
+  `curl -s -o /dev/null -w '%{http_code}\n' http://localhost:4321/`. A `200` means one is
+  serving; use it rather than starting another.
+- Never run a second server. Astro silently takes the next free port, so you review
+  `:4322` while the editor watches `:4321` and the two diverge on the next edit.
+- Never kill or restart a server you did not start. When a change needs a restart to take
+  effect, `astro.config.mjs` among them, say so and let the editor restart it.
+- See `docs/DEVELOPMENT.md` section 2 for the full local-to-production path.
+
 ### Repository path privacy
 
 - Use repository-relative paths in every committed file.
