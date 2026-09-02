@@ -25,6 +25,7 @@ const socialImageUrl = new URL(socialImage, Astro.site);
 const rssUrl = new URL('/rss.xml', Astro.site);
 const searchIndexUrl = new URL('/search-index.json', Astro.site);
 const isHomepage = Astro.url.pathname === '/';
+const googleAnalyticsId = 'G-1WLLER0K5L';
 const graph = [
   {
     '@type': 'Organization',
@@ -71,6 +72,14 @@ const graph = [
 <!doctype html>
 <html lang="en">
   <head>
+    <script async src={`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}`}></script>
+    <script
+      is:inline
+      set:html={`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', ${JSON.stringify(googleAnalyticsId)});`}
+    />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
