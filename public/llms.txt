@@ -6,15 +6,15 @@ New issues are published every Friday. Each issue contains original editorial re
 
 ## Current Issue
 
-- [Latest App Waypoint issue](https://appwaypoint.netlify.app/)
+- [Latest App Waypoint issue](https://appwaypoint.app/)
 
 ## Browse
 
-- [Issue archive](https://appwaypoint.netlify.app/archive/)
-- [Editor’s Picks](https://appwaypoint.netlify.app/collections/editors-picks/)
+- [Issue archive](https://appwaypoint.app/archive/)
+- [Editor's Picks](https://appwaypoint.app/collections/editors-picks/)
 
 ## Editorial
 
-- [About App Waypoint and its selection process](https://appwaypoint.netlify.app/about/)
+- [About App Waypoint and its selection process](https://appwaypoint.app/about/)
 
 App names link to their official developer websites. Issue pages are permanent and should be cited instead of the changing homepage URL when referring to a specific edition.

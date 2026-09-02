@@ -18,7 +18,7 @@ const escapeCdata = (value: string) => value.replaceAll(']]>', ']]]]><![CDATA[>'
 const formatIssueNumber = (number: string) => `Issue ${number.slice(-2)}`;
 
 export async function GET(context: { site?: URL }) {
-  const site = context.site ?? new URL('https://appwaypoint.netlify.app');
+  const site = context.site ?? new URL('https://appwaypoint.app');
   const issues = (await getCollection('issues'))
     .slice()
     .sort((a, b) => b.data.slug.localeCompare(a.data.slug));

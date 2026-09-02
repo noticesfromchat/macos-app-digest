@@ -2,7 +2,7 @@
 
 A weekly waypoint for experienced Mac users discovering thoughtfully selected apps, tools, and reading.
 
-Live site: https://appwaypoint.netlify.app/
+Live site: https://appwaypoint.app/
 
 ## Development
 
