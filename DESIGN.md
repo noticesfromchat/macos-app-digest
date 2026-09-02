@@ -289,7 +289,7 @@ Four things hold it inside the design system:
 
 Because the card rests at Hover Lift rather than Ambient Card, it cannot answer the pointer with elevation the way The One Hover Rule describes. It answers with light instead: an accent-tinted depth under the card. Both loops pause when the card is off screen and stop entirely under reduced motion.
 
-**The buoy stays the one authored moment.** The mark on the content divider flashes once as the reader passes it. That is deliberate, and it is the motion on the page with a voice, alongside the light on the Editor's Pick card and the archive timeline in the closer. That third one is the sequence that used to draw the source notes: it retired with them on 2026-09-01 and came back the same day on the list of past issues, which is the thing it was always describing. A buoy chain marks a route, and a route back through the archive is a truer subject for it than a list of research sources ever was. The move was not an animation being owed a replacement; it was the animation finding its content.
+**The buoy stays the one authored moment.** The mark on the content divider flashes once as the reader passes it. That is deliberate, and it is the motion on the page with a voice, alongside the light on the Editor's Pick card. The old archive timeline in the removed `Keep Exploring` closer retired with that section on 2026-09-01, leaving the issue page calmer at the finish.
 
 **The Swell Rule.** The water moves, and it is the only thing on the page that moves without wanting to be noticed. Both wave bands, the hero's waterline and the content divider's, breathe: the crests hold their positions while the height of the water and the weight of its second harmonic settle and return, on periods of 23 and 31 seconds that do not divide into one another, so the band never repeats a state the eye can catch.
 
@@ -311,7 +311,7 @@ Buttons are quiet, pill-shaped workhorses: obvious, tactile, and not over-embell
 - **Primary:** outlined, not filled. A 1px blue border and a blue label over the page, 44px minimum height, 23px horizontal padding, and a small icon gap. A button is as wide as its label — never a fixed box padded out to a round number. It carried a blue fill with white text until the dark palette exposed why that could not hold: Buoy Blue is tuned to be legible as ink *on* the dark surface, so inverting it into a ground put white text at 2.62:1, well under AA, and made the button the brightest object on the page. As a label the same blue clears AA in both themes (5.17:1 light, 7.54:1 dark).
 - **Hover / Focus:** the blue deepens on hover, and focus is handled with a clear accessible outline rather than a visual stunt.
 - **Secondary:** transparent fill, ink text, and a borderless or low-border utility presence.
-- **Icon Buttons:** the header search, archive, and theme controls are 38px squares on desktop, but expand to 44px targets on mobile and coarse-pointer devices.
+- **Icon Buttons:** the header search and theme controls are 44px circles on desktop, mobile and coarse-pointer devices.
 
 **The Target Floor Rule.** Anything a reader taps carries a minimum target: 24px, and the 44px the control system already gives every pill on a coarse pointer. This is not only for pills. Footer navigation, the explore section links, the carousel's directory link and the feature card's outbound link were each the height of their own text, 16 to 21px, because a bare link has no box unless it is given one.
 
@@ -334,7 +334,7 @@ Tag chips are compact chips rather than buttons. They read as metadata first.
 - **State:** hover and focus tint the chip toward blue without making it feel selected. The label takes the accent's *hover* value, not the accent itself, so the text still clears 4.5:1 against the tinted pill (5.50:1) — the plain accent lands at 3.89:1 there and is not legible enough.
 
 ### Cards
-Cards are the primary container language for apps, readings, and archive entries. Apparatus and secondary matter are set under a hairline instead, so a card always means a thing worth looking at rather than a thing worth reading past. An app card carries three regions and nothing else: the summary, the best-for line, and the tags. It used to end with a source credit; that was provenance for the editor rather than information for the reader, and removing it took a whole region off every card.
+Cards are the primary container language for apps, readings, and archive entries. Apparatus and secondary matter are set under a hairline instead, so a card always means a thing worth looking at rather than a thing worth reading past. An app card carries three regions and nothing else: the summary, the best-for line, and the tags. Its single app destination is the generated detail page; the title link and stretched pointer overlay go to the same internal URL, while the official homepage lives on the detail page. It used to end with a source credit; that was provenance for the editor rather than information for the reader, and removing it took a whole region off every card.
 - **Corner Style:** 12px radius on most cards.
 - **Background:** the surface color — white by day — with a faint border and soft shadow.
 - **Internal Padding:** usually 24px, with denser or looser variants where the content demands it.
@@ -365,9 +365,10 @@ The explore page ends in a stack of three app cards, one centred and two rotated
 
 ### Site Header and Navigation
 The header is sticky, translucent, and restrained. The brand wordmark uses the same editorial serif as the headline system, while the icon controls stay compact and monochrome until hover or focus gives them blue.
-- **Desktop:** brand on the left, search/archive/theme controls on the right.
-- **Mobile:** the navigation compresses and some links hide outside the issue page context.
-- **Hover / Active:** navigation links underline on hover and active state, with accent color reserved for the current page.
+- **Desktop:** brand on the left, then Explore Apps, Archive, About, an icon-only Lucide Search control and the icon-only theme toggle on the right.
+- **Mobile:** the header keeps the brand and theme toggle visible, then moves Search, Explore Apps, Archive, About and Subscribe into the navigation dialog.
+- **Hover / Active:** navigation links shift to the accent on hover, focus and current-page state. Icon controls stay circular and borderless, with the same accent response.
+- **Skip link:** every page starts with a hidden-until-focused skip link that lands on the main content landmark.
 
 ### Directory Filter Menu
 The filter menu is a compact popover, not a modal. It is designed to support fast scanning and quick edits to the current page state.
@@ -407,150 +408,36 @@ A full-bleed band whose content sits on the shared page shell, so the wordmark a
   break that existed only at the widths most readers use and disappeared on mobile, which is
   why review kept missing it. A heading that orders the outline stays in the outline at every
   width.
-- **Call to action:** two anchors, one hidden per breakpoint. Above 920px *Start Reading* goes to the first section; below it — where the pick has stacked underneath — it goes to the pick. 920px is where the hero collapses to one column, so the swap and the stack happen together.
 
-### End-of-Issue Closer
+### Issue Subscribe Card
 
-An issue ends; the publication does not. The foot of every issue page, on the homepage and
-on every archived issue alike, carries a `Keep Exploring` section holding two cards: one
-into the archive, one into the app catalogue.
+Every issue page, including the homepage and archived issues, closes with the shared RSS
+subscribe card after `Weekend Reading`. It is the same object used on Explore because the
+reader's question is the same in both places: when does the next issue arrive, and what URL
+goes into an RSS reader?
 
-It replaced the Source Notes section on 2026-09-01. Those notes listed where the week's
-picks came from, and the argument against them is the one already made for the app card's
-source credit in Cards above: provenance for the editor rather than information for the
-reader, and carrying no links, so they asked to be trusted rather than checked. The notes
-are still written into each issue's frontmatter, where they remain the editorial audit
-trail. What changed is that the last thing a reader meets is a way further in.
+The public `Keep Exploring` closer was removed on 2026-09-01. The archive and catalogue
+remain available through the header and footer, but the issue page no longer repeats them
+as a large final browse module. The finish should now be simpler: read the issue, read the
+supporting links, then subscribe if the cadence is useful.
 
-**It is a section, not a footnote.** A first version set it in a quieter register, on the
-reasoning that a way out should not compete with the issue. That was wrong in practice: it
-read as foreign to a page whose every other block carries an eyebrow, a title and cards, and
-looking unlike the site is a worse failure than looking prominent. It now takes the ordinary
-section grammar. Restraint on this page is expressed by the cards' own contents, not by
-opting out of the page's language.
+The card renders as a standalone section with its own `h2`, rather than as a subordinate
+block inside another closer. It keeps the Explore card's layout, copy, copy-to-clipboard
+control and interaction states so there is one maintained subscription pattern across the
+site. The issue placement only adds extra bottom padding so the final card has a deliberate
+landing before the footer.
 
-- **The subscribe card closes the section.** A critique on 2026-09-01 named the missing
-  subscribe offer the closer's worst fault: a reader who has just finished an issue is asking
-  when the next one arrives, and the page answered with eight browse links while the cadence
-  sat 5,400px away in the hero, stated once.
-
-  The first repair was a line of copy and a button opening the RSS dialog. It was replaced by
-  the Explore page's own subscribe card, extracted to `SubscribeCard.astro` and used in both
-  places. The same question deserves the same object wherever it comes up, and the card
-  answers it in one step: the feed URL is on the page with a copy control, where the button
-  only opened a dialog that then showed it. It sits below the two cards on the grid's own
-  16px, so the page ends on the ask rather than on a list of places to go.
-
-  The card renders `h2` on Explore, where it is a section heading with nothing above it, and
-  `h3` at subhead size in the closer, which already carries its own `h2`. Two display serif
-  headings at section-title size inside one section read as two sections, and the outline
-  should not gain a second `h2` either. That is the only thing the two placements do not
-  share.
-
-  It costs height: the closer runs 1,506px at 375px against 1,163px before. On a phone that
-  is most of two screens after a long read, and it is the known price of answering the
-  question properly rather than in a line.
-- **Two destinations, two names.** The card links read `Archive` and `Explore Apps`, exactly
-  as the header and footer name them. They read `Browse archives` and `Explore all apps`
-  until the same critique observed that four labels for two destinations, inside one screen,
-  make a reader wonder whether they differ.
-- **Topology:** two peer cards, not a primary and a secondary. The archive is a route
-  through time and the catalogue a route through subject; a reader who has finished an issue
-  may want either, and nothing in the content ranks them. They share a row and their onward
-  links share a baseline, pinned with `margin-top: auto` so the pair agrees across the gap
-  however unequal the content above it.
-- **Which issues the archive card names:** the three newest that are not the one being read.
-  The first is featured, with its dek; the other two are bare linked lines.
-  On the homepage that resolves to the previous three; on an archived page it pulls in newer
-  issues, which is the more useful pointer from a page a reader arrived at late. One
-  rule, and it degrades cleanly: with no other issue the card does not render and the row
-  collapses to the catalogue alone.
-- **The heading follows the contents, not the other way round.** Because that rule offers
-  newer issues on an archived page, a fixed `View past issues` was false on six of the eight
-  issue pages, most starkly on the oldest, which offered Issues 08, 07 and 06 as the reader's
-  past. The card reads `View past issues` only when every issue it offers predates the one
-  being read, and `Recent issues` otherwise. The selection rule was right; the label was
-  lying about it.
-- **Type ranks content over label.** The section title leads, each card heading names its
-  door at label rank, and the largest thing inside a card is its content. The headings were
-  set at subhead first, which inverted the order: `View past issues` and `Explore Mac Apps`
-  became the loudest type in the block while the featured issue's own title sat smaller than
-  its dek. A card heading carries nothing the section title has not already said, so it is a
-  label; the featured issue takes display serif at 1.38rem, the treatment the identical
-  object already has on `/archive/`, because one object met on two pages should not be two
-  objects.
-- **The rank is the dek.** One issue argues for itself; the ones before it only need to be
-  reachable. That split is also what balances the pair. A single issue left 73px of dead space
-  under it, and two full issues moved the same hole into the catalogue card. One featured plus
-  two bare lines brings the two cards to 349px against 342px, and the residual worst case is
-  27px at 960px where the dek takes an extra line. The list is the adjustable part: if the
-  cards drift apart, change how many bare lines it carries, not the featured issue's copy.
-- **The featured block is one target.** Title, date and dek are a single link to that issue:
-  the title's anchor stretches over the whole entry with a pseudo-element rather than a second
-  overlay anchor, so the block is clickable while the accessible name stays the issue's own
-  line and the card gains no duplicate link. It overhangs the entry by 6px and 8px, giving a
-  120px hit area, and still clears the buoy chain below it by 16px so those rows keep their
-  own clicks.
-
-  An earlier version closed the dek with a `Read now` link instead. It read as stray emphasis
-  in the middle of prose and put a second accent item in a card that should have one call to
-  action, competing with `Browse archives` directly beneath it. Each card now ends on exactly
-  one accent link, and the block carries the click. The one cost is that the dek can no longer
-  be selected as text, which is the ordinary price of a stretched link and the same trade the
-  app cards already make.
-
-  Every target outside that block takes the 44px coarse-pointer minimum, and the block itself
-  deliberately does not. It carried one briefly, which bought nothing, since the stretched
-  anchor is already a 120px target, while inflating the issue line's box until the gap inside
-  the featured group exceeded the gap between that group and the chain. On every touch device
-  that inverted the proximity this card depends on, its only separator being the spacing
-  ratio. A minimum height does not belong on an element whose neighbours are grouped by
-  rhythm.
-- **Grouping by rhythm, not by rule.** Inside the archive card, 10px binds an issue's line to
-  its own dek and 22px separates the featured issue from the chain below it. The ratio does the grouping, so the
-  card needs no internal hairline; the catalogue card uses one only because collections are a
-  different kind of door from categories, not merely the next item.
-- **Inside the catalogue card:** all six categories in a two-column grid, then a hairline,
-  then the two collections. Collections are a different kind of door from categories, so they
-  are separated rather than appended as two more rows. Every row carries its `MetaIcon` at
-  20px in `--muted`, label and icon crossing to the accent together on hover.
-- **No counts.** An early draft put an app count beside each category. The six hold 33, 23,
-  27, 67, 71 and 26 apps against a catalogue of 102, because apps carry several categories at
-  once. The numbers neither sum to anything a reader can trust nor separate the doors: two of
-  the six describe most of the catalogue. Names alone.
-- **No whole-card hover.** The shared card hover in Cards answers a pointer for a card that
-  is one target. The catalogue card holds nine, and lifting the whole surface would promise a
-  click the card does not honour. The rows and the onward links answer individually instead.
-  This is the one place a card deliberately sits out that contract.
-- **Colour:** labels take `--text` and both onward links take `--accent`, so the two links
-  that leave the section are the ones the Beacon Rule lights.
-- **Motion:** one moment, in the archive card only, and it is the buoy's own. Each row
-  rises out of the water rather than wiping in from the side: up from 15px, past the mark
-  to -4.5px, then settling through 2.5, -1.4 and 0.7. The amplitudes halve each pass,
-  which is what a damped float does and what keeps the settle reading as water rather than
-  as a bounce. The ring and its label carry the same keyframes on the same delay, so the
-  row floats as one object instead of two things out of phase; the second row follows
-  420ms behind the first, and the connector draws down between them once both ends are up.
-  The animation rides an inner span rather than the link itself, so a focus ring is never
-  transformed with it. The connector's geometry is written against 50% and 100% of a row
-  rather than fixed pixels, so it still meets the next buoy when the rows grow to the 44px
-  touch minimum, clearing it by 2.5px at both ends. The ring's inner ground is `--surface`,
-  not `--bg`: this buoy floats on a card. Under reduced motion the chain renders in its
-  resting state with no animation at all. The catalogue card stays still. See The Buoy Rule
-  in Motion.
-- **Separator:** a middle dot between the issue number and its date, in both the featured
-  line and the chain. It sits at half height, so it divides the two facts without landing
-  on the baseline as another word would, and it is hidden from assistive technology.
-- **Responsive:** two cards become one column at 920px, where the hero already collapses, so
-  the page changes shape once rather than twice. The category grid drops to one column at
-  520px. Every row clears 24px, and 44px on a coarse pointer, as a nav target rather than
-  prose.
+The Source Notes section remains retired from the public page. `sourceNotes` still belongs
+in issue frontmatter as the editorial audit trail, but nothing renders it.
 
 ### Not Found
 
 Every route that does not exist renders `src/pages/404.astro` on the same page shell as the
-rest of the site: page title, dek, then four ways out — the current issue as the one
-outlined button, then the archive, Explore, and the search dialog as text links.
+rest of the site: the `Page Not Found` eyebrow, page title, dek, then one bordered recovery
+panel spanning the full page shell. The panel reuses the Explore mega card's container,
+spacing, two-column discovery grid, typography and Lucide icon tiles. Its four destinations
+are Search, Explore, Archive, then About. The tile itself does not get a row hover wash; only
+the title and icon respond, exactly like the Explore discovery links.
 
 It exists because the archive is meant to be permanent while the tag routes are not. Five
 tags were retired and redirected in a single week against a hand-maintained list in

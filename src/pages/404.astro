@@ -1,73 +1,97 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { Archive, Compass, Info, Search } from 'lucide-astro';
 
-/* The archive is meant to be permanent, and the tag routes have been churning: five tags
-   retired and redirected in the last week alone, against a hand-maintained redirect list
-   in netlify.toml. Any rule that gets missed used to land a reader on the host's own grey
-   error page, with no brand, no navigation and no way back. This is the same page shell
-   as every other route, so a dead link stays inside the publication. */
+/* Keep dead links inside the publication shell, with search first for recovery. */
 ---
 <BaseLayout
   title="Page Not Found — App Waypoint"
-  description="That page is not here. Browse the current issue, the archive of past issues or the App Waypoint catalog of Mac apps."
+  description="Oops, you've lost your way. Let's get you back on track with Explore, Archive, About or search."
 >
-  <section class="page-shell archive-page">
-    <h1>Nothing at this address</h1>
-    <p class="dek">
-      That page has moved or never existed. The issues and the app catalog are all still
-      here, so try one of these.
-    </p>
+  <section class="page-shell archive-page not-found-page">
+    <p class="eyebrow">Page Not Found</p>
+    <h1>Oops... you've lost your way</h1>
+    <p class="dek">Let's get you back on track.</p>
 
-    <div class="not-found-routes">
-      <a class="button" href="/">Current issue <span aria-hidden="true">→</span></a>
-      <a class="not-found-link" href="/archive/">Past issues</a>
-      <a class="not-found-link" href="/explore/">Explore apps</a>
-      <button class="not-found-link" type="button" data-search-open>Search the catalog</button>
-    </div>
+    <article
+      class="not-found-routes card explore-utility-card explore-utility-combined-card explore-discovery-card"
+      aria-label="Ways back into App Waypoint"
+    >
+      <div class="explore-discovery-layout">
+        <section class="explore-discovery-categories">
+          <div class="explore-collection-list explore-category-list not-found-route-grid">
+            <button class="explore-discovery-link not-found-route" type="button" data-search-open>
+              <span class="explore-discovery-icon" aria-hidden="true">
+                <Search />
+              </span>
+              <span>
+                <strong>Search the catalog</strong>
+                <small>Find an app, tag or collection directly.</small>
+              </span>
+            </button>
+
+            <a class="explore-discovery-link" href="/explore/">
+              <span class="explore-discovery-icon" aria-hidden="true">
+                <Compass />
+              </span>
+              <span>
+                <strong>Explore Apps</strong>
+                <small>Browse the app catalog consisting of every app featured from every issue to date.</small>
+              </span>
+            </a>
+
+            <a class="explore-discovery-link" href="/archive/">
+              <span class="explore-discovery-icon" aria-hidden="true">
+                <Archive />
+              </span>
+              <span>
+                <strong>View the Archive</strong>
+                <small>Browse every published issue of App Waypoint.</small>
+              </span>
+            </a>
+
+            <a class="explore-discovery-link" href="/about/">
+              <span class="explore-discovery-icon" aria-hidden="true">
+                <Info />
+              </span>
+              <span>
+                <strong>Learn About App Waypoint</strong>
+                <small>Browse every published issue of App Waypoint.</small>
+              </span>
+            </a>
+          </div>
+        </section>
+      </div>
+    </article>
   </section>
 </BaseLayout>
 
 <style>
   .not-found-routes {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 16px 26px;
-    margin-top: 30px;
+    width: 100%;
+    margin-top: 36px;
   }
 
-  /* The routes out are targets, not prose, so each clears the minimum the design system
-     gives every control, and 44px on a coarse pointer. */
-  .not-found-link {
-    display: inline-flex;
-    align-items: center;
-    min-height: 24px;
-    padding: 0;
+  .not-found-route {
+    width: 100%;
+    padding-right: 0;
+    padding-left: 0;
     border: 0;
     background: transparent;
-    color: var(--accent);
-    font-family: inherit;
-    font-size: var(--type-meta);
-    font-weight: 700;
-    line-height: inherit;
-    text-decoration: none;
+    color: var(--text);
+    font: inherit;
+    text-align: left;
     cursor: pointer;
-    transition: color 180ms ease;
   }
 
-  .not-found-link:hover,
-  .not-found-link:focus-visible {
-    color: var(--accent-hover);
-    text-decoration: underline;
-    text-underline-offset: 3px;
+  .not-found-route:hover,
+  .not-found-route:focus-visible {
+    background: transparent;
   }
 
-  .not-found-link:focus-visible {
-    outline: 2px solid color-mix(in srgb, var(--accent) 34%, transparent);
-    outline-offset: 4px;
-  }
-
-  @media (pointer: coarse) {
-    .not-found-link { min-height: 44px; }
+  @media (max-width: 680px) {
+    .not-found-routes {
+      margin-top: 28px;
+    }
   }
 </style>

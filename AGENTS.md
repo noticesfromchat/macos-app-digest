@@ -307,8 +307,8 @@ issue.
 
 ## Non-negotiable presentation rules
 
-- App titles link directly to official app homepages.
-- Do not show a separate `Homepage` link beneath app cards.
+- App cards and app titles link to the generated App Waypoint app detail page.
+- Official homepage links belong on app detail pages, not beneath app cards.
 - Weekend Reading titles link directly to articles.
 - Do not show a separate `Read article` link beneath reading cards.
 - Tag pills remain quiet, grayscale metadata rather than primary calls to action.

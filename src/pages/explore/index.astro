@@ -255,9 +255,6 @@ const exploreData = {
             <ChevronRight aria-hidden="true" />
           </button>
         </div>
-        <div class="explore-carousel-footer">
-          <a class="explore-carousel-directory-link" href="/apps/">Open the full directory</a>
-        </div>
       </div>
     </section>
   </section>
@@ -353,11 +350,11 @@ const exploreData = {
 
         return `
         <article class="card app-card${iconClass}" data-app-name="${escapeHTML(app.name)}">
-          <a class="app-card-link" href="/apps/${escapeHTML(app.id)}/" aria-label="Read more about ${escapeHTML(app.name)}"></a>
+          <a class="app-card-link" href="/apps/${escapeHTML(app.id)}/" tabindex="-1" aria-hidden="true"></a>
           <div class="${summaryClass}">
             <div class="app-summary-heading">
               ${iconMarkup}
-              <h3><a href="${escapeHTML(app.homepage)}" target="_blank" rel="noreferrer">${escapeHTML(app.name)}</a></h3>
+              <h3><a href="/apps/${escapeHTML(app.id)}/">${escapeHTML(app.name)}</a></h3>
             </div>
             <p class="app-description">${escapeHTML(app.description)}</p>
           </div>

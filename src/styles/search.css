@@ -8,6 +8,7 @@
   white-space: nowrap;
 }
 
+.desktop-search-button,
 .nav-menu-toggle {
   display: grid;
   width: 44px;
@@ -23,11 +24,27 @@
   transition: color 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
 }
 
+.desktop-search-button svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.desktop-search-button { margin-left: 14px; }
+
+.nav-menu-toggle { display: none; }
+
+.desktop-search-button:hover,
 .nav-menu-toggle:hover {
   background: color-mix(in srgb, var(--surface-strong) 52%, transparent);
   color: var(--accent);
 }
 
+.desktop-search-button:focus-visible,
 .nav-menu-toggle:focus-visible {
   background: color-mix(in srgb, var(--surface-strong) 62%, transparent);
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 38%, transparent);
@@ -647,6 +664,12 @@
 }
 
 @media (max-width: 680px) {
+  .desktop-nav-links,
+  .desktop-search-button {
+    display: none;
+  }
+  .desktop-search-button { margin-left: 0; }
+  .nav-menu-toggle { display: grid; }
   .mobile-nav-overlay {
     height: 100dvh;
     place-items: start center;
@@ -722,6 +745,7 @@
 }
 
 @media (pointer: coarse) {
+  .desktop-search-button,
   .nav-menu-toggle,
   .mobile-nav-rss,
   .search-close,
@@ -733,6 +757,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .desktop-search-button,
   .nav-menu-toggle,
   .mobile-nav-rss,
   .search-close,

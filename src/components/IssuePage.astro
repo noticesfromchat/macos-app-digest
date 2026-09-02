@@ -1,11 +1,8 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import { getCollection } from 'astro:content';
-import { categories, collections } from '../data/categories';
 import AppCard from './AppCard.astro';
-import MetaIcon from './MetaIcon.astro';
-import SubscribeCard from './SubscribeCard.astro';
 import BrandMark from './BrandMark.astro';
+import SubscribeCard from './SubscribeCard.astro';
 import WaveRule from './WaveRule.astro';
 import ReadingCard from './ReadingCard.astro';
 
@@ -27,24 +24,6 @@ const issueLabel = String(Number(issue.number)).padStart(2, '0');
 const editorsPick = issue.editorsPick ? appsById.get(issue.editorsPick.app) : undefined;
 const Wordmark = homepage ? 'h1' : 'p';
 const IssueHeading = homepage ? 'p' : 'h1';
-
-/* The closer offers the three newest issues that are not the one being read. On the
-   homepage every one of them is older, so the card can say so. On an archived page they
-   are usually newer, which is the more useful pointer from a page a reader arrived at
-   late but makes "past issues" a lie: the heading follows the contents rather than the
-   other way round. */
-const allIssues = [...await getCollection('issues')].sort((a, b) =>
-  b.data.slug.localeCompare(a.data.slug)
-);
-const [featuredIssue, ...olderIssues] = allIssues.filter((entry) => entry.data.slug !== issue.slug);
-const compactIssues = olderIssues.slice(0, 2);
-const offeredIssues = featuredIssue ? [featuredIssue, ...compactIssues] : [];
-const allOffersArePast = offeredIssues.every((entry) => entry.data.slug < issue.slug);
-const issuesCardTitle = allOffersArePast ? 'View past issues' : 'Recent issues';
-const formatIssueNumber = (number: string) => String(Number(number)).padStart(2, '0');
-const outroCategories = [...categories].sort((a, b) =>
-  a.title.localeCompare(b.title, undefined, { sensitivity: 'base' })
-);
 ---
 
 <article class="issue">
@@ -132,78 +111,8 @@ const outroCategories = [...categories].sort((a, b) =>
     </div>
   </section>
 
-  {/* An issue ends, the publication does not. Two peer destinations: back through
-      the archive, or sideways into the catalog. Same section grammar as every
-      other block on the page, so it reads as part of the issue rather than as
-      apparatus stuck to the bottom of it. */}
-  <section class="section issue-outro">
-    <div class="section-heading">
-      <p class="eyebrow">Keep Exploring</p>
-      <h2>Past issues and the full catalog</h2>
-    </div>
-    <div class="issue-outro-grid">
-      {featuredIssue && (
-        <article class="card issue-outro-card">
-          <h3>{issuesCardTitle}</h3>
-          <div class="issue-outro-entry">
-            <p class="issue-outro-issue">
-              <a href={`/issues/${featuredIssue.data.slug}/`}>
-                <strong>Issue {formatIssueNumber(featuredIssue.data.number)}</strong>
-                <span class="issue-outro-sep" aria-hidden="true">·</span>
-                <time datetime={featuredIssue.data.slug}>{featuredIssue.data.date}</time>
-              </a>
-            </p>
-            <p class="issue-outro-dek">{featuredIssue.data.dek}</p>
-          </div>
-          {compactIssues.length > 0 && (
-            <ul class="issue-outro-more" data-issue-timeline>
-              {compactIssues.map((entry, index) => (
-                <li style={`--issue-index: ${index};`}>
-                  <span class="issue-outro-buoy" aria-hidden="true"></span>
-                  <a href={`/issues/${entry.data.slug}/`}>
-                    <span class="issue-outro-more-copy">
-                      <strong>Issue {formatIssueNumber(entry.data.number)}</strong>
-                      <span class="issue-outro-sep" aria-hidden="true">·</span>
-                      <time datetime={entry.data.slug}>{entry.data.date}</time>
-                    </span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          )}
-          <a class="issue-outro-link" href="/archive/">Archive</a>
-        </article>
-      )}
-      <article class="card issue-outro-card">
-        <h3>Explore Mac Apps</h3>
-        <ul class="issue-outro-list issue-outro-categories">
-          {outroCategories.map((category) => (
-            <li>
-              <a href={`/categories/${category.slug}/`}>
-                <span class="issue-outro-icon" aria-hidden="true"><MetaIcon name={category.icon} /></span>
-                <span>{category.title}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-        <ul class="issue-outro-list issue-outro-collections">
-          {collections.map((collection) => (
-            <li>
-              <a href={`/collections/${collection.slug}/`}>
-                <span class="issue-outro-icon" aria-hidden="true"><MetaIcon name={collection.icon} /></span>
-                <span>{collection.title}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-        <a class="issue-outro-link" href="/explore/">Explore Apps</a>
-      </article>
-    </div>
-    {/* The same card the Explore page carries. A reader who has just finished an issue is
-        asking when the next one arrives, and the answer should be the same object wherever
-        the question comes up. It closes the section rather than opening it, so the page
-        ends on the ask instead of on a list of places to go. */}
-    <SubscribeCard headingLevel={3} />
+  <section class="section issue-subscribe">
+    <SubscribeCard />
   </section>
 </article>
 
@@ -227,22 +136,6 @@ const outroCategories = [...categories].sort((a, b) =>
       }
     }, { rootMargin: '-35% 0px -35% 0px', threshold: 0 });
     passing.observe(waypoint);
-  }
-
-  /* The same lights, on the route back through the archive. Each buoy comes up in
-     turn and the line runs down to the next, once, as the card is reached. */
-  const issueTimeline = document.querySelector('[data-issue-timeline]');
-
-  if (issueTimeline && !stillness.matches && 'IntersectionObserver' in window) {
-    issueTimeline.classList.add('is-motion-ready');
-    const arriving = new IntersectionObserver((entries, observer) => {
-      for (const entry of entries) {
-        if (!entry.isIntersecting) continue;
-        entry.target.classList.add('is-visible');
-        observer.unobserve(entry.target);
-      }
-    }, { rootMargin: '-12% 0px -12% 0px', threshold: 0.25 });
-    arriving.observe(issueTimeline);
   }
 
   const sky = document.querySelector('.home-hero-sky');

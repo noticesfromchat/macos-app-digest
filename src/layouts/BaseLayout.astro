@@ -100,12 +100,30 @@ const graph = [
     </script>
   </head>
   <body>
+    <a class="skip-link" href="#content">Skip to content</a>
     <header class:list={['site-header', { 'is-homepage-brand': isHomepage }]} data-site-header>
       <a class="brand" href="/" aria-label="App Waypoint home">
         <BrandMark />
         <span class="brand-wordmark" data-brand-wordmark>App Waypoint</span>
       </a>
       <nav aria-label="Primary navigation">
+        <div class="desktop-nav-links">
+          <a href="/explore/" aria-current={current === 'explore' ? 'page' : undefined}>Explore Apps</a>
+          <a href="/archive/" aria-current={current === 'archive' ? 'page' : undefined}>Archive</a>
+          <a href="/about/" aria-current={current === 'about' ? 'page' : undefined}>About</a>
+        </div>
+        <button
+          class="desktop-search-button"
+          type="button"
+          aria-label="Search apps"
+          title="Search apps"
+          aria-haspopup="dialog"
+          aria-expanded="false"
+          aria-controls="site-search-modal"
+          data-search-open
+        >
+          <Search aria-hidden="true" />
+        </button>
         <button class="theme-toggle nav-theme-toggle" type="button" aria-label="Switch to dark theme" data-theme-toggle>
           <Moon data-theme-moon aria-hidden="true" />
           <Sun data-theme-sun aria-hidden="true" hidden />
@@ -201,7 +219,7 @@ const graph = [
         <div class="search-results" aria-label="Search results" data-search-results></div>
       </section>
     </div>
-    <main><slot /></main>
+    <main id="content"><slot /></main>
     <SiteFooter current={current} />
     <div class="rss-overlay" data-rss-overlay hidden>
       <button class="rss-backdrop" type="button" aria-label="Close RSS subscription dialog" data-rss-close></button>

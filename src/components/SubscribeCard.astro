@@ -2,13 +2,12 @@
 import { Check, Copy, Rss } from 'lucide-astro';
 
 /* The subscribe offer, in one place. It began as inline markup on the Explore page and
-   moved here when the issue closer needed the same thing: a reader who has just finished
-   an issue is asking when the next one arrives, and the answer should be the same object
-   wherever the question comes up.
+   now closes issue pages too: a reader who has just finished an issue is asking when
+   the next one arrives, and the answer should be the same object wherever the question
+   comes up.
 
-   `headingLevel` exists because the card is a section heading on Explore and a subordinate
-   block inside the issue closer, which already carries its own h2. The rendered level
-   follows the document it sits in rather than the component's own preference. */
+   `headingLevel` remains available for pages that need a subordinate heading. The rendered
+   level follows the document it sits in rather than the component's own preference. */
 const { headingLevel = 2 } = Astro.props as { headingLevel?: 2 | 3 };
 const Heading = `h${headingLevel}` as 'h2' | 'h3';
 const rssFeedUrl = new URL('/rss.xml', Astro.site).href;

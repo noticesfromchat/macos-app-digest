@@ -11,6 +11,26 @@
   status = 301
 
 [[redirects]]
+  from = "/apps/"
+  to = "/explore/"
+  status = 301
+
+[[redirects]]
+  from = "/tags/"
+  to = "/explore/"
+  status = 301
+
+[[redirects]]
+  from = "/collections/"
+  to = "/explore/"
+  status = 301
+
+[[redirects]]
+  from = "/categories/"
+  to = "/explore/"
+  status = 301
+
+[[redirects]]
   from = "/categories/focus/"
   to = "/categories/productivity-workflow/"
   status = 301

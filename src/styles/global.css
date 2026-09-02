@@ -120,6 +120,33 @@ body {
 
 a { color: inherit; }
 
+.skip-link {
+  position: fixed;
+  z-index: 120;
+  top: 12px;
+  left: 12px;
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  padding: 0 16px;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  background: var(--surface);
+  box-shadow: var(--shadow-modal);
+  color: var(--accent);
+  font-size: var(--type-meta);
+  font-weight: 800;
+  text-decoration: none;
+  transform: translateY(calc(-100% - 18px));
+  transition: transform 180ms cubic-bezier(.16, 1, .3, 1);
+}
+
+.skip-link:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent) 38%, transparent);
+  outline-offset: 3px;
+  transform: translateY(0);
+}
+
 .site-header {
   position: sticky;
   top: 0;
@@ -183,6 +210,33 @@ a { color: inherit; }
   display: inline-flex;
   align-items: center;
   gap: 10px;
+}
+
+.desktop-nav-links {
+  display: inline-flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.desktop-nav-links a {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  color: var(--text);
+  font-size: var(--type-meta);
+  font-weight: 700;
+  text-decoration: none;
+  transition: color 180ms ease;
+}
+
+.desktop-nav-links a:hover,
+.desktop-nav-links a:focus-visible,
+.desktop-nav-links a[aria-current='page'] { color: var(--accent); }
+
+.desktop-nav-links a:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent) 38%, transparent);
+  outline-offset: 4px;
+  border-radius: 8px;
 }
 
 .theme-toggle svg {
@@ -765,31 +819,15 @@ a { color: inherit; }
   align-items: center;
   gap: .2em;
 }
-.editors-pick-icon-link {
+.editors-pick-icon-mark {
   position: relative;
   display: inline-flex;
   flex: 0 0 auto;
   width: .9em;
   height: .9em;
   color: var(--accent);
-  transition: color 180ms ease;
-}
-/* The mark is .9em, well under a usable target. The hit area is grown to 24px
-   around it rather than the box itself, which would disturb the title's line. It
-   stops at 24 rather than 44 because the icon sits beside the app name and a
-   larger area would start taking taps meant for the title. */
-.editors-pick-icon-link::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 24px;
-  height: 24px;
-  transform: translate(-50%, -50%);
 }
 
-.editors-pick-icon-link:hover,
-.editors-pick-icon-link:focus-visible { color: var(--accent-hover); }
 .editors-pick-icon { width: 100%; height: 100%; }
 .app-card p { margin: 0; color: var(--muted); }
 .app-summary.has-app-icon .app-description { margin-top: 12px; }
@@ -990,332 +1028,7 @@ a { color: inherit; }
 }
 .video-section { border-top: 0; padding-top: 26px; }
 
-/* The way out of an issue, where the source notes used to sit. Two peers rather
-   than one link list: the archive is a route through time, the catalog a route
-   through subject, and neither outranks the other. It takes the section grammar
-   the rest of the page uses, eyebrow and title included, because a reader who has
-   just finished the issue should meet a section, not a footnote. */
-.issue-outro { margin-bottom: 88px; }
-
-.issue-outro-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-}
-
-/* The subscribe card sits under the pair on the same 16px the grid uses between them, so
-   the three read as one block. Its heading drops to subhead here: on Explore it is a
-   section title with nothing above it, but in the closer a second display serif heading at
-   section-title size would read as a second section rather than as part of this one. */
-.issue-outro .explore-subscribe-card { margin-top: 16px; }
-.issue-outro .explore-subscribe-card h3 {
-  margin: 0;
-  font-family: var(--display);
-  font-size: var(--type-subhead);
-  font-weight: 500;
-  letter-spacing: -.03em;
-  line-height: 1.05;
-  text-wrap: balance;
-}
-
-.issue-outro-card {
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  padding: 28px;
-}
-
-/* A card heading here names the card; it does not carry the content. It used to be set
-   at subhead, which made the two emptiest phrases in the block its loudest type and left
-   the featured issue's own title smaller than that issue's dek. Label rank puts the
-   ranking back the right way up: the section title leads, the card says which door this
-   is, and the issue itself is the largest thing inside the card. */
-.issue-outro-card h3 {
-  margin: 0 0 18px;
-  color: var(--muted);
-  font-family: var(--sans);
-  font-size: var(--type-label);
-  font-weight: 800;
-  letter-spacing: .1em;
-  line-height: 1;
-  text-transform: uppercase;
-}
-
-/* One issue told in full, then the ones before it as bare lines. The rank is the
-   dek: the featured issue argues for itself, the rest only need to be reachable.
-   Grouping is rhythm rather than a rule, 10px inside the featured entry against
-   22px before the list, so the card needs no internal hairline. */
-/* The whole featured block is one target, not a phrase inside it. The title link
-   stretches over the entry with a pseudo-element rather than a second overlay anchor,
-   so the block is clickable while the accessible name stays the issue's own line and
-   the card gains no duplicate link. Hovering anywhere over the block tints the title,
-   because the pointer is inside the link the whole time. */
-.issue-outro-entry { position: relative; display: grid; gap: 10px; min-width: 0; }
-.issue-outro-issue a::after {
-  content: "";
-  position: absolute;
-  z-index: 1;
-  inset: -6px -8px;
-  border-radius: 10px;
-}
-
-/* The buoys come back here. They marked the source notes before those retired, and
-   a route back through the archive is what they were always drawing: a chain of
-   waypoints behind you, each lighting as it is reached. The connector's geometry is
-   written against 50% and 100% of a row rather than fixed pixels, so it still meets
-   the next buoy when the rows grow to the 44px touch minimum. */
-.issue-outro-more {
-  display: grid;
-  gap: 10px;
-  margin: 22px 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.issue-outro-more li {
-  position: relative;
-  display: grid;
-  grid-template-columns: 18px minmax(0, 1fr);
-  gap: 14px;
-  align-items: center;
-  min-width: 0;
-}
-
-.issue-outro-more li:not(:last-child)::before {
-  content: "";
-  position: absolute;
-  top: calc(50% + 9px);
-  left: 6px;
-  width: 1px;
-  height: calc(100% - 8px);
-  background: color-mix(in srgb, var(--line) 86%, transparent);
-  transform-origin: top;
-}
-
-/* The ground inside the ring is the card's surface, not the page's: this buoy floats
-   on a card. */
-.issue-outro-buoy {
-  position: relative;
-  z-index: 1;
-  width: 13px;
-  height: 13px;
-  border: 1px solid color-mix(in srgb, var(--accent) 56%, var(--muted));
-  border-radius: 999px;
-  background:
-    radial-gradient(circle at center, var(--accent) 0 2px, transparent 2.5px),
-    var(--surface);
-}
-
-.issue-outro-more-copy {
-  display: inline-flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 4px 8px;
-  min-width: 0;
-}
-
-/* A middle dot rather than a hyphen or a bullet: it sits at half height, so it
-   separates the number from the date without sitting on the baseline as another
-   word would. Decorative, so it is hidden from assistive technology. */
-.issue-outro-sep {
-  color: var(--muted);
-  font-weight: 600;
-  transition: color 180ms ease;
-}
-
-/* A buoy does not wipe in from the side; it comes up out of the water and rides the
-   swell down to its mark. So each ring rises from below, overshoots, and settles
-   through three decaying bobs. The amplitudes fall 4.5, 2.5, 1.4, 0.7, roughly halving
-   each time, which is what a damped float does and what keeps the settle from reading
-   as a bounce. The label rides the same swell on the same delay, so the ring and its
-   line read as one floating object rather than two things out of phase with each other. */
-@keyframes issue-buoy-rise {
-  0%   { opacity: 0; transform: translateY(15px) scale(.86); }
-  40%  { opacity: 1; transform: translateY(-4.5px) scale(1); }
-  60%  { transform: translateY(2.5px); }
-  76%  { transform: translateY(-1.4px); }
-  88%  { transform: translateY(.7px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes issue-line-rise {
-  0%   { opacity: 0; transform: translateY(15px); }
-  40%  { opacity: 1; transform: translateY(-4.5px); }
-  60%  { transform: translateY(2.5px); }
-  76%  { transform: translateY(-1.4px); }
-  88%  { transform: translateY(.7px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
-/* Held out of sight until the card is reached. `both` fill means the delay is spent
-   on the first keyframe, so nothing flashes in before its turn. */
-.issue-outro-more.is-motion-ready .issue-outro-buoy,
-.issue-outro-more.is-motion-ready .issue-outro-more-copy { opacity: 0; }
-
-.issue-outro-more.is-motion-ready li:not(:last-child)::before {
-  transform: scaleY(0);
-  transition: transform 1160ms cubic-bezier(.16, 1, .3, 1);
-  transition-delay: calc((var(--issue-index) * 420ms) + 520ms);
-}
-
-.issue-outro-more.is-visible .issue-outro-buoy {
-  animation: issue-buoy-rise 1320ms cubic-bezier(.33, 1, .68, 1) both;
-  animation-delay: calc(var(--issue-index) * 420ms);
-  border-color: color-mix(in srgb, var(--accent) 72%, var(--muted));
-  transition: border-color 910ms ease;
-  transition-delay: calc(var(--issue-index) * 420ms);
-}
-
-.issue-outro-more.is-visible .issue-outro-more-copy {
-  animation: issue-line-rise 1320ms cubic-bezier(.33, 1, .68, 1) both;
-  animation-delay: calc(var(--issue-index) * 420ms);
-}
-
-/* The chain is drawn once both ends of it are up. */
-.issue-outro-more.is-visible li:not(:last-child)::before { transform: scaleY(1); }
-
-/* Number and date are one label for one issue, so they are one target, and the
-   featured line and the list rows are the same target because they mean the same
-   thing. */
-.issue-outro-issue { margin: 0; font-size: 1.38rem; }
-.issue-outro-more { font-size: var(--type-meta); }
-.issue-outro-issue a {
-  display: inline-flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  min-height: 24px;
-  gap: 4px 8px;
-  color: var(--text);
-  text-decoration: none;
-  transition: color 180ms ease;
-}
-.issue-outro-more a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 24px;
-  color: var(--text);
-  text-decoration: none;
-  transition: color 180ms ease;
-}
-/* Display serif at 1.38rem, matching `.archive-card strong`: the same issue met on two
-   pages should not be two different objects. The date stays at metadata scale beside it
-   so the pairing still reads as one label rather than two headings. */
-.issue-outro-issue strong {
-  font-family: var(--display);
-  font-weight: 600;
-  letter-spacing: -.01em;
-}
-.issue-outro-issue .issue-outro-sep,
-.issue-outro-issue time { font-size: var(--type-meta); }
-.issue-outro-more strong { font-weight: 700; }
-.issue-outro-issue time,
-.issue-outro-more time { color: var(--muted); font-weight: 600; transition: color 180ms ease; }
-.issue-outro-issue a:hover,
-.issue-outro-issue a:focus-visible,
-.issue-outro-more a:hover,
-.issue-outro-more a:focus-visible { color: var(--accent); }
-.issue-outro-issue a:hover time,
-.issue-outro-issue a:focus-visible time,
-.issue-outro-more a:hover time,
-.issue-outro-more a:focus-visible time,
-.issue-outro-issue a:hover .issue-outro-sep,
-.issue-outro-issue a:focus-visible .issue-outro-sep,
-.issue-outro-more a:hover .issue-outro-sep,
-.issue-outro-more a:focus-visible .issue-outro-sep { color: var(--accent); }
-
-.issue-outro-dek {
-  max-width: var(--measure);
-  margin: 0;
-  color: var(--muted);
-  line-height: 1.55;
-}
-
-.issue-outro-list {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 2px 20px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-/* Collections are a different kind of door from categories, so they sit under a
-   hairline rather than extending the grid by two more rows. */
-.issue-outro-collections {
-  margin-top: 20px;
-  padding-top: 20px;
-  border-top: 1px solid var(--line);
-}
-
-.issue-outro-list a {
-  display: grid;
-  grid-template-columns: 20px minmax(0, 1fr);
-  gap: 12px;
-  align-items: center;
-  min-height: 34px;
-  color: var(--text);
-  font-size: var(--type-meta);
-  font-weight: 600;
-  line-height: 1.35;
-  text-decoration: none;
-  transition: color 180ms ease;
-}
-
-.issue-outro-icon { display: inline-flex; color: var(--muted); transition: color 180ms ease; }
-.issue-outro-icon svg { display: block; width: 20px; height: 20px; }
-
-.issue-outro-list a:hover,
-.issue-outro-list a:focus-visible { color: var(--accent); }
-.issue-outro-list a:hover .issue-outro-icon,
-.issue-outro-list a:focus-visible .issue-outro-icon { color: var(--accent); }
-
-/* Both cards end on the same baseline whatever they hold above it, so the pair
-   agrees across the gap instead of each card ending where its content runs out. */
-.issue-outro-link {
-  display: inline-flex;
-  align-items: center;
-  min-height: 24px;
-  margin-top: auto;
-  padding-top: 26px;
-  color: var(--accent);
-  font-size: var(--type-meta);
-  font-weight: 700;
-  text-decoration: none;
-}
-
-.issue-outro-link:hover,
-.issue-outro-link:focus-visible { color: var(--accent-hover); text-decoration: underline; text-underline-offset: 3px; }
-
-.issue-outro-issue a:focus-visible,
-.issue-outro-more a:focus-visible,
-.issue-outro-list a:focus-visible,
-.issue-outro-link:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--accent) 34%, transparent);
-  outline-offset: 4px;
-}
-
-/* Every standalone target takes the coarse-pointer minimum, except the featured issue
-   line. Its anchor is already stretched over the whole entry, so it is a 120px target
-   before any minimum applies, and a `min-height` there would buy nothing while inflating
-   the line box inside a group whose only separator is its spacing ratio. That inflation
-   pushed the gap within the group past the gap between groups on every touch device,
-   which inverted the proximity the card relies on. */
-@media (pointer: coarse) {
-  .issue-outro-more a,
-  .issue-outro-list a,
-  .issue-outro-link { min-height: 44px; }
-}
-
-/* 920px is where the hero already collapses to one column; the outro follows it
-   so the page changes shape once rather than twice. */
-@media (max-width: 920px) {
-  .issue-outro-grid { grid-template-columns: 1fr; }
-}
-
-@media (max-width: 520px) {
-  .issue-outro-list { grid-template-columns: 1fr; }
-  .issue-outro-card { padding: 24px; }
-}
+.issue-subscribe { padding-bottom: 88px; }
 
 .archive-page {
   min-height: calc(100vh - 130px);
@@ -1711,38 +1424,6 @@ a { color: inherit; }
 .explore-carousel-arrow:focus-visible {
   color: var(--accent-hover);
   outline: 0;
-}
-.explore-carousel-footer {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 0;
-}
-.explore-carousel-directory-link {
-  display: inline-flex;
-  align-items: center;
-  min-height: 24px;
-  border: 0;
-  background: transparent;
-  color: var(--accent);
-  font-size: var(--type-label);
-  font-weight: 800;
-  letter-spacing: .08em;
-  text-decoration: none;
-  text-transform: uppercase;
-  cursor: pointer;
-}
-@media (pointer: coarse) {
-  .explore-carousel-directory-link { min-height: 44px; }
-}
-
-.explore-carousel-directory-link:hover,
-.explore-carousel-directory-link:focus-visible {
-  color: var(--accent-hover);
-  outline: 0;
-  text-decoration: underline;
-  text-underline-offset: 3px;
 }
 .explore-more {
   margin: 18px 0 0;
@@ -2340,11 +2021,6 @@ a { color: inherit; }
   .theme-toggle:hover { transform: none; }
   .explore-carousel-card-slot { transition: none; }
   .content-divider.is-lit .brand-mark-ping { animation: none; }
-  .issue-outro-more.is-motion-ready li:not(:last-child)::before { transition: none; }
-  .issue-outro-more.is-motion-ready .issue-outro-buoy,
-  .issue-outro-more.is-motion-ready .issue-outro-more-copy { opacity: 1; }
-  .issue-outro-more.is-visible .issue-outro-buoy,
-  .issue-outro-more.is-visible .issue-outro-more-copy { animation: none; transition: none; }
   .hero-pick-card.has-pick-accent::before,
   .hero-pick-card.has-pick-accent::after { animation: none; }
 }
