@@ -17,7 +17,18 @@ const apps = defineCollection({
       }),
     collections: z.array(z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)).max(10).optional(),
     source: z.string().min(1).max(140),
-    homepage: z.string().url()
+    homepage: z.string().url(),
+    icon: z.string().regex(/^\/[A-Za-z0-9/_-]+\.(?:png|jpg|jpeg|webp|svg|ico)$/).optional(),
+    iconStyle: z.enum(['plain', 'backed', 'contain']).default('plain'),
+    /* The light an Editor's Pick strikes in the hero. Normalised from the app's own
+       icon to a fixed lightness and chroma, so every pick reads at the same weight.
+       Only the pick card uses it. Generate with scripts/extract-icon-accent.mjs. */
+    iconAccent: z.string().regex(/^#[0-9a-f]{6}$/).optional(),
+    /* Which category's mark an icon-less app falls back to. The default is the first
+       entry in categories, but that line is derived from tags and rewritten by
+       scripts/sync-app-categories.mjs, so it cannot carry an editorial decision.
+       This can. It must name one of the app's own categories. */
+    iconCategory: categoryEnum.optional()
   })
 });
 
@@ -53,7 +64,10 @@ const issues = defineCollection({
       description: z.string().min(40).max(240),
       url: z.string().url()
     })).min(1).max(5),
-    sourceNotes: z.array(z.string().min(1).max(180)).min(1).max(10)
+    /* Recorded, not published. The issue page stopped rendering source notes on
+       2026-09-01; they stay in frontmatter as the editorial audit trail, the same
+       way an app record's `source` field is provenance rather than reader copy. */
+    sourceNotes: z.array(z.string().min(1).max(180)).min(1).max(10).optional()
   })
 });
 

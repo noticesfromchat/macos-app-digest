@@ -6,4 +6,5 @@ tags: [ai, local, developer]
 categories: [ai-agents, developer-tools]
 source: Product Hunt and official homepage
 homepage: https://prism-app.tech/
+icon: /app-icons/prism.png
 ---

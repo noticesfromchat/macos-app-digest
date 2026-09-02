@@ -7,4 +7,5 @@ categories: [files-research-documents, productivity-workflow, mac-utilities-cust
 collections: [community-favorites]
 source: 512 Pixels coverage and official SuperDuper 4 homepage
 homepage: https://www.shirt-pocket.com/superduper4.php
+icon: /app-icons/superduper.png
 ---

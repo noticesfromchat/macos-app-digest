@@ -6,4 +6,5 @@ tags: [ai, privacy, utility, local]
 categories: [ai-agents, mac-utilities-customization]
 source: Official Radiant Canvas product information
 homepage: https://radiantbeargames.com/radiant-canvas
+icon: /app-icons/radiant-canvas.png
 ---

@@ -6,4 +6,5 @@ tags: [ai, clipboard, automation, productivity]
 categories: [ai-agents, writing-notes-reading, productivity-workflow]
 source: Product Hunt listing and official Clipto product information
 homepage: https://www.producthunt.com/products/clipto-ai
+icon: /app-icons/clipto-mcp.png
 ---

@@ -6,4 +6,5 @@ tags: [automation, productivity, utility, ios]
 categories: [productivity-workflow, mac-utilities-customization]
 source: Official Actions product information
 homepage: https://sindresorhus.com/actions
+icon: /app-icons/actions.png
 ---

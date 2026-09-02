@@ -6,4 +6,5 @@ tags: [windows, productivity, utility]
 categories: [mac-utilities-customization, productivity-workflow]
 source: Product Hunt launch, release coverage and official homepage
 homepage: https://wins.cool/
+icon: /app-icons/wins.png
 ---

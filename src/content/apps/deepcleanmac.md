@@ -6,4 +6,5 @@ tags: [maintenance, files, utility, productivity]
 categories: [mac-utilities-customization, files-research-documents, productivity-workflow]
 source: r/macapps App Pile submission and official homepage
 homepage: https://deepcleanmac.com/
+icon: /app-icons/deepcleanmac.png
 ---

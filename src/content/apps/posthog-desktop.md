@@ -6,4 +6,5 @@ tags: [developer, productivity, dashboard, monitoring]
 categories: [developer-tools, productivity-workflow, mac-utilities-customization]
 source: Product Hunt launch listing and official PostHog desktop page
 homepage: https://posthog.com/desktop
+icon: /app-icons/posthog-desktop.png
 ---

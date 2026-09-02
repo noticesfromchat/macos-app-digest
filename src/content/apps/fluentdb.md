@@ -6,4 +6,5 @@ tags: [database, ai, developer, local]
 categories: [developer-tools, ai-agents]
 source: Product Hunt launch and official homepage
 homepage: https://www.fluentdb.ai/
+icon: /app-icons/fluentdb.png
 ---

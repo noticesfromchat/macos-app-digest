@@ -6,4 +6,5 @@ tags: [audio, utility, open-source, customization]
 categories: [mac-utilities-customization]
 source: r/macapps July 2026 App Pile and official homepage
 homepage: https://www.sonexis.ink/
+icon: /app-icons/sonexis.png
 ---

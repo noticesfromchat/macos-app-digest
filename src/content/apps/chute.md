@@ -6,4 +6,5 @@ tags: [airdrop, files, utility, productivity]
 categories: [files-research-documents, mac-utilities-customization, productivity-workflow]
 source: Product Hunt Mac launch and official homepage
 homepage: https://www.chute.fyi/
+icon: /app-icons/chute.png
 ---

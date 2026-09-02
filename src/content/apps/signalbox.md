@@ -6,4 +6,5 @@ tags: [ai, agents, developer, menubar, local]
 categories: [ai-agents, developer-tools, mac-utilities-customization]
 source: r/macapps App Pile moderator pick and official repository
 homepage: https://github.com/dwmkerr/signalbox
+icon: /app-icons/signalbox.png
 ---

@@ -6,4 +6,5 @@ tags: [ai, search, local, open-source]
 categories: [ai-agents]
 source: Product Hunt launch, GitHub and official homepage
 homepage: https://yashmitb.github.io/Rewisp/
+icon: /app-icons/rewisp.svg
 ---

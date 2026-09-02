@@ -7,4 +7,5 @@ collections: [community-favorites]
 categories: [mac-utilities-customization, productivity-workflow]
 source: Official HazeOver product information
 homepage: https://hazeover.com/
+icon: /app-icons/hazeover.png
 ---

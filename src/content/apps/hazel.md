@@ -7,4 +7,5 @@ categories: [productivity-workflow, files-research-documents, mac-utilities-cust
 collections: [community-favorites]
 source: Long-running Mac community recommendations and official homepage
 homepage: https://www.noodlesoft.com/
+icon: /app-icons/hazel.png
 ---

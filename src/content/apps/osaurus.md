@@ -7,4 +7,5 @@ categories: [ai-agents]
 collections: [community-favorites]
 source: Product Hunt, GitHub and official homepage
 homepage: https://osaurus.ai/
+icon: /app-icons/osaurus.png
 ---

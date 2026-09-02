@@ -6,4 +6,5 @@ tags: [automation, productivity, ios, utility]
 categories: [productivity-workflow, mac-utilities-customization]
 source: Official Hyperduck product information and MacStories review reference
 homepage: https://sindresorhus.com/hyperduck
+icon: /app-icons/hyperduck.png
 ---

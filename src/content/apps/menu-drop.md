@@ -6,4 +6,5 @@ tags: [menubar, airdrop, files, utility]
 categories: [mac-utilities-customization, files-research-documents]
 source: Mac Power Users #854 and official homepage
 homepage: https://sindresorhus.com/menu-drop
+icon: /app-icons/menu-drop.png
 ---

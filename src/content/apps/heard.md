@@ -6,4 +6,5 @@ tags: [ai, developer, audio, automation]
 categories: [ai-agents, developer-tools, mac-utilities-customization, productivity-workflow]
 source: Product Hunt launch, community discussion and official homepage
 homepage: https://heard.dev/
+icon: /app-icons/heard.png
 ---

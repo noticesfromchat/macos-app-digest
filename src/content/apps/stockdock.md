@@ -6,4 +6,5 @@ tags: [menubar, finance, open-source, privacy]
 categories: [mac-utilities-customization]
 source: GitHub activity, release notes and official repository
 homepage: https://github.com/simonsruggi/StockDock
+icon: /app-icons/stockdock.png
 ---

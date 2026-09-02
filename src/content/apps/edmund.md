@@ -6,4 +6,5 @@ tags: [markdown, writing, local, utility]
 categories: [writing-notes-reading, mac-utilities-customization]
 source: r/macapps App Pile submission and official homepage
 homepage: https://edmund.md/
+icon: /app-icons/edmund.png
 ---

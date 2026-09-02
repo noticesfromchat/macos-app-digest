@@ -6,4 +6,5 @@ tags: [ai, productivity, automation, dictation]
 categories: [ai-agents, productivity-workflow, writing-notes-reading]
 source: 9to5Mac launch coverage and official Meta AI homepage
 homepage: https://www.meta.ai/
+icon: /app-icons/meta-ai.webp
 ---

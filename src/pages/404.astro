@@ -1,0 +1,97 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { Archive, Compass, Info, Search } from 'lucide-astro';
+
+/* Keep dead links inside the publication shell, with search first for recovery. */
+---
+<BaseLayout
+  title="Page Not Found — App Waypoint"
+  description="Oops, you've lost your way. Let's get you back on track with Explore, Archive, About or search."
+>
+  <section class="page-shell archive-page not-found-page">
+    <p class="eyebrow">Page Not Found</p>
+    <h1>Oops... you've lost your way</h1>
+    <p class="dek">Let's get you back on track.</p>
+
+    <article
+      class="not-found-routes card explore-utility-card explore-utility-combined-card explore-discovery-card"
+      aria-label="Ways back into App Waypoint"
+    >
+      <div class="explore-discovery-layout">
+        <section class="explore-discovery-categories">
+          <div class="explore-collection-list explore-category-list not-found-route-grid">
+            <button class="explore-discovery-link not-found-route" type="button" data-search-open>
+              <span class="explore-discovery-icon" aria-hidden="true">
+                <Search />
+              </span>
+              <span>
+                <strong>Search the catalog</strong>
+                <small>Find an app, tag or collection directly.</small>
+              </span>
+            </button>
+
+            <a class="explore-discovery-link" href="/explore/">
+              <span class="explore-discovery-icon" aria-hidden="true">
+                <Compass />
+              </span>
+              <span>
+                <strong>Explore Apps</strong>
+                <small>Browse the app catalog consisting of every app featured from every issue to date.</small>
+              </span>
+            </a>
+
+            <a class="explore-discovery-link" href="/archive/">
+              <span class="explore-discovery-icon" aria-hidden="true">
+                <Archive />
+              </span>
+              <span>
+                <strong>View the Archive</strong>
+                <small>Browse every published issue of App Waypoint.</small>
+              </span>
+            </a>
+
+            <a class="explore-discovery-link" href="/about/">
+              <span class="explore-discovery-icon" aria-hidden="true">
+                <Info />
+              </span>
+              <span>
+                <strong>Learn About App Waypoint</strong>
+                <small>How issues are researched, chosen and published.</small>
+              </span>
+            </a>
+          </div>
+        </section>
+      </div>
+    </article>
+  </section>
+</BaseLayout>
+
+<style>
+  .not-found-routes {
+    width: 100%;
+    margin-top: 36px;
+  }
+
+  .not-found-route {
+    width: 100%;
+    padding-right: 0;
+    padding-left: 0;
+    border: 0;
+    background: transparent;
+    color: var(--text);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .not-found-route:hover,
+  .not-found-route:focus-visible {
+    background: transparent;
+  }
+
+  @media (max-width: 680px) {
+    .not-found-routes {
+      margin-top: 28px;
+    }
+  }
+</style>

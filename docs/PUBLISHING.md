@@ -33,7 +33,8 @@ Preview review.
 1. Research candidate apps, links and sources for the upcoming Friday issue.
 2. Propose a Friday issue slate for editor review. For each proposed app, include
    the draft description, `bestFor`, tags, source or homepage and any collection
-   recommendations.
+   recommendations. Also report whether the app record already has a suitable icon,
+   whether a new official icon is needed and which `iconStyle` should be used.
 3. Preserve the standard issue section spine exactly:
    `New Discoveries`, `Trending`, `Old Favorites`, `AI & Automation`,
    `Up and Coming`. Do not rename, omit, reorder or add regular app sections.
@@ -65,24 +66,41 @@ Preview review.
 12. Create or update the selected release-candidate branch from the latest `main`
     with the Thursday-reviewed issue slate, confirmed app-record changes, required
     app records and one issue Markdown file.
-13. For every app in the required `Old Favorites` section, add `community-favorites` to the app
+13. For every app added to or newly featured in the issue, add or confirm a local
+    icon under `public/app-icons/` when an official app icon is available. Use
+    `iconStyle: plain` for finished square app icons, `backed` for transparent
+    artwork that needs a white backing and `contain` for non-square marks that
+    should not crop. If no suitable official icon is available, omit `icon` and
+    allow the app card to use the first-category fallback tile.
+14. For every app in the required `Old Favorites` section, add `community-favorites` to the app
     record's `collections` array while preserving any existing collection entries.
-14. Include the issue `rss` block with a short issue-specific title and the standard
+15. Include the issue `rss` block with a short issue-specific title and the standard
     `Read this issue` CTA. The feed summary is generated from the issue `dek`, so do
     not duplicate that summary in the `rss` block.
-15. Write `sourceNotes` in concise editorial language that explains where the issue's
+16. Write `sourceNotes` in concise editorial language that explains where the issue's
     app selections and supporting links came from. Include all selected apps, grouped
     by source type when useful. Avoid internal agent or process wording such as
     “checked against records,” “during the research pass,” or “before preparing the
     release candidate.” Keep validation, duplicate checks and workflow details in
-    Production Notes instead of Source Notes.
-16. Run `npm run validate` and `npm run build`, fix every error and verify the built
+    Production Notes instead of Source Notes. `sourceNotes` is recorded but no longer
+    rendered: the issue page dropped the Source Notes section on 2026-09-01 and now closes
+    with the shared RSS subscribe card. The field is provenance for review, the same way an
+    app record's `source` field already was. Keep writing it to the same standard.
+17. Run `npm run validate` and `npm run build`, fix every error and verify the built
     `/rss.xml` feed includes the new issue correctly.
-17. Push the release candidate once, wait for required GitHub checks and the Netlify
+18. Review new or changed icons in light mode, dark mode and mobile before asking for
+    approval. Confirm square app icons do not show unwanted backing edges,
+    transparent icons remain legible and archived issue pages still render their app
+    cards cleanly after any all-app icon rollout. If any icon appears too small,
+    over-cropped, blurry, off-center, visually mismatched or otherwise not faithful
+    to the app's real icon, record the problem and ask the editor whether to crop the
+    local asset, find a better official source, change `iconStyle` or use the
+    first-category fallback.
+19. Push the release candidate once, wait for required GitHub checks and the Netlify
     Deploy Preview to succeed, then review the Deploy Preview.
-18. Ask the editor for final approval to use that reviewed release candidate for
+20. Ask the editor for final approval to use that reviewed release candidate for
     Friday's production deployment.
-19. Do not merge, close, consolidate or otherwise alter competing previews without
+21. Do not merge, close, consolidate or otherwise alter competing previews without
     the editor's direction.
 
 An idle preview may remain open without creating another build. Minimize Netlify
@@ -151,10 +169,19 @@ before Netlify reports a successful production deployment.
 ## Generated app pages
 
 Every app Markdown record automatically generates a permanent detail page at
-`/apps/{app-id}/`. App cards and search results should route to these internal detail
-pages. Explicit homepage links and app-title links remain outbound to the official
-app homepage or canonical repository.
+`/apps/{app-id}/`. App cards, app title links and search results should route to these
+internal detail pages, giving each app card one app destination. Explicit homepage
+links remain outbound to the official app homepage or canonical repository and live
+on the app detail page.
 
 When adding or updating app Markdown, make the description, `bestFor`, tags, source
 and homepage strong enough to support both issue cards and the generated app detail
 page. Do not duplicate app details in issue files or manually maintain per-app HTML.
+When adding or updating app icons, use local files under `public/app-icons/` and
+confirm they render correctly everywhere the shared app card appears, including
+homepage cards, current and archived issue pages, app directories, tag pages,
+collection pages and related-app sections.
+If an app intentionally has no icon, confirm its first category is the correct
+fallback symbol and check the fallback color in both themes. After shared card
+changes, also inspect Explore because its randomized sections use a browser-rendered
+card template that must stay aligned with `AppCard`.

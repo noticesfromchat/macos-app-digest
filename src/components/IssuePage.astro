@@ -2,6 +2,7 @@
 import type { CollectionEntry } from 'astro:content';
 import AppCard from './AppCard.astro';
 import BrandMark from './BrandMark.astro';
+import SubscribeCard from './SubscribeCard.astro';
 import WaveRule from './WaveRule.astro';
 import ReadingCard from './ReadingCard.astro';
 
@@ -10,12 +11,10 @@ type AppEntry = CollectionEntry<'apps'>;
 
 const {
   homepage = false,
-  homepageStyle = homepage,
   issue,
   appEntries
 } = Astro.props as {
   homepage?: boolean;
-  homepageStyle?: boolean;
   issue: Issue;
   appEntries: AppEntry[];
 };
@@ -27,58 +26,45 @@ const Wordmark = homepage ? 'h1' : 'p';
 const IssueHeading = homepage ? 'p' : 'h1';
 ---
 
-<article class:list={['issue', { 'is-homepage': homepageStyle }]}>
-  {homepageStyle ? (
-    <header class="home-hero">
-      <canvas class="home-hero-sky" aria-hidden="true"></canvas>
-      <canvas class="home-hero-sea" aria-hidden="true"></canvas>
+<article class="issue">
+  <header class="home-hero">
+    <canvas class="home-hero-sky" aria-hidden="true"></canvas>
+    <canvas class="home-hero-sea" aria-hidden="true"></canvas>
 
-      <div class="home-hero-inner">
-      <div class="home-hero-copy">
-        <div class="home-hero-intro">
-          <Wordmark class="home-hero-wordmark">App Waypoint</Wordmark>
-          <WaveRule />
-          <p class="home-hero-tagline">
-            Your weekly guide to Mac apps.<br />New issues published every Friday.
-          </p>
-        </div>
-
-        <div class="home-hero-issue">
-          <p class="eyebrow">{homepage ? 'Current issue' : 'Archived issue'}</p>
-          <IssueHeading class="home-hero-number">Issue {issueLabel}</IssueHeading>
-          <p class="home-hero-date">
-            Published <time datetime={issue.slug}>{issue.date}</time>
-          </p>
-          <p class="home-hero-dek">{issue.dek}</p>
-        </div>
-      </div>
-
-      {editorsPick && (
-        <div class="home-hero-pick" id="editors-pick">
-          <p class="eyebrow">{homepage ? 'This Week’s Editor’s Pick' : 'Editor’s Pick'}</p>
-          <h2 class="home-hero-pick-title">One app worth a closer look</h2>
-          <AppCard
-            app={editorsPick.data}
-            appId={editorsPick.id}
-            editorNote={issue.editorsPick?.reason}
-            variant="hero"
-          />
-        </div>
-      )}
-      </div>
-    </header>
-  ) : (
-    <header class="hero">
-      <div class="hero-copy">
-        <p class="eyebrow">App Waypoint Issue</p>
-        <h1><time datetime={issue.slug}>{issue.date}</time></h1>
-        <p class="date">{`Issue ${issueLabel}`}</p>
+    <div class="home-hero-inner">
+    <div class="home-hero-copy">
+      <div class="home-hero-intro">
+        <Wordmark class="home-hero-wordmark">App Waypoint</Wordmark>
         <WaveRule />
-        <p class="dek">{issue.dek}</p>
+        <p class="home-hero-tagline">
+          Your weekly guide to Mac apps.<br />New issues published every Friday.
+        </p>
       </div>
-    </header>
-  )}
 
+      <div class="home-hero-issue">
+        <p class="eyebrow">{homepage ? 'Current issue' : 'Archived issue'}</p>
+        <IssueHeading class="home-hero-number">Issue {issueLabel}</IssueHeading>
+        <p class="home-hero-date">
+          Published <time datetime={issue.slug}>{issue.date}</time>
+        </p>
+        <p class="home-hero-dek">{issue.dek}</p>
+      </div>
+    </div>
+
+    {editorsPick && (
+      <div class="home-hero-pick" id="editors-pick">
+        <p class="eyebrow">{homepage ? 'This Week’s Editor’s Pick' : 'Editor’s Pick'}</p>
+        <h2 class="home-hero-pick-title">One app worth a closer look</h2>
+        <AppCard
+          app={editorsPick.data}
+          appId={editorsPick.id}
+          editorNote={issue.editorsPick?.reason}
+          variant="hero"
+        />
+      </div>
+    )}
+    </div>
+  </header>
   {issue.sections.map((section, index) => (
     <>
       <section id={index === 0 ? 'new-discoveries' : undefined} class="section">
@@ -125,12 +111,8 @@ const IssueHeading = homepage ? 'p' : 'h1';
     </div>
   </section>
 
-  <section class="note">
-    <h2>Source Notes</h2>
-    <p>This issue was selected from the following sources, with every app homepage checked before publishing.</p>
-    <ul>
-      {issue.sourceNotes.map((note) => <li>{note}</li>)}
-    </ul>
+  <section class="section issue-subscribe">
+    <SubscribeCard />
   </section>
 </article>
 
@@ -165,17 +147,26 @@ const IssueHeading = homepage ? 'p' : 'h1';
     const token = (name) => getComputedStyle(root).getPropertyValue(name).trim();
     const isDark = () => root.dataset.theme === 'dark';
 
+    /* Sizing is split from drawing. Setting canvas.width reallocates the backing
+       store, which is fine once but ruinous inside an animation loop, so the swell
+       redraws through the cached surface and only a resize re-fits. */
+    const surfaces = new Map();
+
     const fit = (canvas) => {
       const rect = canvas.getBoundingClientRect();
-      if (!rect.width || !rect.height) return null;
+      if (!rect.width || !rect.height) { surfaces.delete(canvas); return null; }
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = Math.round(rect.width * dpr);
       canvas.height = Math.round(rect.height * dpr);
       const ctx = canvas.getContext('2d');
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, rect.width, rect.height);
-      return { ctx, w: rect.width, h: rect.height };
+      const surface = { ctx, w: rect.width, h: rect.height };
+      surfaces.set(canvas, surface);
+      return surface;
     };
+
+    const surfaceFor = (canvas) => surfaces.get(canvas) || fit(canvas);
 
     const signature = () => [sky, sea, dividerSea]
       .filter(Boolean)
@@ -190,16 +181,29 @@ const IssueHeading = homepage ? 'p' : 'h1';
       return value - Math.floor(value);
     };
 
-    /* Stars belong to night only; by day the wave band carries the hero alone. */
+    /* Stars belong to night only; by day the wave band carries the hero alone.
+
+       They also belong above the water. The sky canvas covers the whole hero, and a
+       fixed fraction of its height only kept the stars clear of the sea while the sea
+       was absolutely positioned at the bottom. Below 920px the sea becomes a block in
+       the flow with the Editor's Pick beneath it, so that same fraction put stars
+       under the waterline. The horizon is measured from the sea itself instead, so it
+       is right in either layout. */
     const drawSky = () => {
       if (!sky) return;
       const c = fit(sky);
       if (!c || !isDark()) return;
       const ink = token('--sea-ink');
-      const count = Math.floor((c.w * c.h) / 5200);
+      const skyTop = sky.getBoundingClientRect().top;
+      const seaTop = sea ? sea.getBoundingClientRect().top : null;
+      const horizon = seaTop === null
+        ? c.h * 0.82
+        : Math.max(0, Math.min(c.h, seaTop - skyTop) - 4);
+      if (horizon <= 0) return;
+      const count = Math.floor((c.w * horizon) / 5200);
       for (let i = 0; i < count; i += 1) {
         const x = seededUnit(i + 1) * c.w;
-        const y = seededUnit(i + 101) * c.h * 0.82;
+        const y = seededUnit(i + 101) * horizon;
         const r = seededUnit(i + 201) * 1.3 + 0.2;
         const a = seededUnit(i + 301) * 0.5 + 0.12;
         c.ctx.beginPath();
@@ -213,23 +217,63 @@ const IssueHeading = homepage ? 'p' : 'h1';
        second harmonic keeps the crests from repeating mechanically. The hero
        runs it full strength; the divider runs the same water, quieted and
        dissolved at both ends so it reads as a passage rather than a rule. */
-    const drawWaves = (canvas, { lines, amp, quiet = 1, fadeEnds = false }) => {
+    const drawWaves = (canvas, { lines, amp, quiet = 1, fadeEnds = false }, seconds = 0) => {
       if (!canvas) return;
-      const c = fit(canvas);
+      const c = surfaceFor(canvas);
       if (!c) return;
+      c.ctx.clearRect(0, 0, c.w, c.h);
       const ink = token('--sea-ink');
       const peak = (parseFloat(token('--sea-alpha')) || 0.3) * quiet;
       for (let l = 0; l < lines; l += 1) {
         const t = lines === 1 ? 0 : l / (lines - 1);
         const baseY = c.h * (0.24 + t * 0.7);
-        const a = amp * (1 - t * 0.45) + 2;
+        /* The swell. Crests keep their positions; what moves is how tall the water
+           stands and how much the second harmonic contributes, on two periods that do
+           not divide into one another, so the band never settles into a loop the eye
+           can catch. Nothing travels, which is why this can run at a fraction of a
+           frame rate and still read as water.
+
+           Both terms settle below the still values rather than swinging either side of
+           them. The painting this replaced was already tuned so the topmost crest
+           clears the canvas by 7px, and a symmetric swing spent that margin and
+           flattened the crests against the edge at its peak. Now the still water is
+           the high-water mark and the swell only ever calms below it. */
+        const swell = 1 - 0.15 * (0.5 + 0.5 * Math.sin((seconds / 23) * Math.PI * 2 + l * 0.35));
+        const harmonic = 0.4 * (1 - 0.35 * (0.5 + 0.5 * Math.sin((seconds / 31) * Math.PI * 2 + l * 0.2)));
+        const a = (amp * (1 - t * 0.45) + 2) * swell;
         const wl = 60 + l * 14;
-        const phase = l * 0.9;
+        /* Four components, and the two that carry most of the height travel in
+           opposite directions at almost the same wavelength. That is what makes the
+           line change shape rather than slide: they beat against each other, so crests
+           build and dissolve in place instead of marching across.
+
+           A single travelling wave was the obvious approach and it looked like a
+           picture being dragged sideways. Measured, 83% of its motion was pure
+           translation. With the pair, 70% is shape change and the residual drift is
+           down from 25px every two seconds to 10.
+
+           They are deliberately unequal, 0.46 against 0.32, because an even pair
+           cancels to a nearly flat line at the bottom of each beat. Unequal, the water
+           calms without ever going still, and because each line carries its own phase
+           offset the calm never arrives across the whole band at once.
+
+           The weights are small because four components can align where two could not.
+           At their first values the band cleared the top of its canvas at the widest
+           hero and cut straight through it at the narrowest, where --sea-h clamps to
+           78px. These weights hold a positive margin at every height the clamp can
+           produce, and cost nothing: the shape-change share stays at about 69%. */
+        const wl2 = wl * 1.08;
+        const phaseA = l * 0.9 + seconds * (10 / wl);
+        const phaseB = l * 1.3 - seconds * (9 / wl2);
+        const phaseH = l * 1.6 - seconds * (7 / (wl * 2.3));
+        const phaseR = l * 0.4 + seconds * (5 / (wl * 0.6));
         c.ctx.beginPath();
         for (let x = 0; x <= c.w; x += 4) {
           const y = baseY
-            + Math.sin(x / wl + phase) * a
-            + Math.sin(x / (wl * 2.3) + phase * 1.7) * a * 0.4;
+            + Math.sin(x / wl + phaseA) * a * 0.46
+            + Math.sin(x / wl2 + phaseB) * a * 0.32
+            + Math.sin(x / (wl * 2.3) + phaseH) * a * harmonic
+            + Math.sin(x / (wl * 0.6) + phaseR) * a * 0.12;
           if (x === 0) c.ctx.moveTo(x, y); else c.ctx.lineTo(x, y);
         }
         const alpha = peak * Math.pow(1 - t, 1.35);
@@ -248,15 +292,80 @@ const IssueHeading = homepage ? 'p' : 'h1';
       }
     };
 
+    const HERO_WATER = { lines: 8, amp: 13 };
+    const DIVIDER_WATER = { lines: 5, amp: 7, quiet: 0.7, fadeEnds: true };
+
     let lastPaintSignature = '';
+    let elapsed = 0;
+
     const paint = ({ force = false } = {}) => {
       const nextSignature = signature();
       if (!force && nextSignature === lastPaintSignature) return;
       lastPaintSignature = nextSignature;
+      [sky, sea, dividerSea].filter(Boolean).forEach(fit);
       drawSky();
-      drawWaves(sea, { lines: 8, amp: 13 });
-      drawWaves(dividerSea, { lines: 5, amp: 7, quiet: 0.7, fadeEnds: true });
+      drawWaves(sea, HERO_WATER, elapsed);
+      drawWaves(dividerSea, DIVIDER_WATER, elapsed);
     };
+
+    /* Each band is drawn only while it is on screen, and the whole loop stops when the
+       tab is hidden or the reader has asked for reduced motion. */
+    const stillness = window.matchMedia('(prefers-reduced-motion: reduce)');
+    /* 30fps rather than 18. Nothing travelled before, so a third of the frames was
+       imperceptible; a moving crest at 18fps judders, and at this speed 30 gives about
+       a third of a pixel between frames. */
+    const FRAME_MS = 33;
+    const onScreen = new Set();
+    let frameId = null;
+    let lastFrame = 0;
+    let startedAt = 0;
+
+    const drawFrame = (now) => {
+      frameId = requestAnimationFrame(drawFrame);
+      if (now - lastFrame < FRAME_MS) return;
+      lastFrame = now;
+      elapsed = (now - startedAt) / 1000;
+      if (onScreen.has(sea)) drawWaves(sea, HERO_WATER, elapsed);
+      if (onScreen.has(dividerSea)) drawWaves(dividerSea, DIVIDER_WATER, elapsed);
+    };
+
+    const startSwell = () => {
+      if (frameId !== null || stillness.matches || document.hidden || !onScreen.size) return;
+      startedAt = performance.now() - elapsed * 1000;
+      lastFrame = 0;
+      frameId = requestAnimationFrame(drawFrame);
+    };
+
+    const stopSwell = () => {
+      if (frameId === null) return;
+      cancelAnimationFrame(frameId);
+      frameId = null;
+    };
+
+    if ('IntersectionObserver' in window) {
+      const watching = new IntersectionObserver((entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) onScreen.add(entry.target);
+          else onScreen.delete(entry.target);
+        }
+        onScreen.size ? startSwell() : stopSwell();
+      }, { threshold: 0 });
+      [sea, dividerSea].filter(Boolean).forEach((canvas) => watching.observe(canvas));
+    } else {
+      /* Without an observer there is nothing to populate onScreen, and the loop would
+         refuse to start at all. Animate both bands and rely on the tab-visibility
+         check alone. */
+      [sea, dividerSea].filter(Boolean).forEach((canvas) => onScreen.add(canvas));
+      startSwell();
+    }
+
+    document.addEventListener('visibilitychange', () => {
+      document.hidden ? stopSwell() : startSwell();
+    });
+
+    stillness.addEventListener('change', () => {
+      if (stillness.matches) { stopSwell(); paint({ force: true }); } else startSwell();
+    });
 
     let resizeTimer;
     window.addEventListener('resize', () => {

@@ -7,4 +7,5 @@ categories: [files-research-documents, mac-utilities-customization, productivity
 collections: [community-favorites]
 source: Long-running Mac community recommendations and official homepage
 homepage: https://www.stclairsoft.com/DefaultFolderX/
+icon: /app-icons/default-folder-x.png
 ---

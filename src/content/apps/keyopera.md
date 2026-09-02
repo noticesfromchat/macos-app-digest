@@ -6,4 +6,5 @@ tags: [menubar, audio, accessibility, customization]
 categories: [mac-utilities-customization]
 source: Product Hunt recent Mac launch and official homepage
 homepage: https://mbirang.com/keyopera/
+icon: /app-icons/keyopera.png
 ---

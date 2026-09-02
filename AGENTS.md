@@ -15,6 +15,19 @@ or regenerating any page or issue, also read and follow
 - Markdown files under `src/content/` are the source of truth for editorial content.
 - Existing published pages are useful references, but the style guide takes precedence when older markup conflicts with current standards.
 
+### Vendored skills
+
+- `.claude/skills/seo/` is the [Agentic SEO Skill](https://github.com/Bhanunamikaze/Agentic-SEO-Skill)
+  (MIT), vendored for SEO audits of the site and of the GitHub repository. It is third-party
+  code: review the diff when updating it, and do not edit it in place.
+- Its analysis scripts need Python packages this repository does not otherwise use.
+  Install them only if you intend to run those scripts:
+  `python3 -m pip install --user requests beautifulsoup4 lxml`.
+- The skill is tooling, not site content. It is never built, never copied into `dist/`, and
+  must not be treated as a source of truth for editorial or presentation decisions —
+  `docs/STYLE_GUIDE.md` and `DESIGN.md` still govern those, and an SEO recommendation that
+  conflicts with them is a conflict to raise, not to apply.
+
 ## Astro content model
 
 - Apps live in `src/content/apps/*.md`.
@@ -27,6 +40,40 @@ or regenerating any page or issue, also read and follow
 - Do not put app data back into a shared TypeScript data file unless explicitly approved.
 
 ## Required workflow
+
+**Documentation first, always.** Read the relevant documentation before making any
+decision, not only before writing code. This includes decisions about approach,
+branching, where a rule belongs, and whether something is already solved here. A
+decision made from general knowledge or from another project's conventions, when this
+repository documents its own, is a defect even when the resulting code works. Assume a
+convention exists and go find it before inventing one.
+
+The minimum read for any presentation or content change:
+
+| Document | Owns |
+|---|---|
+| `docs/STYLE_GUIDE.md` | Visual system, page structure, responsive and interaction rules, editorial punctuation, publishing conventions |
+| `DESIGN.md` | Tokens, named house rules, motion, the committed visual world |
+| `docs/DEVELOPMENT.md` | Local-to-production path, validation, preview and deploy contract |
+| `docs/GIT_BRANCHING.md` | Branching, release branches, what Netlify can and cannot preview |
+| `docs/ISSUE_TEMPLATE.md` | App and issue frontmatter |
+| `docs/PUBLISHING.md` | Weekly release work |
+
+When adding a rule or convention, put it where its siblings already live. Editorial
+punctuation belongs in `docs/STYLE_GUIDE.md` beside the Oxford comma rule and is
+enforced by `scripts/check-editorial-style.mjs`. Design rules belong in `DESIGN.md` as
+named rules, and in `.impeccable/design.json` so `context.mjs` surfaces them. A rule
+documented somewhere new, next to nothing related, will not be found again.
+
+**Collect multi-part approvals on a decision sheet.** When work produces more than two
+or three choices for the editor — audit findings, app-record changes, review comments,
+a migration — do not ask for them in prose. Publish one sheet with a card per decision,
+each carrying the concrete change and its already-verified consequence, and an approve,
+reject or free-text alternative. Present only options whose effects have been checked;
+a sheet is for verified changes, not guesses. Apply the answers in one pass, then
+**delete the sheet as part of finishing the work** — a sheet still listing decisions
+that have shipped misleads whoever reads it next. `docs/TAG_AUDIT.md` section 8 shows
+the pattern in use.
 
 1. Start from the latest `main` and create a short-lived task branch. Never make a
    production change directly on `main`.
@@ -90,7 +137,9 @@ the single production deployment point. Follow the complete workflow in
 - Every app placed in an `Old Favorites` section must include `community-favorites`
   in its app record's `collections` array. Preserve any existing collection entries.
 - During the Thursday check, audit existing tags for underuse, duplication, vague
-  labels, overly narrow labels and apps that appear mistagged or undertagged.
+  labels, overly narrow labels and apps that appear mistagged or undertagged. Follow
+  `docs/TAG_AUDIT.md`, which defines the method, the protected single-app tags and the
+  rule for a record at the six-tag ceiling.
 - Ask whether the editor wants any changes to existing app records before preparing
   the release candidate. Check the Notion
   [Editor's Picks note](https://app.notion.com/p/Editor-s-Picks-3c8d6482d47f80c4bbc6ce99ed84d908?source=copy_link)
@@ -179,6 +228,10 @@ These limits protect card alignment and are not optional unless the complete car
 - `bestFor`: one sentence, preferably 85–150 characters; hard maximum 180 characters.
 - `tags`: 3–5 concise lowercase tags; hard maximum 6.
 - Individual tag: preferably one word; hard maximum 20 characters.
+- Before adding a tag to any app record, check `docs/TAG_AUDIT.md`. Reuse an existing
+  tag wherever one already covers the reader intent, and never use a tag from its
+  retired list without an explicit editorial reason stated in the pull request. A new
+  tag that applies to one app is a feature, not a discovery tag.
 - `source`: preferably 25–80 characters; hard maximum 110 characters.
 - `homepage`: official app homepage or canonical project page.
 
@@ -191,7 +244,8 @@ These limits protect card alignment and are not optional unless the complete car
 - Video description: one sentence, preferably 120–220 characters; hard maximum 260 characters.
 - Reading title: hard maximum 110 characters.
 - Reading description: one sentence, preferably 100–190 characters; hard maximum 220 characters.
-- Source note: hard maximum 140 characters.
+- Source note: hard maximum 140 characters. Unpublished since 2026-09-01, so the limit
+  keeps the record readable rather than fitting a layout.
 
 If text exceeds a preferred range, rewrite it before adjusting CSS. Exceeding a hard maximum requires an explicit exception and visual review.
 
@@ -240,7 +294,9 @@ issue.
   any eligible moderator selections, followed by verified alternates.
 - Do not duplicate an app elsewhere in the same issue. If a selected app already
   appears in another section, move it into `Up and Coming` rather than listing it twice.
-- Credit every source used for the final slate in `sourceNotes`.
+- Credit every source used for the final slate in `sourceNotes`. The field is recorded,
+  not published: the issue page stopped rendering source notes on 2026-09-01, and they
+  remain in frontmatter as the editorial audit trail.
 
 ## Editor attribution
 
@@ -251,20 +307,38 @@ issue.
 
 ## Non-negotiable presentation rules
 
-- App titles link directly to official app homepages.
-- Do not show a separate `Homepage` link beneath app cards.
+- App cards and app titles link to the generated App Waypoint app detail page.
+- Official homepage links belong on app detail pages, not beneath app cards.
 - Weekend Reading titles link directly to articles.
 - Do not show a separate `Read article` link beneath reading cards.
 - Tag pills remain quiet, grayscale metadata rather than primary calls to action.
 - Dark-mode card emphasis remains grayscale, not blue.
-- Card rows on desktop align titles, tags, sources and lower content consistently.
+- App cards share one height on a page and their regions line up across the whole
+  grid, not only within a row. This is subgrid, not per-region `min-height` budgets.
+  See The One Card Height Rule in `DESIGN.md`. Reading cards are the exception.
+- App cards show no source credit. The record's `source` field is editorial
+  provenance, not reader-facing copy.
 - Mobile cards expand naturally with content.
 - The site header uses the App Waypoint buoy logo. Large page headings use text only, with no emoji.
 - The theme toggle is icon-only with no pill, no text and no emoji.
 - Do not introduce emoji as interface icons.
 - Do not add visual clutter or icons to every card.
+- Public editorial copy uses no em dash and no en dash; date and number ranges take a plain
+  hyphen. Page titles, quoted external titles and code comments are outside the rule. See
+  The Plain Dash Rule in `DESIGN.md`.
 
 ## Change safety
+
+### Local dev server
+
+- Check whether a dev server is already running before starting one:
+  `curl -s -o /dev/null -w '%{http_code}\n' http://localhost:4321/`. A `200` means one is
+  serving; use it rather than starting another.
+- Never run a second server. Astro silently takes the next free port, so you review
+  `:4322` while the editor watches `:4321` and the two diverge on the next edit.
+- Never kill or restart a server you did not start. When a change needs a restart to take
+  effect, `astro.config.mjs` among them, say so and let the editor restart it.
+- See `docs/DEVELOPMENT.md` section 2 for the full local-to-production path.
 
 ### Repository path privacy
 
@@ -282,3 +356,30 @@ When modifying a shared component, layout, stylesheet, schema or documentation f
 - run a build and inspect the deploy preview when presentation may change
 
 If a requested change conflicts with the style guide, update the style guide in the same change or explain the conflict before proceeding.
+
+## Design Context
+
+Impeccable reads this section to build project-specific personas for `critique`. Everything
+here is drawn from PRODUCT.md and the style guide rather than invented; if the two disagree,
+PRODUCT.md wins and this section is the thing that is wrong.
+
+**Audience.** Experienced Mac users who already run a considered set of software. They are
+not looking for a first app in a category, they are deciding whether this week's pick earns
+a place next to something they already trust, so the question a page has to answer is what
+this app does that theirs does not. They arrive on a Friday, read on a Mac, and are
+comfortable with the platform's own conventions.
+
+**Job.** Discover useful Mac software and related reading, once a week, without having to
+sift. Success is a reader who returns next Friday.
+
+**Brand.** Editorial, practical and selective, never promotional. The edge is human
+curation: apps are chosen one at a time by an editor, and AI is editorial support and never
+the final decision-maker. Copy is human-led by design, which is what the Plain Dash Rule
+protects. The voice states a judgment and gives the reason for it.
+
+**What that implies for a critique.** Persuasion is not the mode here; this site does not
+sell, it recommends and expects to be checked. Trust comes from the selection being legible
+as a person's, from the reasoning being present, and from the catalogue being honest about
+its size and shape. Treat calm as a requirement rather than a preference: the most kinetic
+object on any page should be justifiable, and a device that moves for its own sake is a
+defect on a publication that asks to be read.

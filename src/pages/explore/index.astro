@@ -1,8 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
-import { Check, ChevronLeft, ChevronRight, Copy, Rss } from 'lucide-astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import AppCard from '../../components/AppCard.astro';
+import AppDirectory from '../../components/AppDirectory.astro';
+import SubscribeCard from '../../components/SubscribeCard.astro';
 import MetaIcon from '../../components/MetaIcon.astro';
 import {
   categories,
@@ -11,94 +11,55 @@ import {
   getPopularTags
 } from '../../data/categories';
 
-const shuffled = <T,>(items: T[]) => {
-  const output = [...items];
+/* Two things, in this order: the taxonomy, then the catalogue itself.
+   The page used to run to eight screens by sampling three apps from each of eight
+   shelves and closing on a carousel that surfaced one app per gesture, which meant the
+   browse index never actually contained the thing it indexed: every child page carried
+   a count, a filter and a sort that its own parent did not. `AppDirectory` is the same
+   component the tag, collection and category pages already use, so Explore now has at
+   least as much power as anything below it.
 
-  for (let index = output.length - 1; index > 0; index -= 1) {
-    const swapIndex = Math.floor(Math.random() * (index + 1));
-    [output[index], output[swapIndex]] = [output[swapIndex], output[index]];
-  }
-
-  return output;
-};
-
-const pickRandom = <T extends { id: string }>(
-  items: T[],
-  count: number,
-  excludedIds = new Set<string>()
-) => {
-  const available = items.filter((item) => !excludedIds.has(item.id));
-  return shuffled(available).slice(0, count);
-};
-
+   Deleting the shelves took the client renderer with them, and with it a second random
+   selection that overwrote the server's on every load, and a hand-copied card template
+   that had already drifted from `AppCard.astro`. */
 const apps = await getCollection('apps');
 const sortedCategories = [...categories].sort((a, b) =>
   a.title.localeCompare(b.title, undefined, { sensitivity: 'base' })
 );
 const popularTags = getPopularTags(apps.map((entry) => entry.data));
-const rssFeedUrl = new URL('/rss.xml', Astro.site).href;
-const collectionDescriptions: Record<string, string> = {
-  'editors-picks': 'Editor-selected standouts with distinctive utility, polish, or an especially memorable point of view.',
-  'community-favorites': 'Apps Mac readers keep recommending for dependable workflows, practical value, and repeat use.'
-};
 
-const toExploreApp = (entry: (typeof apps)[number]) => ({
-  id: entry.id,
-  name: entry.data.name,
-  description: entry.data.description,
-  bestFor: entry.data.bestFor,
-  tags: entry.data.tags,
-  categories: entry.data.categories,
-  source: entry.data.source,
-  homepage: entry.data.homepage
-});
-
-const editorsPicksPool = apps.filter((entry) => entry.data.collections?.includes('editors-picks'));
-const communityFavoritesPool = apps.filter((entry) => entry.data.collections?.includes('community-favorites'));
-
-const editorsPicks = pickRandom(editorsPicksPool, 3);
-const communityFavorites = pickRandom(
-  communityFavoritesPool,
-  3,
-  new Set(editorsPicks.map((entry) => entry.id))
+/* An app carries several categories, so these do not partition the catalogue and will
+   not sum to its size. They answer "how much is behind this door", which is what a
+   reader picking a lane is asking, and the tag chips beside them have carried the same
+   kind of number all along. */
+const categoryCounts = new Map(
+  categories.map((category) => [
+    category.slug,
+    apps.filter((entry) => entry.data.categories.includes(category.slug)).length
+  ])
 );
-const categoryModules = sortedCategories.map((category) => ({
-  ...category,
-  apps: pickRandom(
-    apps.filter((entry) => entry.data.categories.includes(category.slug)),
-    3
-  )
-}));
-const browseCarouselApps = shuffled(apps);
-
-const getInitialCarouselPosition = (index: number, itemCount: number) => {
-  if (index <= 1) return index;
-  if (index === itemCount - 1) return -1;
-  return undefined;
+const collectionCounts = new Map(
+  collections.map((collection) => [
+    collection.slug,
+    apps.filter((entry) => entry.data.collections?.includes(collection.slug)).length
+  ])
+);
+const collectionDescriptions: Record<string, string> = {
+  'editors-picks': 'Editor-selected standouts with distinctive utility, polish or an especially memorable point of view.',
+  'community-favorites': 'Apps Mac readers keep recommending for dependable workflows, practical value and repeat use.'
 };
-
-const exploreData = {
-  editorsPicks: editorsPicksPool.map(toExploreApp),
-  communityFavorites: communityFavoritesPool.map(toExploreApp),
-  categories: sortedCategories.map((category) => ({
-    slug: category.slug,
-    apps: apps
-      .filter((entry) => entry.data.categories.includes(category.slug))
-      .map(toExploreApp)
-  }))
-};
-
 ---
 <BaseLayout
   title="Explore Mac Apps — App Waypoint"
-  description="Explore App Waypoint through editorial collections, popular tags, and six browse categories built from the Mac app catalog."
+  description="Browse every Mac app App Waypoint has recommended, by category, collection or tag, with the full catalog filterable and sortable on one page."
   current="explore"
 >
   <section class="page-shell archive-page explore-page">
     <header class="explore-hero">
       <h1>Explore Apps</h1>
       <p class="dek">
-        Browse App Waypoint through Mac apps chosen by hand, surfaced by the community, and organized to make worthwhile software easier to discover.
+        Hand-picked Mac apps from every issue, browsable by category, collection or tag.
+        Apps selected and added every Friday.
       </p>
     </header>
 
@@ -106,8 +67,9 @@ const exploreData = {
       <article class="card explore-utility-card explore-utility-combined-card explore-discovery-card">
         <div class="explore-discovery-layout">
           <section class="explore-discovery-categories">
-            <div class="section-heading">
+            <div class="section-heading explore-panel-heading">
               <h2>Categories</h2>
+              <p class="taxonomy-help-copy">Broad workflow areas that group related apps. An app can appear in more than one.</p>
             </div>
             <div class="explore-collection-list explore-category-list" aria-label="App Waypoint categories">
               {sortedCategories.map((category) => (
@@ -119,8 +81,16 @@ const exploreData = {
                     <MetaIcon name={category.icon} />
                   </span>
                   <span>
-                    <strong>{category.title}</strong>
-                    <small>{category.description}</small>
+                    <strong>
+                      {category.title}
+                      <span class="explore-discovery-count">({categoryCounts.get(category.slug)})</span>
+                    </strong>
+                    <small class="explore-category-description explore-category-description-desktop">
+                      {category.description}
+                    </small>
+                    <small class="explore-category-description explore-category-description-mobile">
+                      {category.mobileDescription}
+                    </small>
                   </span>
                 </a>
               ))}
@@ -129,8 +99,9 @@ const exploreData = {
 
           <div class="explore-utility-grid explore-discovery-lower-grid">
             <section class="explore-discovery-collections">
-              <div class="section-heading">
+              <div class="section-heading explore-panel-heading">
                 <h2>Collections</h2>
+                <p class="taxonomy-help-copy">Apps grouped by editorial judgment from the editor and community.</p>
               </div>
               <div class="explore-collection-list">
                 {collections.map((collection) => (
@@ -139,7 +110,10 @@ const exploreData = {
                       <MetaIcon name={collection.icon} />
                     </span>
                     <span>
-                      <strong>{collectionLabels[collection.slug]}</strong>
+                      <strong>
+                        {collectionLabels[collection.slug]}
+                        <span class="explore-discovery-count">({collectionCounts.get(collection.slug)})</span>
+                      </strong>
                       <small>{collectionDescriptions[collection.slug]}</small>
                     </span>
                   </a>
@@ -148,8 +122,9 @@ const exploreData = {
             </section>
 
             <section class="explore-utility-tags-panel">
-              <div class="section-heading">
+              <div class="section-heading explore-panel-heading">
                 <h2>Popular tags</h2>
+                <p class="taxonomy-help-copy">Specific features and capabilities for narrowing the catalog.</p>
               </div>
               <div class="tag-list explore-popular-tags" aria-label="Popular tags">
                 {popularTags.map(({ tag, count }) => (
@@ -165,406 +140,15 @@ const exploreData = {
       </article>
     </section>
 
-    <section class="section explore-section">
+    <section class="section explore-section explore-directory-section">
       <div class="section-heading">
-        <h2>Editor's Picks</h2>
+        <h2>All apps</h2>
       </div>
-      <div class="grid" data-explore-grid="editors-picks">
-        {editorsPicks.map((entry) => (
-          <AppCard app={entry.data} appId={entry.id} />
-        ))}
-      </div>
-      <p class="explore-more">
-        <a href="/collections/editors-picks/">More Editor's Picks</a>
-      </p>
-    </section>
-
-    <section class="section explore-section">
-      <div class="section-heading">
-        <h2>Community Favorites</h2>
-      </div>
-      <div class="grid" data-explore-grid="community-favorites">
-        {communityFavorites.map((entry) => (
-          <AppCard app={entry.data} appId={entry.id} />
-        ))}
-      </div>
-      <p class="explore-more">
-        <a href="/collections/community-favorites/">More Community Favorites</a>
-      </p>
+      <AppDirectory apps={apps} />
     </section>
 
     <section class="section explore-section explore-rss-section">
-      <article class="card explore-subscribe-card">
-        <div class="explore-subscribe-heading">
-          <span class="explore-subscribe-icon" aria-hidden="true">
-            <Rss />
-          </span>
-          <h2>Apps delivered every Friday</h2>
-        </div>
-        <div class="explore-subscribe-content">
-          <p class="explore-subscribe-body">We love <a href="/tags/rss/">RSS</a> and want to make it easy for you to subscribe. Copy the URL and paste it into your favorite RSS reader to subscribe.</p>
-          <div class="rss-url-card explore-subscribe-url">
-            <code class="rss-url-value">{rssFeedUrl}</code>
-            <button
-              class="rss-copy-button"
-              type="button"
-              aria-label="Copy RSS feed URL"
-              data-rss-inline-copy
-              data-rss-inline-url={rssFeedUrl}
-            >
-              <Copy class="rss-copy-icon" aria-hidden="true" data-rss-inline-copy-icon />
-              <Check class="rss-copy-check" aria-hidden="true" hidden data-rss-inline-copy-check />
-              <span class="sr-only" data-rss-inline-label>Copy RSS feed URL</span>
-            </button>
-          </div>
-        </div>
-      </article>
-    </section>
-
-    {categoryModules.map((category) => (
-      <section class="section explore-section">
-        <div class="section-heading">
-          <h2>{category.title}</h2>
-        </div>
-        <div class="grid" data-explore-grid={`category-${category.slug}`}>
-          {category.apps.map((entry) => (
-            <AppCard app={entry.data} appId={entry.id} />
-          ))}
-        </div>
-        <p class="explore-more">
-          <a href={`/categories/${category.slug}/`}>More {category.title}</a>
-        </p>
-      </section>
-    ))}
-
-    <section class="section explore-section">
-      <div class="section-heading">
-        <h2>Browse all apps</h2>
-      </div>
-      <p class="explore-section-dek">
-        Still scrolling? Swipe left or right to browse all apps.
-      </p>
-      <div class="explore-carousel-shell">
-        <div class="explore-carousel-stage">
-          <button class="explore-carousel-arrow is-prev" type="button" data-carousel-prev aria-label="Previous app">
-            <ChevronLeft aria-hidden="true" />
-          </button>
-          <div
-            class="explore-carousel-viewport"
-            data-carousel-viewport
-            role="region"
-            aria-label="Browse all apps carousel"
-            tabindex="0"
-          >
-            <div class="explore-carousel-track" data-carousel-track>
-              {browseCarouselApps.map((entry, index) => {
-                const position = getInitialCarouselPosition(index, browseCarouselApps.length);
-                return (
-                  <div
-                    class="explore-carousel-card-slot"
-                    data-carousel-item
-                    data-position={position}
-                    aria-hidden={position === 0 ? 'false' : 'true'}
-                  >
-                    <AppCard app={entry.data} appId={entry.id} />
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-          <button class="explore-carousel-arrow is-next" type="button" data-carousel-next aria-label="Next app">
-            <ChevronRight aria-hidden="true" />
-          </button>
-        </div>
-        <div class="explore-carousel-footer">
-          <a class="explore-carousel-directory-link" href="/apps/">Open the full directory</a>
-        </div>
-      </div>
+      <SubscribeCard />
     </section>
   </section>
-
-  <script
-    type="application/json"
-    id="explore-random-data"
-    set:html={JSON.stringify(exploreData).replaceAll('<', '\\u003c')}
-  />
-  <script is:inline type="module">
-    const dataElement = document.getElementById('explore-random-data');
-    if (dataElement?.textContent) {
-      const data = JSON.parse(dataElement.textContent);
-
-      const escapeHTML = (value) =>
-        String(value)
-          .replaceAll('&', '&amp;')
-          .replaceAll('<', '&lt;')
-          .replaceAll('>', '&gt;')
-          .replaceAll('"', '&quot;')
-          .replaceAll("'", '&#39;');
-
-      const shuffle = (items) => {
-        const output = [...items];
-
-        for (let index = output.length - 1; index > 0; index -= 1) {
-          const swapIndex = Math.floor(Math.random() * (index + 1));
-          [output[index], output[swapIndex]] = [output[swapIndex], output[index]];
-        }
-
-        return output;
-      };
-
-      const pickRandom = (items, count, excludedIds = new Set()) => {
-        const available = items.filter((item) => !excludedIds.has(item.id));
-        return shuffle(available).slice(0, count);
-      };
-
-      const renderCard = (app) => `
-        <article class="card app-card" data-app-name="${escapeHTML(app.name)}">
-          <a class="app-card-link" href="/apps/${escapeHTML(app.id)}/" aria-label="Read more about ${escapeHTML(app.name)}"></a>
-          <div class="app-summary">
-            <h3><a href="${escapeHTML(app.homepage)}" target="_blank" rel="noreferrer">${escapeHTML(app.name)}</a></h3>
-            <p>${escapeHTML(app.description)}</p>
-          </div>
-          <p class="best-for"><strong>Best for:</strong> ${escapeHTML(app.bestFor)}</p>
-          <div class="tag-list" aria-label="App tags">
-            ${app.tags.map((tag) => `<a class="tag" href="/tags/${escapeHTML(tag)}/">${escapeHTML(tag)}</a>`).join('')}
-          </div>
-          <p class="source-line"><strong>Source:</strong> ${escapeHTML(app.source)}</p>
-        </article>
-      `;
-
-      const renderSelection = (selector, selection) => {
-        const grid = document.querySelector(selector);
-        if (!grid) return;
-        grid.innerHTML = selection.map(renderCard).join('');
-      };
-
-      const editorsPicks = pickRandom(data.editorsPicks, 3);
-      const communityFavorites = pickRandom(
-        data.communityFavorites,
-        3,
-        new Set(editorsPicks.map((app) => app.id))
-      );
-      const categorySelections = new Map();
-
-      data.categories.forEach((category) => {
-        categorySelections.set(category.slug, pickRandom(category.apps, 3));
-      });
-
-      renderSelection('[data-explore-grid="editors-picks"]', editorsPicks);
-      renderSelection('[data-explore-grid="community-favorites"]', communityFavorites);
-      categorySelections.forEach((selection, slug) => {
-        renderSelection(`[data-explore-grid="category-${slug}"]`, selection);
-      });
-
-      const copyText = async (value) => {
-        try {
-          await navigator.clipboard.writeText(value);
-          return true;
-        } catch {
-          const input = document.createElement('textarea');
-          input.value = value;
-          input.setAttribute('readonly', '');
-          input.style.position = 'fixed';
-          input.style.opacity = '0';
-          document.body.appendChild(input);
-          input.select();
-          const copied = document.execCommand('copy');
-          document.body.removeChild(input);
-          return copied;
-        }
-      };
-
-      const inlineCopyButton = document.querySelector('[data-rss-inline-copy]');
-      const inlineCopyIcon = document.querySelector('[data-rss-inline-copy-icon]');
-      const inlineCopyCheck = document.querySelector('[data-rss-inline-copy-check]');
-      const inlineCopyLabel = document.querySelector('[data-rss-inline-label]');
-      inlineCopyButton?.addEventListener('click', async () => {
-        const value = inlineCopyButton.getAttribute('data-rss-inline-url') || '';
-        const copied = value ? await copyText(value) : false;
-        inlineCopyButton.classList.toggle('is-copied', copied);
-        if (inlineCopyLabel) {
-          inlineCopyLabel.textContent = copied ? 'Copied RSS feed URL' : 'Copy RSS feed URL';
-          inlineCopyButton.setAttribute('aria-label', inlineCopyLabel.textContent);
-        }
-        inlineCopyIcon?.toggleAttribute('hidden', copied);
-        inlineCopyCheck?.toggleAttribute('hidden', !copied);
-        window.setTimeout(() => {
-          inlineCopyButton.classList.remove('is-copied');
-          if (inlineCopyLabel) {
-            inlineCopyLabel.textContent = 'Copy RSS feed URL';
-            inlineCopyButton.setAttribute('aria-label', 'Copy RSS feed URL');
-          }
-          inlineCopyIcon?.removeAttribute('hidden');
-          inlineCopyCheck?.setAttribute('hidden', '');
-        }, 2000);
-      });
-
-      const carouselTrack = document.querySelector('[data-carousel-track]');
-      const carouselCards = [...document.querySelectorAll('[data-carousel-item]')];
-      const carouselPrev = document.querySelector('[data-carousel-prev]');
-      const carouselNext = document.querySelector('[data-carousel-next]');
-      const carouselViewport = document.querySelector('[data-carousel-viewport]');
-
-      let carouselItems = shuffle(carouselCards);
-      let carouselIndex = 0;
-      let activePointerId = null;
-      let mouseDragging = false;
-      let pointerStartX = 0;
-      let pointerDeltaX = 0;
-      let suppressClick = false;
-      let pointerDownTarget = null;
-
-      const setCardPosition = (card, position) => {
-        const isCenter = position === 0;
-        if (position === null) card.removeAttribute('data-position');
-        else card.setAttribute('data-position', String(position));
-        card.setAttribute('aria-hidden', isCenter ? 'false' : 'true');
-        card.querySelectorAll('a, button').forEach((control) => {
-          if (isCenter) control.removeAttribute('tabindex');
-          else control.setAttribute('tabindex', '-1');
-        });
-      };
-
-      const paintCarousel = () => {
-        if (!carouselTrack || !carouselCards.length || !carouselItems.length) return;
-        carouselCards.forEach((card) => setCardPosition(card, null));
-        [-1, 0, 1].forEach((position) => {
-          const itemIndex = (carouselIndex + position + carouselItems.length) % carouselItems.length;
-          setCardPosition(carouselItems[itemIndex], position);
-        });
-      };
-
-      const goToNext = () => {
-        carouselIndex = (carouselIndex + 1) % carouselItems.length;
-        paintCarousel();
-      };
-
-      const goToPrev = () => {
-        carouselIndex = (carouselIndex - 1 + carouselItems.length) % carouselItems.length;
-        paintCarousel();
-      };
-
-      const beginDrag = (clientX) => {
-        pointerStartX = clientX;
-        pointerDeltaX = 0;
-        suppressClick = false;
-        carouselViewport?.classList.add('is-dragging');
-      };
-
-      const updateDrag = (clientX) => {
-        if (!carouselViewport) return;
-        const limit = carouselViewport.clientWidth * 0.34;
-        pointerDeltaX = Math.max(-limit, Math.min(limit, clientX - pointerStartX));
-        carouselViewport.style.setProperty('--carousel-drag', `${pointerDeltaX}px`);
-      };
-
-      const endDrag = () => {
-        if (!carouselViewport) return;
-        const threshold = Math.min(72, carouselViewport.clientWidth * 0.14);
-        suppressClick = Math.abs(pointerDeltaX) > 8;
-        carouselViewport.classList.remove('is-dragging');
-        carouselViewport.style.setProperty('--carousel-drag', '0px');
-        if (pointerDeltaX <= -threshold) goToNext();
-        else if (pointerDeltaX >= threshold) goToPrev();
-        window.setTimeout(() => { suppressClick = false; }, 0);
-      };
-
-      carouselPrev?.addEventListener('click', goToPrev);
-      carouselNext?.addEventListener('click', goToNext);
-
-      carouselViewport?.addEventListener('pointerdown', (event) => {
-        if (event.button !== 0 || activePointerId !== null) return;
-        activePointerId = event.pointerId;
-        pointerDownTarget = event.target;
-        beginDrag(event.clientX);
-      });
-
-      carouselViewport?.addEventListener('pointermove', (event) => {
-        if (event.pointerId !== activePointerId) return;
-        updateDrag(event.clientX);
-        if (Math.abs(pointerDeltaX) > 4) {
-          if (!carouselViewport.hasPointerCapture(event.pointerId)) {
-            carouselViewport.setPointerCapture(event.pointerId);
-          }
-          event.preventDefault();
-        }
-      });
-
-      const finishDrag = (event) => {
-        if (event.pointerId !== activePointerId) return;
-        if (carouselViewport.hasPointerCapture(event.pointerId)) {
-          carouselViewport.releasePointerCapture(event.pointerId);
-        }
-        activePointerId = null;
-        endDrag();
-        if (event.type === 'pointercancel') pointerDownTarget = null;
-      };
-
-      carouselViewport?.addEventListener('pointerup', finishDrag);
-      carouselViewport?.addEventListener('pointercancel', finishDrag);
-      carouselViewport?.addEventListener('mousedown', (event) => {
-        if (event.button !== 0 || activePointerId !== null) return;
-        mouseDragging = true;
-        beginDrag(event.clientX);
-      });
-      window.addEventListener('mousemove', (event) => {
-        if (!mouseDragging || activePointerId !== null) return;
-        updateDrag(event.clientX);
-        if (Math.abs(pointerDeltaX) > 4) event.preventDefault();
-      });
-      window.addEventListener('mouseup', () => {
-        if (!mouseDragging || activePointerId !== null) return;
-        mouseDragging = false;
-        endDrag();
-      });
-      carouselViewport?.querySelectorAll('a').forEach((link) => {
-        link.setAttribute('draggable', 'false');
-        link.addEventListener('dragstart', (event) => event.preventDefault());
-      });
-      carouselViewport?.addEventListener('click', (event) => {
-        const clickOrigin = pointerDownTarget || event.target;
-        pointerDownTarget = null;
-
-        if (suppressClick) {
-          event.preventDefault();
-          event.stopPropagation();
-          return;
-        }
-        const sideCard = clickOrigin.closest?.('[data-carousel-item][data-position="-1"], [data-carousel-item][data-position="1"]');
-        if (sideCard) {
-          event.preventDefault();
-          event.stopPropagation();
-          if (sideCard.getAttribute('data-position') === '-1') goToPrev();
-          else goToNext();
-          return;
-        }
-
-        const centerCard = clickOrigin.closest?.('[data-carousel-item][data-position="0"]');
-        const clickedLink = clickOrigin.closest?.('a');
-        const destination = clickedLink || centerCard?.querySelector('.app-card-link');
-        if (!centerCard || !destination) return;
-
-        event.preventDefault();
-        event.stopPropagation();
-        if (destination.target === '_blank') {
-          window.open(destination.href, '_blank', 'noopener,noreferrer');
-        } else {
-          window.location.assign(destination.href);
-        }
-      }, true);
-
-      carouselViewport?.addEventListener('keydown', (event) => {
-        if (event.key === 'ArrowLeft') {
-          event.preventDefault();
-          goToPrev();
-        }
-        if (event.key === 'ArrowRight') {
-          event.preventDefault();
-          goToNext();
-        }
-      });
-
-      paintCarousel();
-    }
-  </script>
 </BaseLayout>

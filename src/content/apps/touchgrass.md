@@ -6,4 +6,5 @@ tags: [productivity, health, utility, local]
 categories: [productivity-workflow, mac-utilities-customization]
 source: Product Hunt launch and official homepage
 homepage: https://touchgrass.land/
+icon: /app-icons/touchgrass.png
 ---

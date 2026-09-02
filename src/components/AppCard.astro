@@ -1,5 +1,8 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import MetaIcon from './MetaIcon.astro';
+import { fallbackIconColor, fallbackIconCategory } from '../data/app-icon';
+
 type App = CollectionEntry<'apps'>['data'];
 const { app, appId, editorNote, featuredDate, variant = 'default' } = Astro.props as {
   app: App;
@@ -12,42 +15,72 @@ const isHero = variant === 'hero';
 const showEditorsPickIcon = Boolean(
   editorNote && app.collections?.includes('editors-picks')
 );
+const fallbackColor = fallbackIconColor(appId ?? app.name);
+const fallbackCategory = fallbackIconCategory(app);
+const hasIconVisual = Boolean(app.icon || fallbackCategory);
+/* The issue's Editor's Pick lights the hero card in its own colour. Only the hero
+   pick reads it, and only when the app record carries a reviewed value, so a pick
+   with no icon or an undecodable one simply renders the ordinary card. */
+const pickAccent = isHero && editorNote ? app.iconAccent : undefined;
+const directorySearchText = [
+  app.name,
+  app.description,
+  app.bestFor,
+  app.source,
+  ...app.tags
+].join(' ');
 ---
 <article
-  class:list={['card', 'app-card', { 'editors-pick-card': editorNote, 'hero-pick-card': isHero }]}
+  class:list={[
+    'card',
+    'app-card',
+    app.icon ? `app-icon-${app.iconStyle}` : undefined,
+    fallbackCategory ? ['app-icon-fallback', `app-icon-color-${fallbackColor}`] : undefined,
+    { 'editors-pick-card': editorNote, 'hero-pick-card': isHero, 'has-pick-accent': pickAccent }
+  ]}
+  style={pickAccent ? `--pick-accent: ${pickAccent};` : undefined}
   data-app-name={app.name}
   data-featured-date={featuredDate}
   data-tags={app.tags.join(' ')}
   data-collections={(app.collections ?? []).join(' ')}
+  data-search-text={directorySearchText}
 >
-  {appId && <a class="app-card-link" href={`/apps/${appId}/`} aria-label={`Read more about ${app.name}`}></a>}
-  <div class="app-summary">
-    <h3 class:list={{ 'editors-pick-title': showEditorsPickIcon }}>
-      <a href={app.homepage} target="_blank" rel="noreferrer">{app.name}</a>
-      {showEditorsPickIcon && (
-        <a
-          class="editors-pick-icon-link"
-          href="/collections/editors-picks/"
-          aria-label="Browse Editor's Picks"
-        >
-          <svg
-            class="editors-pick-icon"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20" />
-            <path d="M8.62 9.8A2.25 2.25 0 1 1 12 6.836a2.25 2.25 0 1 1 3.38 2.966l-2.626 2.856a.998.998 0 0 1-1.507 0z" />
-          </svg>
-        </a>
+  {appId && <a class="app-card-link" href={`/apps/${appId}/`} tabindex="-1" aria-hidden="true"></a>}
+  <div class:list={['app-summary', { 'has-app-icon': hasIconVisual }]}>
+    <div class="app-summary-heading">
+      {app.icon && (
+        <div class="app-icon-frame" aria-hidden="true">
+          <img class="app-icon" src={app.icon} alt="" loading="lazy" decoding="async" />
+        </div>
       )}
-    </h3>
-    <p>{app.description}</p>
+      {fallbackCategory && (
+        <div class="app-icon-frame missing-app-icon-frame" aria-hidden="true">
+          <MetaIcon name={fallbackCategory.icon} />
+        </div>
+      )}
+      <h3 class:list={{ 'editors-pick-title': showEditorsPickIcon }}>
+        {appId ? <a href={`/apps/${appId}/`}>{app.name}</a> : app.name}
+        {showEditorsPickIcon && (
+          <span class="editors-pick-icon-mark" aria-hidden="true">
+            <svg
+              class="editors-pick-icon"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20" />
+              <path d="M8.62 9.8A2.25 2.25 0 1 1 12 6.836a2.25 2.25 0 1 1 3.38 2.966l-2.626 2.856a.998.998 0 0 1-1.507 0z" />
+            </svg>
+          </span>
+        )}
+      </h3>
+    </div>
+    <p class="app-description">{app.description}</p>
   </div>
   {isHero ? (
     <>
@@ -76,5 +109,4 @@ const showEditorsPickIcon = Boolean(
   <div class="tag-list" aria-label="App tags">
     {app.tags.map((tag) => <a class="tag" href={`/tags/${tag}/`}>{tag}</a>)}
   </div>
-  {!isHero && <p class="source-line"><strong>Source:</strong> {app.source}</p>}
 </article>

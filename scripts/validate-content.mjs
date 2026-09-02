@@ -101,6 +101,16 @@ for (const filename of appFiles) {
       }
     }
 
+    if (data.iconCategory && !data.categories.includes(data.iconCategory)) {
+      errors.push(
+        `${relative}: iconCategory "${data.iconCategory}" is not one of the app's categories`
+      );
+    }
+
+    if (data.iconCategory && data.icon) {
+      errors.push(`${relative}: iconCategory only applies to an app with no icon of its own`);
+    }
+
     if (expectedCategories.length && data.categories.join('|') !== expectedCategories.join('|')) {
       errors.push(`${relative}: categories must stay synced with tags (expected [${expectedCategories.join(', ')}])`);
     }

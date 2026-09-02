@@ -7,4 +7,5 @@ collections: [community-favorites]
 categories: [writing-notes-reading, productivity-workflow, mac-utilities-customization]
 source: Official Maccy homepage and repository
 homepage: https://maccy.app/
+icon: /app-icons/maccy.png
 ---

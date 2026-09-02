@@ -6,4 +6,6 @@ tags: [finder, files, utility, open-source, terminal]
 categories: [files-research-documents, mac-utilities-customization, developer-tools]
 source: r/macapps App Pile top-three selection and official homepage
 homepage: https://tryrascal.org/
+icon: /app-icons/rascal.svg
+iconStyle: contain
 ---

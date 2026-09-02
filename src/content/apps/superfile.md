@@ -7,4 +7,6 @@ categories: [files-research-documents, developer-tools]
 collections: [editors-picks]
 source: User Editor's Pick and official homepage
 homepage: https://superfile.dev/
+icon: /app-icons/superfile.svg
+iconStyle: contain
 ---

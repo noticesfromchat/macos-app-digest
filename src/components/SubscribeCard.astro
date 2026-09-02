@@ -1,0 +1,101 @@
+---
+import { Check, Copy, Rss, X } from 'lucide-astro';
+
+/* The subscribe offer, in one place. It began as inline markup on the Explore page and
+   now closes issue pages too: a reader who has just finished an issue is asking when
+   the next one arrives, and the answer should be the same object wherever the question
+   comes up.
+
+   `headingLevel` remains available for pages that need a subordinate heading. The rendered
+   level follows the document it sits in rather than the component's own preference. */
+const { headingLevel = 2 } = Astro.props as { headingLevel?: 2 | 3 };
+const Heading = `h${headingLevel}` as 'h2' | 'h3';
+const rssFeedUrl = new URL('/rss.xml', Astro.site).href;
+---
+
+<article class="card explore-subscribe-card">
+  <div class="explore-subscribe-heading">
+    <span class="explore-subscribe-icon" aria-hidden="true">
+      <Rss />
+    </span>
+    <Heading>Apps delivered every Friday</Heading>
+  </div>
+  <div class="explore-subscribe-content">
+    <p class="explore-subscribe-body">We love <a href="/tags/rss/">RSS</a> and want to make it easy for you to subscribe. Copy the URL and paste it into your favorite RSS reader to subscribe.</p>
+    <div class="rss-url-card explore-subscribe-url">
+      <code class="rss-url-value">{rssFeedUrl}</code>
+      <button
+        class="rss-copy-button"
+        type="button"
+        aria-label="Copy RSS feed URL"
+        data-rss-inline-copy
+        data-rss-inline-url={rssFeedUrl}
+      >
+        <Copy class="rss-copy-icon" aria-hidden="true" data-rss-inline-copy-icon />
+        <Check class="rss-copy-check" aria-hidden="true" hidden data-rss-inline-copy-check />
+        <X class="rss-copy-fail" aria-hidden="true" hidden data-rss-inline-copy-fail />
+        <span class="sr-only" data-rss-inline-label>Copy RSS feed URL</span>
+      </button>
+    </div>
+  </div>
+</article>
+
+<script>
+  /* Bound per card rather than once per page, so a page carrying more than one of these
+     still copies from whichever button was pressed. */
+  const copyText = async (value) => {
+    try {
+      await navigator.clipboard.writeText(value);
+      return true;
+    } catch {
+      const input = document.createElement('textarea');
+      input.value = value;
+      input.setAttribute('readonly', '');
+      input.style.position = 'fixed';
+      input.style.opacity = '0';
+      document.body.appendChild(input);
+      input.select();
+      const copied = document.execCommand('copy');
+      document.body.removeChild(input);
+      return copied;
+    }
+  };
+
+  for (const button of document.querySelectorAll('[data-rss-inline-copy]')) {
+    const icon = button.querySelector('[data-rss-inline-copy-icon]');
+    const check = button.querySelector('[data-rss-inline-copy-check]');
+    const fail = button.querySelector('[data-rss-inline-copy-fail]');
+    const label = button.querySelector('[data-rss-inline-label]');
+
+    button.addEventListener('click', async () => {
+      const value = button.getAttribute('data-rss-inline-url') || '';
+      const copied = value ? await copyText(value) : false;
+
+      /* A failed copy used to look exactly like an untouched button, which left the
+         only error path on the page silent. It now answers with a red cross for the
+         same two seconds the tick gets. */
+      button.classList.toggle('is-copied', copied);
+      button.classList.toggle('is-copy-failed', !copied);
+      if (label) {
+        label.textContent = copied
+          ? 'Copied RSS feed URL'
+          : 'Copy failed. Select the URL and copy it by hand.';
+        button.setAttribute('aria-label', label.textContent);
+      }
+      icon?.toggleAttribute('hidden', true);
+      check?.toggleAttribute('hidden', !copied);
+      fail?.toggleAttribute('hidden', copied);
+      window.setTimeout(() => {
+        button.classList.remove('is-copied');
+        button.classList.remove('is-copy-failed');
+        if (label) {
+          label.textContent = 'Copy RSS feed URL';
+          button.setAttribute('aria-label', 'Copy RSS feed URL');
+        }
+        fail?.setAttribute('hidden', '');
+        icon?.removeAttribute('hidden');
+        check?.setAttribute('hidden', '');
+      }, 2000);
+    });
+  }
+</script>

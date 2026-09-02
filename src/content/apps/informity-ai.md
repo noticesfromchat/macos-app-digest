@@ -6,4 +6,5 @@ tags: [ai, local, documents, open-source]
 categories: [ai-agents, files-research-documents]
 source: r/macapps July App Pile, GitHub and official homepage
 homepage: https://www.informity.ai/
+icon: /app-icons/informity-ai.png
 ---

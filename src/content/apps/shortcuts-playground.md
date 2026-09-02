@@ -6,4 +6,5 @@ tags: [automation, shortcuts, ai, open-source]
 categories: [productivity-workflow, ai-agents]
 source: MacStories and GitHub
 homepage: https://github.com/viticci/shortcuts-playground-plugin
+icon: /app-icons/shortcuts-playground.png
 ---

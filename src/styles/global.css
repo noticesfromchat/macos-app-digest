@@ -24,28 +24,48 @@
 
 :root {
   color-scheme: light;
-  --page: #e7ddcd;
-  --bg: #f4ebdd;
-  --surface: #faf4e9;
-  --surface-strong: #eee2d0;
+  --page: #e8ecf1;
+  --bg: #f4f6f9;
+  --surface: #ffffff;
+  --surface-strong: #e3e8ee;
+  --chip: #f0f3f7;
   --text: #092443;
   --muted: #4d5762;
   --line: rgba(9, 35, 66, 0.2);
   --accent: #0862d8;
   --accent-hover: #004caf;
-  --header-bg: rgba(244, 235, 221, 0.96);
+  /* An eyebrow names the block beneath it, so the gap that binds the two is one
+     value for the whole site. Any surface that sets its own drifts out of the pair. */
+  --eyebrow-gap: 11px;
+  --header-bg: rgba(244, 246, 249, 0.96);
+  /* The scrim behind search, the nav menu and the subscribe dialog. It was a
+     near-black navy in both themes, which is right on a dark page and turns a
+     light one grey. Light gets Harbor Fog instead: the blur still obscures, the
+     page stays bright, and the white panel keeps its shadow to separate on. */
+  --scrim: rgba(232, 236, 241, 0.62);
   --shadow: 0 18px 55px rgba(27, 35, 42, 0.08);
-  --shadow-hover: 0 26px 68px rgba(27, 35, 42, 0.14);
+  --shadow-hover: 0 26px 68px rgba(27, 35, 42, 0.11);
+  /* A dialog lifts off a scrimmed page, so it needs more than card elevation. The
+     vocabulary had no token for it and the three overlays each invented their own
+     black. Light keeps the same ink the other shadows use rather than pure black. */
+  --shadow-modal: 0 30px 90px rgba(27, 35, 42, 0.18);
   --radius: 16px;
   --content-width: 1160px;
   --content-inset: 40px;
   --page-start-space: 36px;
+  --section-space: clamp(26px, 3.8vw, 40px);
   --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
   --display: "Iowan Old Style", "Baskerville", "Times New Roman", serif;
   --type-brand-nav: clamp(1.15rem, 2.1vw, 1.55rem);
   --type-label: .78rem;
   --type-meta: .84rem;
   --type-subhead: clamp(1.9rem, 2.4vw, 2.35rem);
+  --type-page-title: clamp(3.25rem, 5.1vw, 4.25rem);
+  --type-section-title: clamp(2.2rem, 4vw, 3.8rem);
+  --type-dek: clamp(1.12rem, 1.4vw, 1.25rem);
+  /* One reading measure. Set in ch so it holds ~70 characters at any of the
+     sizes below it, not a fixed pixel column that widens as type shrinks. */
+  --measure: 52ch;
   --sea-ink: 9 35 66;
   --sea-alpha: .30;
 }
@@ -56,19 +76,35 @@
   --bg: #020b18;
   --surface: #0b1c30;
   --surface-strong: #10253b;
+  --chip: #10253b;
   --text: #f3ecdf;
   --muted: #afb6bf;
   --line: rgba(217, 229, 240, 0.2);
   --accent: #57a2ff;
   --accent-hover: #81b8ff;
   --header-bg: rgba(4, 20, 38, 0.96);
+  --scrim: rgba(2, 11, 24, 0.52);
   --shadow: 0 20px 60px rgba(0, 0, 0, 0.24);
   --shadow-hover: 0 28px 72px rgba(0, 0, 0, 0.42);
+  --shadow-modal: 0 30px 90px rgba(0, 0, 0, 0.44);
   --sea-ink: 226 236 250;
   --sea-alpha: .22;
 }
 
 * { box-sizing: border-box; }
+
+/* The `hidden` attribute has to win. The browser's own `[hidden] { display: none }` is a
+   plain element rule, so any class that sets a display beats it, and this stylesheet sets
+   one on nearly everything: `.button`, `.tag`, the card, the grid. That silently turns
+   `el.hidden = true` into a no-op, which is why nine separate `[hidden]` patches had grown
+   up around the file, one per component that had been bitten. This is the rule they were
+   all approximating. */
+[hidden] { display: none !important; }
+
+/* A button does not inherit the page's family; left alone it renders in the UA default,
+   which is how a control came to be set in Arial beside cards in the system sans. Family
+   only, so every control keeps the size its own rule gives it. */
+button { font-family: inherit; }
 
 html {
   background: var(--page);
@@ -96,6 +132,33 @@ body {
 }
 
 a { color: inherit; }
+
+.skip-link {
+  position: fixed;
+  z-index: 120;
+  top: 12px;
+  left: 12px;
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  padding: 0 16px;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  background: var(--surface);
+  box-shadow: var(--shadow-modal);
+  color: var(--accent);
+  font-size: var(--type-meta);
+  font-weight: 800;
+  text-decoration: none;
+  transform: translateY(calc(-100% - 18px));
+  transition: transform 180ms cubic-bezier(.16, 1, .3, 1);
+}
+
+.skip-link:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent) 38%, transparent);
+  outline-offset: 3px;
+  transform: translateY(0);
+}
 
 .site-header {
   position: sticky;
@@ -162,6 +225,33 @@ a { color: inherit; }
   gap: 10px;
 }
 
+.desktop-nav-links {
+  display: inline-flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.desktop-nav-links a {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  color: var(--text);
+  font-size: var(--type-meta);
+  font-weight: 700;
+  text-decoration: none;
+  transition: color 180ms ease;
+}
+
+.desktop-nav-links a:hover,
+.desktop-nav-links a:focus-visible,
+.desktop-nav-links a[aria-current='page'] { color: var(--accent); }
+
+.desktop-nav-links a:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent) 38%, transparent);
+  outline-offset: 4px;
+  border-radius: 8px;
+}
+
 .theme-toggle svg {
   width: 22px;
   height: 22px;
@@ -186,7 +276,6 @@ a { color: inherit; }
   transition: color 180ms ease, transform 180ms ease;
 }
 
-.theme-toggle svg[hidden] { display: none; }
 
 .theme-toggle:hover,
 .theme-toggle:focus-visible { color: var(--accent); transform: rotate(12deg); }
@@ -198,70 +287,30 @@ a { color: inherit; }
   margin-left: auto;
 }
 
-.issue > .section,
-.issue > .note {
+.issue > .section {
   width: min(var(--content-width), calc(100% - var(--content-inset)));
   margin-right: auto;
   margin-left: auto;
 }
 
-.hero {
-  position: relative;
-  display: grid;
-  min-height: 408px;
-  grid-template-columns: minmax(330px, .78fr) minmax(0, 1.22fr);
-  align-items: center;
-  gap: 14px;
-  overflow: hidden;
-  padding: 36px clamp(40px, 6vw, 88px) 38px;
-  border-bottom: 0;
-  background: var(--bg);
-}
-
-.issue:not(.is-homepage) .hero {
-  width: min(var(--content-width), calc(100% - var(--content-inset)));
-  min-height: 0;
-  grid-template-columns: minmax(0, 780px);
-  margin: 0 auto;
-  padding: var(--page-start-space) 0 clamp(26px, 3.8vw, 40px);
-  border-radius: 0;
-  background: transparent;
-}
-
-.issue:not(.is-homepage) .hero::after {
-  display: none;
-}
-
-.issue:not(.is-homepage) .hero-copy {
-  max-width: 780px;
-}
-
-.issue:not(.is-homepage) .hero + .section {
-  padding-top: clamp(26px, 3.8vw, 40px);
-}
-
-.hero-copy { position: relative; z-index: 2; max-width: 390px; }
-
 .eyebrow {
-  margin: 0 0 11px;
+  margin: 0 0 var(--eyebrow-gap);
   color: var(--accent);
-  font-size: .73rem;
-  font-weight: 700;
-  letter-spacing: .07em;
+  font-size: var(--type-label);
+  font-weight: 800;
+  letter-spacing: .1em;
   text-transform: uppercase;
 }
 
-.hero h1,
-.archive-page h1 {
+.archive-page h1,
+.app-detail-hero h1 {
   margin: 0;
   font-family: var(--display);
-  font-size: clamp(3.25rem, 5.1vw, 4.25rem);
+  font-size: var(--type-page-title);
   font-weight: 500;
   letter-spacing: -.035em;
   line-height: .96;
 }
-
-.date { margin: 14px 0 0; color: var(--muted); font-size: .94rem; }
 
 .hero-rule {
   width: 148px;
@@ -280,18 +329,15 @@ a { color: inherit; }
 }
 
 .dek {
-  max-width: 760px;
+  max-width: var(--measure);
   margin: 15px 0 0;
   color: var(--muted);
-  font-size: clamp(.94rem, 1.15vw, 1.02rem);
+  font-size: var(--type-dek);
   line-height: 1.58;
 }
 
-.hero .dek { color: var(--text); }
-
 .button {
   display: inline-flex;
-  width: 180px;
   min-height: 44px;
   align-items: center;
   justify-content: center;
@@ -299,16 +345,31 @@ a { color: inherit; }
   padding: 0 23px;
   border: 1px solid var(--accent);
   border-radius: 999px;
-  background: var(--accent);
-  color: white;
-  font-size: .9rem;
-  font-weight: 500;
+  /* Outlined, not filled. The dark theme's blue is tuned to be legible as ink on
+     the dark surface, so using it as ground put white text at 2.62:1 and made the
+     button the brightest object on the page. As a label on the page surface the
+     same blue clears AA in both themes, and the action reads as considered rather
+     than bolted on. */
+  background: transparent;
+  color: var(--accent);
+  /* A button does not inherit the page's family, so without this it renders in the UA
+     default. Seven controls on Explore alone were setting themselves in Arial beside
+     cards in the system sans. `.feature-card a` already carries this for the same
+     reason. */
+  font-family: inherit;
+  font-size: var(--type-meta);
+  font-weight: 700;
   text-decoration: none;
-  transition: background-color 180ms ease, border-color 180ms ease, transform 180ms ease;
+  transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease, transform 180ms ease;
 }
 
 .button:hover,
-.button:focus-visible { border-color: var(--accent-hover); background: var(--accent-hover); transform: translateY(-1px); }
+.button:focus-visible {
+  border-color: var(--accent-hover);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  color: var(--accent-hover);
+  transform: translateY(-1px);
+}
 .button.secondary { border-color: var(--line); background: transparent; color: var(--text); }
 .button.secondary:hover,
 .button.secondary:focus-visible { border-color: var(--text); background: color-mix(in srgb, var(--surface) 50%, transparent); }
@@ -415,12 +476,88 @@ a { color: inherit; }
   line-height: 1.58;
 }
 
-.section { padding: clamp(40px, 4.8vw, 58px) 0; border-top: 1px solid var(--line); }
+.section { padding: var(--section-space) 0; border-top: 1px solid var(--line); }
 .home-hero + .section { border-top: 0; }
 .section-heading { width: 100%; max-width: none; margin-bottom: 28px; }
-.section h2 { margin: 0; font-family: var(--display); font-size: clamp(2.2rem, 4vw, 3.8rem); font-weight: 500; letter-spacing: -.03em; line-height: 1; }
+.section h2 { margin: 0; font-family: var(--display); font-size: var(--type-section-title); font-weight: 500; letter-spacing: -.03em; line-height: 1; }
 
 .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+
+/* Cards in a row line up by sharing the row's tracks, not by guessing heights.
+   Each card spans three rows of the parent grid and adopts them as a subgrid, so
+   the description, the best-for line and the tags all start on the same line as
+   their neighbours however long the copy runs. The min-heights this replaces were
+   fixed budgets, and any card that overflowed one, a second line of tags being the
+   usual culprit, pushed everything below it out of step with the rest of the row.
+   Older engines keep the budgets through the @supports fallback. */
+@supports (grid-template-rows: subgrid) {
+  .grid > .app-card:not(.reading-card) {
+    display: grid;
+    grid-row: span 3;
+    grid-template-rows: subgrid;
+    row-gap: 16px;
+  }
+
+  .grid > .app-card:not(.reading-card) .app-summary,
+  .grid > .app-card:not(.reading-card) .best-for,
+  .grid > .app-card:not(.reading-card) .tag-list { min-height: 0; }
+
+  /* the row gap now carries the separation these were providing */
+  .grid > .app-card:not(.reading-card) .app-summary { margin-bottom: 0; }
+  .grid > .app-card:not(.reading-card) .tag-list { padding-top: 0; align-content: start; }
+
+  /* One card height per page, not just per row. Giving the parent's three repeating
+     tracks a floor makes every band match, so a card agrees with the one two rows
+     below it as well as the one beside it.
+
+     The floors are what the tallest record in the catalogue actually needs, measured
+     across all 102 of them. Note the first and last include the card's 24px padding:
+     a subgrid item's padding comes out of the tracks it spans, so track one carries
+     the summary plus the top padding and track three the tags plus the bottom.
+
+     minmax rather than a fixed height, so a future record that outgrows its budget
+     makes its own band taller instead of being clipped.
+
+     Reading cards are excluded throughout. They carry .app-card as well, but hold a
+     single child rather than three, so spanning three rows left them with two empty
+     ones and a card half again as tall as the app cards beside them. */
+  /* Only where the grid is actually multi-column. A single column has no neighbour
+     to agree with, so a floor buys nothing and costs a great deal: the budgets are
+     sized for the narrowest three-column case, where a card is about 270px wide,
+     while a one-column card is 351px and wraps far less. Applied on a phone they
+     added a median of 159px to every card and 17,000px of scrolling to the
+     directory. Below 921px each card is its own height. */
+  @media (min-width: 921px) {
+    .grid:has(> .app-card:not(.reading-card)) {
+      grid-auto-rows: minmax(230px, auto) minmax(149px, auto) minmax(122px, auto);
+    }
+  }
+
+  /* Above 1100px the content column has stopped growing, so the budget settles. */
+  @media (min-width: 1100px) {
+    .grid:has(> .app-card:not(.reading-card)) {
+      grid-auto-rows: minmax(205px, auto) minmax(99px, auto) minmax(88px, auto);
+    }
+  }
+
+  /* Reading cards get the same treatment on their own terms. Their three parts sit
+     inside a wrapper, so the card and the wrapper both subgrid onto the shared rows.
+     No floors here: a reading card should be as tall as the longest of the three and
+     no taller, which is what its min-heights were faking, badly, by reserving three
+     lines for a one-line title. */
+  .grid > .reading-card,
+  .grid > .reading-card > div {
+    display: grid;
+    grid-row: span 3;
+    grid-template-rows: subgrid;
+    row-gap: 10px;
+  }
+
+  .grid > .reading-card h3,
+  .grid > .reading-card .reading-source,
+  .grid > .reading-card .reading-description { min-height: 0; }
+}
+
 .editors-pick-card {
   min-height: 0;
   display: grid;
@@ -429,8 +566,7 @@ a { color: inherit; }
     "summary"
     "best"
     "note"
-    "tags"
-    "source";
+    "tags";
   row-gap: 0;
   padding: clamp(24px, 3vw, 34px);
 }
@@ -444,18 +580,38 @@ a { color: inherit; }
   border-top: 1px solid var(--line);
 }
 .editors-pick-card .tag-list { grid-area: tags; min-height: 0; margin-top: 20px; padding-top: 0; }
-.editors-pick-card .source-line { grid-area: source; min-height: 0; padding-top: 14px; }
 .editor-note { padding-left: 0; border-left: 0; }
 .editor-note p { margin: 0; }
 
 .home-hero-pick { display: flex; flex-direction: column; }
-.home-hero-pick .eyebrow { margin-bottom: 11px; }
-.home-hero-pick-title { display: none; }
+
+/* Hidden from sight above 920px, where the eyebrow and the card carry the meaning, but
+   never hidden from the outline. `display: none` here took the h2 out of the document
+   entirely, so the desktop homepage ran h1 straight to the app card's h3 and broke the
+   heading sequence on exactly the widths most readers use. The clip pattern keeps the
+   level in place for assistive technology at every width. */
+.home-hero-pick-title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
 .home-hero-pick .hero-pick-card { flex: 1; }
 
 .hero-pick-card .app-summary { margin-bottom: 0; }
+.hero-pick-card .app-summary.has-app-icon .app-summary-heading {
+  grid-template-columns: 52px minmax(0, 1fr);
+  column-gap: 16px;
+}
+.hero-pick-card .app-icon-frame {
+  width: 52px;
+  height: 52px;
+  border-radius: 13px;
+}
 .hero-pick-card h3 { font-size: var(--type-subhead); letter-spacing: -.02em; line-height: 1.08; }
-.hero-pick-card .pick-desc,
 .hero-pick-card .app-summary p { font-size: 1rem; }
 
 .hero-pick-card .editor-note { margin-top: 22px; padding-top: 0; border-top: 0; }
@@ -469,12 +625,148 @@ a { color: inherit; }
 
 .hero-pick-card .best-for p { margin: 0; color: var(--muted); }
 .hero-pick-card .tag-list { margin-top: auto; padding-top: 22px; }
+/* Struck Light. The Editor's Pick is the one app the issue argues for, so in the
+   hero it is lit by its own colour: a bounded halo behind the icon and a slow
+   gleam travelling the card's edge, the way light moves across a struck plate.
+
+   The colour is the featured app's, normalised. A raw brand colour cannot be used
+   here, because across the current picks the dominant hues run from a saturated
+   magenta to a near-black brown and the card would read at a different weight
+   every issue. scripts/extract-icon-accent.mjs fixes every pick to one lightness
+   and chroma in OKLCh, and the reviewed result is committed to the app record. An
+   issue whose pick has no usable icon carries no accent and renders the ordinary
+   card, so this never half-applies.
+
+   The Beacon Rule still holds: blue keeps actions, links and focus. This colour is
+   light on one card, not a second accent, and it never reaches a control. */
+@property --pick-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+/* Where the light currently sits inside the card. Animated, so the colour drifts
+   instead of pooling in one corner. */
+@property --pick-x {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 26%;
+}
+
+@property --pick-y {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 20%;
+}
+
+/* The halo is a background layer rather than a pseudo-element, so it is clipped by
+   the card's own radius and can never paint over the content above it. */
+.hero-pick-card.has-pick-accent {
+  /* A wide, soft brush rather than a disc: at this radius the colour has no edge
+     of its own, so what the reader notices is the card being lit, not a shape
+     sitting behind the text. It drifts slowly so the light never pools. */
+  /* The wash lives on its own layer rather than in the card's background. The
+     shared hover contract sets the background shorthand, which would drop a
+     background-image, and routing the gradient through an intermediate custom
+     property stops the drift resolving at all. A layer avoids both. */
+  isolation: isolate;
+  /* The one card in the fold the issue is arguing for; it rests proud of the rest. */
+  box-shadow: var(--shadow-hover);
+}
+
+/* Negative z-index inside the card's own stacking context, so the wash paints
+   above the card's surface and below every word on it. */
+.hero-pick-card.has-pick-accent::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    116% 96% at var(--pick-x) var(--pick-y),
+    color-mix(in srgb, var(--pick-accent) 13%, transparent),
+    color-mix(in srgb, var(--pick-accent) 5%, transparent) 38%,
+    transparent 70%
+  );
+  animation: pick-drift 28s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Long enough that the movement is felt rather than watched. */
+@keyframes pick-drift {
+  0%   { --pick-x: 24%; --pick-y: 18%; }
+  25%  { --pick-x: 72%; --pick-y: 32%; }
+  50%  { --pick-x: 64%; --pick-y: 76%; }
+  75%  { --pick-x: 28%; --pick-y: 58%; }
+  100% { --pick-x: 24%; --pick-y: 18%; }
+}
+
+.hero-pick-card.has-pick-accent .app-icon-frame {
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--pick-accent) 30%, transparent),
+    0 6px 18px color-mix(in srgb, var(--pick-accent) 22%, transparent);
+}
+
+.hero-pick-card.has-pick-accent .editors-pick-icon { color: var(--pick-accent); }
+
+/* The gleam. A conic sweep masked down to the card's own edge, so what travels is
+   a highlight on the rim rather than a glowing box. Without mask compositing the
+   ring cannot be cut out of the gradient, so the whole effect is withheld rather
+   than shipped as a coloured rectangle. */
+@supports ((mask-composite: exclude) or (-webkit-mask-composite: xor)) {
+  .hero-pick-card.has-pick-accent::before {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    /* The ring sits outside the card's 1px border, so its radius is the card's own
+       plus the overhang. Stated as the relationship rather than as a magic number. */
+    --pick-rim: 1.5px;
+    inset: calc(var(--pick-rim) * -1);
+    padding: var(--pick-rim);
+    border-radius: calc(12px + var(--pick-rim));
+    background: conic-gradient(
+      from var(--pick-angle),
+      color-mix(in srgb, var(--pick-accent) 16%, transparent) 0deg,
+      color-mix(in srgb, var(--pick-accent) 96%, transparent) 26deg,
+      color-mix(in srgb, var(--pick-accent) 52%, transparent) 58deg,
+      color-mix(in srgb, var(--pick-accent) 16%, transparent) 108deg,
+      color-mix(in srgb, var(--pick-accent) 16%, transparent) 360deg
+    );
+    /* Two stencils, the inner one subtracted, leaving only the rim. currentColor is
+       used purely as opaque paint; the mask reads its alpha, never its hue. */
+    -webkit-mask: linear-gradient(currentColor 0 0) content-box, linear-gradient(currentColor 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(currentColor 0 0) content-box, linear-gradient(currentColor 0 0);
+    mask-composite: exclude;
+    animation: pick-gleam 11s linear infinite;
+    pointer-events: none;
+  }
+}
+
+/* Slow enough to be noticed rather than watched. */
+@keyframes pick-gleam {
+  to { --pick-angle: 360deg; }
+}
+
+/* A loop the reader cannot see is a loop that should not run. */
+.hero-pick-card.has-pick-accent.is-resting::before,
+.hero-pick-card.has-pick-accent.is-resting::after { animation-play-state: paused; }
+
+[data-theme="dark"] .hero-pick-card.has-pick-accent::after {
+  background: radial-gradient(
+    116% 96% at var(--pick-x) var(--pick-y),
+    color-mix(in srgb, var(--pick-accent) 24%, transparent),
+    color-mix(in srgb, var(--pick-accent) 9%, transparent) 40%,
+    transparent 72%
+  );
+}
+
 .editor-note-label {
   margin-bottom: 8px;
   color: var(--accent);
-  font-size: .74rem;
+  font-size: var(--type-label);
   font-weight: 800;
-  letter-spacing: .12em;
+  letter-spacing: .1em;
   text-transform: uppercase;
 }
 .card,
@@ -487,144 +779,226 @@ a { color: inherit; }
 .app-card h3 a { color: var(--text); text-decoration: none; transition: color 180ms ease; }
 .app-card h3 a:hover,
 .app-card h3 a:focus-visible { color: var(--accent); }
+.app-summary-heading {
+  display: block;
+}
+.app-summary.has-app-icon .app-summary-heading {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  column-gap: 14px;
+  align-items: center;
+}
+.app-summary.has-app-icon h3 { margin-bottom: 0; }
+.app-icon-frame {
+  display: flex;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 0;
+  border-radius: 11px;
+  background: transparent;
+}
+.app-icon {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.app-icon-backed .app-icon-frame {
+  background: #fff;
+  padding: 5px;
+}
+.app-icon-backed .app-icon,
+.app-icon-contain .app-icon {
+  object-fit: contain;
+}
+.app-icon-fallback .app-icon-frame,
+.missing-app-icon-frame {
+  background: var(--missing-icon-bg);
+}
+.missing-app-icon-frame svg,
+.missing-app-icon {
+  display: block;
+  width: 56%;
+  height: 56%;
+  color: #fff;
+  stroke-width: 2.1;
+}
+.app-icon-color-green { --missing-icon-bg: #2f8f5b; }
+.app-icon-color-orange { --missing-icon-bg: #c66a22; }
+.app-icon-color-blue { --missing-icon-bg: #2f75d6; }
+.app-icon-color-purple { --missing-icon-bg: #8b5cc7; }
+.app-icon-color-pink { --missing-icon-bg: #c24b7a; }
 .editors-pick-title {
   display: flex;
   align-items: center;
   gap: .2em;
 }
-.editors-pick-icon-link {
+.editors-pick-icon-mark {
+  position: relative;
   display: inline-flex;
   flex: 0 0 auto;
   width: .9em;
   height: .9em;
   color: var(--accent);
-  transition: color 180ms ease;
 }
-.editors-pick-icon-link:hover,
-.editors-pick-icon-link:focus-visible { color: var(--accent-hover); }
+
 .editors-pick-icon { width: 100%; height: 100%; }
 .app-card p { margin: 0; color: var(--muted); }
+.app-summary.has-app-icon .app-description { margin-top: 12px; }
 .app-summary { min-height: 136px; margin-bottom: 16px; }
-.best-for { min-height: 96px; font-size: .95rem; }
+.best-for { min-height: 96px; font-size: 1rem; }
 .best-for strong,
-.source-line strong,
 .reading-source strong { color: var(--text); }
 
 .tag-list { display: flex; min-height: 86px; flex-wrap: wrap; align-content: flex-start; gap: 6px; padding-top: 12px; }
-.tag { display: inline-flex; width: fit-content; align-items: center; margin: 0; padding: 7px 10px; border: 0; border-radius: 999px; background: var(--surface-strong); color: var(--muted); font-size: var(--type-label); font-weight: 700; line-height: 1.15; text-decoration: none; text-transform: lowercase; transition: color 180ms ease, background-color 180ms ease; }
+.tag { display: inline-flex; width: fit-content; align-items: center; margin: 0; padding: 7px 10px; border: 0; border-radius: 999px; background: var(--chip); color: var(--muted); font-size: var(--type-label); font-weight: 700; line-height: 1.15; text-decoration: none; text-transform: lowercase; transition: color 180ms ease, background-color 180ms ease; }
 .tag:hover,
-.tag:focus-visible { background: color-mix(in srgb, var(--surface-strong) 82%, var(--accent)); color: var(--accent); }
-.source-line { min-height: 52px; padding-top: 14px; color: var(--muted); font-size: var(--type-meta); }
-.source-line strong { color: inherit; }
+.tag:focus-visible { background: color-mix(in srgb, var(--chip) 82%, var(--accent)); color: var(--accent-hover); }
 .reading-card h3 { min-height: 108px; }
 .reading-card .reading-source { min-height: 30px; }
 .reading-card .reading-description { min-height: 108px; }
 
 .feature-card { padding: 28px; }
-.feature-card p { max-width: 780px; margin: 0 0 14px; color: var(--muted); }
-.feature-card a { color: var(--accent); font-weight: 700; }
-
-.app-detail-page { padding: var(--page-start-space) 0 36px; }
-.app-detail-hero { max-width: 900px; padding: 0 0 clamp(26px, 3.8vw, 40px); }
-.app-detail-hero h1 { margin: 18px 0 22px; overflow-wrap: anywhere; font-family: var(--display); font-size: clamp(4rem, 8vw, 6rem); font-weight: 500; line-height: .92; letter-spacing: 0; text-wrap: balance; }
-.app-detail-hero .dek { max-width: 780px; margin: 0; color: var(--muted); font-size: clamp(1.35rem, 2.6vw, 2.15rem); line-height: 1.35; }
-.app-detail-meta-flow { display: grid; gap: 16px; margin-top: 28px; }
-.app-detail-collections { display: flex; flex-wrap: wrap; gap: 10px; }
-.collection-badge {
+.feature-card p { max-width: var(--measure); margin: 0 0 14px; color: var(--muted); }
+/* A standalone link on its own line is a target, not prose, so it carries the
+   minimum. The inline RSS link in the subscribe copy is left alone: WCAG exempts a
+   target sitting inside a sentence, and padding one out would break the line. */
+.feature-card a {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 14px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--surface) 94%, transparent);
+  min-height: 24px;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.app-detail-page { padding: var(--page-start-space) 0 36px; }
+/* The detail page reads: what is this, is it for me, go and get it. The masthead
+   carries that path. Everything that files the app rather than describes it sits
+   in the rail, which also puts the right half of the fold to work. The rail is
+   fixed and the masthead flexible, so the prose measure stays honest at any width. */
+.app-detail-hero {
+  display: grid;
+  /* 400px holds 95% of the catalogue's tag sets on one line, measured across all
+     102 apps: median 311px, p95 399px. The longest set needs 473px, and buying
+     that last 2% would cost 60px of the prose column. */
+  grid-template-columns: minmax(0, 1fr) 400px;
+  align-items: start;
+  gap: clamp(32px, 5vw, 72px);
+  padding: 0 0 var(--section-space);
+  border-bottom: 1px solid var(--line);
+}
+.app-detail-masthead { min-width: 0; max-width: 900px; }
+
+.app-detail-identity {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(16px, 1.8vw, 22px);
+}
+/* Sized against the page title's cap height so the two read as one lockup. */
+.app-detail-app-icon {
+  width: clamp(56px, 6vw, 76px);
+  height: clamp(56px, 6vw, 76px);
+  border-radius: 12px;
+}
+.app-detail-identity h1 { margin: 0; }
+
+/* The One Page Title Rule's 15px gap, measured from the lockup rather than the
+   title alone, then a generous step before Best For so the two do not run together. */
+.app-detail-masthead > .dek { margin-top: 15px; }
+.app-detail-masthead > .app-detail-best-for { margin-top: 26px; }
+
+/* One rhythm for the whole rail, on the documented spacing scale: xl between
+   groups, md from an eyebrow to the content it names. Every group is built the
+   same way, so the space before each eyebrow is the same space. */
+.app-detail-rail { display: grid; gap: 24px; min-width: 0; }
+.app-detail-rail-group { display: grid; gap: var(--eyebrow-gap); min-width: 0; }
+.app-detail-rail-group .eyebrow { margin: 0; }
+
+/* The rarest fact on the page sits at the top of the rail, over the rule that
+   separates it from the taxonomy below. Rank comes from position, the mark and
+   the weight of the label, not from colour. */
+/* Separated from the taxonomy by space alone. A rule here reads as a container
+   seam and competes with the honour it is meant to set apart, and extra padding
+   here was what made the gap before Categories 40px against the 22px before Tags. */
+.app-detail-honour-list { display: grid; gap: 2px; }
+
+.app-detail-category-list { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }
+.app-detail-category-row {
+  display: grid;
+  /* Same icon column and gap as the collection badge above it, so every mark in
+     the rail sits on one centre axis and every label starts at the same x. */
+  grid-template-columns: 34px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  min-height: 34px;
+  color: var(--muted);
+  font-size: var(--type-meta);
+  font-weight: 600;
+  line-height: 1.3;
+  text-decoration: none;
+  transition: color 180ms ease;
+}
+.app-detail-category-row:hover { color: var(--accent); }
+/* Colour alone is not a focus indicator, and outline: 0 removed the one the
+   browser supplies. Both rail link types take the ring the carousel already uses. */
+.app-detail-category-row:focus-visible,
+.collection-badge:focus-visible {
+  color: var(--accent);
+  outline: 2px solid color-mix(in srgb, var(--accent) 38%, transparent);
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+.app-detail-category-mark { display: inline-flex; align-items: center; justify-content: center; }
+.app-detail-category-mark svg { width: 19px; height: 19px; }
+/* Named by its own eyebrow like every other group in the rail, and given more air
+   than they get. It stays in the rail's utility voice: rank comes from the label
+   sitting in ink at weight 700 where a category label sits muted at 600, from the
+   44px row against their 34px, and from leading the rail. */
+.collection-badge {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
   color: var(--text);
   font-size: var(--type-meta);
   font-weight: 700;
+  line-height: 1.2;
   text-decoration: none;
+  transition: color 180ms ease;
 }
-.collection-badge:hover,
-.collection-badge:focus-visible {
-  border-color: color-mix(in srgb, var(--accent) 42%, var(--line));
-  color: var(--accent);
-  outline: 0;
+/* Built exactly like a category mark: no container, the glyph simply inherits the
+   row's colour and turns blue with it on hover. A ring here made the mark itself
+   the loud thing; the honour's rank comes from its label and its position. */
+.collection-badge-icon {
+  width: 34px;
+  height: 34px;
+  color: inherit;
 }
+.collection-badge-label { min-width: 0; }
+.collection-badge:hover { color: var(--accent); }
 .collection-badge-icon,
-.app-detail-category-icon,
-.category-directory-icon,
-.explore-category-icon,
-.explore-collection-icon {
+.category-directory-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
-.collection-badge-icon svg,
-.app-detail-category-icon svg,
-.category-directory-icon svg,
-.explore-category-icon svg,
-.explore-collection-icon svg { width: 18px; height: 18px; }
-.app-detail-best-for { max-width: 760px; }
-.app-detail-best-for p:not(.eyebrow) { margin: 10px 0 0; color: var(--muted); font-size: 1.02rem; line-height: 1.55; }
-.app-detail-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 34px; }
+.category-directory-icon svg { width: 18px; height: 18px; }
+/* Same size as a category mark, so the two render the same 1.58px stroke: lucide
+   scales its stroke with the glyph, and any size difference here would put one
+   icon family at two weights in a single column. */
+.collection-badge-icon svg { width: 19px; height: 19px; }
+.app-detail-best-for { max-width: var(--measure); }
+.app-detail-best-for p:not(.eyebrow) { margin: 0; color: var(--muted); font-size: 1rem; line-height: 1.55; }
+.app-detail-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 24px; }
 .app-detail-actions .button { gap: 8px; }
 .app-detail-actions .button svg { width: 1em; height: 1em; }
-.app-detail-panel {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(28px, 5vw, 72px);
-  width: 100%;
-  max-width: none;
-  align-items: start;
-  padding: 0 0 clamp(26px, 3.8vw, 40px);
-  border-bottom: 1px solid var(--line);
-}
-.app-detail-panel > div { min-width: 0; }
-.app-detail-panel p:not(.eyebrow) { margin: 14px 0 0; color: var(--muted); font-size: 1.02rem; line-height: 1.55; }
-.app-detail-tags { min-height: 0; padding-top: 3px; }
-.app-detail-taxonomy { padding: 0 0 clamp(26px, 3.8vw, 40px); border-bottom: 1px solid var(--line); }
-.app-detail-category-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-}
-.app-detail-category-card {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: center;
-  gap: 14px;
-  padding: 18px;
-  border: 1px solid color-mix(in srgb, var(--category-accent) 32%, var(--line));
-  border-radius: 12px;
-  background: var(--surface);
-  color: var(--text);
-  text-decoration: none;
-}
-.app-detail-category-card:hover,
-.app-detail-category-card:focus-visible {
-  border-color: color-mix(in srgb, var(--accent) 42%, var(--line));
-  background: var(--surface);
-  box-shadow: var(--shadow-hover);
-  outline: 0;
-}
-.app-detail-category-icon {
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  background: color-mix(in srgb, var(--category-accent) 78%, var(--surface));
-  color: color-mix(in srgb, var(--text) 82%, var(--accent));
-}
-.app-detail-category-copy { min-width: 0; }
-.app-detail-category-copy strong {
-  display: block;
-  font-family: var(--display);
-  font-size: 1.2rem;
-  font-weight: 600;
-  line-height: 1.08;
-}
-.app-detail-tag-stack { margin-top: 18px; }
-.app-detail-tag-stack .tag-list { min-height: 0; padding-top: 0; }
+.app-detail-tags { min-height: 0; padding-top: 0; }
 .app-detail-section { width: 100%; padding-right: 0; padding-left: 0; }
-.app-detail-taxonomy + .app-detail-section { padding-top: clamp(26px, 3.8vw, 40px); }
 .app-detail-related-grid .app-card:nth-child(n + 7) { display: none; }
 
 /* The hero's waterline again, quieter and narrower, with the mark riding it —
@@ -671,35 +1045,7 @@ a { color: inherit; }
 }
 .video-section { border-top: 0; padding-top: 26px; }
 
-/* Apparatus, not content: small type set directly on the page, the way a
-   footnote block sits under an article. No rule and no surface — the drop in
-   scale is what separates it. Set at the Metadata step, which the system
-   already assigns to sources: the same treatment as a card's own Source line. */
-.note {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  box-shadow: none;
-}
-
-.note h2 {
-  margin: 0;
-  color: var(--muted);
-  font-family: var(--sans);
-  font-size: var(--type-label);
-  font-weight: 800;
-  letter-spacing: .1em;
-  line-height: 1;
-  text-transform: uppercase;
-}
-
-.issue > .note { margin-top: 8px; margin-bottom: 88px; }
-.note p { max-width: 74ch; margin: 14px 0 0; color: var(--muted); font-size: var(--type-meta); line-height: 1.55; }
-.note ul { max-width: 74ch; margin: 12px 0 0; padding-left: 17px; color: var(--muted); font-size: var(--type-meta); line-height: 1.55; }
-.note li + li { margin-top: 5px; }
-.note li::marker { color: color-mix(in srgb, var(--muted) 55%, transparent); }
+.issue-subscribe { padding-bottom: 88px; }
 
 .archive-page {
   min-height: calc(100vh - 130px);
@@ -710,7 +1056,8 @@ a { color: inherit; }
 }
 .archive-page,
 .app-detail-page { min-height: 0; }
-.archive-page h1 { max-width: 920px; overflow-wrap: anywhere; font-size: clamp(3rem, 5vw, 4.75rem); line-height: 1; text-wrap: balance; }
+.archive-page h1,
+.app-detail-hero h1 { max-width: 920px; overflow-wrap: anywhere; text-wrap: balance; }
 .explore-page .explore-hero { max-width: 780px; }
 .explore-page .explore-section:first-of-type { border-top: 0; }
 .archive-page .section:last-child,
@@ -730,6 +1077,21 @@ a { color: inherit; }
 .explore-utility-combined-card { padding: 0; }
 .explore-utility-combined-card .explore-utility-grid { gap: 0; }
 .explore-utility-combined-card .explore-utility-grid > section { padding: 24px; }
+/* Each taxonomy explains itself in normal flow. The copy stays attached to the heading
+   it qualifies and never covers the first result row on hover, focus or touch. */
+.explore-panel-heading {
+  display: grid;
+  gap: 8px;
+}
+.taxonomy-help-copy {
+  max-width: var(--measure);
+  margin: 0;
+  color: var(--muted);
+  font-size: var(--type-meta);
+  font-weight: 500;
+  line-height: 1.45;
+}
+
 .explore-discovery-card {
   overflow: hidden;
   border-color: var(--line);
@@ -756,7 +1118,7 @@ a { color: inherit; }
   border-left: 1px solid var(--line);
 }
 .explore-utility-card .section-heading { margin-bottom: 18px; }
-.explore-utility-card .section-heading h2 { font-size: clamp(1.8rem, 3vw, 2.5rem); }
+.explore-utility-card .section-heading h2 { font-size: var(--type-subhead); }
 .explore-collection-list { display: grid; gap: 14px; }
 .explore-category-list { gap: 18px 26px; }
 .explore-discovery-link {
@@ -784,15 +1146,33 @@ a { color: inherit; }
   transition: color 180ms ease, border-color 180ms ease, opacity 180ms ease;
 }
 .explore-discovery-icon svg { display: block; }
+/* Display leading, not body leading. At 1.55 these names were set to the rhythm of the
+   prose beneath them, where an app card title of the same face, size and weight sits at
+   1.15; the name floated away from the description it belongs to. */
 .explore-discovery-link strong {
   display: block;
   font-family: var(--display);
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   font-weight: 600;
+  line-height: 1.2;
   transition: color 180ms ease;
 }
+/* A real colour, not an opacity. The tag chip counts are dimmed with opacity .72, which
+   computes to 3.47:1 in light theme and fails AA; --muted holds 7.35:1 on this ground. */
+/* The count belongs to the name, so it inherits the name's face, size and weight and
+   differs only in colour. Set two steps down at .78em and weight 500 it read as a second
+   style dropped onto the line rather than part of the label. A real colour, not an
+   opacity: the tag chip counts are dimmed with opacity .72, which computes to 3.47:1 in
+   light theme and fails AA, where --muted holds 7.35:1 on this ground. */
+.explore-discovery-count {
+  color: var(--muted);
+  transition: color 180ms ease;
+}
+
 .explore-discovery-link:hover strong,
 .explore-discovery-link:focus-visible strong { color: var(--accent); }
+.explore-discovery-link:hover .explore-discovery-count,
+.explore-discovery-link:focus-visible .explore-discovery-count { color: var(--accent); }
 .explore-discovery-link:hover .explore-discovery-icon,
 .explore-discovery-link:focus-visible .explore-discovery-icon {
   color: var(--accent);
@@ -802,21 +1182,32 @@ a { color: inherit; }
   display: block;
   margin-top: 4px;
   color: var(--muted);
-  font-size: .92rem;
+  font-size: 1rem;
   line-height: 1.45;
 }
+/* Both of these have to outrank `.explore-discovery-link small`, which owns `display`
+   for every description in a discovery row (the collection rows use it too, so the
+   `display: block` cannot simply move here). That rule is (0,1,1); a bare
+   `.explore-category-description-mobile` is (0,1,0) and loses to it, which is why the
+   desktop and mobile lines both rendered, at every width. A responsive swap under a
+   selector that already sets `display` has to be written at the same reach or it is
+   silently dead. */
+.explore-discovery-link small.explore-category-description-mobile { display: none; }
 .explore-popular-tags { min-height: 0; padding-top: 4px; }
 .explore-popular-tags .tag { gap: 6px; }
+/* A real colour, not an opacity. Dimmed with `opacity: .72` the count blended to 3.47:1
+   in light theme and failed AA at this size; --muted holds about 6.6:1 on the chip. The
+   category and collection counts in the discovery card are set the same way. */
 .explore-popular-tags .tag span {
-  color: inherit;
-  font-size: .72rem;
+  color: var(--muted);
+  font-size: var(--type-label);
   font-variant-numeric: tabular-nums;
-  opacity: .72;
 }
 .explore-subscribe-card {
   display: grid;
   gap: 14px;
-  padding: clamp(22px, 3vw, 30px);
+  /* 24px, the padding every other card on the page uses. */
+  padding: 24px;
   border-color: var(--line);
   background: var(--surface);
   box-shadow: var(--shadow);
@@ -852,16 +1243,30 @@ a { color: inherit; }
   margin-left: 60px;
 }
 .explore-subscribe-body {
-  max-width: 640px;
+  max-width: var(--measure);
   margin: 0;
   color: var(--muted);
-  font-size: .98rem;
+  font-size: 1rem;
   line-height: 1.55;
 }
+/* An inline link in a sentence is exempt from WCAG 2.5.8, and padding one out would
+   break the line it sits in. The hit area is expanded with a pseudo-element instead: the
+   link's own box stays 19px so the sentence is untouched, while what a finger can reach
+   is 24px. */
 .explore-subscribe-body a {
+  position: relative;
   color: inherit;
   text-decoration: underline;
   text-underline-offset: 3px;
+}
+.explore-subscribe-body a::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 0;
+  height: 24px;
+  transform: translateY(-50%);
 }
 .explore-subscribe-body a:hover,
 .explore-subscribe-body a:focus-visible { color: var(--accent); }
@@ -937,169 +1342,15 @@ a { color: inherit; }
   padding-bottom: 0;
   border-top: 0;
 }
-.explore-section-dek {
-  max-width: 70ch;
-  margin: 0 0 24px;
-  color: var(--muted);
-  font-size: 1rem;
-  line-height: 1.58;
-}
-.explore-carousel-shell { display: grid; gap: 12px; }
-.explore-carousel-stage {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 12px;
-  background: transparent;
-}
-.explore-carousel-viewport {
-  overflow: hidden;
-  padding: 12px 42px 8px;
-  cursor: grab;
-  outline: 0;
-  touch-action: pan-y;
-  --carousel-drag: 0px;
-}
-.explore-carousel-viewport:focus-visible {
-  border-radius: 14px;
-  outline: 2px solid color-mix(in srgb, var(--accent) 38%, transparent);
-  outline-offset: 3px;
-}
-.explore-carousel-viewport.is-dragging { cursor: grabbing; user-select: none; }
-.explore-carousel-track {
-  position: relative;
-  min-height: 468px;
-  background: transparent;
-}
-.explore-carousel-card-slot {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: min(430px, calc(100% - 220px));
-  visibility: hidden;
-  background: transparent;
-  box-shadow: none;
-  filter: none;
-  transform-origin: center center;
-  opacity: 0;
-  pointer-events: none;
-  transition: transform 320ms cubic-bezier(.16, 1, .3, 1), opacity 220ms ease;
-}
-.explore-carousel-card-slot[data-position] { visibility: visible; }
-.explore-carousel-card-slot .app-card {
-  min-height: 450px;
-  height: 100%;
-  padding: 28px;
-  background: var(--surface);
-  box-shadow: none;
-  filter: none;
-}
-.explore-carousel-card-slot .app-summary { min-height: 126px; }
-.explore-carousel-card-slot .best-for { min-height: 92px; }
-.explore-carousel-card-slot .tag-list { min-height: 78px; }
-.explore-carousel-card-slot[data-position="0"] {
-  z-index: 5;
-  transform: translateX(calc(-50% + var(--carousel-drag))) translateY(0) scale(1);
-  opacity: 1;
-  pointer-events: auto;
-}
-.explore-carousel-card-slot .app-card:hover,
-.explore-carousel-card-slot .app-card:focus-within {
-  background: var(--surface);
-  box-shadow: none;
-  filter: none;
-}
-.explore-carousel-card-slot[data-position="-1"] {
-  z-index: 3;
-  transform: translateX(calc(-50% - 60% + var(--carousel-drag))) translateY(18px) rotate(-5deg) scale(.94);
-  opacity: 1;
-  pointer-events: auto;
-}
-.explore-carousel-card-slot[data-position="1"] {
-  z-index: 3;
-  transform: translateX(calc(-50% + 60% + var(--carousel-drag))) translateY(18px) rotate(5deg) scale(.94);
-  opacity: 1;
-  pointer-events: auto;
-}
-.explore-carousel-viewport.is-dragging .explore-carousel-card-slot { transition: none; }
-.explore-carousel-arrow {
-  display: grid;
-  width: 24px;
-  height: 24px;
-  padding: 0;
-  place-items: center;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  color: var(--accent);
-  cursor: pointer;
-}
-.explore-carousel-arrow svg { width: 18px; height: 18px; }
-.explore-carousel-arrow:hover,
-.explore-carousel-arrow:focus-visible {
-  color: var(--accent-hover);
-  outline: 0;
-}
-.explore-carousel-footer {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 0;
-}
-.explore-carousel-directory-link {
-  border: 0;
-  background: transparent;
-  color: var(--accent);
-  font-size: var(--type-label);
-  font-weight: 800;
-  letter-spacing: .08em;
-  text-decoration: none;
-  text-transform: uppercase;
-  cursor: pointer;
-}
-.explore-carousel-directory-link:hover,
-.explore-carousel-directory-link:focus-visible {
-  color: var(--accent-hover);
-  outline: 0;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-.explore-more {
-  margin: 18px 0 0;
-  text-align: center;
-}
-.explore-more a {
-  color: var(--accent);
-  font-size: var(--type-meta);
-  font-weight: 800;
-  letter-spacing: .06em;
-  text-decoration: none;
-  text-transform: uppercase;
-}
-.explore-more a:hover,
-.explore-more a:focus-visible { color: var(--accent-hover); text-decoration: underline; text-underline-offset: 3px; }
-
-@keyframes explore-card-in {
-  from {
-    opacity: 0;
-    filter: blur(8px);
-  }
-
-  to {
-    opacity: 1;
-    filter: blur(0);
-  }
+@media (pointer: coarse) {
+  .feature-card a { min-height: 44px; }
 }
 
-.about-content { max-width: 68ch; margin-top: 42px; color: var(--muted); font-size: 1rem; }
-.about-content > p { margin: 0; }
-.about-content > p + p { margin-top: 18px; }
-.about-content .about-intro { color: var(--text); font-size: clamp(1.12rem, 1.8vw, 1.38rem); line-height: 1.55; }
-.about-content section { margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--line); }
-.about-content h2 { margin: 0 0 18px; color: var(--text); font-family: var(--display); font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 500; letter-spacing: -.025em; line-height: 1.05; }
-.about-content section p { margin: 0; }
-.about-content section p + p { margin-top: 16px; }
+/* The measure belongs to the prose, not to the page: About's headings and
+   section rules run the full shell like every other page. */
+.about-content { margin-top: 18px; padding-bottom: var(--section-space); color: var(--muted); font-size: 1rem; }
+.about-page p:not(.dek) { max-width: var(--measure); margin: 0; color: var(--muted); }
+.about-page p:not(.dek) + p { margin-top: 18px; }
 .archive-list { display: grid; gap: 14px; margin-top: 50px; }
 .archive-current-link { display: none; }
 .archive-card { display: grid; gap: 10px; padding: 25px; text-decoration: none; box-shadow: none; }
@@ -1129,60 +1380,134 @@ a { color: inherit; }
   background: color-mix(in srgb, var(--category-accent) 75%, var(--surface));
   color: color-mix(in srgb, var(--text) 80%, var(--accent));
 }
-.category-directory-card strong { font-size: 1.5rem; }
+.category-directory-card strong { font-size: 1.4rem; }
 .category-directory-card span { font-size: var(--type-meta); font-weight: 700; }
-.category-directory-card em { max-width: 70ch; }
-.directory-toolbar {
+.category-directory-card em { max-width: var(--measure); }
+/* A row, not a six-track grid. The count leads and the controls sit at the end, pushed
+   there by the count's own auto margin. The grid version reserved six tracks for three
+   items and left tracks 3 and 4 empty purely as spacers, which reads as a layout until
+   a fourth control arrives and then reads as a puzzle. */
+.directory-filter-bar {
+  position: relative;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-wrap: wrap;
   gap: 16px;
+  align-items: stretch;
   margin-top: clamp(28px, 3.8vw, 40px);
 }
-.directory-count {
-  margin: 0;
+.directory-filter-bar > .directory-filter,
+.directory-filter-bar > .directory-sort { flex: 0 0 180px; }
+.directory-filter-bar--no-filters > .directory-sort { flex: 0 0 180px; }
+.directory-search {
+  display: grid;
+  flex: 0 1 280px;
+  grid-template-columns: auto minmax(0, 1fr);
+  min-width: 0;
+  min-height: 52px;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 13px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+}
+.directory-search svg {
+  width: 20px;
+  height: 20px;
   color: var(--muted);
-  font-size: var(--type-meta);
+}
+.directory-query-input {
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  outline: 0;
+}
+.directory-query-input::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
+.directory-query-input:disabled { cursor: not-allowed; }
+.filter-option input {
+  width: 15px;
+  height: 15px;
+  flex: none;
+  margin: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+.filter-option input:disabled { cursor: default; }
+/* The count reads out, it does not act. Given the card treatment it looked like a third
+   control sitting beside Filter and Sort, and a boxed, centred one at that. It keeps the
+   row's height so it still sits on the controls' centre line, and nothing else. */
+.directory-count {
+  display: flex;
+  min-height: 52px;
+  align-items: center;
+  justify-content: flex-start;
+  /* The auto right margin is what pushes the controls to the end of the row. It has to
+     live in the shorthand: a separate `margin-right` above this line was silently reset
+     by it. */
+  margin: 0 auto 0 0;
+  padding: 0;
+  color: var(--muted);
+  /* The metadata role: a step below the controls beside it, tracked and muted, so a
+     readout is not mistaken for something to press. */
+  font-size: var(--type-label);
   font-weight: 700;
   letter-spacing: .04em;
+  text-align: left;
   white-space: nowrap;
 }
 .directory-sort {
-  display: inline-flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 10px;
-  color: var(--muted);
-  font-size: var(--type-label);
-  font-weight: 800;
-  letter-spacing: .08em;
-  text-transform: uppercase;
+  display: flex;
+  min-width: 0;
+  min-height: 52px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
 }
 .directory-select {
   position: relative;
-  --control-width: 154px;
-  width: var(--control-width);
+  width: 100%;
+  min-width: 0;
   color: var(--text);
-  font-size: var(--type-label);
-  font-weight: 800;
+  /* The control-label role: metadata size at weight 700, shared with `.button`. These
+     triggers were a step smaller and two weights heavier than every other control. */
+  font-size: var(--type-meta);
+  font-weight: 700;
   letter-spacing: 0;
   text-align: left;
   text-transform: none;
 }
+.directory-filter-bar > .directory-select {
+  min-height: 52px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+}
 .directory-select-trigger {
   display: flex;
   width: 100%;
-  min-height: 38px;
+  min-height: 100%;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 7px 13px;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  background: var(--surface);
+  padding: 0 16px;
+  border: 0;
+  border-radius: 11px;
+  background: transparent;
   color: var(--text);
   font: inherit;
   cursor: pointer;
+}
+.directory-select-trigger:hover {
+  background: color-mix(in srgb, var(--surface-strong) 72%, transparent);
 }
 .directory-select-trigger svg {
   width: 16px;
@@ -1191,30 +1516,29 @@ a { color: inherit; }
   transition: transform 160ms ease;
 }
 .directory-select.is-open .directory-select-trigger {
-  position: relative;
-  z-index: 2;
-  border-bottom-color: transparent;
-  border-radius: 10px 10px 0 0;
+  background: color-mix(in srgb, var(--surface-strong) 72%, transparent);
 }
 .directory-select.is-open .directory-select-trigger svg { transform: rotate(180deg); }
 .directory-select-options {
   position: absolute;
   z-index: 20;
-  top: calc(100% - 1px);
+  /* 12px, the same gap the mobile nav menu leaves below the header edge. At 1px the
+     panel butted against its own trigger and the query field inside it read as part of
+     the button rather than as the top of a menu. */
+  top: calc(100% + 12px);
   right: 0;
   width: 100%;
   overflow: hidden;
   border: 1px solid var(--line);
-  border-top: 0;
-  border-radius: 0 0 10px 10px;
+  border-radius: 10px;
   background: var(--surface);
   box-shadow: var(--shadow);
 }
-.directory-select-options[hidden] { display: none; }
 .directory-select-options button {
   display: block;
   width: 100%;
-  padding: 10px 13px;
+  min-height: 38px;
+  padding: 0 13px;
   border: 0;
   background: transparent;
   color: var(--text);
@@ -1229,15 +1553,8 @@ a { color: inherit; }
   outline: 0;
 }
 .directory-select-trigger:focus-visible {
-  border-color: var(--accent);
-  outline: 2px solid color-mix(in srgb, var(--accent) 30%, transparent);
-  outline-offset: 2px;
-}
-.directory-controls {
-  display: inline-flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 10px;
+  outline: 2px solid var(--accent);
+  outline-offset: -3px;
 }
 .directory-filter-label {
   display: inline-flex;
@@ -1253,39 +1570,29 @@ a { color: inherit; }
   padding: 0 5px;
   border-radius: 999px;
   background: var(--surface-strong);
-  color: var(--muted);
+  color: var(--text);
   font-size: .75rem;
   font-variant-numeric: tabular-nums;
   font-weight: 700;
   line-height: 1;
 }
-.directory-filter-count[hidden] { display: none; }
 .directory-filter.has-custom-filters .directory-filter-count {
   background: color-mix(in srgb, var(--accent) 16%, transparent);
   color: var(--accent);
 }
 .directory-filter-panel {
-  width: 268px;
-  border-top: 1px solid var(--line);
-  border-radius: 10px 0 10px 10px;
-}
-.directory-filter.is-open .directory-select-trigger::after {
-  position: absolute;
-  right: 0;
-  bottom: -2px;
-  left: 0;
-  height: 2px;
-  background: var(--surface);
-  content: "";
-}
-.filter-note {
-  margin: 0;
-  padding: 11px 13px 9px;
-  border-bottom: 1px solid var(--line);
-  color: var(--muted);
-  font-size: .76rem;
-  font-weight: 400;
-  line-height: 1.45;
+  right: auto;
+  /* -1px, not 0: `left` is measured from the containing block's padding box, so `left: 0`
+     starts the panel one border inside the trigger and its hairline misses the trigger's
+     by a pixel the whole way down. */
+  left: -1px;
+  /* The panel spans both controls, so its right edge has to land on Sort's right edge.
+     A percentage on an absolutely positioned box resolves against the containing block's
+     PADDING box: the trigger inside its own 1px borders. So 200% measures 2 x 178px and
+     comes up 4px short of the two 180px triggers, and the added term owes the gap plus
+     those four pixels: 16 + 4 = 20, giving exactly the 376px the pair spans. The old
+     `+ 16px` rendered 372px and left the panel 3px inside Sort's right edge. */
+  width: calc(200% + 20px);
 }
 .filter-scroll {
   max-height: min(282px, 42vh);
@@ -1301,16 +1608,17 @@ a { color: inherit; }
   margin: 0;
   padding: 10px 13px 5px;
   color: var(--muted);
-  font-size: .72rem;
+  font-size: var(--type-label);
   font-weight: 800;
   letter-spacing: .1em;
   text-transform: uppercase;
 }
 .filter-option {
   display: flex;
+  min-height: 34px;
   align-items: center;
   gap: 10px;
-  padding: 7px 13px;
+  padding: 0 13px;
   color: var(--text);
   font-size: var(--type-label);
   font-weight: 700;
@@ -1326,14 +1634,6 @@ a { color: inherit; }
 .filter-option:has(input:disabled):hover {
   background: transparent;
 }
-.filter-option input {
-  width: 15px;
-  height: 15px;
-  flex: none;
-  margin: 0;
-  accent-color: var(--accent);
-  cursor: pointer;
-}
 .filter-option-name {
   flex: 1;
   min-width: 0;
@@ -1341,7 +1641,7 @@ a { color: inherit; }
 }
 .filter-option-count {
   flex: none;
-  color: var(--muted);
+  color: var(--text);
   font-size: .75rem;
   font-variant-numeric: tabular-nums;
 }
@@ -1352,7 +1652,8 @@ a { color: inherit; }
   border-top: 1px solid var(--line);
 }
 .filter-reset {
-  padding: 6px 11px;
+  min-height: 32px;
+  padding: 0 11px;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: transparent;
@@ -1366,8 +1667,21 @@ a { color: inherit; }
 .filter-reset:focus-visible {
   border-color: color-mix(in srgb, var(--accent) 42%, var(--line));
   color: var(--accent);
-  outline: 0;
+  outline: 2px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  outline-offset: 2px;
 }
+/* The first-paint cap. The script removes the attribute and takes over with `hidden`, so
+   this rule only ever governs the moment before the module runs, and the noscript block in
+   AppDirectory undoes it entirely when there is no script to take over. The 25 is
+   DIRECTORY_BATCH + 1; the two are kept in step by hand. */
+.directory-grid[data-directory-cap] > *:nth-child(n+25) { display: none; }
+
+.directory-more {
+  display: flex;
+  justify-content: center;
+  margin-top: 28px;
+}
+
 .directory-empty {
   display: flex;
   align-items: center;
@@ -1378,36 +1692,44 @@ a { color: inherit; }
   border: 1px dashed var(--line);
   border-radius: 12px;
   color: var(--muted);
-  font-size: .92rem;
+  font-size: 1rem;
 }
-.directory-empty[hidden] { display: none; }
 .directory-grid { margin-top: 16px; }
-.directory-grid .app-card[hidden] { display: none; }
-
-@media (min-width: 921px) {
-  @supports (grid-template-rows: subgrid) {
-    .directory-grid .app-card {
-      display: grid;
-      grid-row: span 4;
-      grid-template-columns: minmax(0, 1fr);
-      grid-template-rows: subgrid;
-    }
-    .directory-grid .app-summary { margin-bottom: 0; }
-    .directory-grid .tag-list { min-height: 74px; padding-top: 0; }
-    .directory-grid .source-line { min-height: 38px; padding-top: 0; }
-  }
-}
 
 @media (hover: hover) and (pointer: fine) {
+  /* The One Hover Rule: rest at Ambient Card, cross to Hover Lift over 320ms on
+     the exponential ease-out, under a fine pointer only. */
   .app-card,
   .feature-card,
-  .archive-card { transition: box-shadow 180ms ease, border-color 180ms ease, background-color 180ms ease; }
+  .archive-card { transition: box-shadow 320ms cubic-bezier(.16, 1, .3, 1), border-color 320ms cubic-bezier(.16, 1, .3, 1), background-color 320ms cubic-bezier(.16, 1, .3, 1); }
   .app-card:hover,
   .feature-card:hover,
   .archive-card:hover { border-color: color-mix(in srgb, var(--accent) 42%, var(--line)); background: var(--surface); box-shadow: var(--shadow-hover); }
+
+  /* That shorthand would drop the pick card's wash, and the card already rests at
+     Hover Lift, so it needs its own answer to the pointer. The light gives it: the
+     drift continues and the accent gains depth under the card, crossing on the same
+     320ms the rule above establishes. */
+  .hero-pick-card.has-pick-accent:hover,
+  .hero-pick-card.has-pick-accent:focus-within {
+    box-shadow:
+      var(--shadow-hover),
+      0 16px 44px color-mix(in srgb, var(--pick-accent) 24%, transparent);
+  }
 }
 
 @media (max-width: 920px) {
+  /* 920px is where the whole site drops to one column, so the rail stacks under
+     the masthead here too. It stays after the copy in DOM order, so reading and
+     focus order do not change when the columns collapse. */
+  .app-detail-hero {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+  }
+  /* No rule here either. The 28px the collapse already opens up is the separation;
+     a hairline would read as a seam between two halves of the same block. */
+  .app-detail-rail { padding-top: 2px; }
+
   .site-header { min-height: 76px; }
   .brand-mark { width: 42px; height: 42px; }
   /* Stacked, the wave stops being the hero's floor and becomes a divider
@@ -1435,7 +1757,13 @@ a { color: inherit; }
   .home-hero-pick { order: 3; }
   .home-hero + .section { border-top: 1px solid var(--line); }
   .home-hero-pick-title {
-    display: block;
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip: auto;
+    clip-path: none;
+    white-space: normal;
     margin: 0 0 22px;
     font-family: var(--display);
     font-size: var(--type-subhead);
@@ -1446,6 +1774,18 @@ a { color: inherit; }
   }
   
   .grid { grid-template-columns: 1fr; }
+  .directory-filter-bar,
+  .directory-filter-bar--no-filters {
+    gap: 12px;
+  }
+  .directory-count { width: 100%; margin: 0; }
+  .directory-search { flex: 1 1 100%; }
+  .directory-filter-bar > .directory-filter,
+  .directory-filter-bar > .directory-sort,
+  .directory-filter-bar--no-filters > .directory-sort { flex: 1 1 0; }
+  /* Same correction on the stacked row, where the triggers are flex: 1 1 0 and the pair
+     spans the whole bar: 12px gap + 4px of border. */
+  .directory-filter-panel { width: calc(200% + 16px); }
   .editors-pick-card {
     display: flex;
     min-height: auto;
@@ -1456,59 +1796,38 @@ a { color: inherit; }
   .app-summary,
   .best-for,
   .tag-list,
-  .source-line,
   .reading-card h3,
   .reading-card .reading-source,
   .reading-card .reading-description { min-height: 0; }
 }
 
-@media (min-width: 681px) and (max-width: 1100px) {
-  .hero {
-    min-height: 540px;
-    grid-template-columns: minmax(320px, .82fr) minmax(0, 1.18fr);
-    padding: 42px clamp(34px, 5vw, 56px) 42px;
-  }
-  .hero-copy { max-width: 395px; }
-}
-
 @media (max-width: 680px) {
   :root { --content-inset: 24px; }
   .site-header { position: sticky; top: 0; width: 100%; min-height: 70px; gap: 10px; margin: 0; padding: 0 16px; }
-  .issue > .section,
-  .issue > .note { width: min(var(--content-width), calc(100% - var(--content-inset))); }
+  .issue > .section { width: min(var(--content-width), calc(100% - var(--content-inset))); }
   .brand-mark { width: 38px; height: 38px; }
   .brand { gap: 10px; }
   .site-header nav { gap: 10px; }
   .theme-toggle { width: 44px; height: 44px; }
   .theme-toggle svg { width: 19px; height: 19px; }
-  .hero { min-height: 760px; padding: 38px 24px 28px; }
-  .issue:not(.is-homepage) .hero {
-    padding: var(--page-start-space) 0 24px;
-  }
-  .hero h1 { font-size: clamp(3.05rem, 15vw, 4.15rem); }
-  .hero .dek { max-width: 360px; font-size: .94rem; }
-  .button { width: 180px; min-height: 44px; }
   .home-hero { --sea-h: 72px; padding-block: 30px 46px; }
-  .section { padding: 46px 0; }
   .content-divider { height: 68px; }
   .video-section { padding-top: 20px; }
-  .note::after { right: -22%; width: 90%; opacity: .09; }
-  :root { --page-start-space: 38px; }
+  :root { --page-start-space: 38px; --type-page-title: clamp(2.8rem, 12vw, 3.75rem); }
   .archive-page { padding: var(--page-start-space) 0 36px; }
   .archive-current-link { display: inline-flex; margin-top: 22px; }
   .archive-current-link + .archive-list { margin-top: 34px; }
   .app-detail-page { padding: var(--page-start-space) 0 36px; }
   .app-detail-hero { padding: 0 0 24px; }
-  .archive-page h1 { font-size: clamp(2.8rem, 12vw, 3.75rem); }
-  .app-detail-hero h1 { font-size: clamp(3.15rem, 14vw, 4.7rem); }
-  .app-detail-hero .dek { font-size: 1.28rem; }
-  .app-detail-actions { flex-direction: column; }
-  .app-detail-category-grid,
+  .app-detail-actions { flex-direction: column; align-items: flex-start; }
   .explore-subscribe-card { grid-template-columns: 1fr; }
   .explore-utility-grid { grid-template-columns: 1fr; }
   .explore-utility-tags-panel { border-top: 1px solid var(--line); border-left: 0; }
   .explore-category-list { grid-template-columns: 1fr; }
-  .explore-category-list { row-gap: 18px; }
+  .explore-category-list { row-gap: 12px; }
+  .explore-category-link { min-height: 0; }
+  .explore-discovery-link small.explore-category-description-desktop { display: none; }
+  .explore-discovery-link small.explore-category-description-mobile { display: block; }
   .explore-discovery-section { padding-top: 20px; padding-bottom: 0; }
   .explore-subscribe-heading { align-items: start; }
   .explore-page .explore-section:has(+ .explore-rss-section) { padding-bottom: 24px; }
@@ -1524,64 +1843,16 @@ a { color: inherit; }
     height: 44px;
     justify-self: start;
   }
-  .app-detail-panel { grid-template-columns: 1fr; }
-  .app-detail-panel { gap: 24px; padding-bottom: 24px; }
-  .app-detail-taxonomy + .app-detail-section,
-  .issue:not(.is-homepage) .hero + .section { padding-top: 24px; }
-  .explore-carousel-stage {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
+  .directory-filter-bar {
+    margin-top: 28px;
   }
-  .explore-carousel-track { min-height: 360px; }
-  .explore-carousel-card-slot {
-    width: min(340px, calc(100% - 96px));
-  }
-  .explore-carousel-card-slot .app-card {
-    height: 340px;
-    min-height: 340px;
-    overflow: hidden;
-    padding: 22px;
-  }
-  .explore-carousel-card-slot .app-summary {
-    min-height: 0;
-    margin-bottom: 18px;
-  }
-  .explore-carousel-card-slot .app-summary p,
-  .explore-carousel-card-slot .best-for {
-    display: -webkit-box;
-    min-height: 0;
-    overflow: hidden;
-    line-height: 1.45;
-    -webkit-box-orient: vertical;
-  }
-  .explore-carousel-card-slot .app-summary p {
-    max-height: calc(1.45em * 4);
-    -webkit-line-clamp: 4;
-    line-clamp: 4;
-  }
-  .explore-carousel-card-slot .best-for {
-    max-height: calc(1.45em * 4);
-    -webkit-line-clamp: 4;
-    line-clamp: 4;
-  }
-  .explore-carousel-card-slot .tag-list,
-  .explore-carousel-card-slot .source-line {
-    display: none;
-  }
-  .explore-carousel-viewport { padding: 14px 18px 10px; }
-  .explore-carousel-card-slot[data-position="-1"] {
-    transform: translateX(calc(-50% - 52% + var(--carousel-drag))) translateY(16px) rotate(-4deg) scale(.92);
-  }
-  .explore-carousel-card-slot[data-position="1"] {
-    transform: translateX(calc(-50% + 52% + var(--carousel-drag))) translateY(16px) rotate(4deg) scale(.92);
-  }
-  .explore-carousel-arrow {
-    justify-self: center;
-  }
-  .explore-carousel-arrow.is-prev { order: 2; justify-self: end; }
-  .explore-carousel-arrow.is-next { order: 3; justify-self: start; }
-  .explore-carousel-viewport { grid-column: 1 / -1; order: 1; }
-  .directory-toolbar { margin-top: 28px; }
+  .directory-search { gap: 10px; padding: 10px 14px; }
+  .directory-search svg { width: 21px; height: 21px; }
+  .directory-query-input { font-size: 16px; }
+  .directory-search,
+  .directory-filter-bar > .directory-select,
+  .directory-sort,
+  .directory-count { min-height: 56px; }
 }
 
 @media (pointer: coarse) {
@@ -1589,10 +1860,13 @@ a { color: inherit; }
     width: 44px;
     height: 44px;
   }
+  .collection-badge { min-height: 44px; }
+  .directory-select-options button,
+  .filter-option,
+  .filter-reset { min-height: 44px; }
 }
 
 @media (max-width: 560px) {
-  .directory-toolbar { position: relative; }
   .directory-filter { position: static; }
   .directory-filter-panel {
     top: calc(100% + 6px);
@@ -1600,11 +1874,6 @@ a { color: inherit; }
     left: 0;
     width: auto;
     border-top: 1px solid var(--line);
-    border-radius: 10px;
-  }
-  .directory-filter.is-open .directory-select-trigger::after { display: none; }
-  .directory-filter.is-open .directory-select-trigger {
-    border-bottom-color: var(--line);
     border-radius: 10px;
   }
 }
@@ -1617,36 +1886,6 @@ a { color: inherit; }
     width: 100%;
     max-width: none;
   }
-  .explore-carousel-track { min-height: 336px; }
-  .explore-carousel-card-slot {
-    width: min(320px, calc(100% - 78px));
-  }
-  .explore-carousel-card-slot .app-card {
-    height: 316px;
-    min-height: 316px;
-    padding: 20px 18px;
-  }
-  .explore-carousel-card-slot[data-position="-1"] {
-    transform: translateX(calc(-50% - 58% + var(--carousel-drag))) translateY(16px) rotate(-4deg) scale(.92);
-  }
-  .explore-carousel-card-slot[data-position="1"] {
-    transform: translateX(calc(-50% + 58% + var(--carousel-drag))) translateY(16px) rotate(4deg) scale(.92);
-  }
-  .directory-toolbar { flex-wrap: wrap; row-gap: 12px; }
-  .directory-controls { flex: 1 1 100%; }
-  .directory-controls .directory-select { flex: 1 1 0; width: auto; }
-  .directory-toolbar--no-filter {
-    flex-wrap: nowrap;
-    align-items: flex-end;
-  }
-  .directory-toolbar--no-filter .directory-controls {
-    flex: 0 0 auto;
-    margin-left: auto;
-  }
-  .directory-toolbar--no-filter .directory-select {
-    flex: 0 0 auto;
-    width: var(--control-width);
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1656,6 +1895,8 @@ a { color: inherit; }
   .archive-card,
   .explore-category-link,
   .app-card h3 a,
+  .app-detail-category-row,
+  .collection-badge,
   .tag,
   .button,
   .theme-toggle,
@@ -1664,10 +1905,7 @@ a { color: inherit; }
   .feature-card:hover,
   .archive-card:hover,
   .theme-toggle:hover { transform: none; }
-  .explore-carousel-card-slot { transition: none; }
   .content-divider.is-lit .brand-mark-ping { animation: none; }
-}
-
-@media (max-width: 680px) {
-  .hero { min-height: 660px; }
+  .hero-pick-card.has-pick-accent::before,
+  .hero-pick-card.has-pick-accent::after { animation: none; }
 }

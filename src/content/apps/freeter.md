@@ -6,4 +6,5 @@ tags: [productivity, launcher, automation, utility]
 categories: [productivity-workflow, mac-utilities-customization]
 source: Official Freeter product information
 homepage: https://freeter.io/
+icon: /app-icons/freeter.png
 ---

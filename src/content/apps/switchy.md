@@ -6,4 +6,5 @@ tags: [menubar, utility, productivity, network]
 categories: [mac-utilities-customization, productivity-workflow]
 source: Product Hunt recent Mac launches and official homepage
 homepage: https://mangobuns.com/switchy/
+icon: /app-icons/switchy.png
 ---

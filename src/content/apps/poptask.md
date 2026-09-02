@@ -6,4 +6,5 @@ tags: [tasks, menubar, automation, productivity]
 categories: [productivity-workflow, mac-utilities-customization]
 source: Product Hunt launch and official homepage
 homepage: https://poptask.bar/
+icon: /app-icons/poptask.png
 ---

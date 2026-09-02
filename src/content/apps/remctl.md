@@ -6,4 +6,5 @@ tags: [automation, reminders, cli, open-source]
 categories: [productivity-workflow, developer-tools]
 source: MacStories and official GitHub repository
 homepage: https://github.com/viticci/remctl
+icon: /app-icons/remctl.png
 ---

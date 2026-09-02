@@ -6,4 +6,5 @@ tags: [remote, windows, ios, productivity]
 categories: [mac-utilities-customization, productivity-workflow]
 source: r/macapps July 2026 App Pile and official homepage
 homepage: https://workpane.co/
+icon: /app-icons/workpane.png
 ---

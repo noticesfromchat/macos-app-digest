@@ -6,4 +6,5 @@ tags: [productivity, menubar, tasks, local, open-source]
 categories: [productivity-workflow, mac-utilities-customization]
 source: Product Hunt Mac recent launches and canonical GitHub repository
 homepage: https://github.com/vkpdeveloper/gutta
+icon: /app-icons/gutta.png
 ---

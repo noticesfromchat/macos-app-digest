@@ -6,4 +6,5 @@ tags: [launcher, files, productivity, customization]
 categories: [mac-utilities-customization, files-research-documents, productivity-workflow]
 source: Official MultiDock 2 product information
 homepage: https://noteifyapp.com/multidock/
+icon: /app-icons/multidock-2.png
 ---

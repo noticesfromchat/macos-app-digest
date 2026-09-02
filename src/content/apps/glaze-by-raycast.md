@@ -6,4 +6,5 @@ tags: [ai, automation, developer, productivity]
 categories: [ai-agents, productivity-workflow, developer-tools]
 source: Product Hunt, Raycast and official homepage
 homepage: https://www.glaze.app/
+icon: /app-icons/glaze-by-raycast.png
 ---

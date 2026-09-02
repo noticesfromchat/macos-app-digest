@@ -58,6 +58,13 @@ const tagOptions = [
   .map((value) => ({ value, count: contextualTagCount(value) }))
   .filter((option) => option.count > 0);
 
+/* The directory renders every app so crawlers, the search index and a reader without
+   JavaScript all get the whole catalogue, then shows the first batch and reveals the rest
+   on request. Explore is the page that needs it: 102 cards in one column ran past 40,000px
+   on a phone. The cap is applied in CSS at parse time rather than by the script, so the
+   first paint is already short and the page does not collapse from full height once the
+   module runs. Keep this in step with the nth-child rule in global.css. */
+const DIRECTORY_BATCH = 24;
 const sortedApps = [...apps].sort((a, b) =>
   a.data.name.localeCompare(b.data.name, undefined, { sensitivity: 'base' })
 );
@@ -68,120 +75,151 @@ const sortedApps = [...apps].sort((a, b) =>
   data-default-type={defaultFilterType}
   data-default-value={defaultFilterValue}
 >
-  <div class:list={['directory-toolbar', !showFilterMenu && 'directory-toolbar--no-filter']}>
+  {/* The page title is the h1 and every card title is an h3, so without this the
+      directory skipped a level. It names the region for a screen reader and keeps
+      the outline whole; there is no visible heading here by design. */}
+  <h2 class="sr-only">Apps</h2>
+  <div class:list={['directory-filter-bar', !showFilterMenu && 'directory-filter-bar--no-filters']}>
     <p class="directory-count" aria-live="polite" data-directory-count>
       {apps.length} {apps.length === 1 ? 'app' : 'apps'}
     </p>
-    <div class="directory-controls">
-      {showFilterMenu && (
-        <div class="directory-select directory-filter" data-filter-menu>
-          <button
-            class="directory-select-trigger"
-            type="button"
-            aria-haspopup="true"
-            aria-expanded="false"
-            data-filter-trigger
+
+    <div class="directory-search">
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <circle cx="11" cy="11" r="8"></circle>
+        <path d="m21 21-4.3-4.3"></path>
+      </svg>
+      <label class="sr-only" for={`directory-query-${Astro.url.pathname.replace(/[^a-z0-9]/gi, '-')}`}>
+        Search apps
+      </label>
+      <input
+        id={`directory-query-${Astro.url.pathname.replace(/[^a-z0-9]/gi, '-')}`}
+        class="directory-query-input"
+        type="search"
+        autocomplete="off"
+        spellcheck="false"
+        placeholder="Search apps"
+        maxlength="100"
+        disabled
+        data-directory-query
+      />
+    </div>
+
+    {showFilterMenu && (
+      <div class="directory-select directory-filter" data-filter-menu>
+        <button
+          class="directory-select-trigger"
+          type="button"
+          aria-haspopup="true"
+          aria-expanded="false"
+          data-filter-trigger
+        >
+          <span class="directory-filter-label">
+            Filter
+            <span class="directory-filter-count" hidden data-filter-count></span>
+          </span>
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
           >
-            <span class="directory-filter-label">
-              Filter
-              <span class="directory-filter-count" hidden data-filter-count></span>
-            </span>
-            <svg
-              aria-hidden="true"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="m6 9 6 6 6-6"></path>
-            </svg>
-          </button>
-          <div
-            class="directory-select-options directory-filter-panel"
-            role="group"
-            aria-label="Filter apps"
-            hidden
-            data-filter-panel
-          >
-            <p class="filter-note">Show apps matching all selected filters.</p>
-            <div class="filter-scroll">
-              {collectionOptions.length > 0 && (
-                <div class="filter-group" role="group" aria-labelledby="filter-heading-collections">
-                  <p class="filter-group-label" id="filter-heading-collections">Collections</p>
-                  {collectionOptions.map(({ value, count }) => (
-                    <label class="filter-option">
-                      <input
-                        type="checkbox"
-                        value={value}
-                        data-filter-type="collection"
-                        checked={defaultFilterType === 'collection' && defaultFilterValue === value}
-                        disabled={defaultFilterType === 'collection' && defaultFilterValue === value}
-                      />
-                      <span class="filter-option-name">
-                        {collectionLabels[value] ?? value}
-                      </span>
-                      <span class="filter-option-count">{count}</span>
-                    </label>
-                  ))}
-                </div>
-              )}
-              <div class="filter-group" role="group" aria-labelledby="filter-heading-tags">
-                <p class="filter-group-label" id="filter-heading-tags">Tags</p>
-                {tagOptions.map(({ value, count }) => (
+            <path d="m6 9 6 6 6-6"></path>
+          </svg>
+        </button>
+        <div
+          class="directory-select-options directory-filter-panel"
+          role="group"
+          aria-label="Filter apps"
+          hidden
+          data-filter-panel
+        >
+          <div class="filter-scroll">
+            {collectionOptions.length > 0 && (
+              <div class="filter-group" role="group" aria-labelledby="filter-heading-collections">
+                <p class="filter-group-label" id="filter-heading-collections">Collections</p>
+                {collectionOptions.map(({ value, count }) => (
                   <label class="filter-option">
                     <input
                       type="checkbox"
                       value={value}
-                      data-filter-type="tag"
-                      checked={defaultFilterType === 'tag' && defaultFilterValue === value}
-                      disabled={defaultFilterType === 'tag' && defaultFilterValue === value}
+                      data-filter-type="collection"
+                      checked={defaultFilterType === 'collection' && defaultFilterValue === value}
+                      disabled={defaultFilterType === 'collection' && defaultFilterValue === value}
                     />
-                    <span class="filter-option-name">{value}</span>
+                    <span class="filter-option-name">{collectionLabels[value] ?? value}</span>
                     <span class="filter-option-count">{count}</span>
                   </label>
                 ))}
               </div>
-            </div>
-            <div class="filter-actions">
-              <button type="button" class="filter-reset" data-filter-reset>Reset</button>
+            )}
+            <div class="filter-group" role="group" aria-labelledby="filter-heading-tags">
+              <p class="filter-group-label" id="filter-heading-tags">Tags</p>
+              {tagOptions.map(({ value, count }) => (
+                <label class="filter-option">
+                  <input
+                    type="checkbox"
+                    value={value}
+                    data-filter-type="tag"
+                    checked={defaultFilterType === 'tag' && defaultFilterValue === value}
+                    disabled={defaultFilterType === 'tag' && defaultFilterValue === value}
+                  />
+                  <span class="filter-option-name">{value}</span>
+                  <span class="filter-option-count">{count}</span>
+                </label>
+              ))}
             </div>
           </div>
-        </div>
-      )}
-      <div class="directory-sort">
-        <div class="directory-select" data-sort-menu>
-          <button
-            class="directory-select-trigger"
-            type="button"
-            aria-haspopup="listbox"
-            aria-expanded="false"
-            data-sort-trigger
-          >
-            <span data-sort-label>A–Z</span>
-            <svg
-              aria-hidden="true"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="m6 9 6 6 6-6"></path>
-            </svg>
-          </button>
-          <div class="directory-select-options" role="listbox" aria-label="Sort apps" hidden data-sort-options>
-            <button type="button" role="option" aria-selected="true" data-sort-value="a-z">A–Z</button>
-            <button type="button" role="option" aria-selected="false" data-sort-value="z-a">Z–A</button>
-            <button type="button" role="option" aria-selected="false" data-sort-value="date-featured">Date featured</button>
+          <div class="filter-actions">
+            <button type="button" class="filter-reset" data-filter-reset>Reset filters</button>
           </div>
         </div>
       </div>
+    )}
+
+    <div class="directory-sort">
+      <div class="directory-select" data-sort-menu>
+        <button
+          class="directory-select-trigger"
+          type="button"
+          aria-haspopup="listbox"
+          aria-expanded="false"
+          data-sort-trigger
+        >
+          <span>Sort</span>
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="m6 9 6 6 6-6"></path>
+          </svg>
+        </button>
+        <div class="directory-select-options" role="listbox" aria-label="Sort apps" hidden data-sort-options>
+          <button type="button" role="option" aria-selected="true" data-sort-value="a-z">A-Z</button>
+          <button type="button" role="option" aria-selected="false" data-sort-value="z-a">Z-A</button>
+          <button type="button" role="option" aria-selected="false" data-sort-value="date-featured">Date featured</button>
+        </div>
+      </div>
     </div>
+
   </div>
-  <div class="grid directory-grid" data-app-grid>
+  <div class="grid directory-grid" data-app-grid data-directory-cap={DIRECTORY_BATCH}>
     {sortedApps.map((entry) => (
       <AppCard
         app={entry.data}
@@ -191,22 +229,75 @@ const sortedApps = [...apps].sort((a, b) =>
     ))}
   </div>
   <p class="directory-empty" hidden data-directory-empty>
-    No apps match every selected filter.
-    <button type="button" class="filter-reset" data-filter-reset>Reset filters</button>
+    <span data-directory-empty-message>No apps match every selected filter.</span>
+    <button type="button" class="filter-reset" hidden data-query-reset>Clear search</button>
+    <button type="button" class="filter-reset" hidden data-filter-reset>Reset filters</button>
   </p>
+  <div class="directory-more">
+    <button type="button" class="button" hidden data-directory-more></button>
+  </div>
+  <noscript>
+    <style>
+      /* Without the script there is no way to reveal the rest, so nothing is hidden.
+         `flex` rather than `revert` because that is what .app-card sets on itself. */
+      .directory-grid[data-directory-cap] > * { display: flex; }
+      .directory-more { display: none; }
+    </style>
+  </noscript>
 </div>
 
 <script>
+  type ClientFilterType = 'tag' | 'collection';
+
   const collator = new Intl.Collator(undefined, {
     numeric: true,
     sensitivity: 'base'
   });
+  const allowedSorts = new Set(['a-z', 'z-a', 'date-featured']);
 
   document.querySelectorAll<HTMLElement>('[data-app-directory]').forEach((directory) => {
     const grid = directory.querySelector<HTMLElement>('[data-app-grid]');
     if (!grid) return;
 
     const cards = [...grid.querySelectorAll<HTMLElement>('[data-app-name]')];
+    const queryInput = directory.querySelector<HTMLInputElement>('[data-directory-query]');
+    const directoryCount = directory.querySelector<HTMLElement>('[data-directory-count]');
+    const emptyState = directory.querySelector<HTMLElement>('[data-directory-empty]');
+    const emptyMessage = directory.querySelector<HTMLElement>('[data-directory-empty-message]');
+    const queryReset = directory.querySelector<HTMLButtonElement>('[data-query-reset]');
+    const emptyFilterReset = emptyState?.querySelector<HTMLButtonElement>('[data-filter-reset]');
+    const moreButton = directory.querySelector<HTMLButtonElement>('[data-directory-more]');
+    const filterMenu = directory.querySelector<HTMLElement>('[data-filter-menu]');
+    const filterTrigger = directory.querySelector<HTMLButtonElement>('[data-filter-trigger]');
+    const filterPanel = directory.querySelector<HTMLElement>('[data-filter-panel]');
+    const filterCount = directory.querySelector<HTMLElement>('[data-filter-count]');
+    const sortMenu = directory.querySelector<HTMLElement>('[data-sort-menu]');
+    const sortTrigger = directory.querySelector<HTMLButtonElement>('[data-sort-trigger]');
+    const sortOptions = directory.querySelector<HTMLElement>('[data-sort-options]');
+    const sortButtons = [...directory.querySelectorAll<HTMLButtonElement>('[data-sort-value]')];
+    const filters = [
+      ...directory.querySelectorAll<HTMLInputElement>('[data-filter-type]')
+    ];
+    const filterRows = filters
+      .map((filter) => filter.closest<HTMLElement>('.filter-option'))
+      .filter((row): row is HTMLElement => Boolean(row));
+    const filterGroups = filterPanel
+      ? [...filterPanel.querySelectorAll<HTMLElement>('.filter-group')]
+      : [];
+    const defaultType = directory.dataset.defaultType ?? '';
+    const defaultValue = directory.dataset.defaultValue ?? '';
+    const isDefaultFilter = (filter: HTMLInputElement) =>
+      filter.dataset.filterType === defaultType && filter.value === defaultValue;
+    const requiredFilter = filters.find((filter) => isDefaultFilter(filter));
+    const batchSize = Number(grid.dataset.directoryCap) || 24;
+    let visibleLimit = batchSize;
+    let selectedSort = 'a-z';
+
+    /* CSS owns the first-paint cap. Once the module runs, `hidden` becomes the single
+       visibility mechanism and the query field becomes interactive. */
+    grid.removeAttribute('data-directory-cap');
+    if (queryInput) queryInput.disabled = false;
+
     const menus: {
       root: HTMLElement;
       trigger: HTMLButtonElement;
@@ -262,167 +353,293 @@ const sortedApps = [...apps].sort((a, b) =>
       });
     });
 
-    const sortMenu = directory.querySelector<HTMLElement>('[data-sort-menu]');
-    const sortTrigger = directory.querySelector<HTMLButtonElement>('[data-sort-trigger]');
-    const sortLabel = directory.querySelector<HTMLElement>('[data-sort-label]');
-    const sortOptions = directory.querySelector<HTMLElement>('[data-sort-options]');
-    const sortButtons = [...directory.querySelectorAll<HTMLButtonElement>('[data-sort-value]')];
-
-    if (sortMenu && sortTrigger && sortLabel && sortOptions) {
-      let selectedValue = 'a-z';
-      const appName = (card: HTMLElement) => card.dataset.appName ?? '';
-      const featuredDate = (card: HTMLElement) => card.dataset.featuredDate ?? '';
-      const sortCards = (value: string) => {
-        cards.sort((a, b) => {
-          if (value === 'z-a') {
-            return collator.compare(appName(b), appName(a));
-          }
-
-          if (value === 'date-featured') {
-            return (
-              featuredDate(b).localeCompare(featuredDate(a))
-              || collator.compare(appName(a), appName(b))
-            );
-          }
-
-          return collator.compare(appName(a), appName(b));
-        });
-
-        grid.append(...cards);
-      };
-
-      const menu = registerMenu(sortMenu, sortTrigger, sortOptions, () => {
-        sortButtons.find((option) => option.dataset.sortValue === selectedValue)?.focus();
-      });
-
-      sortButtons.forEach((option) => {
-        option.addEventListener('click', () => {
-          selectedValue = option.dataset.sortValue ?? 'a-z';
-          sortLabel.textContent = option.textContent;
-          sortButtons.forEach((button) => {
-            button.setAttribute('aria-selected', String(button === option));
-          });
-          sortCards(selectedValue);
-          closeMenu(menu, true);
-        });
-      });
-    }
-
-    const filterMenu = directory.querySelector<HTMLElement>('[data-filter-menu]');
-    const filterTrigger = directory.querySelector<HTMLButtonElement>('[data-filter-trigger]');
-    const filterPanel = directory.querySelector<HTMLElement>('[data-filter-panel]');
-    const filterCount = directory.querySelector<HTMLElement>('[data-filter-count]');
-    const directoryCount = directory.querySelector<HTMLElement>('[data-directory-count]');
-    const emptyState = directory.querySelector<HTMLElement>('[data-directory-empty]');
-    const resetButtons = [...directory.querySelectorAll<HTMLButtonElement>('[data-filter-reset]')];
-
-    if (!filterMenu || !filterTrigger || !filterPanel) return;
-
-    const filters = [
-      ...filterPanel.querySelectorAll<HTMLInputElement>('input[type="checkbox"]')
-    ];
-    const filterRows = filters.map((filter) => filter.closest<HTMLElement>('.filter-option')).filter(Boolean);
-    const filterGroups = [...filterPanel.querySelectorAll<HTMLElement>('.filter-group')];
-    const defaultType = directory.dataset.defaultType ?? '';
-    const defaultValue = directory.dataset.defaultValue ?? '';
     const values = (card: HTMLElement, key: 'tags' | 'collections') =>
       (card.dataset[key] ?? '').split(' ').filter(Boolean);
-    const isDefaultFilter = (filter: HTMLInputElement) =>
-      filter.dataset.filterType === defaultType && filter.value === defaultValue;
-    const requiredFilter = filters.find((filter) => isDefaultFilter(filter));
     const dedupe = (items: string[]) => [...new Set(items)];
-    const matchesFilterSet = (card: HTMLElement, tags: string[], collections: string[]) => {
+    const queryValue = () => (queryInput?.value ?? '').trim().slice(0, 100);
+    const normalizedQuery = () => queryValue().toLowerCase();
+    const matchesFilterSet = (
+      card: HTMLElement,
+      tags: string[],
+      collections: string[],
+      query: string
+    ) => {
       const cardTags = values(card, 'tags');
       const cardCollections = values(card, 'collections');
+      const searchText = (card.dataset.searchText ?? '').toLowerCase();
 
       return (
         tags.every((tag) => cardTags.includes(tag))
         && collections.every((collection) => cardCollections.includes(collection))
+        && (!query || searchText.includes(query))
       );
     };
-    const countMatchingCards = (tags: string[], collections: string[]) =>
-      cards.reduce((count, card) => count + (matchesFilterSet(card, tags, collections) ? 1 : 0), 0);
+    const countMatchingCards = (tags: string[], collections: string[], query: string) =>
+      cards.reduce(
+        (count, card) => count + (matchesFilterSet(card, tags, collections, query) ? 1 : 0),
+        0
+      );
 
-    const applyFilters = () => {
+    const selectedFilters = () => filters.filter((filter) => filter.checked);
+    const selectedValues = (type: ClientFilterType) => selectedFilters()
+      .filter((filter) => filter.dataset.filterType === type)
+      .map((filter) => filter.value);
+
+    const syncUrl = () => {
+      const url = new URL(window.location.href);
+      const query = queryValue();
+      const optionalTags = selectedValues('tag').filter((value) =>
+        !(defaultType === 'tag' && value === defaultValue)
+      );
+      const optionalCollections = selectedValues('collection').filter((value) =>
+        !(defaultType === 'collection' && value === defaultValue)
+      );
+
+      query ? url.searchParams.set('q', query) : url.searchParams.delete('q');
+      optionalTags.length
+        ? url.searchParams.set('tags', optionalTags.sort().join(','))
+        : url.searchParams.delete('tags');
+      optionalCollections.length
+        ? url.searchParams.set('collections', optionalCollections.sort().join(','))
+        : url.searchParams.delete('collections');
+      selectedSort === 'a-z'
+        ? url.searchParams.delete('sort')
+        : url.searchParams.set('sort', selectedSort);
+
+      window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`);
+    };
+
+    const applyFilters = (updateUrl = true) => {
       if (requiredFilter) requiredFilter.checked = true;
-      const selected = filters.filter((filter) => filter.checked);
-      const selectedTags = selected
-        .filter((filter) => filter.dataset.filterType === 'tag')
-        .map((filter) => filter.value);
-      const selectedCollections = selected
-        .filter((filter) => filter.dataset.filterType === 'collection')
-        .map((filter) => filter.value);
-      let visibleCount = 0;
+      const selected = selectedFilters();
+      const selectedTags = selectedValues('tag');
+      const selectedCollections = selectedValues('collection');
+      const query = normalizedQuery();
+      let matchCount = 0;
+      let shownCount = 0;
 
+      /* `cards` is kept in DOM order by the sort, so capping by match position shows the
+         first batch of whatever order is currently on screen. */
       cards.forEach((card) => {
-        const matches = matchesFilterSet(card, selectedTags, selectedCollections);
-        card.hidden = !matches;
-        if (matches) visibleCount += 1;
+        const matches = matchesFilterSet(card, selectedTags, selectedCollections, query);
+
+        if (!matches) {
+          card.hidden = true;
+          return;
+        }
+
+        matchCount += 1;
+        const withinLimit = matchCount <= visibleLimit;
+        card.hidden = !withinLimit;
+        if (withinLimit) shownCount += 1;
       });
 
+      const remaining = matchCount - shownCount;
+
       if (directoryCount) {
-        directoryCount.textContent = `${visibleCount} ${visibleCount === 1 ? 'app' : 'apps'}`;
+        const noun = matchCount === 1 ? 'app' : 'apps';
+        directoryCount.textContent = remaining > 0
+          ? `Showing ${shownCount} of ${matchCount} ${noun}`
+          : `${matchCount} ${noun}`;
       }
-      if (emptyState) emptyState.hidden = visibleCount > 0;
+      if (emptyState) {
+        emptyState.hidden = matchCount > 0;
+        if (matchCount === 0 && emptyMessage) {
+          emptyMessage.textContent = query
+            ? `No apps match "${queryValue()}".`
+            : 'No apps match every selected filter.';
+        }
+        if (queryReset) queryReset.hidden = !query;
+        if (emptyFilterReset) {
+          emptyFilterReset.hidden = selected.filter((filter) => !isDefaultFilter(filter)).length === 0;
+        }
+      }
+      if (moreButton) {
+        moreButton.hidden = remaining === 0;
+        if (remaining > 0) {
+          moreButton.textContent = `Show ${Math.min(batchSize, remaining)} more`;
+        }
+      }
 
       if (filterCount) {
-        const isOnlyDefault = selected.length === 1 && isDefaultFilter(selected[0]);
-        filterCount.textContent = String(selected.length);
-        filterCount.hidden = selected.length === 0 || isOnlyDefault;
-        filterMenu.classList.toggle('has-custom-filters', !isOnlyDefault);
+        const optionalFilterCount = selected
+          .filter((filter) => !isDefaultFilter(filter))
+          .length;
+        filterCount.textContent = String(optionalFilterCount);
+        filterCount.hidden = optionalFilterCount === 0;
+        filterMenu?.classList.toggle('has-custom-filters', optionalFilterCount > 0);
       }
 
       filters.forEach((filter, index) => {
         const row = filterRows[index];
         if (!row) return;
 
-        const optionType = filter.dataset.filterType === 'collection' ? 'collection' : 'tag';
         const optionValue = filter.value;
-        const candidateTags = dedupe([
-          ...selectedTags,
-          ...(optionType === 'tag' ? [optionValue] : [])
-        ]);
-        const candidateCollections = dedupe([
-          ...selectedCollections,
-          ...(optionType === 'collection' ? [optionValue] : [])
-        ]);
-        const count = countMatchingCards(candidateTags, candidateCollections);
+        const candidateTags = filter.dataset.filterType === 'tag'
+          ? dedupe([...selectedTags, optionValue])
+          : selectedTags;
+        const candidateCollections = filter.dataset.filterType === 'collection'
+          ? dedupe([...selectedCollections, optionValue])
+          : selectedCollections;
+        const count = countMatchingCards(candidateTags, candidateCollections, query);
         const countLabel = row.querySelector<HTMLElement>('.filter-option-count');
 
         if (countLabel) {
           countLabel.textContent = String(count);
         }
 
-        row.style.display = count === 0 ? 'none' : '';
+        row.hidden = count === 0 && !filter.checked;
       });
 
       filterGroups.forEach((group) => {
         const hasVisibleOption = [...group.querySelectorAll<HTMLElement>('.filter-option')]
-          .some((option) => option.style.display !== 'none');
-        group.style.display = hasVisibleOption ? '' : 'none';
+          .some((option) => !option.hidden);
+        group.hidden = !hasVisibleOption;
       });
+
+      if (updateUrl) syncUrl();
     };
 
-    const menu = registerMenu(filterMenu, filterTrigger, filterPanel, () => {
-      filters[0]?.focus();
+    const appName = (card: HTMLElement) => card.dataset.appName ?? '';
+    const featuredDate = (card: HTMLElement) => card.dataset.featuredDate ?? '';
+    const updateSortUi = () => {
+      const selectedButton = sortButtons.find((button) => button.dataset.sortValue === selectedSort);
+      sortButtons.forEach((button) => {
+        button.setAttribute('aria-selected', String(button === selectedButton));
+      });
+    };
+    const sortCards = (updateUrl = true) => {
+      cards.sort((a, b) => {
+        if (selectedSort === 'z-a') return collator.compare(appName(b), appName(a));
+        if (selectedSort === 'date-featured') {
+          return (
+            featuredDate(b).localeCompare(featuredDate(a))
+            || collator.compare(appName(a), appName(b))
+          );
+        }
+        return collator.compare(appName(a), appName(b));
+      });
+      grid.append(...cards);
+      updateSortUi();
+      applyFilters(updateUrl);
+    };
+
+    const initialUrl = new URL(window.location.href);
+    const knownTags = new Set(
+      filters.filter((filter) => filter.dataset.filterType === 'tag').map((filter) => filter.value)
+    );
+    const knownCollections = new Set(
+      filters.filter((filter) => filter.dataset.filterType === 'collection').map((filter) => filter.value)
+    );
+    const urlTags = new Set(
+      (initialUrl.searchParams.get('tags') ?? '').split(',').filter((value) => knownTags.has(value))
+    );
+    const urlCollections = new Set(
+      (initialUrl.searchParams.get('collections') ?? '')
+        .split(',')
+        .filter((value) => knownCollections.has(value))
+    );
+    const urlSort = initialUrl.searchParams.get('sort') ?? 'a-z';
+
+    if (queryInput) queryInput.value = (initialUrl.searchParams.get('q') ?? '').slice(0, 100);
+    selectedSort = allowedSorts.has(urlSort) ? urlSort : 'a-z';
+    filters.forEach((filter) => {
+      if (isDefaultFilter(filter)) {
+        filter.checked = true;
+        return;
+      }
+      filter.checked = filter.dataset.filterType === 'tag'
+        ? urlTags.has(filter.value)
+        : urlCollections.has(filter.value);
     });
+
+    let filterMenuRegistration: (typeof menus)[number] | undefined;
+    if (filterMenu && filterTrigger && filterPanel) {
+      filterMenuRegistration = registerMenu(filterMenu, filterTrigger, filterPanel, () => {
+        (filters.find((filter) => !filter.disabled) ?? filters[0])?.focus();
+      });
+    }
+
+    if (sortMenu && sortTrigger && sortOptions) {
+      const sortMenuRegistration = registerMenu(sortMenu, sortTrigger, sortOptions, () => {
+        sortButtons.find((option) => option.dataset.sortValue === selectedSort)?.focus();
+      });
+
+      sortButtons.forEach((option) => {
+        option.addEventListener('click', () => {
+          const nextSort = option.dataset.sortValue ?? 'a-z';
+          selectedSort = allowedSorts.has(nextSort) ? nextSort : 'a-z';
+          sortCards();
+          closeMenu(sortMenuRegistration, true);
+        });
+      });
+    }
 
     filters.forEach((filter) => {
       filter.addEventListener('change', () => {
+        visibleLimit = batchSize;
         applyFilters();
-        if (filter.checked && !isDefaultFilter(filter)) closeMenu(menu, true);
+        if (
+          filterMenuRegistration
+          && filter.dataset.filterType === 'tag'
+          && filter.checked
+          && !isDefaultFilter(filter)
+        ) {
+          closeMenu(filterMenuRegistration, true);
+        }
       });
     });
 
-    resetButtons.forEach((button) => {
+    directory.querySelectorAll<HTMLButtonElement>('[data-filter-reset]').forEach((button) => {
       button.addEventListener('click', () => {
         filters.forEach((filter) => {
           filter.checked = isDefaultFilter(filter);
         });
+        visibleLimit = batchSize;
         applyFilters();
       });
     });
 
-    applyFilters();
+    queryInput?.addEventListener('input', () => {
+      visibleLimit = batchSize;
+      applyFilters();
+    });
+    queryInput?.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter') return;
+      // The field filters as the reader types, so there is nothing to submit.
+      event.preventDefault();
+    });
+    queryReset?.addEventListener('click', () => {
+      if (!queryInput) return;
+      queryInput.value = '';
+      visibleLimit = batchSize;
+      applyFilters();
+      queryInput.focus();
+    });
+
+    moreButton?.addEventListener('click', () => {
+      const previouslyVisible = new Set(cards.filter((card) => !card.hidden));
+      visibleLimit += batchSize;
+      applyFilters();
+
+      /* Focus the card itself, not anything inside it. A card's full-surface link is
+         deliberately `tabindex="-1"` and `aria-hidden="true"` for mouse convenience, so
+         sending the keyboard there would land it on a node hidden from assistive
+         technology, and the only other named link in a card leaves the site. The article
+         takes a -1 tabindex so it can receive focus without becoming a tab stop, which
+         puts the next Tab inside the newly revealed run.
+
+         Focus never scrolls. The new cards render into the space the button was occupying,
+         so the reader is already looking at them; moving the viewport on top of that loses
+         their place instead of keeping it. */
+      const revealed = cards.find((card) => !card.hidden && !previouslyVisible.has(card));
+
+      if (revealed) {
+        revealed.tabIndex = -1;
+        revealed.focus({ preventScroll: true });
+      }
+    });
+
+    sortCards();
   });
 </script>

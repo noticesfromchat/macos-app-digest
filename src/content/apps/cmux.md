@@ -6,4 +6,5 @@ tags: [terminal, developer, automation, open-source]
 categories: [developer-tools, productivity-workflow]
 source: AppStories, community discussion and official homepage
 homepage: https://cmux.com/
+icon: /app-icons/cmux.png
 ---

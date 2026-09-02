@@ -6,4 +6,5 @@ tags: [menubar, utility, open-source, battery]
 categories: [mac-utilities-customization]
 source: Product Hunt, GitHub releases and official repository
 homepage: https://github.com/sapsaldog/open-caffeine
+icon: /app-icons/open-caffeine.png
 ---

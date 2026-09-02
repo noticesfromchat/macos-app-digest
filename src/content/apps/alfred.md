@@ -7,4 +7,5 @@ categories: [mac-utilities-customization, productivity-workflow]
 collections: [community-favorites]
 source: Long-running Mac community recommendations and official homepage
 homepage: https://www.alfredapp.com/
+icon: /app-icons/alfred.png
 ---

@@ -4,6 +4,9 @@ Copy the frontmatter below into a new file named `src/content/issues/YYYY-MM-DD.
 
 Before creating the issue, add a Markdown file under `src/content/apps/` for every app ID that does not already exist. Reuse existing app IDs rather than duplicating app records.
 
+Write issue and app copy without Oxford commas. In lists of three or more, use
+`A, B and C`, not `A, B, and C`.
+
 Every issue must keep the same regular app-section spine, in this exact order:
 `New Discoveries`, `Trending`, `Old Favorites`, `AI & Automation`, `Up and Coming`.
 Do not rename, omit, reorder or add regular app sections. Weekly variation belongs in
@@ -67,6 +70,7 @@ readings:
     publication: Publication
     description: Write one concise 12-35 word sentence describing the value of the article.
     url: https://example.com/article-three
+# Recorded, not rendered. Kept as the editorial audit trail since 2026-09-01.
 sourceNotes:
   - Discovery source or research note
   - Official app homepages were checked before publishing
@@ -79,6 +83,11 @@ Create new apps at `src/content/apps/app-slug.md`.
 Each app file automatically generates `/apps/app-slug/`; do not create that page
 manually.
 
+Check `docs/TAG_AUDIT.md` before choosing `tags`. Prefer a tag the catalog already uses,
+and do not take one from its retired list without an editorial reason in the pull
+request. Do not hand-write the `categories:` line; `npm run sync:categories` derives it
+from the tags.
+
 ```yaml
 ---
 name: App Name
@@ -90,8 +99,28 @@ tags: [productivity, utility, menubar]
 # collections: [editors-picks, community-favorites]
 source: Discovery source and official homepage
 homepage: https://example.com/
+# Optional app-card icon. Store the file under public/app-icons/.
+icon: /app-icons/app-slug.png
+# Optional icon rendering style: plain, backed or contain. Defaults to plain.
+iconStyle: plain
 ---
 ```
+
+Use `iconStyle: plain` for finished square app icons. Use `backed` for transparent
+or loose artwork that needs a white backing, and `contain` for non-square marks that
+should avoid cropping without adding a backing.
+
+Before accepting an icon, confirm the app's actual mark or native rounded-square icon
+visually fills the fixed app-card slot. Flag icons that appear too small,
+over-cropped, blurry, off-center, backed by an unwanted visible edge, mismatched to
+the app's identity or weaker than the source. If the fix is unclear, ask the editor
+whether to crop the local asset, find a better official source, change `iconStyle` or
+use the category fallback.
+
+If no suitable official icon is available, omit `icon` and `iconStyle`; app cards
+will use the app's first category icon with the approved missing-icon color palette.
+Because fallback icons use the first category, order `categories` with the most
+representative app category first when the fallback will appear publicly.
 
 ## Required checks
 
@@ -142,7 +171,7 @@ moderator-authored selections, but must not repeat an app from the immediately
 preceding issue. Replace repeats or unavailable selections with verified discoveries
 from Product Hunt's recent Mac launches or another approved source. Verify official
 links, reuse existing app records, create missing records and credit every source used
-in `sourceNotes`. Do not substitute apps based solely on raw votes.
+in `sourceNotes`, which is recorded for review rather than published. Do not substitute apps based solely on raw votes.
 
 ## When the user supplies an Editor's Pick
 

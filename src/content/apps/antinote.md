@@ -7,4 +7,6 @@ categories: [writing-notes-reading, productivity-workflow, mac-utilities-customi
 collections: [editors-picks, community-favorites]
 source: Editor's Pick and official homepage
 homepage: https://antinote.io/
+icon: /app-icons/antinote.png
+iconAccent: "#00a16e"
 ---
