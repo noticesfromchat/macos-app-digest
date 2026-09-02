@@ -463,7 +463,7 @@ renderer took both with it.
 
 ### Breadcrumb
 
-A text trail above every page title on the 172 pages that sit below the root. It answers
+A text trail above every page title on the 174 pages that sit below the root. It answers
 one question, where am I, and it is the third time that question has been asked: an August
 critique wanted "one restrained, product-specific orientation cue" and said explicitly not
 badges or decorative clutter, and a September critique scored Visibility of System Status
@@ -485,14 +485,18 @@ badges or decorative clutter, and a September critique scored Visibility of Syst
   `scripts/sync-app-categories.mjs`, so its first entry carries no editorial decision and
   would change under the page without anyone choosing it. Explore is the honest parent: the
   one page that holds every app. Trails are Home / Explore / App, Home / Archive / Issue,
-  Home / Explore / lane, and Home / Explore.
-- **The homepage has none.** It is the root, and it renders through the same `IssuePage`
-  component as an archived issue, so the trail is gated on the component's `homepage` flag
-  rather than on the route.
+  Home / Explore / lane, and Home / Explore, Home / Archive or Home / About for the three
+  pages one hop from the root. Those three carry a trail for the same reason the deep ones
+  do: the opening is one shape across the site, and Archive is already a parent in the
+  issue trail, so a bare Archive page without one read as an oversight.
+- **The homepage and the 404 have none.** The root has nowhere to point, and a not-found
+  page is not in the hierarchy. The homepage renders through the same `IssuePage` component
+  as an archived issue, so its trail is gated on the component's `homepage` flag rather
+  than on the route.
 - **The visible trail and the JSON-LD are one array.** `src/data/breadcrumb.ts` builds it,
   the page passes it to both `BaseLayout` (which emits `BreadcrumbList` into the graph) and
   the component. Google's guidance is that structured data describes what a reader can see,
-  and a single source is the only thing that keeps that true after the next edit. All 172
+  and a single source is the only thing that keeps that true after the next edit. All 174
   pages were verified to match name for name.
 - **It wraps rather than truncates.** The middle crumb is the one carrying the orientation,
   so a trail that drops it to fit has given up the thing it exists for. The longest today,

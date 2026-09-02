@@ -30,7 +30,11 @@ export const issueTrail = (number: string): Crumb[] => [
 /** Categories, collections and tags are the three lanes Explore opens onto. */
 export const laneTrail = (title: string): Crumb[] => [HOME, EXPLORE, { label: title }];
 
-export const exploreTrail = (): Crumb[] => [HOME, { label: 'Explore' }];
+/* Explore, Archive and About all sit one hop from the root. They carry a trail for the
+   same reason the deep pages do: the opening is one shape across the site, and a reader
+   who lands on About from search should see the same orientation as one who lands on an
+   app. */
+export const topLevelTrail = (label: string): Crumb[] => [HOME, { label }];
 
 /** The BreadcrumbList node for the page's JSON-LD graph. */
 export const breadcrumbSchema = (trail: Crumb[], site: URL | undefined) => ({

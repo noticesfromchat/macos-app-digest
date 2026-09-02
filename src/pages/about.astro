@@ -1,12 +1,18 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import { topLevelTrail } from '../data/breadcrumb';
+
+const trail = topLevelTrail('About');
 ---
 <BaseLayout
+  breadcrumb={trail}
   title="About — App Waypoint"
   description="Learn how App Waypoint researches and selects high-quality Mac apps for experienced users each week."
   current="about"
 >
   <article class="page-shell archive-page about-page">
+    <Breadcrumb trail={trail} />
     <h1>About</h1>
     <p class="dek">App Waypoint is a weekly editorial publication for experienced Mac users. Every Friday, it highlights Mac apps, productivity tools, automation utilities, AI software and worthwhile articles and videos.</p>
 

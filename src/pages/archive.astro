@@ -1,16 +1,22 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import { topLevelTrail } from '../data/breadcrumb';
 
 const issues = [...await getCollection('issues')].sort((a, b) => b.data.slug.localeCompare(a.data.slug));
 const issueLabel = (number: string | number) => String(Number(number)).padStart(2, '0');
+
+const trail = topLevelTrail('Archive');
 ---
 <BaseLayout
+  breadcrumb={trail}
   title="Archive — App Waypoint"
   description="Browse every issue of App Waypoint, a weekly editorial guide to thoughtfully selected Mac apps, automation tools, AI software and Mac-focused reading."
   current="archive"
 >
   <section class="page-shell archive-page">
+    <Breadcrumb trail={trail} />
     <h1>Archive</h1>
     <p class="dek">Browse every published issue of App Waypoint.</p>
     <a class="button archive-current-link" href="/">Current Issue <span aria-hidden="true">→</span></a>
