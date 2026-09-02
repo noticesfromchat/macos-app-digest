@@ -470,12 +470,14 @@ badges or decorative clutter, and a September critique scored Visibility of Syst
 2 of 4 citing no breadcrumbs and no sense of where an issue sits in the sequence.
 
 - **It is a trail, not a drawn course.** Sentence case at `--type-meta`, muted, middle-dot
-  separators. The site already carries its nautical world in the buoy lockup and the wave
+  separators between the ancestors. The gap before the last crumb carries the position
+  marker instead of a separator: the marker is already a dot in that slot, so a middle dot
+  in front of it reads as two dots rather than as a mark. The site already carries its nautical world in the buoy lockup and the wave
   bands; a rope, a compass or a chart line here would be a fourth voice saying the same
   thing louder. The waypoint idea is in the marking of the current position, which is the
   one thing a chart does that a list of links does not.
 - **One dot marks where you are.** The last crumb is not a link, carries `aria-current`,
-  and takes a 5px filled dot in the accent. That is the only ornament. It keeps The Beacon
+  and takes a 7px filled dot in the accent, sized against the separator glyph's 4px so it reads as a mark and not as another separator. That is the only ornament. It keeps The Beacon
   Rule because a current-page marker is an active state, which is what the desktop nav
   already uses the accent for.
 - **App pages route through Explore, not a category.** 92 of the 102 apps carry more than

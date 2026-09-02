@@ -155,11 +155,19 @@
 .issue-breadcrumb-shell { padding-top: var(--page-start-space); }
 
 .breadcrumb-mark {
-  width: 5px;
-  height: 5px;
+  /* 7px against the separator glyph's ~4px. At 5px it read as another separator; past
+     8px it starts reading as a bullet. This is the size where it is unmistakably a mark
+     and still quiet. */
+  width: 7px;
+  height: 7px;
   flex: none;
   border-radius: 50%;
   background: var(--accent);
+  /* The separator is a glyph and this is a box, so centring them in the same line box
+     does not put them on the same plane: a middle dot's ink floats above the line box's
+     centre, leaving the marker sitting 1.19px high at this size. Nudged down in em so it
+     stays aligned if the type scale moves. */
+  transform: translateY(.09em);
 }
 
 /* The `hidden` attribute has to win. The browser's own `[hidden] { display: none }` is a

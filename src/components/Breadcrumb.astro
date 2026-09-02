@@ -10,7 +10,12 @@ const last = trail.length - 1;
     <ol>
       {trail.map((crumb, index) => (
         <li>
-          {index > 0 && <span class="breadcrumb-sep" aria-hidden="true">·</span>}
+          {/* No separator before the last crumb: the position marker already sits
+              there and does the separating, so a middle dot in front of it reads as
+              two dots rather than as a mark. */}
+          {index > 0 && index !== last && (
+            <span class="breadcrumb-sep" aria-hidden="true">·</span>
+          )}
           {crumb.href && index !== last ? (
             <a href={crumb.href}>{crumb.label}</a>
           ) : (
