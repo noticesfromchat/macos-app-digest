@@ -93,7 +93,7 @@ typography:
     lineHeight: 1
     letterSpacing: "0"
   displayAsset:
-    fontFamily: 'Philippine, Iowan Old Style, Baskerville, "Times New Roman", serif'
+    fontFamily: 'Iowan Old Style, Baskerville, "Times New Roman", serif'
     fontSize: "clamp(3.25rem, 5.1vw, 4.25rem)"
     fontWeight: 400
     lineHeight: 0.96
