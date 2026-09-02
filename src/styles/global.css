@@ -1446,7 +1446,7 @@ a { color: inherit; }
   flex-wrap: wrap;
   gap: 16px;
   align-items: stretch;
-  margin-top: clamp(28px, 3.8vw, 40px);
+  margin-top: 0;
 }
 .directory-filter-bar > .directory-filter,
 .directory-filter-bar > .directory-sort { flex: 0 0 180px; }
@@ -1653,6 +1653,9 @@ a { color: inherit; }
   overscroll-behavior: contain;
   padding: 6px 0;
 }
+@media (max-width: 680px) {
+  .filter-scroll { max-height: min(282px, 36vh); }
+}
 .filter-group + .filter-group {
   margin-top: 6px;
   border-top: 1px solid var(--line);
@@ -1727,7 +1730,7 @@ a { color: inherit; }
    this rule only ever governs the moment before the module runs, and the noscript block in
    AppDirectory undoes it entirely when there is no script to take over. The 25 is
    DIRECTORY_BATCH + 1; the two are kept in step by hand. */
-.directory-grid[data-directory-cap] > *:nth-child(n+25) { display: none; }
+.directory-grid[data-directory-cap] > *:nth-child(n+19) { display: none; }
 
 .directory-more {
   display: flex;
@@ -1897,7 +1900,7 @@ a { color: inherit; }
     justify-self: start;
   }
   .directory-filter-bar {
-    margin-top: 28px;
+    margin-top: 0;
   }
   .directory-search { gap: 10px; padding: 10px 14px; }
   .directory-search svg { width: 21px; height: 21px; }

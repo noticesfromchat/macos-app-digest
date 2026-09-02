@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 500" width="1500" height="500" role="img" aria-labelledby="title desc">
+  <title id="title">App Waypoint X profile header</title>
+  <desc id="desc">A night-harbor field of quiet category icons, waves and buoy marks for App Waypoint.</desc>
+  <defs>
+    <radialGradient id="glow" cx="76%" cy="45%" r="58%">
+      <stop offset="0%" stop-color="#10253b"/>
+      <stop offset="52%" stop-color="#091321"/>
+      <stop offset="100%" stop-color="#020b18"/>
+    </radialGradient>
+    <pattern id="tile-grid" width="188" height="125" patternUnits="userSpaceOnUse">
+      <path d="M188 0H0V125" fill="none" stroke="#d9e5f0" stroke-opacity=".045"/>
+    </pattern>
+    <filter id="soft-shadow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#020b18" flood-opacity=".3"/>
+    </filter>
+    <g id="sparkles" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M22 3l3.8 9.2L35 16l-9.2 3.8L22 29l-3.8-9.2L9 16l9.2-3.8L22 3z"/>
+      <path d="M40 30l1.8 4.2L46 36l-4.2 1.8L40 42l-1.8-4.2L34 36l4.2-1.8L40 30z"/>
+      <path d="M7 27l1.4 3.4L12 32l-3.6 1.6L7 37l-1.4-3.4L2 32l3.6-1.6L7 27z"/>
+    </g>
+    <g id="code" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M19 12L7 24l12 12"/>
+      <path d="M29 12l12 12-12 12"/>
+      <path d="M26 8l-6 32"/>
+    </g>
+    <g id="folder-search" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 38V13a5 5 0 0 1 5-5h10l5 6h18a5 5 0 0 1 5 5v9"/>
+      <path d="M5 18h43"/>
+      <circle cx="31" cy="32" r="8"/>
+      <path d="M37 38l7 7"/>
+    </g>
+    <g id="sliders" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M8 14h16M34 14h8"/>
+      <path d="M8 34h8M26 34h16"/>
+      <path d="M8 24h28"/>
+      <circle cx="29" cy="14" r="5"/>
+      <circle cx="21" cy="34" r="5"/>
+      <circle cx="41" cy="24" r="5"/>
+    </g>
+    <g id="route" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="6"/>
+      <circle cx="37" cy="37" r="6"/>
+      <path d="M17 11h11a8 8 0 0 1 0 16h-8a8 8 0 0 0 0 16h11"/>
+    </g>
+    <g id="notebook" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M14 7h21a6 6 0 0 1 6 6v27H14a6 6 0 0 1-6-6V13a6 6 0 0 1 6-6z"/>
+      <path d="M16 7v34"/>
+      <path d="M26 30l12-12 5 5-12 12-7 2 2-7z"/>
+    </g>
+    <g id="book-heart" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10 8h16a7 7 0 0 1 7 7v27H16a6 6 0 0 0-6 6V8z"/>
+      <path d="M33 8h5a7 7 0 0 1 7 7v27H33"/>
+      <path d="M24 19c2-4 8-2 8 3 0 4-4 7-8 10-4-3-8-6-8-10 0-5 6-7 8-3z"/>
+    </g>
+    <g id="heart" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M24 42S7 32 7 18c0-11 13-14 17-5 4-9 17-6 17 5 0 14-17 24-17 24z"/>
+    </g>
+    <g id="buoy" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="24" cy="7" r="4.5" stroke="#57a2ff"/>
+      <path d="M9 38l9-23c1.4-3.8 3.5-5.9 6-5.9s4.6 2.1 6 5.9l9 23" stroke="currentColor"/>
+      <path d="M15 27h18" stroke="currentColor"/>
+      <path d="M4 46c5 5 10 5 15 0s10-5 15 0 10 5 15 0" stroke="currentColor"/>
+    </g>
+    <g id="wave" fill="none" stroke="currentColor" stroke-linecap="round">
+      <path d="M2 25c10 11 20 11 30 0s20-11 30 0 20 11 30 0 20-11 30 0"/>
+    </g>
+  </defs>
+
+  <rect width="1500" height="500" fill="url(#glow)"/>
+  <rect width="1500" height="500" fill="url(#tile-grid)"/>
+
+  <g opacity=".12" stroke="#f3ecdf" stroke-width="1">
+    <path d="M0 394c80-26 160-26 240 0s160 26 240 0 160-26 240 0 160 26 240 0 160-26 240 0 160 26 300 0" fill="none"/>
+    <path d="M0 430c80-20 160-20 240 0s160 20 240 0 160-20 240 0 160 20 240 0 160-20 240 0 160 20 300 0" fill="none"/>
+  </g>
+
+  <g stroke-width="5.5" filter="url(#soft-shadow)">
+    <g transform="translate(98 82) scale(1.05)" color="#afb6bf"><use href="#folder-search"/></g>
+    <g transform="translate(284 74) scale(.82)" color="#57a2ff"><use href="#buoy"/></g>
+    <g transform="translate(464 74) scale(.98)" color="#afb6bf"><use href="#sliders"/></g>
+    <g transform="translate(658 92) scale(.75)" color="#f3ecdf"><use href="#sparkles"/></g>
+    <g transform="translate(828 74) scale(.98)" color="#afb6bf"><use href="#notebook"/></g>
+    <g transform="translate(1028 76) scale(.72)" color="#57a2ff"><use href="#wave"/></g>
+    <g transform="translate(1204 73) scale(.98)" color="#afb6bf"><use href="#route"/></g>
+    <g transform="translate(1382 85) scale(.64)" color="#f3ecdf"><use href="#sparkles"/></g>
+
+    <g transform="translate(238 204) scale(1.18)" color="#57a2ff"><use href="#book-heart"/></g>
+    <g transform="translate(452 210) scale(1.28)" color="#f3ecdf"><use href="#sparkles"/></g>
+    <g transform="translate(628 194) scale(1.15)" color="#57a2ff"><use href="#buoy"/></g>
+    <g transform="translate(822 207) scale(.98)" color="#afb6bf"><use href="#code"/></g>
+    <g transform="translate(1026 203) scale(1.28)" color="#57a2ff"><use href="#wave"/></g>
+    <g transform="translate(1198 196) scale(1.18)" color="#afb6bf"><use href="#sliders"/></g>
+    <g transform="translate(1366 205) scale(.98)" color="#f3ecdf"><use href="#heart"/></g>
+
+    <g transform="translate(94 372) scale(.9)" color="#57a2ff"><use href="#wave"/></g>
+    <g transform="translate(282 368) scale(.72)" color="#afb6bf"><use href="#route"/></g>
+    <g transform="translate(456 354) scale(1.3)" color="#57a2ff"><use href="#folder-search"/></g>
+    <g transform="translate(654 365) scale(.82)" color="#afb6bf"><use href="#notebook"/></g>
+    <g transform="translate(840 352) scale(1.18)" color="#f3ecdf"><use href="#sparkles"/></g>
+    <g transform="translate(1034 364) scale(.78)" color="#afb6bf"><use href="#buoy"/></g>
+    <g transform="translate(1218 354) scale(1.14)" color="#57a2ff"><use href="#heart"/></g>
+    <g transform="translate(1390 371) scale(.88)" color="#afb6bf"><use href="#code"/></g>
+  </g>
+
+  <g opacity=".95">
+    <circle cx="103" cy="250" r="7" fill="#57a2ff"/>
+    <circle cx="657" cy="408" r="7" fill="#57a2ff"/>
+    <circle cx="1213" cy="250" r="7" fill="#28c9a5"/>
+    <circle cx="842" cy="250" r="7" fill="#f3d96b"/>
+    <path d="M475 244v18M466 253h18" stroke="#f28f5b" stroke-width="5" stroke-linecap="round"/>
+    <path d="M1027 400v18M1018 409h18" stroke="#ff5a89" stroke-width="5" stroke-linecap="round"/>
+    <path d="M1397 399l10 10-10 10-10-10z" fill="#f3d96b"/>
+    <path d="M1027 85l10 10-10 10-10-10z" fill="#f28f5b"/>
+    <path d="M286 401l11 19h-22z" fill="#8257ff"/>
+  </g>
+
+  <rect x="0" y="0" width="1500" height="500" fill="none" stroke="#d9e5f0" stroke-opacity=".06"/>
+</svg>

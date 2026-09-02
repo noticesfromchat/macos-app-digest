@@ -64,7 +64,7 @@ const tagOptions = [
    on a phone. The cap is applied in CSS at parse time rather than by the script, so the
    first paint is already short and the page does not collapse from full height once the
    module runs. Keep this in step with the nth-child rule in global.css. */
-const DIRECTORY_BATCH = 24;
+const DIRECTORY_BATCH = 18;
 const sortedApps = [...apps].sort((a, b) =>
   a.data.name.localeCompare(b.data.name, undefined, { sensitivity: 'base' })
 );
@@ -193,7 +193,7 @@ const sortedApps = [...apps].sort((a, b) =>
         <button
           class="directory-select-trigger"
           type="button"
-          aria-haspopup="listbox"
+          aria-haspopup="true"
           aria-expanded="false"
           data-sort-trigger
         >
@@ -210,10 +210,10 @@ const sortedApps = [...apps].sort((a, b) =>
             <path d="m6 9 6 6 6-6"></path>
           </svg>
         </button>
-        <div class="directory-select-options" role="listbox" aria-label="Sort apps" hidden data-sort-options>
-          <button type="button" role="option" aria-selected="true" data-sort-value="a-z">A-Z</button>
-          <button type="button" role="option" aria-selected="false" data-sort-value="z-a">Z-A</button>
-          <button type="button" role="option" aria-selected="false" data-sort-value="date-featured">Date featured</button>
+        <div class="directory-select-options" role="menu" aria-label="Sort apps" hidden data-sort-options>
+          <button type="button" role="menuitemradio" aria-checked="true" data-sort-value="a-z">A-Z</button>
+          <button type="button" role="menuitemradio" aria-checked="false" data-sort-value="z-a">Z-A</button>
+          <button type="button" role="menuitemradio" aria-checked="false" data-sort-value="date-featured">Date featured</button>
         </div>
       </div>
     </div>
@@ -505,7 +505,7 @@ const sortedApps = [...apps].sort((a, b) =>
     const updateSortUi = () => {
       const selectedButton = sortButtons.find((button) => button.dataset.sortValue === selectedSort);
       sortButtons.forEach((button) => {
-        button.setAttribute('aria-selected', String(button === selectedButton));
+        button.setAttribute('aria-checked', String(button === selectedButton));
       });
     };
     const sortCards = (updateUrl = true) => {
