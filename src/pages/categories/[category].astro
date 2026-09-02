@@ -2,7 +2,7 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
-import { laneTrail } from '../../data/breadcrumb';
+import { laneTrail, itemListSchema } from '../../data/breadcrumb';
 import AppDirectory from '../../components/AppDirectory.astro';
 import { categories, getCategoryBySlug } from '../../data/categories';
 
@@ -26,8 +26,11 @@ const { category, apps } = Astro.props as {
 const resolvedCategory = getCategoryBySlug(category.slug) ?? category;
 
 const trail = laneTrail(resolvedCategory.title);
+
+const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, href: `/apps/${entry.id}/` })), Astro.site);
 ---
 <BaseLayout
+  structuredData={[listSchema]}
   breadcrumb={trail}
   title={`${resolvedCategory.title} Mac Apps — App Waypoint`}
   description={resolvedCategory.description}

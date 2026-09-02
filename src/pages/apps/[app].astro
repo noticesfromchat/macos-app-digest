@@ -103,7 +103,7 @@ const trail = appTrail(app.data.name);
         <div class:list={['app-detail-identity', iconClass]}>
           {app.data.icon && (
             <div class="app-icon-frame app-detail-app-icon" aria-hidden="true">
-              <img class="app-icon" src={app.data.icon} alt="" fetchpriority="high" decoding="async" />
+              <img class="app-icon" src={app.data.icon} alt="" width="76" height="76" fetchpriority="high" decoding="async" />
             </div>
           )}
           {fallbackCategory && (

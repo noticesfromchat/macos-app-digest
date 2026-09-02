@@ -48,3 +48,21 @@ export const breadcrumbSchema = (trail: Crumb[], site: URL | undefined) => ({
     ...(crumb.href ? { item: new URL(crumb.href, site).href } : {})
   }))
 });
+
+/* The list pages carry an ItemList describing what a reader can already see on them:
+   Explore and the three lanes list apps, the archive lists issues. Unlike the breadcrumb
+   this raises no visibility question, because the list is the page. Names and URLs only;
+   a richer node would restate the cards without adding anything a crawler can use. */
+export const itemListSchema = (
+  items: { name: string; href: string }[],
+  site: URL | undefined
+) => ({
+  '@type': 'ItemList',
+  numberOfItems: items.length,
+  itemListElement: items.map((entry, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: entry.name,
+    url: new URL(entry.href, site).href
+  }))
+});

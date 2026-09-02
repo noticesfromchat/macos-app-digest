@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
-import { laneTrail } from '../../data/breadcrumb';
+import { laneTrail, itemListSchema } from '../../data/breadcrumb';
 import AppDirectory from '../../components/AppDirectory.astro';
 
 export async function getStaticPaths() {
@@ -27,8 +27,11 @@ const dek = tag === 'rss'
   : `Mac apps selected for their relevance to ${title.toLowerCase()} workflows.`;
 
 const trail = laneTrail(title);
+
+const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, href: `/apps/${entry.id}/` })), Astro.site);
 ---
 <BaseLayout
+  structuredData={[listSchema]}
   breadcrumb={trail}
   title={`${title} Mac Apps — App Waypoint`}
   description={`Explore thoughtfully selected Mac apps for ${title} workflows, with concise recommendations, practical use cases and links to official developer websites.`}
