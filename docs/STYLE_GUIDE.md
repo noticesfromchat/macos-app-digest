@@ -18,14 +18,18 @@ The site should feel like a small, premium editorial publication for experienced
 ### Motion
 
 - The site is calm and close to still. Motion is reserved, not decorative.
-- The divider buoy and the light on the Editor's Pick card are the motion with a voice
-  on an issue page. Do not add a third there.
-- The archive has one of its own: the beacon that travels the route as the reader
-  scrolls, holding at each stop and filling the ones behind it. It is confined to
-  `/archive/`, is driven by scroll position rather than by an animation of its own, and
-  is not rendered under reduced motion. See The Pilot Rule in `DESIGN.md`. It is an
-  exception argued on that page being a sequence, not a licence for travelling markers
-  elsewhere.
+- **Motion is rationed by purpose, not by count.** There is no budget of animations per
+  page. An animation belongs if it acknowledges an action, makes a state change or a
+  spatial relationship legible, preserves continuity through a change, or marks a moment
+  the surface has earned. If it does none of those it is decoration, and being the only
+  one on the page does not redeem it. See The Earned Motion Rule in `DESIGN.md`.
+- Two things follow from that and are not negotiable: every animation needs a
+  `prefers-reduced-motion` path that reduces movement without erasing the meaning it
+  carries, and anything that loops stops while it is off screen.
+- The archive carries two of its own. The pilot beacon marks which stop the reader is
+  at, resting in a ring and moving once when that changes. The origin answers with a
+  three-pulse ping when the reader reaches it, the same beacon the RSS mark uses. See
+  The Pilot Rule and The Landfall Ping in `DESIGN.md`.
 - The two wave bands are the exception, because they are not asking to be noticed. They
   swell without anything travelling, below the still water level, paused off screen and
   stopped under reduced motion. See The Swell Rule in `DESIGN.md`. Motion that wants

@@ -451,8 +451,18 @@
         "section": "typography"
       },
       {
+        "name": "The Earned Motion Rule",
+        "body": "Motion is rationed by purpose, not by count. A surface may carry one moving thing or several; what disqualifies any of them is moving without a job. Motion earns its place when it acknowledges an action, makes a state change or spatial relationship legible, preserves continuity through a change, or marks a moment the surface has genuinely earned. Movement that does none of those is animation debt however small, and one decorative flourish is worse than three devices that each explain something. Two obligations follow: every animation needs a prefers-reduced-motion path that reduces movement without erasing meaning, and anything that loops stops while it is off screen. Until 2026-09-03 this was a count, with a third motion forbidden outright; that was arbitrary, permitting a decorative third and forbidding a fourth that explained something.",
+        "section": "motion"
+      },
+      {
         "name": "The Pilot Rule",
-        "body": "The archive's beacon travels: one lit dot rides the route line down the page as the reader scrolls, holds in each stop's ring while they keep going, then catches up to the next, with stops behind it left filled to show distance covered. Confined to /archive/, it is the third motion with a voice on the site after the divider buoy and the Editor's Pick light, and it earns that by being the page's own subject rather than decoration over it. It is driven by scroll position and never by an animation of its own, it eases toward its target rather than tracking the scroll exactly, the fill is a state so it takes the accent under The Beacon Rule, and under prefers-reduced-motion it is not rendered at all.",
+        "body": "The archive's beacon marks which stop the reader is at. One lit dot rests inside a ring and, when the nearest stop changes, makes a single bounded 420ms move to the new one on ease-settle, then rests again. Confined to /archive/. An earlier version followed the scroll position every frame, so it moved the whole time the reader did and travelled faster the harder they scrolled; the state it represents is discrete, and once the dot belonged to a ring rather than to the scroll it held, arrived and stopped responding to scroll speed without any of that being tuned. Scroll decides only which stop is current and CSS owns the movement, so nothing runs on a still page. The fill is a state, so it takes the accent under The Beacon Rule and no stop stays lit behind it. Under prefers-reduced-motion the marker stays and only the travel is dropped.",
+        "section": "motion"
+      },
+      {
+        "name": "The Landfall Ping",
+        "body": "Reaching the archive's terminus is the one completion that page has, so the origin answers it with the same three-pulse beacon-ping the RSS mark uses on the subscribe card, on the same keyframes and curve. It fires on arrival rather than on load, because landing is the moment; it is three pulses rather than a loop so it cannot become friction on the way back down; and it re-arms after the reader leaves so returning is acknowledged again. Reduced motion drops it entirely: it carries feeling, not state.",
         "section": "motion"
       }
     ],

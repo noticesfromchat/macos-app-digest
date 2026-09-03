@@ -120,7 +120,7 @@ let stopIndex = 0;
               type="search"
               autocomplete="off"
               spellcheck="false"
-              placeholder="Search issues, apps or articles"
+              placeholder="Search issues"
               maxlength="100"
               disabled
               data-archive-query
@@ -150,10 +150,7 @@ let stopIndex = 0;
                     >
                       <span class="archive-stop-mark" aria-hidden="true"></span>
                       <a class="archive-card" href={`/issues/${issue.data.slug}/`}>
-                        <span class="archive-card-head">
-                          <strong>{issueName(issue.data.number)}</strong>
-                          {isCurrent && <span class="archive-card-now">Latest</span>}
-                        </span>
+                        <strong>{issueName(issue.data.number)}</strong>
                         <span class="archive-card-date">
                           <time datetime={issue.data.slug}>{issue.data.date}</time>
                         </span>
@@ -350,6 +347,8 @@ let stopIndex = 0;
         activeIndex = -1;
       };
 
+      const originBlock = origin?.closest<HTMLElement>('.archive-origin') ?? null;
+
       const update = () => {
         frame = 0;
         if (dirty) measure();
@@ -373,6 +372,14 @@ let stopIndex = 0;
 
         activeIndex = next;
         pilot.style.transform = `translateY(${Math.round(anchors[next].y - routeTop)}px)`;
+
+        /* Arriving at the terminus is the one completion this page has, so the
+           origin beacon answers. Toggled on the change of stop rather than every
+           frame, which also re-arms it: leaving clears the class, so coming back
+           restarts the animation instead of it playing once per page load. */
+        if (originBlock) {
+          originBlock.classList.toggle('is-arrived', next === anchors.length - 1);
+        }
       };
 
       const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
