@@ -360,14 +360,19 @@ let stopIndex = 0;
          pinned to it. Following the scroll exactly made it snap between stops, which
          reads as fast and pulls the eye off the page; easing lets it glide and settle,
          and it deepens the hold at a stop because it is still catching up when the
-         reader has already moved on. */
-      const EASE = 0.075;
+         reader has already moved on. Low enough that the movement reads as drift
+         rather than as a thing keeping pace with the scroll. */
+      const EASE = 0.038;
       let current: number | null = null;
 
       const draw = () => {
         frame = 0;
         if (dirty) measure();
-        if (!anchors.length) { pilot.classList.remove('is-live'); return; }
+        if (!anchors.length) {
+          pilot.classList.remove('is-live');
+          route.classList.remove('is-piloted');
+          return;
+        }
 
         const target = placeOn(window.scrollY + window.innerHeight / 2);
         if (current === null) current = target;
@@ -376,10 +381,9 @@ let stopIndex = 0;
 
         pilot.style.transform = `translateY(${(current - routeTop).toFixed(1)}px)`;
         pilot.classList.add('is-live');
-
-        for (let i = 0; i < reached.length; i += 1) {
-          reached[i].classList.toggle('is-reached', current >= anchors[i] - 1);
-        }
+        /* Tells the stylesheet the pilot owns the accent now, so no stop stays lit
+           behind it. */
+        route.classList.add('is-piloted');
 
         /* Keep the loop alive only while there is distance left to cover. */
         if (current !== target) schedule();
@@ -393,7 +397,10 @@ let stopIndex = 0;
       input.addEventListener('input', remeasure);
       moreButton?.addEventListener('click', remeasure);
       stillness.addEventListener('change', (event) => {
-        if (event.matches) pilot.classList.remove('is-live');
+        if (event.matches) {
+          pilot.classList.remove('is-live');
+          route.classList.remove('is-piloted');
+        }
         else remeasure();
       });
       if (document.fonts) document.fonts.ready.then(remeasure);

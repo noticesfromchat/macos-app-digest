@@ -1476,16 +1476,20 @@ a { color: inherit; }
   background: var(--page);
   transition: background-color 420ms cubic-bezier(.16, 1, .3, 1), border-color 420ms cubic-bezier(.16, 1, .3, 1);
 }
-/* A stop the buoy has reached. The fill is a state, so it takes the accent under
-   The Beacon Rule rather than introducing a colour of its own. */
-.archive-stop.is-reached .archive-stop-mark {
-  border-color: var(--accent);
-  background: var(--accent);
-}
+/* The current issue is marked when nothing else is travelling: with no script, or
+   under reduced motion, this is the only cue for which issue is the latest. */
 .archive-stop.is-current .archive-stop-mark {
   border-color: var(--accent);
   background: var(--accent);
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 16%, transparent);
+}
+/* Once the pilot is running it is the only lit thing on the route. The blue moves
+   on with the reader rather than leaving a filled stop behind it, so every ring the
+   pilot is not currently in reads the same. */
+.archive-route.is-piloted .archive-stop.is-current .archive-stop-mark {
+  border-color: var(--muted);
+  background: var(--page);
+  box-shadow: none;
 }
 
 /* The pilot: the lit beacon that travels the route with the reader, named for the
@@ -1497,10 +1501,16 @@ a { color: inherit; }
 .archive-pilot {
   position: absolute;
   top: 0;
-  left: 0;
-  width: 17px;
-  height: 17px;
-  margin-top: -8.5px;
+  /* Sized to the ring's interior, 17px less its 1.5px border on each side, and
+     inset to match. Docking then fills the ring and leaves its outline drawn,
+     rather than covering the stop or hiding beneath it. */
+  left: 1.5px;
+  width: 14px;
+  height: 14px;
+  margin-top: -7px;
+  /* The stops carry an opaque background and come later in the document, so
+     without this the pilot paints behind the ring it is meant to fill. */
+  z-index: 2;
   border-radius: 50%;
   background: var(--accent);
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 16%, transparent);
