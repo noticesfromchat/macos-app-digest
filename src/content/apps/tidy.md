@@ -6,4 +6,6 @@ tags: [writing, ai, local, keyboard]
 categories: [writing-notes-reading, ai-agents, mac-utilities-customization]
 source: Product Hunt, canonical repository and official Tidy about page
 homepage: https://greene-squares.github.io/tidy-releases/about.html
+icon: /app-icons/tidy.png
+iconStyle: plain
 ---

@@ -6,4 +6,6 @@ tags: [audio, accessibility, local, ai]
 categories: [mac-utilities-customization, ai-agents]
 source: Official NotchLive homepage
 homepage: https://notchlive.app/
+icon: /app-icons/notchlive.png
+iconStyle: plain
 ---

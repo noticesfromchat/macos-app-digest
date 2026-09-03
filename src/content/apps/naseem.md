@@ -6,4 +6,6 @@ tags: [ai, agents, developer, automation]
 categories: [ai-agents, developer-tools, productivity-workflow]
 source: Product Hunt and official Naseem homepage
 homepage: https://ayman3000.github.io/naseem-app/
+icon: /app-icons/naseem.png
+iconStyle: plain
 ---

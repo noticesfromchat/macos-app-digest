@@ -6,4 +6,6 @@ tags: [ai, agents, automation, local]
 categories: [ai-agents, productivity-workflow]
 source: Official Agent Mac homepage
 homepage: https://www.agentmac.app/
+icon: /app-icons/agent-mac.png
+iconStyle: plain
 ---

@@ -7,4 +7,7 @@ categories: [files-research-documents, productivity-workflow, mac-utilities-cust
 collections: [editors-picks]
 source: Editor selection and official CleanShot homepage
 homepage: https://cleanshot.com/
+icon: /app-icons/cleanshot.png
+iconStyle: plain
+iconAccent: "#c56c00"
 ---

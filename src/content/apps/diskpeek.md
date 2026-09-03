@@ -6,4 +6,6 @@ tags: [files, productivity]
 categories: [files-research-documents, productivity-workflow]
 source: Product Hunt and official DiskPeek homepage
 homepage: https://diskpeek.com/
+icon: /app-icons/diskpeek.png
+iconStyle: plain
 ---
