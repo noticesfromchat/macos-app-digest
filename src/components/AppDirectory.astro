@@ -229,9 +229,9 @@ const sortedApps = [...apps].sort((a, b) =>
     ))}
   </div>
   <p class="directory-empty" hidden data-directory-empty>
-    <span data-directory-empty-message>No apps match every selected filter.</span>
-    <button type="button" class="filter-reset" hidden data-query-reset>Clear search</button>
-    <button type="button" class="filter-reset" hidden data-filter-reset>Reset filters</button>
+    <span data-directory-empty-message>No apps match every selected filter</span>
+    <button type="button" class="directory-empty-action" hidden data-query-reset>Clear search</button>
+    <button type="button" class="button" hidden data-filter-reset>Reset filters</button>
   </p>
   <div class="directory-more">
     <button type="button" class="button" hidden data-directory-more></button>
@@ -446,8 +446,8 @@ const sortedApps = [...apps].sort((a, b) =>
         emptyState.hidden = matchCount > 0;
         if (matchCount === 0 && emptyMessage) {
           emptyMessage.textContent = query
-            ? `No apps match "${queryValue()}".`
-            : 'No apps match every selected filter.';
+            ? `No apps match "${queryValue()}"`
+            : 'No apps match every selected filter';
         }
         if (queryReset) queryReset.hidden = !query;
         if (emptyFilterReset) {
@@ -606,8 +606,8 @@ const sortedApps = [...apps].sort((a, b) =>
     });
     queryInput?.addEventListener('keydown', (event) => {
       if (event.key !== 'Enter') return;
-      // The field filters as the reader types, so there is nothing to submit.
       event.preventDefault();
+      queryInput.blur();
     });
     queryReset?.addEventListener('click', () => {
       if (!queryInput) return;
