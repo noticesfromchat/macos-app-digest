@@ -371,7 +371,12 @@ let stopIndex = 0;
         if (next === activeIndex) return;
 
         activeIndex = next;
-        pilot.style.transform = `translateY(${Math.round(anchors[next].y - routeTop)}px)`;
+        /* Not rounded. A stop's centre lands on a half pixel as often as not, so
+           rounding the travel put the pilot up to half a pixel off the ring it is
+           meant to fill: on a 2x display that is a whole device pixel of blue
+           sitting outside the outline, and it read as a different error at each
+           stop because it depends where that stop's centre happens to fall. */
+        pilot.style.transform = `translateY(${anchors[next].y - routeTop}px)`;
 
         /* Arriving at the terminus is the one completion this page has, so the
            origin beacon answers. Toggled on the change of stop rather than every

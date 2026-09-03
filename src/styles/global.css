@@ -1474,6 +1474,12 @@ a { color: inherit; }
   border: 1.5px solid var(--muted);
   border-radius: 50%;
   background: var(--page);
+  /* The route stops at each ring rather than running under it. Covering the line with
+     the ring's own fill left it showing in the ring's outer band, where the beacon's
+     translucent halo sits, so the reader saw a line crossing the stop. This clears the
+     line for the whole width of that halo and leaves the ring an object the route
+     arrives at. */
+  box-shadow: 0 0 0 4px var(--page);
   transition: background-color 420ms cubic-bezier(.16, 1, .3, 1), border-color 420ms cubic-bezier(.16, 1, .3, 1);
 }
 /* The current issue is marked when nothing else is travelling: with no script, or
@@ -1481,7 +1487,11 @@ a { color: inherit; }
 .archive-stop.is-current .archive-stop-mark {
   border-color: var(--accent);
   background: var(--accent);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 16%, transparent);
+  /* Mixed into the page rather than into transparency. The halo sits on the route,
+     so a translucent one let the line show straight through the ring it surrounds.
+     Over this ground the two mixes resolve to the same colour; only this one hides
+     the line. */
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 16%, var(--page));
 }
 /* Once the pilot is running it is the only lit thing on the route. The blue moves
    on with the reader rather than leaving a filled stop behind it, so every ring the
@@ -1489,7 +1499,8 @@ a { color: inherit; }
 .archive-route.is-piloted .archive-stop.is-current .archive-stop-mark {
   border-color: var(--muted);
   background: var(--page);
-  box-shadow: none;
+  /* Drops the accent halo, not the one that keeps the route off the ring. */
+  box-shadow: 0 0 0 4px var(--page);
 }
 
 /* The pilot: the lit beacon that travels the route with the reader, named for the
@@ -1513,6 +1524,9 @@ a { color: inherit; }
   z-index: 2;
   border-radius: 50%;
   background: var(--accent);
+  /* Translucent on purpose: the halo overlaps the ring it is docking into, and the
+     stop's outline has to stay drawn through it. The route line is kept out of this
+     annulus by the stop's own opaque halo, not by this one. */
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 16%, transparent);
   pointer-events: none;
   opacity: 0;
@@ -1594,7 +1608,9 @@ a { color: inherit; }
   border: 1.5px solid var(--line);
   border-radius: 50%;
   background: var(--page);
-  box-shadow: inset 0 0 0 3px var(--page), inset 0 0 0 9px var(--muted);
+  /* Same cut as a stop: the bridge from the last issue ends at this ring's edge
+     rather than running down into it. */
+  box-shadow: 0 0 0 4px var(--page), inset 0 0 0 3px var(--page), inset 0 0 0 9px var(--muted);
 }
 /* Delight, at the one moment on this page that has earned it. A reader who reaches
    the terminus has travelled the whole archive, so the origin answers the way the
