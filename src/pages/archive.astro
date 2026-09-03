@@ -129,6 +129,9 @@ let stopIndex = 0;
         </div>
 
         <div class="archive-route" data-archive-route>
+          {/* The lit beacon that travels with the reader. Decorative: the stops
+              themselves carry the reading order and the links. */}
+          <span class="archive-pilot" aria-hidden="true" data-archive-pilot></span>
           {byYear.map(({ year, issues: yearIssues }) => (
             <section class="archive-year" data-archive-year={year}>
               <h2 class="archive-year-heading">{year}</h2>
@@ -288,5 +291,113 @@ let stopIndex = 0;
     if (initial) input.value = initial.slice(0, 100);
     input.disabled = false;
     render();
+
+    /* The pilot travels the route as the reader scrolls. It is driven by scroll
+       position rather than by an animation of its own, so it never moves on a still
+       page: it holds at a stop while the reader keeps going, then catches up to the
+       next one. Stops behind it fill in.
+
+       Motion is reserved on this site, so this is the one moving thing on the page
+       and it is off entirely under reduced motion, where the stops keep their
+       static beacons. */
+    const pilot = route.querySelector<HTMLElement>('[data-archive-pilot]');
+    const stillness = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    if (pilot && !stillness.matches) {
+      const origin = document.querySelector<HTMLElement>('.archive-origin-mark');
+      let anchors: number[] = [];
+      let reached: HTMLElement[] = [];
+      let routeTop = 0;
+      let dirty = true;
+      let frame = 0;
+
+      const centreOf = (el: HTMLElement) => {
+        const box = el.getBoundingClientRect();
+        return box.top + window.scrollY + box.height / 2;
+      };
+
+      const measure = () => {
+        routeTop = route.getBoundingClientRect().top + window.scrollY;
+        reached = stops.filter((stop) => !stop.hidden);
+        anchors = reached.map((stop) => centreOf(stop.querySelector('.archive-stop-mark')!));
+        /* The terminus is the last stop on the journey, so the buoy travels to it. */
+        if (origin && anchors.length) anchors.push(centreOf(origin));
+
+        /* Tighten each year's line to its own first and last beacon rather than
+           letting it dangle past them. */
+        for (const list of route.querySelectorAll<HTMLElement>('.archive-stops')) {
+          const marks = [...list.querySelectorAll<HTMLElement>('.archive-stop:not([hidden]) .archive-stop-mark')];
+          if (marks.length < 1) { list.style.removeProperty('--route-top'); list.style.removeProperty('--route-bottom'); continue; }
+          const listTop = list.getBoundingClientRect().top + window.scrollY;
+          const listBottom = listTop + list.getBoundingClientRect().height;
+          list.style.setProperty('--route-top', `${Math.round(centreOf(marks[0]) - listTop)}px`);
+          list.style.setProperty('--route-bottom', `${Math.round(listBottom - centreOf(marks[marks.length - 1]))}px`);
+        }
+        dirty = false;
+      };
+
+      /* Scroll position maps to a place on the route with a plateau at every stop:
+         inside a stop's capture window the buoy holds still, and between windows it
+         covers the whole gap, so it arrives at the next stop as the reader does. */
+      const placeOn = (natural: number) => {
+        if (natural <= anchors[0]) return anchors[0];
+        const end = anchors[anchors.length - 1];
+        if (natural >= end) return end;
+        for (let i = 0; i < anchors.length - 1; i += 1) {
+          const from = anchors[i];
+          const to = anchors[i + 1];
+          if (natural < from || natural > to) continue;
+          const gap = to - from;
+          const dwell = Math.min(72, gap * 0.34);
+          if (natural <= from + dwell) return from;
+          if (natural >= to - dwell) return to;
+          return from + ((natural - from - dwell) / (gap - dwell * 2)) * gap;
+        }
+        return end;
+      };
+
+      /* The pilot eases toward where the scroll position puts it rather than being
+         pinned to it. Following the scroll exactly made it snap between stops, which
+         reads as fast and pulls the eye off the page; easing lets it glide and settle,
+         and it deepens the hold at a stop because it is still catching up when the
+         reader has already moved on. */
+      const EASE = 0.075;
+      let current: number | null = null;
+
+      const draw = () => {
+        frame = 0;
+        if (dirty) measure();
+        if (!anchors.length) { pilot.classList.remove('is-live'); return; }
+
+        const target = placeOn(window.scrollY + window.innerHeight / 2);
+        if (current === null) current = target;
+        const delta = target - current;
+        current = Math.abs(delta) < 0.4 ? target : current + delta * EASE;
+
+        pilot.style.transform = `translateY(${(current - routeTop).toFixed(1)}px)`;
+        pilot.classList.add('is-live');
+
+        for (let i = 0; i < reached.length; i += 1) {
+          reached[i].classList.toggle('is-reached', current >= anchors[i] - 1);
+        }
+
+        /* Keep the loop alive only while there is distance left to cover. */
+        if (current !== target) schedule();
+      };
+
+      const schedule = () => { if (!frame) frame = requestAnimationFrame(draw); };
+      const remeasure = () => { dirty = true; schedule(); };
+
+      window.addEventListener('scroll', schedule, { passive: true });
+      window.addEventListener('resize', remeasure);
+      input.addEventListener('input', remeasure);
+      moreButton?.addEventListener('click', remeasure);
+      stillness.addEventListener('change', (event) => {
+        if (event.matches) pilot.classList.remove('is-live');
+        else remeasure();
+      });
+      if (document.fonts) document.fonts.ready.then(remeasure);
+      remeasure();
+    }
   }
 </script>

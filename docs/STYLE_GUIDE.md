@@ -19,7 +19,13 @@ The site should feel like a small, premium editorial publication for experienced
 
 - The site is calm and close to still. Motion is reserved, not decorative.
 - The divider buoy and the light on the Editor's Pick card are the motion with a voice
-  on an issue page. Do not add a third.
+  on an issue page. Do not add a third there.
+- The archive has one of its own: the beacon that travels the route as the reader
+  scrolls, holding at each stop and filling the ones behind it. It is confined to
+  `/archive/`, is driven by scroll position rather than by an animation of its own, and
+  is not rendered under reduced motion. See The Pilot Rule in `DESIGN.md`. It is an
+  exception argued on that page being a sequence, not a licence for travelling markers
+  elsewhere.
 - The two wave bands are the exception, because they are not asking to be noticed. They
   swell without anything travelling, below the still water level, paused off screen and
   stopped under reduced motion. See The Swell Rule in `DESIGN.md`. Motion that wants

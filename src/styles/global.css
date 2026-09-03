@@ -1447,14 +1447,14 @@ a { color: inherit; }
   padding: 0;
   list-style: none;
 }
-/* The route itself. It begins at the centre of the first beacon rather than above
-   it, because the newest issue is where the journey starts, and runs to the foot of
-   the list where the origin's own connector picks it up. */
+/* The route itself. Script tightens it to the first and last beacon centres; the
+   static fallback runs the height of the list so a reader without JavaScript still
+   gets a continuous line rather than a dangling one. */
 .archive-stops::before {
   content: "";
   position: absolute;
-  top: 28px;
-  bottom: 0;
+  top: var(--route-top, 0px);
+  bottom: var(--route-bottom, 0px);
   left: 8px;
   width: 1px;
   background: var(--line);
@@ -1464,23 +1464,53 @@ a { color: inherit; }
   display: grid;
   grid-template-columns: 17px minmax(0, 1fr);
   gap: 23px;
-  align-items: start;
+  align-items: center;
 }
 .archive-stop[hidden] { display: none; }
 .archive-stop-mark {
   position: relative;
   width: 17px;
   height: 17px;
-  margin-top: 20px;
   border: 1.5px solid var(--muted);
   border-radius: 50%;
   background: var(--page);
+  transition: background-color 420ms cubic-bezier(.16, 1, .3, 1), border-color 420ms cubic-bezier(.16, 1, .3, 1);
+}
+/* A stop the buoy has reached. The fill is a state, so it takes the accent under
+   The Beacon Rule rather than introducing a colour of its own. */
+.archive-stop.is-reached .archive-stop-mark {
+  border-color: var(--accent);
+  background: var(--accent);
 }
 .archive-stop.is-current .archive-stop-mark {
   border-color: var(--accent);
   background: var(--accent);
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 16%, transparent);
 }
+
+/* The pilot: the lit beacon that travels the route with the reader, named for the
+   boat that leads a vessel through a harbour. One object for the whole page, moved
+   by scroll position rather than by an animation of its own, so it holds at a stop
+   while the reader keeps scrolling and then catches up to the next. It is the same
+   17px as a stop mark, so docking reads as that stop lighting up. Hidden until the
+   script places it, and never shown under reduced motion. */
+.archive-pilot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 17px;
+  height: 17px;
+  margin-top: -8.5px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 16%, transparent);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 300ms ease;
+  will-change: transform;
+}
+.archive-pilot.is-live { opacity: 1; }
+.archive-route { position: relative; }
 .archive-card { display: grid; gap: 10px; padding: 25px; text-decoration: none; box-shadow: none; }
 .archive-card span { color: var(--muted); }
 .archive-card-head { display: flex; flex-wrap: wrap; gap: 10px; align-items: baseline; }
@@ -2146,6 +2176,8 @@ a { color: inherit; }
   .archive-card:hover,
   .theme-toggle:hover { transform: none; }
   .content-divider.is-lit .brand-mark-ping { animation: none; }
+  .archive-pilot { display: none; }
+  .archive-stop-mark { transition: none; }
   .hero-pick-card.has-pick-accent::before,
   .hero-pick-card.has-pick-accent::after { animation: none; }
 }

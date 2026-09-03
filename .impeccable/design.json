@@ -449,6 +449,11 @@
         "name": "The Two Digit Issue Rule",
         "body": "An issue number is recorded three digits wide and published two: Issue 08, never Issue 008, and three digits only once there is a hundredth issue. src/data/issue.ts is the single place that produces the label (issueLabel for the digits, issueName for the whole phrase) and scripts/check-editorial-style.mjs fails the build on a literal three-digit form. Both exist because the rule was written down nowhere until 2026-09-03: it had been implemented three times over and skipped in five more places, so the breadcrumb printed Issue 008 directly above a heading reading Issue 08.",
         "section": "typography"
+      },
+      {
+        "name": "The Pilot Rule",
+        "body": "The archive's beacon travels: one lit dot rides the route line down the page as the reader scrolls, holds in each stop's ring while they keep going, then catches up to the next, with stops behind it left filled to show distance covered. Confined to /archive/, it is the third motion with a voice on the site after the divider buoy and the Editor's Pick light, and it earns that by being the page's own subject rather than decoration over it. It is driven by scroll position and never by an animation of its own, it eases toward its target rather than tracking the scroll exactly, the fill is a state so it takes the accent under The Beacon Rule, and under prefers-reduced-motion it is not rendered at all.",
+        "section": "motion"
       }
     ],
     "dos": [
