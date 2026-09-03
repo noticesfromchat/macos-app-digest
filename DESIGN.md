@@ -287,7 +287,9 @@ Motion is used sparingly and always to mark passage: where the reader is in a pa
 
 Until 2026-09-03 this was a count: the divider buoy and the Editor's Pick light were declared the two motions with a voice and a third was forbidden. That was arbitrary. It would have permitted a decorative third on another page and forbidden a fourth that explained something, which is backwards.
 
-**The Struck Light Rule.** The Editor's Pick card in the hero is lit by the featured app's own colour, and that light moves. Two continuous animations, both on pseudo-elements of that one card: a wide, soft wash that drifts across the interior over 28s, and a gleam that travels the card's edge over 11s like light crossing a struck plate. Nothing else on the site does this, and nothing else should; the effect is reserved for the one app an issue argues for.
+**The Struck Light Rule.** The Editor's Pick card in the hero is lit by the featured app's own colour, and that light moves. Two continuous animations, both on pseudo-elements of that one card: a wide, soft wash that drifts across the interior over 28s, and a gleam that travels the card's edge over 11s like light crossing a struck plate.
+
+The effect is reserved for **arrivals**: a card the reader is meant to stop at, at most one per surface. Two carry it. In the hero it is the Editor's Pick, the one app an issue argues for, lit by that app's own normalised colour. On the archive it is the terminus, the card that says where the publication started, lit by the site accent rather than an app's colour because what is being marked there is the journey ending and no app is being argued for. Until 2026-09-03 the rule read that nothing else should ever carry it; that was a reservation to the hero specifically, and the terminus is the same kind of moment on a page that earns one. It stays scarce by that test, not by a list: a second lit card on either surface would dilute both.
 
 Four things hold it inside the design system:
 

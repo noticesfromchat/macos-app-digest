@@ -275,17 +275,21 @@ gtag('config', ${JSON.stringify(googleAnalyticsId)}, {
       </section>
     </div>
     <script is:inline>
-      /* The Editor's Pick gleam runs continuously, so it is paused whenever the
-         card is off screen. A loop nobody can see is a loop that should not run. */
+      /* A Struck Light gleam runs continuously, so it is paused whenever its card
+         is off screen. A loop nobody can see is a loop that should not run. Every
+         lit card is watched, not just the hero's: the archive terminus carries the
+         same treatment, and a second observer for it would be the same rule twice. */
       (() => {
-        const pick = document.querySelector('.hero-pick-card.has-pick-accent');
-        if (!pick || !('IntersectionObserver' in window)) return;
+        const lit = document.querySelectorAll('.has-pick-accent');
+        if (!lit.length || !('IntersectionObserver' in window)) return;
 
         const watching = new IntersectionObserver((entries) => {
-          for (const entry of entries) pick.classList.toggle('is-resting', !entry.isIntersecting);
+          for (const entry of entries) {
+            entry.target.classList.toggle('is-resting', !entry.isIntersecting);
+          }
         }, { threshold: 0 });
 
-        watching.observe(pick);
+        for (const card of lit) watching.observe(card);
       })();
     </script>
     <script is:inline>

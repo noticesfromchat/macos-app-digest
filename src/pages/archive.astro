@@ -183,7 +183,7 @@ let stopIndex = 0;
 
         <section class="archive-origin" aria-labelledby="archive-origin-heading">
           <span class="archive-origin-mark" aria-hidden="true"></span>
-          <div class="archive-origin-body">
+          <div class="archive-origin-body has-pick-accent">
             <h2 id="archive-origin-heading">Where it started</h2>
             <p>
               {issueName(issues[issues.length - 1].data.number)} went out on {issues[issues.length - 1].data.date}. Every Friday since has been filled with great apps.
@@ -338,10 +338,20 @@ let stopIndex = 0;
 
         const lastMark = anchors.length > 1 ? anchors[anchors.length - 2].el : null;
         if (origin && lastMark) {
-          origin.parentElement?.style.setProperty(
+          const block = origin.parentElement;
+          block?.style.setProperty(
             '--origin-bridge',
             `${Math.round(centreOf(origin) - centreOf(lastMark))}px`
           );
+          /* Where the bridge has to stop. The mark centres on the terminus card, so
+             its centre moves with the card's height rather than sitting a fixed
+             distance below the block's top. */
+          if (block) {
+            block.style.setProperty(
+              '--origin-mark-centre',
+              `${Math.round(centreOf(origin) - (block.getBoundingClientRect().top + window.scrollY))}px`
+            );
+          }
         }
         dirty = false;
         activeIndex = -1;

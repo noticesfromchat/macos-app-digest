@@ -714,7 +714,7 @@ a { color: inherit; }
 
 /* The halo is a background layer rather than a pseudo-element, so it is clipped by
    the card's own radius and can never paint over the content above it. */
-.hero-pick-card.has-pick-accent {
+.has-pick-accent {
   /* A wide, soft brush rather than a disc: at this radius the colour has no edge
      of its own, so what the reader notices is the card being lit, not a shape
      sitting behind the text. It drifts slowly so the light never pools. */
@@ -723,13 +723,16 @@ a { color: inherit; }
      background-image, and routing the gradient through an intermediate custom
      property stops the drift resolving at all. A layer avoids both. */
   isolation: isolate;
-  /* The one card in the fold the issue is arguing for; it rests proud of the rest. */
-  box-shadow: var(--shadow-hover);
+  /* The gleam traces the card's own corner, so the radius is a parameter rather
+     than a constant repeated in the ring. */
+  --pick-radius: 12px;
 }
+/* The one card in the fold the issue is arguing for; it rests proud of the rest. */
+.hero-pick-card.has-pick-accent { box-shadow: var(--shadow-hover); }
 
 /* Negative z-index inside the card's own stacking context, so the wash paints
    above the card's surface and below every word on it. */
-.hero-pick-card.has-pick-accent::after {
+.has-pick-accent::after {
   content: "";
   position: absolute;
   z-index: -1;
@@ -767,7 +770,7 @@ a { color: inherit; }
    ring cannot be cut out of the gradient, so the whole effect is withheld rather
    than shipped as a coloured rectangle. */
 @supports ((mask-composite: exclude) or (-webkit-mask-composite: xor)) {
-  .hero-pick-card.has-pick-accent::before {
+  .has-pick-accent::before {
     content: "";
     position: absolute;
     z-index: 1;
@@ -776,7 +779,7 @@ a { color: inherit; }
     --pick-rim: 1.5px;
     inset: calc(var(--pick-rim) * -1);
     padding: var(--pick-rim);
-    border-radius: calc(12px + var(--pick-rim));
+    border-radius: calc(var(--pick-radius) + var(--pick-rim));
     background: conic-gradient(
       from var(--pick-angle),
       color-mix(in srgb, var(--pick-accent) 16%, transparent) 0deg,
@@ -802,10 +805,10 @@ a { color: inherit; }
 }
 
 /* A loop the reader cannot see is a loop that should not run. */
-.hero-pick-card.has-pick-accent.is-resting::before,
-.hero-pick-card.has-pick-accent.is-resting::after { animation-play-state: paused; }
+.has-pick-accent.is-resting::before,
+.has-pick-accent.is-resting::after { animation-play-state: paused; }
 
-[data-theme="dark"] .hero-pick-card.has-pick-accent::after {
+[data-theme="dark"] .has-pick-accent::after {
   background: radial-gradient(
     116% 96% at var(--pick-x) var(--pick-y),
     color-mix(in srgb, var(--pick-accent) 24%, transparent),
@@ -1584,7 +1587,11 @@ a { color: inherit; }
      up Issue 01 rather than at the foot of the list. The fallback covers the plain
      margin for a reader without JavaScript, where the line runs to the list's edge. */
   height: var(--origin-bridge, 27px);
-  top: calc(12.5px - var(--origin-bridge, 27px));
+  /* Ends on the mark's centre. The mark now centres on the card rather than sitting
+     a fixed 4px down from the top, so that centre is measured rather than stated;
+     without the script it is the block's own middle, which is where a centred mark
+     lands anyway. */
+  top: calc(var(--origin-mark-centre, 50%) - var(--origin-bridge, 27px));
   left: 8px;
   width: 1px;
   background: var(--line);
@@ -1593,18 +1600,16 @@ a { color: inherit; }
 .archive-origin {
   display: grid;
   grid-template-columns: 17px minmax(0, 1fr);
-  /* Wider than a stop's 23px so the terminus copy lines up with the words inside
-     the cards above it rather than with their edges: a card begins 40px in and holds
-     its text 26px inside that, a 1px border and 25px of padding. */
-  gap: 49px;
-  align-items: start;
+  /* The terminus is a card like every stop above it, so the mark sits at the same
+     23px from it and centres on it the way a stop's does. */
+  gap: 23px;
+  align-items: center;
   margin-top: 14px;
 }
 .archive-origin-mark {
   position: relative;
   width: 17px;
   height: 17px;
-  margin-top: 4px;
   border: 1.5px solid var(--line);
   border-radius: 50%;
   background: var(--page);
@@ -1630,7 +1635,20 @@ a { color: inherit; }
 .archive-origin.is-arrived .archive-origin-mark::after {
   animation: beacon-ping 2400ms cubic-bezier(0.16, 1, 0.3, 1) 3;
 }
-.archive-origin-body { max-width: var(--measure); }
+/* The terminus is the one arrival this page has, so it is a card and it is lit,
+   under The Struck Light Rule. The light is the site accent rather than an app's
+   colour, because what is being marked here is the journey ending, not an app. */
+.archive-origin-body {
+  position: relative;
+  max-width: none;
+  padding: 25px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  --pick-accent: var(--accent);
+}
+.archive-origin-body > * { max-width: var(--measure); }
 .archive-origin h2 {
   margin: 0;
   font-family: var(--display);
@@ -2231,6 +2249,6 @@ a { color: inherit; }
   .archive-pilot { transition: opacity 300ms ease; }
   .archive-stop-mark { transition: none; }
   .archive-origin.is-arrived .archive-origin-mark::after { animation: none; }
-  .hero-pick-card.has-pick-accent::before,
-  .hero-pick-card.has-pick-accent::after { animation: none; }
+  .has-pick-accent::before,
+  .has-pick-accent::after { animation: none; }
 }
