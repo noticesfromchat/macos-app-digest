@@ -1516,8 +1516,10 @@ a { color: inherit; }
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 16%, transparent);
   pointer-events: none;
   opacity: 0;
-  transition: opacity 300ms ease;
-  will-change: transform;
+  /* One bounded move per change of stop, on the house deceleration curve. A view
+     transition rather than a tracker: it rests until the current stop changes, and
+     the browser retargets it cleanly when a reader scrolls past several at once. */
+  transition: transform 420ms cubic-bezier(.16, 1, .3, 1), opacity 300ms ease;
 }
 .archive-pilot.is-live { opacity: 1; }
 .archive-route { position: relative; }
@@ -2190,7 +2192,9 @@ a { color: inherit; }
   .archive-card:hover,
   .theme-toggle:hover { transform: none; }
   .content-divider.is-lit .brand-mark-ping { animation: none; }
-  .archive-pilot { display: none; }
+  /* Reduced motion keeps the marker, because which stop you are at is meaningful
+     state, and drops the travel between stops. */
+  .archive-pilot { transition: opacity 300ms ease; }
   .archive-stop-mark { transition: none; }
   .hero-pick-card.has-pick-accent::before,
   .hero-pick-card.has-pick-accent::after { animation: none; }

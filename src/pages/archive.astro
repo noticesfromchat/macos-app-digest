@@ -291,22 +291,23 @@ let stopIndex = 0;
     input.disabled = false;
     render();
 
-    /* The pilot travels the route as the reader scrolls. It is driven by scroll
-       position rather than by an animation of its own, so it never moves on a still
-       page: it holds at a stop while the reader keeps going, then catches up to the
-       next one. Stops behind it fill in.
+    /* The pilot marks which stop the reader is at. It is a state, not a tracker:
+       it rests in a ring and moves only when the current stop changes, on a single
+       bounded transition. An earlier version followed the scroll position every
+       frame, which meant it was in motion the whole time the reader was and its
+       speed rose with theirs. That is animation debt: it explained nothing and
+       competed with the reading.
 
-       Motion is reserved on this site, so this is the one moving thing on the page
-       and it is off entirely under reduced motion, where the stops keep their
-       static beacons. */
+       Scroll only decides which stop is current. CSS owns the movement, so the
+       browser retargets cleanly when the reader scrolls through several stops at
+       once, and there is no loop running on a still page. */
     const pilot = route.querySelector<HTMLElement>('[data-archive-pilot]');
-    const stillness = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const origin = document.querySelector<HTMLElement>('.archive-origin-mark');
 
-    if (pilot && !stillness.matches) {
-      const origin = document.querySelector<HTMLElement>('.archive-origin-mark');
-      let anchors: number[] = [];
-      let reached: HTMLElement[] = [];
+    if (pilot) {
+      let anchors: { y: number; el: HTMLElement }[] = [];
       let routeTop = 0;
+      let activeIndex = -1;
       let dirty = true;
       let frame = 0;
 
@@ -317,25 +318,28 @@ let stopIndex = 0;
 
       const measure = () => {
         routeTop = route.getBoundingClientRect().top + window.scrollY;
-        reached = stops.filter((stop) => !stop.hidden);
-        anchors = reached.map((stop) => centreOf(stop.querySelector('.archive-stop-mark')!));
-        /* The terminus is the last stop on the journey, so the buoy travels to it. */
-        if (origin && anchors.length) anchors.push(centreOf(origin));
+        const marks = stops
+          .filter((stop) => !stop.hidden)
+          .map((stop) => stop.querySelector<HTMLElement>('.archive-stop-mark')!)
+          .filter(Boolean);
+        anchors = marks.map((el) => ({ y: centreOf(el), el }));
+        /* The terminus is the last stop on the journey, so the pilot rests there too. */
+        if (origin && anchors.length) anchors.push({ y: centreOf(origin), el: origin });
 
-        /* Tighten each year's line to its own first and last beacon rather than
-           letting it dangle past them. */
         for (const list of route.querySelectorAll<HTMLElement>('.archive-stops')) {
-          const marks = [...list.querySelectorAll<HTMLElement>('.archive-stop:not([hidden]) .archive-stop-mark')];
-          if (marks.length < 1) { list.style.removeProperty('--route-top'); list.style.removeProperty('--route-bottom'); continue; }
-          const listTop = list.getBoundingClientRect().top + window.scrollY;
-          const listBottom = listTop + list.getBoundingClientRect().height;
-          list.style.setProperty('--route-top', `${Math.round(centreOf(marks[0]) - listTop)}px`);
-          list.style.setProperty('--route-bottom', `${Math.round(listBottom - centreOf(marks[marks.length - 1]))}px`);
+          const listMarks = [...list.querySelectorAll<HTMLElement>('.archive-stop:not([hidden]) .archive-stop-mark')];
+          if (!listMarks.length) {
+            list.style.removeProperty('--route-top');
+            list.style.removeProperty('--route-bottom');
+            continue;
+          }
+          const listBox = list.getBoundingClientRect();
+          const listTop = listBox.top + window.scrollY;
+          list.style.setProperty('--route-top', `${Math.round(centreOf(listMarks[0]) - listTop)}px`);
+          list.style.setProperty('--route-bottom', `${Math.round(listTop + listBox.height - centreOf(listMarks[listMarks.length - 1]))}px`);
         }
 
-        /* The gap between the last ring and the terminus, so the line arrives at the
-           origin rather than stopping halfway up the final card. */
-        const lastMark = [...route.querySelectorAll<HTMLElement>('.archive-stop:not([hidden]) .archive-stop-mark')].pop();
+        const lastMark = anchors.length > 1 ? anchors[anchors.length - 2].el : null;
         if (origin && lastMark) {
           origin.parentElement?.style.setProperty(
             '--origin-bridge',
@@ -343,54 +347,10 @@ let stopIndex = 0;
           );
         }
         dirty = false;
+        activeIndex = -1;
       };
 
-      /* Scroll position maps to a place on the route with a plateau at every stop:
-         inside a stop's capture window the buoy holds still, and between windows it
-         covers the whole gap, so it arrives at the next stop as the reader does. */
-      const placeOn = (natural: number) => {
-        if (natural <= anchors[0]) return anchors[0];
-        const end = anchors[anchors.length - 1];
-        if (natural >= end) return end;
-        for (let i = 0; i < anchors.length - 1; i += 1) {
-          const from = anchors[i];
-          const to = anchors[i + 1];
-          if (natural < from || natural > to) continue;
-          const gap = to - from;
-          /* How much scrolling a stop absorbs before the pilot moves on. Kept
-             modest: the pilot's own lag already holds it at a stop, and a wide
-             plateau on top of that reads as parked rather than as following. */
-          const dwell = Math.min(64, gap * 0.28);
-          if (natural <= from + dwell) return from;
-          if (natural >= to - dwell) return to;
-          return from + ((natural - from - dwell) / (gap - dwell * 2)) * gap;
-        }
-        return end;
-      };
-
-      /* The pilot moves at its own pace, not at a pace derived from how far behind
-         it is. Easing toward the target meant speed scaled with the gap, so scrolling
-         faster made the pilot rush into the ring: the harder you scrolled, the more
-         eager it looked, which is backwards. It now travels at a fixed speed in
-         pixels per second, so a fast scroll simply leaves it further behind and it
-         ambles after you at exactly the same rate.
-
-         Two rates, because arriving and travelling are different gestures, but both
-         are constant. Docking is brisker than drifting and no more variable. */
-      const TRAVEL_PX_PER_SEC = 46;
-      const DOCK_PX_PER_SEC = 118;
-      const HOLD_MS = 190;
-      /* Beyond this the pilot is well off screen, where ambling after the reader
-         would take most of a minute. It closes to the edge of that distance in one
-         step, which is invisible, and drifts the rest. */
-      const MAX_LAG = () => window.innerHeight * 1.2;
-
-      let current: number | null = null;
-      let dockedAt: number | null = null;
-      let holdUntil = 0;
-      let lastFrame = 0;
-
-      const draw = (now: number) => {
+      const update = () => {
         frame = 0;
         if (dirty) measure();
         if (!anchors.length) {
@@ -399,65 +359,29 @@ let stopIndex = 0;
           return;
         }
 
-        const target = placeOn(window.scrollY + window.innerHeight / 2);
-        if (current === null) current = target;
-
-        /* Clamped so a backgrounded tab does not resume with one enormous step. */
-        const elapsed = lastFrame ? Math.min(now - lastFrame, 50) : 16;
-        lastFrame = now;
-
-        const holding = now < holdUntil;
-        if (!holding) {
-          /* `placeOn` returns an anchor exactly while the reader is inside a stop's
-             window, so an exact match is the signal to dock rather than drift. */
-          const docking = anchors.some((anchor) => Math.abs(anchor - target) < 0.5);
-          let delta = target - current;
-
-          const lagLimit = MAX_LAG();
-          if (Math.abs(delta) > lagLimit) {
-            current = target - Math.sign(delta) * lagLimit;
-            delta = target - current;
-          }
-
-          const step = ((docking ? DOCK_PX_PER_SEC : TRAVEL_PX_PER_SEC) * elapsed) / 1000;
-
-          if (Math.abs(delta) <= step) {
-            current = target;
-            if (docking && dockedAt !== target) {
-              dockedAt = target;
-              holdUntil = now + HOLD_MS;
-            }
-          } else {
-            current += Math.sign(delta) * step;
-            if (!docking) dockedAt = null;
-          }
+        /* Whichever stop the reader is nearest. Discrete on purpose: between two
+           stops the pilot stays in the one it is in until the other is closer. */
+        const line = window.scrollY + window.innerHeight / 2;
+        let next = 0;
+        for (let i = 1; i < anchors.length; i += 1) {
+          if (Math.abs(anchors[i].y - line) < Math.abs(anchors[next].y - line)) next = i;
         }
 
-        pilot.style.transform = `translateY(${(current - routeTop).toFixed(1)}px)`;
         pilot.classList.add('is-live');
-        /* Tells the stylesheet the pilot owns the accent now, so no stop stays lit
-           behind it. */
         route.classList.add('is-piloted');
+        if (next === activeIndex) return;
 
-        /* Keep the loop alive while there is distance left to cover, or a hold to
-           come out of. */
-        if (current !== target || holding) schedule();
+        activeIndex = next;
+        pilot.style.transform = `translateY(${Math.round(anchors[next].y - routeTop)}px)`;
       };
 
-      const schedule = () => { if (!frame) frame = requestAnimationFrame(draw); };
-      const remeasure = () => { dirty = true; lastFrame = 0; schedule(); };
+      const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
+      const remeasure = () => { dirty = true; schedule(); };
 
       window.addEventListener('scroll', schedule, { passive: true });
       window.addEventListener('resize', remeasure);
       input.addEventListener('input', remeasure);
       moreButton?.addEventListener('click', remeasure);
-      stillness.addEventListener('change', (event) => {
-        if (event.matches) {
-          pilot.classList.remove('is-live');
-          route.classList.remove('is-piloted');
-        }
-        else remeasure();
-      });
       if (document.fonts) document.fonts.ready.then(remeasure);
       remeasure();
     }
