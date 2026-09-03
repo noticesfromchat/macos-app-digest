@@ -25,6 +25,11 @@ const oxfordCommaPattern = /\b[\w'’-]+(?:\s+[\w'’-]+)*,\s+[^,\n]+,\s+(?:and|
    See The Plain Dash Rule in DESIGN.md and Editorial punctuation in
    docs/STYLE_GUIDE.md. */
 const editorialDashPattern = /[—–]/;
+/* The Two Digit Issue Rule. Records store the number three digits wide; published copy
+   writes two. The rule was implemented three separate times and skipped in five more
+   before it was written down, so it is checked here rather than trusted. `src/data/issue.ts`
+   is the one place allowed to produce the label. */
+const issueNumberPattern = /\bIssue\s+\d{3}\b/;
 const titleExemptionPattern = /(?:^|[\s{[(])title\s*[:=]/i;
 const errors = [];
 
@@ -104,6 +109,12 @@ async function walk(directory) {
 
       if (oxfordCommaPattern.test(copy)) {
         errors.push(`${relative}:${index + 1}: avoid Oxford commas in public editorial copy`);
+      }
+
+      if (issueNumberPattern.test(copy)) {
+        errors.push(
+          `${relative}:${index + 1}: write an issue number two digits wide; use issueLabel or issueName from src/data/issue.ts`
+        );
       }
 
       if (editorialDashPattern.test(copy) && !titleExemptionPattern.test(copy)) {

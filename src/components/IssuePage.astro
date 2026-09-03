@@ -7,6 +7,7 @@ import BrandMark from './BrandMark.astro';
 import SubscribeCard from './SubscribeCard.astro';
 import WaveRule from './WaveRule.astro';
 import ReadingCard from './ReadingCard.astro';
+import { issueLabel } from '../data/issue';
 
 type Issue = CollectionEntry<'issues'>['data'];
 type AppEntry = CollectionEntry<'apps'>;
@@ -24,7 +25,7 @@ const {
 };
 
 const appsById = new Map(appEntries.map((entry) => [entry.id, entry]));
-const issueLabel = String(Number(issue.number)).padStart(2, '0');
+const label = issueLabel(issue.number);
 const editorsPick = issue.editorsPick ? appsById.get(issue.editorsPick.app) : undefined;
 const Wordmark = homepage ? 'h1' : 'p';
 const IssueHeading = homepage ? 'p' : 'h1';
@@ -52,7 +53,7 @@ const IssueHeading = homepage ? 'p' : 'h1';
 
       <div class="home-hero-issue">
         <p class="eyebrow">{homepage ? 'Current issue' : 'Archived issue'}</p>
-        <IssueHeading class="home-hero-number">Issue {issueLabel}</IssueHeading>
+        <IssueHeading class="home-hero-number">Issue {label}</IssueHeading>
         <p class="home-hero-date">
           Published <time datetime={issue.slug}>{issue.date}</time>
         </p>

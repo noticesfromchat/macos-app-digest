@@ -9,6 +9,8 @@
    meaning and would change under the page without anyone deciding it had. Explore is the
    honest parent: it is the one page that contains every app. */
 
+import { issueName } from './issue';
+
 export type Crumb = {
   label: string;
   /** Omitted on the last crumb, which is the page you are on and is not a link. */
@@ -24,7 +26,7 @@ export const appTrail = (name: string): Crumb[] => [HOME, EXPLORE, { label: name
 export const issueTrail = (number: string): Crumb[] => [
   HOME,
   ARCHIVE,
-  { label: `Issue ${number}` }
+  { label: issueName(number) }
 ];
 
 /** Categories, collections and tags are the three lanes Explore opens onto. */
