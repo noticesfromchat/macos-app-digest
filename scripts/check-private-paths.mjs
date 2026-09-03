@@ -13,6 +13,13 @@ const ignoredDirectories = new Set([
 const ignoredPrefixes = [
   '.github/skills/',
   '.agents/skills/impeccable/',
+  /* Impeccable's local state. The skill records absolute paths in these and adds
+     them to .git/info/exclude itself, so they are never committed and the check
+     has nothing to protect here. Its critique reports are not on this list: those
+     are tracked, and must carry repository-relative paths like anything else. */
+  '.impeccable/hook.cache.json',
+  '.impeccable/hook.pending.json',
+  '.impeccable/config.local.json',
 ];
 const textExtensions = new Set([
   '.astro', '.css', '.html', '.js', '.json', '.md', '.mjs', '.toml',
