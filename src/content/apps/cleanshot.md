@@ -9,5 +9,5 @@ source: Editor selection and official CleanShot homepage
 homepage: https://cleanshot.com/
 icon: /app-icons/cleanshot.png
 iconStyle: plain
-iconAccent: "#c56c00"
+iconAccent: "#30bffd"
 ---
