@@ -128,7 +128,14 @@ export function getCategoriesForTags(tags: string[]) {
 export function getPopularTags(
   apps: Array<{ tags: string[] }>,
   {
-    exclude = ['health', 'finance', 'local', 'open-source'],
+    /* Tags that would crowd the chips without helping anyone choose. `health` and
+       `finance` are protected single-app tags. `local` and `open-source` are
+       deliberate attributes carried by every record that qualifies. `utility` and
+       `productivity` are here for the opposite reason: they are the two broadest
+       tags in the catalogue, on 45 and 54 of 102 records, so they took the top two
+       chips on merit and told a reader nothing. They still work as tags and as tag
+       pages; they just no longer lead the list. See the retirement project. */
+    exclude = ['health', 'finance', 'local', 'open-source', 'utility', 'productivity'],
     limit = 12
   }: {
     exclude?: string[];
