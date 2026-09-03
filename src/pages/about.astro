@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
 import { topLevelTrail } from '../data/breadcrumb';
+import { OG_SIZE, ogPath } from '../data/og';
 
 const trail = topLevelTrail('About');
 ---
@@ -10,6 +11,9 @@ const trail = topLevelTrail('About');
   title="About — App Waypoint"
   description="Learn how App Waypoint researches and selects high-quality Mac apps for experienced users each week."
   current="about"
+  socialImage={ogPath('about')}
+  socialImageSize={OG_SIZE}
+  socialImageAlt="About App Waypoint: curated one app at a time."
 >
   <article class="page-shell archive-page about-page">
     <Breadcrumb trail={trail} />

@@ -1,17 +1,18 @@
 ---
 import { getCollection } from 'astro:content';
+import { OG_SIZE, ogPath } from '../data/og';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
 import { topLevelTrail, itemListSchema } from '../data/breadcrumb';
+import { issueLabel, issueName } from '../data/issue';
 
 const issues = [...await getCollection('issues')].sort((a, b) => b.data.slug.localeCompare(a.data.slug));
-const issueLabel = (number: string | number) => String(Number(number)).padStart(2, '0');
 
 const trail = topLevelTrail('Archive');
 
 const listSchema = itemListSchema(
   issues.map((issue) => ({
-    name: `Issue ${issue.data.number}`,
+    name: issueName(issue.data.number),
     href: `/issues/${issue.data.slug}/`
   })),
   Astro.site
@@ -21,6 +22,9 @@ const listSchema = itemListSchema(
   structuredData={[listSchema]}
   breadcrumb={trail}
   title="Archive — App Waypoint"
+  socialImage={ogPath('archive')}
+  socialImageSize={OG_SIZE}
+  socialImageAlt="Every published issue of App Waypoint."
   description="Browse every issue of App Waypoint, a weekly editorial guide to thoughtfully selected Mac apps, automation tools, AI software and Mac-focused reading."
   current="archive"
 >

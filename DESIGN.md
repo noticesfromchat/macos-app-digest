@@ -247,6 +247,8 @@ The rhythm is two values, not one. **11px binds an eyebrow to its content; 24px 
 
 **The Plain Dash Rule.** Public editorial copy uses no em dash and no en dash. Restructure to a period, a comma, a colon, or parentheses, and set number and date ranges with a plain hyphen: `August 5-19, 2026`, not `August 5–19, 2026`. The em dash is the clearest tell of machine-drafted prose, and this publication is human-led by design. Three things sit outside the rule and stay as they are. Page-title separators are an SEO and publishing convention and are indexed, so `Archive — App Waypoint` is correct. Quoted external titles in source notes and reading lists keep their own punctuation, because changing it misquotes the source; source notes stopped being published on 2026-09-01 but are still written and still validated, so the exception still governs how they are recorded. Code comments are not copy and no reader sees them. The rule governs the site's public copy, not this repository's documentation. General frontend guidance in `.agents/skills/taste-skill` states a blanket zero-tolerance ban covering titles as well; that is a marketing-page heuristic, this narrower rule is what governs here, and the vendored skill is deliberately left unedited so it stays diffable against upstream.
 
+**The Two Digit Issue Rule.** An issue number is recorded three digits wide and published two: `Issue 08`, never `Issue 008`, and three digits only once there is a hundredth issue. `src/data/issue.ts` is the single place that produces the label, `issueLabel` for the digits and `issueName` for the whole phrase, and `scripts/check-editorial-style.mjs` fails the build on a literal three-digit form. Both of those exist because the rule was written down nowhere until 2026-09-03: it had been implemented three times over (the issue hero, the archive list, and the RSS summary by a different mechanism) and skipped in five more places, so the breadcrumb printed `Issue 008` directly above a heading reading `Issue 08`, and the archive's `ItemList` disagreed with the rows a reader could see. The record keeps its three digits, because the schema fixes the width and the frontmatter sorts on it; only the reader-facing form is two.
+
 **The Serif-Utility Split.** Serif type carries the editorial voice; the system sans carries the operational voice. Mixing them casually weakens both jobs. The mono face is the third voice and the narrowest: it is for data a reader might copy, which today means the RSS feed URL and nothing else. It is not a costume for looking technical.
 
 ## Layout
@@ -628,6 +630,57 @@ smaller makes iOS Safari zoom the page when the field takes focus.
 The mechanical detector reports these seven as `design-system-font-size` advisories on
 every run. That is expected. Treat a change in the count as the signal, not the count.
 
+### Social Cards
+
+**The Borrowed Type Rule.** A social card is the only surface that cannot use the site's own
+typeface. Iowan Old Style is a macOS system font with no file to embed, so a build-time
+renderer has nothing to load. Vollkorn stands in: it is the closest embeddable face measured
+against Iowan on the two things that decide whether a line breaks the same way, x-height over
+cap at +0.010 and the width of `Hamburgefonstiv` within 0.1% at 100px, and unlike the Charter
+derivatives it ships the 500 and 600 weights this scale uses. Inter stands in for
+`-apple-system`. Both are SIL OFL 1.1 and carry the licence in their package, which is the
+standing condition for any font entering this repository: the Philippine files were deleted in
+September 2026 for arriving without one. Nothing else on the site may substitute a typeface.
+
+Cards are 1200x630, drawn by `src/data/og-card.ts` and generated at build time by
+`src/pages/og/[slug].png.ts`, one for every URL in the sitemap: each issue, each app, each
+category, collection and tag, plus the homepage, About, Explore, Archive and the 404. There
+is no shared fallback image any more. `harbor-hero-clean.webp`, a 1200x800 photograph that
+all 175 pages pointed at, was deleted on 2026-09-03: it had stopped being the homepage hero
+at the redesign and was the wrong shape for a social card, so a scraper cropped roughly 85px
+off the top and bottom of it. The layout's default is a generated card like any other. They are generated rather than authored so a Friday issue arrives
+with its own card and no separate asset step to forget. The composition is the page's own
+opening, in the page's own tokens: the buoy and wordmark, the eyebrow, the title, the buoy's
+wave in Beacon Blue, then the dek at the house measure over a hairline footer. The mark
+geometry comes from `src/data/mark.ts`, so a card and the site's header cannot drift.
+
+There is one renderer and no second way to make a card. A card is never hand-authored, a
+page never points `socialImage` at a one-off asset, and a surface with no card of its own
+keeps the shared brand image rather than getting a bespoke one. That is the whole
+consistency mechanism: not a template anyone follows, but a single function nobody
+bypasses.
+
+**A lane card puts its count in the eyebrow.** A category, collection, tag, Explore or the
+Archive says what kind of page it is and how many things are on it, above its own name and
+dek: `Category · 33 apps`, `Archive · 8 issues`. The count is the one fact the title cannot
+give a reader deciding whether to open the link, and it is the same information scent the
+archive critique asked for on the page itself. The titles and deks come from
+`src/data/lanes.ts`, which the lane pages themselves also read, so a card cannot name a lane
+something other than its own heading.
+
+**An app card is the detail page's identity block:** the icon on its plate, the name, what
+the app does, then who it is for. It carries no wave rule, because the icon is already the
+anchor and the Best For eyebrow already divides; a third device would be decoration on a
+card that has to read at thumbnail size. The mark is drawn at 112px rather than the ~160 the
+canvas would take, because app icons top out at 128px source and upscaling them would undo
+the payload work that put them there for a blurrier result. An icon-less app falls back to
+its first category's Lucide mark on the same stable colour its cards use, read out of the
+`lucide-astro` package at build time rather than copied into this repository.
+
+**Titles are never truncated; the type gives way instead.** A longer title steps down the
+scale and takes a shorter dek with it. Deks may be trimmed at a word boundary, because a dek
+is a standfirst and reads whole either way; a title is the editorial line itself.
+
 ## Do's and Don'ts
 
 ### Do:
@@ -645,6 +698,7 @@ every run. That is expected. Treat a change in the count as the signal, not the 
 - **Don't** use tinted text as neutral gray on colored surfaces.
 - **Don't** make chips, filters, or buttons feel like separate UI worlds.
 - **Don't** let the brand wordmark typography spread into body copy.
+- **Don't** add a font to this repository without its licence file. See The Borrowed Type Rule.
 - **Don't** use em dashes or en dashes in public editorial copy.
 - **Don't** let the Editor's Pick accent leave that one card, or reach a link, control or state. It is light, not a second accent.
 - **Don't** hand-write an `iconAccent`. Generate it so every pick lands in the same lightness and chroma band.

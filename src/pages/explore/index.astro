@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import { OG_SIZE, ogPath } from '../../data/og';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import { topLevelTrail, itemListSchema } from '../../data/breadcrumb';
@@ -59,6 +60,9 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
   structuredData={[listSchema]}
   breadcrumb={trail}
   title="Explore Mac Apps — App Waypoint"
+  socialImage={ogPath('explore')}
+  socialImageSize={OG_SIZE}
+  socialImageAlt="Explore every Mac app App Waypoint has recommended, by category, collection or tag."
   description="Browse every Mac app App Waypoint has recommended, by category, collection or tag, with the full catalog filterable and sortable on one page."
   current="explore"
 >

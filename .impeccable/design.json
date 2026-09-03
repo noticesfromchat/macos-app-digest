@@ -439,6 +439,16 @@
         "name": "The Swell Rule",
         "body": "Each wave line is four components, and the two carrying most of its height travel in opposite directions at almost the same wavelength, so they beat and crests build and dissolve in place rather than marching across. Measured: amplitude breathing alone was invisible at 0.2px/s, a single travelling wave was 83% pure translation and read as a sliding picture, the counter-travelling pair is 70% shape change. The pair is unequal, 0.46 to 0.32, so it calms without ever going flat. Weights stay small because four waves can align where two could not, and the band clipped its canvas at the 78px minimum of --sea-h; any weight change must be checked at every height the clamp produces. Runs at 30fps, draws only while on screen, stops on tab hide, still under reduced motion, and canvas sizing is split from drawing so the loop never reallocates a backing store.",
         "section": "motion"
+      },
+      {
+        "name": "The Borrowed Type Rule",
+        "body": "A social card is the only surface that cannot use the site's own typeface: Iowan Old Style is a macOS system font with no file to embed. Vollkorn stands in, as the closest embeddable face measured against Iowan (x-height over cap +0.010, the width of Hamburgefonstiv within 0.1% at 100px) and the only close match shipping the 500 and 600 weights this scale uses; Inter stands in for -apple-system. Both are SIL OFL 1.1 and carry their licence in the package, which is the standing condition for any font entering this repository. Nothing else on the site may substitute a typeface, and a card never truncates a title: the type steps down the scale instead.",
+        "section": "components"
+      },
+      {
+        "name": "The Two Digit Issue Rule",
+        "body": "An issue number is recorded three digits wide and published two: Issue 08, never Issue 008, and three digits only once there is a hundredth issue. src/data/issue.ts is the single place that produces the label (issueLabel for the digits, issueName for the whole phrase) and scripts/check-editorial-style.mjs fails the build on a literal three-digit form. Both exist because the rule was written down nowhere until 2026-09-03: it had been implemented three times over and skipped in five more places, so the breadcrumb printed Issue 008 directly above a heading reading Issue 08.",
+        "section": "typography"
       }
     ],
     "dos": [
@@ -466,7 +476,8 @@
       "Don't derive an app's fallback icon or colour in a component. Both come from src/data/app-icon.ts, or the surfaces drift apart.",
       "Don't hard-code an overlay scrim. It is --scrim, and a dark scrim over a light page reads as a dimmed screen rather than frosted glass.",
       "Don't ship a tap target at the height of its text. A nav link is a target, not prose.",
-      "Don't swing an ambient animation either side of its still state without checking the still state was not already at the edge of its canvas."
+      "Don't swing an ambient animation either side of its still state without checking the still state was not already at the edge of its canvas.",
+      "Don't add a font to this repository without its licence file."
     ]
   }
 }

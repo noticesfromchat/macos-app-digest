@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import IssuePage from '../components/IssuePage.astro';
+import { OG_SIZE, ogPath } from '../data/og';
 
 const issues = await getCollection('issues');
 const apps = await getCollection('apps');
@@ -11,6 +12,9 @@ const latestIssue = [...issues].sort((a, b) => b.data.slug.localeCompare(a.data.
   title="App Waypoint — Curated Mac Apps for Experienced Users"
   description="App Waypoint is a human-curated weekly guide to exceptional Mac apps, productivity tools, automation utilities, AI software and worthwhile reading."
   current="issue"
+  socialImage={ogPath('home')}
+  socialImageSize={OG_SIZE}
+  socialImageAlt="App Waypoint: a weekly guide to the Mac apps, tools and reading worth an experienced user's attention."
 >
   <IssuePage homepage={true} issue={latestIssue.data} appEntries={apps} />
 </BaseLayout>

@@ -4,6 +4,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import { laneTrail, itemListSchema } from '../../data/breadcrumb';
 import AppDirectory from '../../components/AppDirectory.astro';
+import { tagDek, tagTitle } from '../../data/lanes';
+import { OG_SIZE, ogPath, tagOgSlug } from '../../data/og';
 
 export async function getStaticPaths() {
   const apps = await getCollection('apps');
@@ -19,12 +21,8 @@ export async function getStaticPaths() {
 }
 
 const { tag, apps } = Astro.props;
-const title = tag === 'rss'
-  ? 'RSS'
-  : tag.charAt(0).toUpperCase() + tag.slice(1);
-const dek = tag === 'rss'
-  ? 'RSS readers and tools to help with RSS feeds.'
-  : `Mac apps selected for their relevance to ${title.toLowerCase()} workflows.`;
+const title = tagTitle(tag);
+const dek = tagDek(tag);
 
 const trail = laneTrail(title);
 
@@ -34,6 +32,9 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
   structuredData={[listSchema]}
   breadcrumb={trail}
   title={`${title} Mac Apps — App Waypoint`}
+  socialImage={ogPath(tagOgSlug(tag))}
+  socialImageSize={OG_SIZE}
+  socialImageAlt={`${title} Mac apps on App Waypoint. ${dek}`}
   description={`Explore thoughtfully selected Mac apps for ${title} workflows, with concise recommendations, practical use cases and links to official developer websites.`}
 >
   <section class="page-shell archive-page tag-page">

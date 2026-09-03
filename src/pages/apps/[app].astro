@@ -6,6 +6,7 @@ import { appTrail } from '../../data/breadcrumb';
 import AppCard from '../../components/AppCard.astro';
 import MetaIcon from '../../components/MetaIcon.astro';
 import { fallbackIconColor, fallbackIconCategory } from '../../data/app-icon';
+import { OG_SIZE, appOgSlug, ogPath } from '../../data/og';
 import {
   categories,
   collectionLabels,
@@ -88,6 +89,9 @@ const trail = appTrail(app.data.name);
   title={`${app.data.name} for Mac — App Waypoint`}
   description={app.data.metaDescription ?? app.data.description}
   current="app"
+  socialImage={ogPath(appOgSlug(app.id))}
+  socialImageSize={OG_SIZE}
+  socialImageAlt={`${app.data.name} for Mac on App Waypoint. ${app.data.description}`}
   structuredData={appSchema}
 >
   <article class="page-shell app-detail-page">

@@ -238,6 +238,13 @@ These limits protect card alignment and are not optional unless the complete car
 ### Issue files
 
 - `dek`: one sentence, preferably 120–220 characters; hard maximum 260 characters.
+  Also the body copy of the issue's social card, where it is trimmed at a word
+  boundary to roughly 205 characters. A dek whose first sentence stands alone reads
+  best in a feed.
+- `rss.title`: 4–90 characters. No longer a feed-only string: it is the issue's
+  headline on its social card, set at up to 72px. Nothing breaks at any allowed
+  length, because the card steps the type down rather than truncating a title, but
+  a title under about 34 characters gets the full display size.
 - Section eyebrow: 1–4 words; hard maximum 30 characters.
 - Section title: preferably 4–10 words; hard maximum 70 characters.
 - Video title: hard maximum 100 characters.
@@ -307,6 +314,10 @@ issue.
 
 ## Non-negotiable presentation rules
 
+- Social cards are generated, never hand-authored. One renderer draws every card,
+  `src/data/og-card.ts`, from the record's own fields. Do not add a hand-made image,
+  do not set `socialImage` to a one-off asset and do not write a second renderer. A
+  page with no card of its own falls back to the shared brand image on purpose.
 - App cards and app titles link to the generated App Waypoint app detail page.
 - Official homepage links belong on app detail pages, not beneath app cards.
 - Weekend Reading titles link directly to articles.

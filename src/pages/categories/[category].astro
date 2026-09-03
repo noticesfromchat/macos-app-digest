@@ -5,6 +5,7 @@ import Breadcrumb from '../../components/Breadcrumb.astro';
 import { laneTrail, itemListSchema } from '../../data/breadcrumb';
 import AppDirectory from '../../components/AppDirectory.astro';
 import { categories, getCategoryBySlug } from '../../data/categories';
+import { OG_SIZE, categoryOgSlug, ogPath } from '../../data/og';
 
 export async function getStaticPaths() {
   const apps = await getCollection('apps');
@@ -33,6 +34,9 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
   structuredData={[listSchema]}
   breadcrumb={trail}
   title={`${resolvedCategory.title} Mac Apps — App Waypoint`}
+  socialImage={ogPath(categoryOgSlug(resolvedCategory.slug))}
+  socialImageSize={OG_SIZE}
+  socialImageAlt={`${resolvedCategory.title} Mac apps on App Waypoint. ${resolvedCategory.description}`}
   description={resolvedCategory.description}
 >
   <section class="page-shell archive-page tag-page">

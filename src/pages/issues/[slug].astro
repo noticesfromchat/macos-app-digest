@@ -3,6 +3,8 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { issueTrail } from '../../data/breadcrumb';
 import IssuePage from '../../components/IssuePage.astro';
+import { OG_SIZE, issueOgSlug, ogPath } from '../../data/og';
+import { issueLabel } from '../../data/issue';
 
 export async function getStaticPaths() {
   const issues = await getCollection('issues');
@@ -19,12 +21,14 @@ const trail = issueTrail(issue.data.number);
 ---
 <BaseLayout
   breadcrumb={trail}
-  title={`${issue.data.rss.title} — Issue ${issue.data.number} — App Waypoint`}
+  title={`${issue.data.rss.title} — Issue ${issueLabel(issue.data.number)} — App Waypoint`}
   description={issue.data.metaDescription ?? issue.data.dek}
   current="issue"
   type="article"
   publishedTime={issue.data.slug}
-  socialImageAlt={`App Waypoint's Mac app digest for ${issue.data.date}.`}
+  socialImage={ogPath(issueOgSlug(issue.data.number))}
+  socialImageSize={OG_SIZE}
+  socialImageAlt={`App Waypoint issue ${issueLabel(issue.data.number)}, ${issue.data.rss.title}, published ${issue.data.date}.`}
 >
   <IssuePage issue={issue.data} appEntries={apps} trail={trail} />
 </BaseLayout>

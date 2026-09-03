@@ -1,12 +1,15 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { Archive, Compass, Info, Search } from 'lucide-astro';
+import { ogPath } from '../data/og';
 
 /* Keep dead links inside the publication shell, with search first for recovery. */
 ---
 <BaseLayout
   title="Page Not Found — App Waypoint"
   description="Oops, you've lost your way. Let's get you back on track with Explore, Archive, About or search."
+  socialImage={ogPath('not-found')}
+  socialImageAlt="Page not found on App Waypoint."
 >
   <section class="page-shell archive-page not-found-page">
     <p class="eyebrow">Page Not Found</p>
