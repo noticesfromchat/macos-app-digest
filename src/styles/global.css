@@ -1574,10 +1574,14 @@ a { color: inherit; }
 .archive-origin::before {
   content: "";
   position: absolute;
-  top: -14px;
+  /* Bridges from the last stop's ring down to this one. Script measures the real
+     distance, because centring the marks on their cards puts the last ring halfway
+     up Issue 01 rather than at the foot of the list. The fallback covers the plain
+     margin for a reader without JavaScript, where the line runs to the list's edge. */
+  height: var(--origin-bridge, 27px);
+  top: calc(12.5px - var(--origin-bridge, 27px));
   left: 8px;
   width: 1px;
-  height: 27px;
   background: var(--line);
 }
 .archive-origin--empty::before { content: none; }
