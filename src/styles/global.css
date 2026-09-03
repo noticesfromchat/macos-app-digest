@@ -1404,12 +1404,170 @@ a { color: inherit; }
 .about-content { margin-top: 18px; padding-bottom: var(--section-space); color: var(--muted); font-size: 1rem; }
 .about-page p:not(.dek) { max-width: var(--measure); margin: 0; color: var(--muted); }
 .about-page p:not(.dek) + p { margin-top: 18px; }
-.archive-list { display: grid; gap: 14px; margin-top: 50px; }
-.archive-current-link { display: none; }
+/* The archive route. A hairline runs the length of the page and every issue is a
+   stop on it, marked by the buoy's own beacon: an open ring, filled on the newest
+   issue because "this is the current one" is a state, which is what blue is for.
+   See The Beacon Rule in DESIGN.md. The line is drawn on the list rather than per
+   card so it reads as one continuous route rather than eight segments. */
+.archive-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 20px;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--section-space);
+}
+.archive-count {
+  margin: 0;
+  color: var(--muted);
+  font-size: var(--type-meta);
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.archive-search { flex: 1 1 260px; max-width: 340px; }
+
+.archive-route { margin-top: var(--section-space); }
+.archive-year + .archive-year { margin-top: var(--section-space); }
+.archive-year-heading {
+  margin: 0 0 14px;
+  padding-left: 40px;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: var(--type-meta);
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.archive-stops {
+  position: relative;
+  display: grid;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+/* The route itself. It begins at the centre of the first beacon rather than above
+   it, because the newest issue is where the journey starts, and runs to the foot of
+   the list where the origin's own connector picks it up. */
+.archive-stops::before {
+  content: "";
+  position: absolute;
+  top: 28px;
+  bottom: 0;
+  left: 8px;
+  width: 1px;
+  background: var(--line);
+}
+.archive-stop {
+  position: relative;
+  display: grid;
+  grid-template-columns: 17px minmax(0, 1fr);
+  gap: 23px;
+  align-items: start;
+}
+.archive-stop[hidden] { display: none; }
+.archive-stop-mark {
+  position: relative;
+  width: 17px;
+  height: 17px;
+  margin-top: 20px;
+  border: 1.5px solid var(--muted);
+  border-radius: 50%;
+  background: var(--page);
+}
+.archive-stop.is-current .archive-stop-mark {
+  border-color: var(--accent);
+  background: var(--accent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 16%, transparent);
+}
 .archive-card { display: grid; gap: 10px; padding: 25px; text-decoration: none; box-shadow: none; }
-.archive-card span,
-.archive-card em { color: var(--muted); font-style: normal; }
-.archive-card strong { font-family: var(--display); font-size: 1.38rem; }
+.archive-card span { color: var(--muted); }
+.archive-card-head { display: flex; flex-wrap: wrap; gap: 10px; align-items: baseline; }
+.archive-card strong { font-family: var(--display); font-size: 1.38rem; color: var(--text); }
+.archive-card-now {
+  padding: 2px 9px;
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--line));
+  border-radius: 999px;
+  color: var(--accent);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.archive-card-dek {
+  max-width: var(--measure);
+  margin: 0;
+  color: var(--muted);
+}
+/* The information scent: what a reader chooses on. Quiet enough to stay metadata,
+   with the app name itself carrying the ink. */
+.archive-card-scent {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  align-items: baseline;
+  margin: 0;
+  color: var(--muted);
+  font-size: var(--type-meta);
+}
+.archive-card-scent b { color: var(--text); font-weight: 600; }
+.archive-card-total {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.archive-card-total::before { content: "· "; }
+
+.archive-more { margin-top: 18px; margin-left: 40px; }
+.archive-empty {
+  max-width: var(--measure);
+  margin: var(--section-space) 0 0 40px;
+  color: var(--muted);
+}
+
+/* The end of the route. Issue 01 used to fall straight into the footer; the
+   terminus says the archive has an origin and the page is finished. */
+/* The terminus sits on the route, not below it: the connector bridges the gap from
+   the last stop down to the centre of this mark, so the line ends where the archive
+   does. */
+.archive-origin { position: relative; }
+.archive-origin::before {
+  content: "";
+  position: absolute;
+  top: -14px;
+  left: 8px;
+  width: 1px;
+  height: 27px;
+  background: var(--line);
+}
+.archive-origin--empty::before { content: none; }
+.archive-origin {
+  display: grid;
+  grid-template-columns: 17px minmax(0, 1fr);
+  gap: 23px;
+  align-items: start;
+  margin-top: 14px;
+}
+.archive-origin-mark {
+  width: 17px;
+  height: 17px;
+  margin-top: 4px;
+  border: 1.5px solid var(--line);
+  border-radius: 50%;
+  background: var(--page);
+  box-shadow: inset 0 0 0 3px var(--page), inset 0 0 0 9px var(--muted);
+}
+.archive-origin-body { max-width: var(--measure); }
+.archive-origin h2 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 1.38rem;
+  font-weight: 600;
+  letter-spacing: -.02em;
+}
+.archive-origin p { margin: 8px 0 0; color: var(--muted); }
+.archive-origin--empty { margin-top: var(--section-space); }
+.archive-subscribe-section { margin-top: var(--section-space); }
 .archive-card .archive-card-date {
   color: var(--muted);
   font-size: var(--type-meta);
@@ -1899,8 +2057,6 @@ a { color: inherit; }
   .video-section { padding-top: 20px; }
   :root { --page-start-space: 38px; --type-page-title: clamp(2.8rem, 12vw, 3.75rem); }
   .archive-page { padding: var(--page-start-space) 0 36px; }
-  .archive-current-link { display: inline-flex; margin-top: 22px; }
-  .archive-current-link + .archive-list { margin-top: 34px; }
   .app-detail-page { padding: var(--page-start-space) 0 36px; }
   .app-detail-hero { padding: 0 0 24px; }
   .app-detail-actions { flex-direction: column; align-items: flex-start; }

@@ -3,10 +3,69 @@ import { getCollection } from 'astro:content';
 import { OG_SIZE, ogPath } from '../data/og';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
+import SubscribeCard from '../components/SubscribeCard.astro';
 import { topLevelTrail, itemListSchema } from '../data/breadcrumb';
 import { issueLabel, issueName } from '../data/issue';
 
+/* The archive is the one page on this site that is genuinely a sequence, so it is
+   drawn as a route: a hairline running the length of the page, each issue a stop
+   on it, the newest stop lit. Newest first, because a returning Friday reader is
+   here for what they missed, and the route therefore runs backwards to Issue 01,
+   which gets a marked terminus instead of falling into the footer.
+
+   The journey is carried by structure and one motif, the buoy's own beacon. No
+   second accent, no new ornament: see The Beacon Rule in DESIGN.md, and the
+   critique's finding that this page's character should come from editorial
+   structure rather than added nautical decoration. */
+
 const issues = [...await getCollection('issues')].sort((a, b) => b.data.slug.localeCompare(a.data.slug));
+const apps = await getCollection('apps');
+const appName = (id: string) => apps.find((entry) => entry.id === id)?.data.name ?? id;
+
+/* The information scent. Experienced readers choose an issue by what is in it, and
+   the page said only "Issue 08, August 28". The Editor's Pick is the strongest
+   single fact an issue carries, but issues 01 and 02 predate the feature, so the
+   line falls back to the apps that open the issue rather than rendering empty. */
+const scentFor = (issue: (typeof issues)[number]) => {
+  const sectionApps = issue.data.sections.flatMap((section) => section.apps);
+  const total = sectionApps.length + (issue.data.editorsPick ? 1 : 0);
+  return {
+    pick: issue.data.editorsPick ? appName(issue.data.editorsPick.app) : null,
+    opening: sectionApps.slice(0, 3).map(appName),
+    total
+  };
+};
+
+/* Everything a reader might reasonably remember about an issue, flattened for the
+   filter: number in both written forms, date, standfirst, the issue's own title,
+   every app it featured and every article it linked. Built here so the browser
+   filters strings it already has rather than fetching an index. */
+const haystack = (issue: (typeof issues)[number]) => [
+  issue.data.number,
+  issueName(issue.data.number),
+  issue.data.date,
+  issue.data.dek,
+  issue.data.rss.title,
+  ...issue.data.sections.flatMap((section) => [section.title, ...section.apps.map(appName)]),
+  ...(issue.data.editorsPick ? [appName(issue.data.editorsPick.app)] : []),
+  ...issue.data.readings.map((reading) => `${reading.title} ${reading.publication}`)
+].join(' ').toLowerCase();
+
+/* Issues are grouped by the year they were published. Every issue so far is 2026,
+   so the heading names one group today and divides the route the moment there is a
+   second year. */
+const years = [...new Set(issues.map((issue) => issue.data.slug.slice(0, 4)))];
+const byYear = years.map((year) => ({
+  year,
+  issues: issues.filter((issue) => issue.data.slug.startsWith(year))
+}));
+
+/* Progressive disclosure waits until the route is long enough to be a burden.
+   Hiding three of eight stops would cost a reader a click to reach the origin and
+   save them nothing; at thirteen the page is past twenty mobile screens. */
+const DISCLOSURE_THRESHOLD = 12;
+const collapsed = issues.length > DISCLOSURE_THRESHOLD;
+const alwaysVisible = collapsed ? DISCLOSURE_THRESHOLD : issues.length;
 
 const trail = topLevelTrail('Archive');
 
@@ -17,6 +76,8 @@ const listSchema = itemListSchema(
   })),
   Astro.site
 );
+
+let stopIndex = 0;
 ---
 <BaseLayout
   structuredData={[listSchema]}
@@ -31,17 +92,201 @@ const listSchema = itemListSchema(
   <section class="page-shell archive-page">
     <Breadcrumb trail={trail} />
     <h1>Archive</h1>
-    <p class="dek">Browse every published issue of App Waypoint.</p>
-    <a class="button archive-current-link" href="/">Current Issue <span aria-hidden="true">→</span></a>
+    <p class="dek">Every issue published so far, newest first, back to where it started.</p>
 
-    <div class="archive-list">
-      {issues.map((issue) => (
-        <a class="archive-card" href={`/issues/${issue.data.slug}/`}>
-          <strong>Issue {issueLabel(issue.data.number)}</strong>
-          <span class="archive-card-date"><time datetime={issue.data.slug}>{issue.data.date}</time></span>
-          <em>{issue.data.dek}</em>
-        </a>
-      ))}
-    </div>
+    {issues.length > 0 ? (
+      <>
+        <div class="archive-filter-bar">
+          <p class="archive-count" aria-live="polite" data-archive-count>
+            {issues.length} {issues.length === 1 ? 'issue' : 'issues'}
+          </p>
+          <div class="directory-search archive-search">
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.3-4.3"></path>
+            </svg>
+            <label class="sr-only" for="archive-query">Search issues</label>
+            <input
+              id="archive-query"
+              class="directory-query-input"
+              type="search"
+              autocomplete="off"
+              spellcheck="false"
+              placeholder="Search issues, apps or articles"
+              maxlength="100"
+              disabled
+              data-archive-query
+            />
+          </div>
+        </div>
+
+        <div class="archive-route" data-archive-route>
+          {byYear.map(({ year, issues: yearIssues }) => (
+            <section class="archive-year" data-archive-year={year}>
+              <h2 class="archive-year-heading">{year}</h2>
+              <ol class="archive-stops">
+                {yearIssues.map((issue) => {
+                  const scent = scentFor(issue);
+                  const isCurrent = stopIndex === 0;
+                  const beyond = stopIndex >= alwaysVisible;
+                  stopIndex += 1;
+                  return (
+                    <li
+                      class:list={['archive-stop', isCurrent && 'is-current', beyond && 'is-beyond']}
+                      data-archive-stop
+                      data-archive-haystack={haystack(issue)}
+                      hidden={beyond}
+                    >
+                      <span class="archive-stop-mark" aria-hidden="true"></span>
+                      <a class="archive-card" href={`/issues/${issue.data.slug}/`}>
+                        <span class="archive-card-head">
+                          <strong>{issueName(issue.data.number)}</strong>
+                          {isCurrent && <span class="archive-card-now">Latest</span>}
+                        </span>
+                        <span class="archive-card-date">
+                          <time datetime={issue.data.slug}>{issue.data.date}</time>
+                        </span>
+                        <p class="archive-card-dek">{issue.data.dek}</p>
+                        <p class="archive-card-scent">
+                          {scent.pick
+                            ? <>Editor's Pick <b>{scent.pick}</b></>
+                            : <b>{scent.opening.join(', ')}</b>}
+                          <span class="archive-card-total">{scent.total} apps</span>
+                        </p>
+                      </a>
+                    </li>
+                  );
+                })}
+              </ol>
+            </section>
+          ))}
+        </div>
+
+        {collapsed && (
+          <button class="button secondary archive-more" type="button" data-archive-more>
+            Show earlier issues
+          </button>
+        )}
+
+        <p class="archive-empty" data-archive-empty hidden>
+          No issue matches that search. Every issue is still here; try an app name, a
+          topic or an issue number.
+        </p>
+
+        <section class="archive-origin" aria-labelledby="archive-origin-heading">
+          <span class="archive-origin-mark" aria-hidden="true"></span>
+          <div class="archive-origin-body">
+            <h2 id="archive-origin-heading">Where it started</h2>
+            <p>
+              {issueName(issues[issues.length - 1].data.number)} went out on{' '}
+              {issues[issues.length - 1].data.date}. Every Friday since has added a stop.
+            </p>
+          </div>
+        </section>
+
+        <section class="section archive-subscribe-section">
+          <SubscribeCard />
+        </section>
+      </>
+    ) : (
+      <section class="archive-origin archive-origin--empty">
+        <span class="archive-origin-mark" aria-hidden="true"></span>
+        <div class="archive-origin-body">
+          <h2>The first issue is on its way</h2>
+          <p>
+            App Waypoint publishes every Friday. Nothing is in the archive yet, and this
+            page fills in as issues go out.
+          </p>
+        </div>
+      </section>
+    )}
   </section>
 </BaseLayout>
+
+<script>
+  /* Filtering runs on the markup that is already on the page: every stop carries
+     the text a reader might search in a data attribute, so there is no index to
+     fetch and the page works identically with JavaScript off, minus the field.
+     The query lives in the URL under `q`, the same parameter and the same
+     replaceState the Explore directory already uses. */
+  const route = document.querySelector<HTMLElement>('[data-archive-route]');
+  const input = document.querySelector<HTMLInputElement>('[data-archive-query]');
+  const countEl = document.querySelector<HTMLElement>('[data-archive-count]');
+  const emptyEl = document.querySelector<HTMLElement>('[data-archive-empty]');
+  const moreButton = document.querySelector<HTMLButtonElement>('[data-archive-more]');
+
+  if (route && input && countEl) {
+    const stops = [...route.querySelectorAll<HTMLElement>('[data-archive-stop]')];
+    const years = [...route.querySelectorAll<HTMLElement>('[data-archive-year]')];
+    let expanded = !moreButton;
+
+    const label = (n: number) => `${n} ${n === 1 ? 'issue' : 'issues'}`;
+
+    const render = () => {
+      const query = input.value.trim().toLowerCase();
+      let shown = 0;
+
+      for (const stop of stops) {
+        const matches = !query || (stop.dataset.archiveHaystack ?? '').includes(query);
+        /* A search reaches the whole archive: a collapsed tail is a reading
+           convenience, never a reason for a match to stay hidden. */
+        const withinBatch = expanded || query !== '' || !stop.classList.contains('is-beyond');
+        const visible = matches && withinBatch;
+        stop.hidden = !visible;
+        if (matches) shown += 1;
+      }
+
+      /* A year heading names the stops under it, so it goes when they all go. */
+      for (const year of years) {
+        const any = [...year.querySelectorAll<HTMLElement>('[data-archive-stop]')]
+          .some((stop) => !stop.hidden);
+        year.hidden = !any;
+      }
+
+      countEl.textContent = query ? `${label(shown)} matching` : label(stops.length);
+      if (emptyEl) emptyEl.hidden = shown !== 0;
+      if (moreButton) moreButton.hidden = expanded || query !== '';
+    };
+
+    const syncUrl = () => {
+      const url = new URL(window.location.href);
+      const query = input.value.trim();
+      query ? url.searchParams.set('q', query) : url.searchParams.delete('q');
+      window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`);
+    };
+
+    moreButton?.addEventListener('click', () => {
+      expanded = true;
+      render();
+      /* Focus the first newly revealed stop so a keyboard reader is not returned
+         to the top of a page that just grew. */
+      stops.find((stop) => stop.classList.contains('is-beyond'))
+        ?.querySelector('a')?.focus();
+    });
+
+    input.addEventListener('input', () => {
+      render();
+      syncUrl();
+    });
+
+    input.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        input.blur();
+      }
+    });
+
+    const initial = new URL(window.location.href).searchParams.get('q');
+    if (initial) input.value = initial.slice(0, 100);
+    input.disabled = false;
+    render();
+  }
+</script>
