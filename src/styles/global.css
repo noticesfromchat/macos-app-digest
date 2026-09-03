@@ -1520,7 +1520,7 @@ a { color: inherit; }
   border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--line));
   border-radius: 999px;
   color: var(--accent);
-  font-size: .72rem;
+  font-size: var(--type-label);
   font-weight: 700;
   letter-spacing: .08em;
   text-transform: uppercase;
