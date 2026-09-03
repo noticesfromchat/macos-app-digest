@@ -1666,6 +1666,13 @@ a { color: inherit; }
 .directory-filter-bar > .directory-filter,
 .directory-filter-bar > .directory-sort { flex: 0 0 180px; }
 .directory-filter-bar--no-filters > .directory-sort { flex: 0 0 180px; }
+/* On a lane page the directory follows the dek directly, and the bar's own zero margin
+   left no interval at all: the controls sat closer to the dek than the dek sits to the
+   h1, so the masthead and the toolbar read as one group. The separation is the same one
+   `.archive-route` already takes from the same masthead, so it uses the same token.
+   Scoped to the dek's sibling because on Explore the directory follows a section heading
+   that carries its own spacing. */
+.dek + .app-directory { display: block; margin-top: var(--section-space); }
 .directory-search {
   display: grid;
   flex: 0 1 280px;
