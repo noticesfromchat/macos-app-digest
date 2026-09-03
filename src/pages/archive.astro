@@ -348,7 +348,10 @@ let stopIndex = 0;
           const to = anchors[i + 1];
           if (natural < from || natural > to) continue;
           const gap = to - from;
-          const dwell = Math.min(72, gap * 0.34);
+          /* How much scrolling a stop absorbs before the pilot moves on. Kept
+             modest: the pilot's own lag already holds it at a stop, and a wide
+             plateau on top of that reads as parked rather than as following. */
+          const dwell = Math.min(64, gap * 0.28);
           if (natural <= from + dwell) return from;
           if (natural >= to - dwell) return to;
           return from + ((natural - from - dwell) / (gap - dwell * 2)) * gap;
@@ -356,16 +359,23 @@ let stopIndex = 0;
         return end;
       };
 
-      /* The pilot eases toward where the scroll position puts it rather than being
-         pinned to it. Following the scroll exactly made it snap between stops, which
-         reads as fast and pulls the eye off the page; easing lets it glide and settle,
-         and it deepens the hold at a stop because it is still catching up when the
-         reader has already moved on. Low enough that the movement reads as drift
-         rather than as a thing keeping pace with the scroll. */
-      const EASE = 0.038;
-      let current: number | null = null;
+      /* Two speeds, because arriving and travelling are different gestures. Between
+         stops the pilot drifts well behind the reading line: it should feel like it
+         is following the reader rather than keeping up with them, so the travel ease
+         is deliberately far too slow to track the scroll. That lag is what makes the
+         arrival read, because the pilot is still catching up when the reading line
+         reaches a stop and it then snaps in decisively, holds for a beat, and only
+         afterwards resumes drifting. The hold is short: long enough to register, not
+         long enough to feel stuck to a reader who is scrolling quickly. */
+      const EASE_TRAVEL = 0.016;
+      const EASE_SNAP = 0.34;
+      const HOLD_MS = 190;
 
-      const draw = () => {
+      let current: number | null = null;
+      let dockedAt: number | null = null;
+      let holdUntil = 0;
+
+      const draw = (now: number) => {
         frame = 0;
         if (dirty) measure();
         if (!anchors.length) {
@@ -376,8 +386,25 @@ let stopIndex = 0;
 
         const target = placeOn(window.scrollY + window.innerHeight / 2);
         if (current === null) current = target;
-        const delta = target - current;
-        current = Math.abs(delta) < 0.4 ? target : current + delta * EASE;
+
+        const holding = now < holdUntil;
+        if (!holding) {
+          /* `placeOn` returns an anchor exactly while the reader is inside a stop's
+             window, so an exact match is the signal to snap rather than drift. */
+          const docking = anchors.some((anchor) => Math.abs(anchor - target) < 0.5);
+          const delta = target - current;
+
+          if (Math.abs(delta) < 0.4) {
+            current = target;
+            if (docking && dockedAt !== target) {
+              dockedAt = target;
+              holdUntil = now + HOLD_MS;
+            }
+          } else {
+            current += delta * (docking ? EASE_SNAP : EASE_TRAVEL);
+            if (!docking) dockedAt = null;
+          }
+        }
 
         pilot.style.transform = `translateY(${(current - routeTop).toFixed(1)}px)`;
         pilot.classList.add('is-live');
@@ -385,8 +412,9 @@ let stopIndex = 0;
            behind it. */
         route.classList.add('is-piloted');
 
-        /* Keep the loop alive only while there is distance left to cover. */
-        if (current !== target) schedule();
+        /* Keep the loop alive while there is distance left to cover, or a hold to
+           come out of. */
+        if (current !== target || holding) schedule();
       };
 
       const schedule = () => { if (!frame) frame = requestAnimationFrame(draw); };
