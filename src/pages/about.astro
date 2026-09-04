@@ -77,7 +77,7 @@ const latestIssue = [...issues].sort((a, b) => b.data.slug.localeCompare(a.data.
       {/* The thanks and the route out close this section rather than forming their own.
           A section of their own drew a rule across the page and gave a sign-off the same
           weight as a topic, when it is the same thought finishing. */}
-      <p>Thank you for reading. For clicking the link that led you here and for spending a little time with me and my project.</p>
+      <p class="about-emphasis"><strong>Thank you for reading. For clicking the link that led you here and for spending a little time with me and my project.</strong></p>
       <p class="about-cta"><a class="button" href={`/issues/${latestIssue.data.slug}/`}>Check out the latest issue</a></p>
     </section>
   </article>
