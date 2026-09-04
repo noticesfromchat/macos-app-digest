@@ -1419,6 +1419,35 @@ a { color: inherit; }
 .about-content { margin-top: 18px; padding-bottom: var(--section-space); color: var(--muted); font-size: 1rem; }
 .about-page p:not(.dek) { max-width: var(--measure); margin: 0; color: var(--muted); }
 .about-page p:not(.dek) + p { margin-top: 18px; }
+/* The selection criteria are the one list on the page. They take the same measure and
+   muted ink the prose does, so the block reads as part of the writing rather than as a
+   panel: DESIGN.md is explicit that About is not a special case. The bold lead-in is
+   what makes each item scannable, and it is also the emphasis the critique found the
+   page had none of, every paragraph having carried the same muted weight. */
+.about-page .about-criteria {
+  max-width: var(--measure);
+  margin: 18px 0 0;
+  padding: 0;
+  color: var(--muted);
+  list-style: none;
+}
+.about-page .about-criteria li { position: relative; padding-left: 18px; }
+.about-page .about-criteria li + li { margin-top: 12px; }
+.about-page .about-criteria li::before {
+  content: '';
+  position: absolute;
+  top: .62em;
+  left: 2px;
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--accent);
+}
+.about-page .about-criteria strong { color: var(--text); font-weight: 700; }
+/* The one line on the page that is a commitment rather than an explanation, so it is the
+   one line set in full-strength ink. */
+.about-page p.about-emphasis { color: var(--text); }
+.about-page .about-close p + p { margin-top: 20px; }
 /* The archive route. A hairline runs the length of the page and every issue is a
    stop on it, marked by the buoy's own beacon: an open ring, filled on the newest
    issue because "this is the current one" is a state, which is what blue is for.

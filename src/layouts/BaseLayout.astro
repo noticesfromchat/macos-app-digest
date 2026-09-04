@@ -252,7 +252,9 @@ gtag('config', ${JSON.stringify(googleAnalyticsId)}, {
         <div class="search-results" aria-label="Search results" data-search-results></div>
       </section>
     </div>
-    <main id="content"><slot /></main>
+    {/* tabindex -1 so the skip link moves focus and not just the URL hash. Without it a
+        screen-reader user who skips navigation lands with the caret still in the header. */}
+    <main id="content" tabindex="-1"><slot /></main>
     <SiteFooter current={current} />
     <div class="rss-overlay" data-rss-overlay hidden>
       <button class="rss-backdrop" type="button" aria-label="Close RSS subscription dialog" data-rss-close></button>
