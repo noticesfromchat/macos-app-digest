@@ -78,6 +78,24 @@ for (const filename of appFiles) {
   if (sentenceCount(data.bestFor) !== 1) errors.push(`${relative}: bestFor must be exactly one sentence`);
   checkLength(relative, 'bestFor', data.bestFor, 8, 24);
 
+  /* The tagline exists to fill the search-result line, so what matters is the assembled
+     title rather than the field on its own: the budget is whatever the app's own name
+     leaves under 60, and the longest name leaves 11. Checked here rather than trusted to
+     the writer, because the schema can only cap the field and cannot see the name it
+     will sit beside. The limit is really pixel width, so 60 is the conservative read of
+     it and a title landing exactly there is treated as over. */
+  if (!data.tagline) {
+    errors.push(`${relative}: missing tagline`);
+  } else {
+    const title = `${data.name} for Mac \u2014 ${data.tagline} \u2014 App Waypoint`;
+    if (title.length >= 60) {
+      errors.push(`${relative}: page title is ${title.length} characters, must stay under 60 ("${title}")`);
+    }
+    if (/\bmac\b/i.test(data.tagline)) {
+      errors.push(`${relative}: tagline repeats "Mac", which the title already carries ("${data.tagline}")`);
+    }
+  }
+
   if (!Array.isArray(data.tags) || data.tags.length < 2 || data.tags.length > 6) {
     errors.push(`${relative}: tags must contain 2-6 entries`);
   } else if (new Set(data.tags).size !== data.tags.length) {

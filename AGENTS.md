@@ -131,8 +131,10 @@ the single production deployment point. Follow the complete workflow in
 
 - On Thursday, research candidate apps, links and sources for the upcoming issue,
   then propose the Friday slate for editor review.
-- For each proposed app, include draft description, `bestFor`, tags, source or
-  homepage and any collection recommendations.
+- For each proposed app, include draft description, `bestFor`, `tagline`, tags, source
+  or homepage and any collection recommendations. The tagline is the app's
+  differentiator in its page title and is written for that title alone; section 6 of
+  `docs/STYLE_GUIDE.md` carries the pattern and the length budget.
 - Include app selections from the editor's
   [App Selections note](https://app.notion.com/p/App-selections-3d1d6482d47f8069b146c4dfec0c0c43?source=copy_link)
   in the candidate pool before proposing the slate.

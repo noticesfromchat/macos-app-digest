@@ -2,6 +2,7 @@
 name: BetterTouchTool
 description: Customizes gestures, keyboard shortcuts, window actions and conditional automations across hundreds of Mac triggers.
 bestFor: Power users who want one utility to reshape how every input device behaves.
+tagline: input customizer
 tags: [automation, customization, keyboard, utility]
 categories: [productivity-workflow, mac-utilities-customization]
 collections: [community-favorites]

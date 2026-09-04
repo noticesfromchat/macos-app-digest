@@ -35,8 +35,9 @@ Preview review.
    [App Selections note](https://app.notion.com/p/App-selections-3d1d6482d47f8069b146c4dfec0c0c43?source=copy_link)
    in the candidate pool before proposing the slate.
 2. Propose a Friday issue slate for editor review. For each proposed app, include
-   the draft description, `bestFor`, tags, source or homepage and any collection
-   recommendations. Also report whether the app record already has a suitable icon,
+   the draft description, `bestFor`, `tagline`, tags, source or homepage and any
+   collection recommendations. The tagline fills the app page's search-result line and
+   is written for the title alone; see section 6 of `STYLE_GUIDE.md`. Also report whether the app record already has a suitable icon,
    whether a new official icon is needed and which `iconStyle` should be used.
 3. Do not select more than two apps from any single discovery source for one issue,
    counting regular section apps and the optional Editor's Pick together. Product

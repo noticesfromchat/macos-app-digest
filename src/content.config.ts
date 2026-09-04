@@ -21,6 +21,15 @@ const apps = defineCollection({
        Only one app needs it today; the schema caps it at the limit rather than trusting
        the writer to count. */
     metaDescription: z.string().min(70).max(160).optional(),
+    /* The differentiator in the page title, which reads
+       `{name} for Mac — {tagline} — App Waypoint`. Titles ran to a median of 31
+       characters against the ~60 a search result shows, so half the line was unused on
+       the largest page type here. Written for the title and nothing else: it says what
+       the app is, where `bestFor` is audience-first and `description` is verb-first.
+       The 30 cap is the schema's floor for the budget, not the budget: that is whatever
+       the app's own name leaves under 60, and scripts/validate-content.mjs checks the
+       assembled title rather than this field alone. */
+    tagline: z.string().min(3).max(30),
     source: z.string().min(1).max(140),
     homepage: z.string().url(),
     icon: z.string().regex(/^\/[A-Za-z0-9/_-]+\.(?:png|jpg|jpeg|webp|svg|ico)$/).optional(),

@@ -98,6 +98,10 @@ from the tags.
 name: App Name
 description: Write exactly one concrete 12-35 word sentence explaining the app's primary job.
 bestFor: Write exactly one 8-24 word sentence describing a recognizable user or workflow.
+# The differentiator in the page title: {name} for Mac — {tagline} — App Waypoint.
+# About 16-20 characters, saying what the app is. Do not repeat the app's name or
+# "Mac"; the title already carries both. See STYLE_GUIDE.md section 6.
+tagline: clipboard history
 tags: [productivity, utility, menubar]
 # Optional editorial curation. Required for Editor's Pick and Old Favorites apps;
 # preserve other values when adding either collection.

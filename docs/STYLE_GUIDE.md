@@ -238,6 +238,19 @@ it. See Issue Subscribe Card in `DESIGN.md` for the structure and the reasoning.
   tags as Label-scale chips, and the collection badge leads the rail because it is the
   rarest fact on the page. See the App Detail Page and Collection Badges entries in
   `DESIGN.md`.
+- **The page title carries a `tagline`.** The pattern is
+  `{name} for Mac — {tagline} — App Waypoint`. Without one the title ran to a median of
+  31 characters against the roughly 60 a search result shows, so half of every result
+  line went unused on the site's largest page type.
+- Write the tagline for the title and nowhere else. It says what the app **is**, not who
+  it is for: `bestFor` is audience-first and `description` is verb-first, which is why
+  neither is derived into it. Keep it to about 16 to 20 characters. The budget is
+  whatever the app's own name leaves behind, and the longest name leaves 11.
+- Do not spend it on words the title already carries. It sits beside "for Mac" and the
+  app's own name, so neither belongs in it: `Meta AI for Mac — Meta assistant for Mac`
+  wastes a third of the line. Aim to land between 50 and 60 characters assembled, and
+  never on 60 exactly, because the real limit is pixel width rather than a character
+  count.
 
 ## 7. Weekend Reading
 
