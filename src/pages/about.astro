@@ -25,11 +25,13 @@ const latestIssue = [...issues].sort((a, b) => b.data.slug.localeCompare(a.data.
   <article class="page-shell archive-page about-page">
     <Breadcrumb trail={trail} />
     <h1>About</h1>
-    <p class="dek">Every Friday I round up Mac apps that fix something annoying, plus a video and some reading I've found interesting recently.</p>
-
+    {/* No dek. Every other page opens with one under The One Page Title Rule, and this
+        page is the exception on the editor's call: the summary line was doing the job the
+        first paragraph does better, in a voice the rest of the page had already dropped.
+        The introduction follows the enthusiasm rather than preceding it. */}
     <div class="about-content">
-      <p>Hey, I'm Zac. The editor.</p>
       <p>I love Mac apps. I like trying them out, tinkering and using them to help me be more productive. To help me organize. To make my everyday tasks as a communicator, manager and leader that much more enjoyable to do.</p>
+      <p>Hey, I'm Zac. The editor.</p>
       <p>App Waypoint is a little project I've been working on that highlights apps every Friday while building up a <a href="/explore/">database</a> that is browseable, filterable and refinable in as many ways as possible. My goal with this project is to help you find that one tool or utility that solves actual problems and reduces friction or pain points. And to share a couple of things I think are worth reading or watching.</p>
       <p>I'm not trying to cover everything, I'm still learning and absorbing new stuff every day. There are a lot of Mac apps and I will probably miss plenty of good ones. What I can tell you is that nothing lands here without being opened, poked at and thought about first.</p>
     </div>

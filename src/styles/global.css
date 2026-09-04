@@ -1426,7 +1426,10 @@ a { color: inherit; }
    page had none of, every paragraph having carried the same muted weight. */
 .about-page .about-criteria {
   max-width: var(--measure);
-  margin: 18px 0 0;
+  /* Symmetric, because the paragraph rhythm is sibling-based: `p + p` carries 18px, and
+     a list between two paragraphs broke that chain, leaving the sentence after it sitting
+     flush against the final bullet. */
+  margin: 18px 0;
   padding: 0;
   color: var(--muted);
   list-style: none;
