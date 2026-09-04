@@ -1475,6 +1475,45 @@ a { color: inherit; }
   background: var(--accent);
 }
 .about-page .about-criteria strong { color: var(--text); font-weight: 700; }
+
+/* The four sections are disclosures. Native <details>, so it works with JavaScript off,
+   takes keyboard and screen-reader behaviour from the platform, and leaves the content in
+   the DOM for crawlers rather than hiding it behind script. The h2 stays inside the
+   summary so the document outline is unchanged. */
+.about-disclosure > summary {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  cursor: pointer;
+  list-style: none;
+}
+.about-disclosure > summary::-webkit-details-marker { display: none; }
+/* The 28px `.section-heading` gap belongs to the open state. Closed, it would hang under
+   a heading with nothing beneath it. */
+.about-disclosure[open] > summary { margin-bottom: 28px; }
+.about-disclosure-mark {
+  width: 24px;
+  height: 24px;
+  flex: none;
+  color: var(--muted);
+  transition: transform 180ms ease, color 180ms ease;
+}
+.about-disclosure[open] .about-disclosure-mark { transform: rotate(180deg); }
+.about-disclosure > summary:hover .about-disclosure-mark,
+.about-disclosure > summary:focus-visible .about-disclosure-mark { color: var(--accent); }
+.about-disclosure > summary:focus-visible {
+  outline: 0;
+  border-radius: 8px;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 38%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* The rotation is state, not decoration, so the end position stays and only the travel
+     to it goes. */
+  .about-disclosure-mark { transition: color 180ms ease; }
+}
 /* Full-strength ink, where the rest of the prose is muted. Two lines take it: the
    commitment that no app is here without the editor choosing it, and the thanks that
    closes the page. Both are addressed to the reader rather than explaining something to
