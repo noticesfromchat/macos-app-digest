@@ -133,6 +133,15 @@ the single production deployment point. Follow the complete workflow in
   then propose the Friday slate for editor review.
 - For each proposed app, include draft description, `bestFor`, tags, source or
   homepage and any collection recommendations.
+- Include app selections from the editor's
+  [App Selections note](https://app.notion.com/p/App-selections-3d1d6482d47f8069b146c4dfec0c0c43?source=copy_link)
+  in the candidate pool before proposing the slate.
+- Do not select more than two apps from any single discovery source for one issue,
+  counting regular section apps and the optional Editor's Pick together. Product
+  Hunt, `r/macapps` and the editor's App Selections note each count as separate
+  sources under this cap. If the best slate would exceed the cap, present the
+  affected choices as checkbox decisions in the Notion review page and use
+  verified alternates for any rejected or over-cap selections.
 - Proposed issue slates must preserve the standard section spine:
   `New Discoveries`, `Trending`, `Old Favorites`, `AI & Automation`,
   `Up and Coming`. Do not substitute alternate section names such as utility,

@@ -87,6 +87,14 @@ the release candidate.
 The optional `editorsPick` module is the only app feature outside the regular
 section spine. When present, it renders between `Trending` and `Old Favorites`.
 
+Across the full app slate, including the optional Editor's Pick, do not select more
+than two apps from any single discovery source. Product Hunt, `r/macapps` and the
+editor's
+[App Selections note](https://app.notion.com/p/App-selections-3d1d6482d47f8069b146c4dfec0c0c43?source=copy_link)
+each count as separate sources under this cap. Use the Notion review page to present
+over-cap choices and verified alternates as checkbox decisions before building the
+release candidate.
+
 Below the spine every issue closes the same way, in this order: `Video of the Week`,
 `Weekend Reading`, then the RSS subscribe card. The first two are authored in the
 issue's frontmatter like any other section. The subscribe card is shared with Explore
@@ -389,6 +397,8 @@ Complete every item before merging a new issue:
 - [ ] Every new app uses its official homepage or canonical repository.
 - [ ] No app is duplicated within the issue or repeated from the immediately previous
   issue where the publishing rules prohibit it.
+- [ ] No discovery source contributes more than two apps to the issue's full app
+      slate, including the optional Editor's Pick.
 - [ ] The Editor's Pick, if present, was supplied or approved by the editor, appears
       only once and belongs to the `editors-picks` collection.
 - [ ] Old Favorites contains exactly three eligible apps, highlights established

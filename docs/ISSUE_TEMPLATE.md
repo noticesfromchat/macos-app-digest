@@ -13,6 +13,11 @@ Do not rename, omit, reorder or add regular app sections. Weekly variation belon
 section titles and app choices, not in the section eyebrows. The optional
 `editorsPick` object renders between `Trending` and `Old Favorites`.
 
+Before finalizing the app slate, include candidates from the editor's
+[App Selections note](https://app.notion.com/p/App-selections-3d1d6482d47f8069b146c4dfec0c0c43?source=copy_link)
+and confirm that no single discovery source contributes more than two apps across
+the issue, including the optional Editor's Pick.
+
 ```yaml
 ---
 number: '002'
@@ -72,7 +77,7 @@ readings:
     url: https://example.com/article-three
 # Recorded, not rendered. Kept as the editorial audit trail since 2026-09-01.
 sourceNotes:
-  - Discovery source or research note
+  - Discovery source or research note, with no source contributing more than two app selections
   - Official app homepages were checked before publishing
 ---
 ```
@@ -172,6 +177,12 @@ preceding issue. Replace repeats or unavailable selections with verified discove
 from Product Hunt's recent Mac launches or another approved source. Verify official
 links, reuse existing app records, create missing records and credit every source used
 in `sourceNotes`, which is recorded for review rather than published. Do not substitute apps based solely on raw votes.
+
+The full issue may include no more than two app selections from any single discovery
+source, including Product Hunt, `r/macapps` and the editor's App Selections Notion
+note. If the current App Pile or another source yields more than two eligible apps,
+keep the strongest two from that source and present verified alternates from other
+sources for editor approval.
 
 ## When the user supplies an Editor's Pick
 
