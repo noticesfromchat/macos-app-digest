@@ -83,7 +83,11 @@ Preview review.
     `iconStyle: plain` for finished square app icons, `backed` for transparent
     artwork that needs a white backing and `contain` for non-square marks that
     should not crop. If no suitable official icon is available, omit `icon` and
-    allow the app card to use the first-category fallback tile.
+    allow the app card to use the first-category fallback tile. Render icons at
+    128px square, resizing larger sources down and smaller ones up. Prefer a source
+    that already meets it, since the icon also renders on the app's Open Graph card
+    at 112px, but use the best one available rather than refusing it. Section 11 of
+    [`STYLE_GUIDE.md`](STYLE_GUIDE.md) carries the rule and the reasoning.
 15. For every app in the required `Old Favorites` section, add `community-favorites` to the app
     record's `collections` array while preserving any existing collection entries.
 16. Include the issue `rss` block with a short issue-specific title and the standard

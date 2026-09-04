@@ -148,6 +148,12 @@ the single production deployment point. Follow the complete workflow in
   workbench or themed catchall sections.
 - Every app placed in an `Old Favorites` section must include `community-favorites`
   in its app record's `collections` array. Preserve any existing collection entries.
+- Render app icons at **128px square**, resizing larger sources down and smaller ones
+  up. Prefer a source that already meets it, because the icon also carries the app's Open
+  Graph card at 112px, but use the best one available rather than refusing it. The
+  category fallback is a sharp vector mark and is for sources too poor to be worth
+  showing, at the cost of the app's own identity. Section 11 of `docs/STYLE_GUIDE.md`
+  owns the rule and the reasoning.
 - During the Thursday check, audit existing tags for underuse, duplication, vague
   labels, overly narrow labels and apps that appear mistagged or undertagged. Follow
   `docs/TAG_AUDIT.md`, which defines the method, the protected single-app tags and the

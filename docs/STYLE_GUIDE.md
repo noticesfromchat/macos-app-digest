@@ -303,12 +303,15 @@ recognition without making cards feel like an app-store grid.
 - Use official app assets from the app homepage, canonical repository or official
   product files. Prefer high-resolution product icons or Apple touch icons over small
   favicons.
-- **128px square is both the ceiling and the floor.** Anything larger is resized down,
-  because the site renders icons at 44px and 76px and oversized files were once shipping
-  12 MB to do it. Anything smaller has to be re-sourced rather than accepted: since
-  2026-09-03 the icon also carries the app's Open Graph card at 112px, where a 32px or
-  64px favicon is visibly soft. A source under 128px is a reason to keep looking, and an
-  app with no adequate icon uses the category fallback, which is sharp at any size.
+- **128px square is the target, and the ceiling is firm.** Anything larger is resized
+  down, because the site renders icons at 44px and 76px and oversized files were once
+  shipping 12 MB to do it. Below the target, prefer a better source: since 2026-09-03 the
+  icon also carries the app's Open Graph card at 112px, where a 32px or 64px favicon is
+  visibly soft. A smaller source that is the best available is resized up and used rather
+  than refused. The category fallback is a vector mark and stays sharp at any size, so it
+  is the right answer when a source is too poor to be worth showing, but it trades the
+  app's own identity for that sharpness and 27 to 40 apps share each mark. Which loss is
+  worse is a judgment about the artwork, not a consequence of a pixel count.
 - Do not use generic marketplace favicons, Product Hunt marks, GitHub organization
   avatars or unrelated publisher logos unless that asset is clearly the app's own
   identity.
