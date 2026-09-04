@@ -115,10 +115,20 @@ gtag('config', ${JSON.stringify(googleAnalyticsId)}, {
     <title>{title}</title>
     <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@graph': graph })} />
     <script is:inline>
+      /* Resolve the theme before first paint. The theme-color meta above ships the light
+         value, which is the honest default because dark is applied only by
+         :root[data-theme='dark'] and so never applies without this script. Setting it
+         here rather than with the toggle wiring at the end of the body is what keeps iOS
+         Safari from painting the status bar Harbor Fog above a dark page: that script
+         runs after the first paint, so the bar had already been drawn light. Both values
+         track --page in global.css. */
       (() => {
         const saved = localStorage.getItem('app-waypoint-theme');
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        document.documentElement.dataset.theme = saved || (prefersDark ? 'dark' : 'light');
+        const theme = saved || (prefersDark ? 'dark' : 'light');
+        document.documentElement.dataset.theme = theme;
+        const themeColor = document.querySelector('meta[name="theme-color"]');
+        if (themeColor) themeColor.setAttribute('content', theme === 'dark' ? '#091321' : '#e8ecf1');
       })();
     </script>
   </head>
