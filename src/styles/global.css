@@ -119,11 +119,16 @@
 /* Recedes behind the crumbs without needing a token of its own, the same color-mix
    the focus ring uses. */
 .breadcrumb-sep { color: color-mix(in srgb, var(--muted) 55%, transparent); }
+/* The mark sits inside this crumb rather than between the two, so the space to its right
+   is set here while the space to its left is the list's own column gap. They have to be
+   the same number or the mark is off centre: at 7px against the list's 8 it sat a pixel
+   nearer its own label, which is small but visible on a 7px dot. The 7 looks as though it
+   was echoing the mark's size rather than answering the gap opposite it. */
 .breadcrumb-here {
   display: inline-flex;
   min-height: 24px;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
   color: var(--text);
 }
 /* The position marker: one filled dot, the size of the buoy's light. It is the only
