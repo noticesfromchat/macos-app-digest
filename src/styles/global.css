@@ -174,8 +174,18 @@ html {
   white-space: nowrap;
 }
 
+/* The footer sits at the bottom of the page, and on a page whose content does not fill
+   the window that means the bottom of the window rather than the bottom of the content.
+   Without this the column simply ended where `main` ended, which never showed while every
+   page ran long, and appears the moment one does not: a filtered directory with no
+   matches, a short tag page, a narrow window. `100dvh` rather than `100vh` so mobile
+   browser chrome collapsing does not leave a strip of page under the footer. The header is
+   sticky and every overlay is fixed, so neither is disturbed by the column. */
 body {
+  display: flex;
+  flex-direction: column;
   min-width: 320px;
+  min-height: 100dvh;
   margin: 0;
   background: var(--page);
   color: var(--text);
@@ -183,6 +193,8 @@ body {
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
 }
+/* Grows to fill what the header and footer do not, and never shrinks below its content. */
+main { flex: 1 0 auto; }
 
 a { color: inherit; }
 
