@@ -28,7 +28,10 @@
   --radius: 16px;
   --content-width: 1160px;
   --content-inset: 40px;
-  --page-start-space: 36px;
+  /* Reduced 25% from 36px on 2026-09-04. The trail keeps its 11px bind to the title
+     under The One Page Title Rule; what was reading as the trail having fallen down a gap
+     was the space above it, between the header and the trail, not the space below. */
+  --page-start-space: 27px;
   --section-space: clamp(26px, 3.8vw, 40px);
   --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
   --display: "Iowan Old Style", "Baskerville", "Times New Roman", serif;
@@ -2385,7 +2388,7 @@ a { color: inherit; }
   .home-hero { --sea-h: 72px; padding-block: 30px 46px; }
   .content-divider { height: 68px; }
   .video-section { padding-top: 20px; }
-  :root { --page-start-space: 38px; --type-page-title: clamp(2.8rem, 12vw, 3.75rem); }
+  :root { --page-start-space: 28px; --type-page-title: clamp(2.8rem, 12vw, 3.75rem); }
   .archive-page { padding: var(--page-start-space) 0 36px; }
   .app-detail-page { padding: var(--page-start-space) 0 36px; }
   .app-detail-hero { padding: 0 0 24px; }
