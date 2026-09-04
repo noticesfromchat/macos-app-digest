@@ -174,6 +174,18 @@ it. See Issue Subscribe Card in `DESIGN.md` for the structure and the reasoning.
   filter and no sort until 2026-09-01, while every tag, collection and category page had
   all three.
 - Tag and collection pages share the same sortable app-directory component.
+- **Tag and collection titles carry a tagline**, the same way app pages do:
+  `{lane} Mac Apps — {tagline} — App Waypoint`. Tag titles ran between 26 and 37
+  characters against the roughly 60 a search result shows, the widest gap of any page
+  type here. Both maps live in `src/data/lanes.ts` beside the titles they extend.
+- **Categories deliberately have none.** `Mac Utilities & Customization Mac Apps —
+  App Waypoint` is already 53 characters, so four of the six have no room for one.
+  Adding it to the two that do would make the page type inconsistent for little gain.
+- **A tag's display name is not its slug sentence-cased.** Initialisms and product
+  names spelled a particular way are held in `tagDisplayNames`: `ai` is AI, `ios` is
+  iOS, `quicklook` is Quick Look. Until 2026-09-04 only `rss` was handled and the rest
+  shipped as `Ai`, `Cli`, `Ios`, `Pdf`, `Airdrop`, `Menubar` and `Quicklook` in titles,
+  headings and social cards alike. Add to the map rather than adding another branch.
 - Apps default to A–Z order.
 - Available sorting options are A–Z, Z–A and Date featured.
 - Date featured sorts by the app's most recent issue appearance, newest first, with
@@ -428,6 +440,11 @@ Complete every item before merging a new issue:
       reason the icon is intentionally deferred.
 - [ ] The Editor's Pick app has a reviewed `iconAccent`, or a documented reason the pick
       renders without the Struck Light treatment.
+- [ ] The `rss` title is a headline, not a sentence: title case and no full stop. It is
+      also the issue page's title, sitting beside the issue label, so the assembled
+      `{rss.title} — Issue NN — App Waypoint` stays under 60 characters. The 90-character
+      schema cap is right for a feed entry and far too loose for a search result; issue
+      09 shipped a 55-character sentence that assembled to 82.
 - [ ] The issue includes an `rss` block with a concise issue-specific title and the
       standard `Read this issue` CTA.
 - [ ] The built `/rss.xml` feed includes every published issue exactly once, newest-

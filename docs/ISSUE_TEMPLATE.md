@@ -25,6 +25,8 @@ slug: 2026-07-17
 date: July 17, 2026
 dek: Write one concise 18-45 word sentence that previews the issue without listing every item.
 rss:
+  # A headline, not a sentence: title case, no full stop. It is also the issue page
+  # title, so `{title} — Issue NN — App Waypoint` must stay under 60 characters.
   title: Short issue-specific RSS title aligned with the issue theme
   cta: Read this issue
 sections:
