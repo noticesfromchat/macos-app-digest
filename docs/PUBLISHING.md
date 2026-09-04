@@ -65,7 +65,10 @@ Preview review.
    previews separate.
 12. Create or update the selected release-candidate branch from the latest `main`
     with the Thursday-reviewed issue slate, confirmed app-record changes, required
-    app records and one issue Markdown file.
+    app records and one issue Markdown file. The weekly release branch is named
+    `issue-NNN-weekly-update`, using the same three-digit issue `number` that the
+    issue record carries, so issue 010 ships from `issue-010-weekly-update`. See
+    [`GIT_BRANCHING.md`](GIT_BRANCHING.md) for the full branching path.
 13. For every app added to or newly featured in the issue, add or confirm a local
     icon under `public/app-icons/` when an official app icon is available. Use
     `iconStyle: plain` for finished square app icons, `backed` for transparent

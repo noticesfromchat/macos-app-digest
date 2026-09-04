@@ -55,7 +55,7 @@ The minimum read for any presentation or content change:
 | `docs/STYLE_GUIDE.md` | Visual system, page structure, responsive and interaction rules, editorial punctuation, publishing conventions |
 | `DESIGN.md` | Tokens, named house rules, motion, the committed visual world |
 | `docs/DEVELOPMENT.md` | Local-to-production path, validation, preview and deploy contract |
-| `docs/GIT_BRANCHING.md` | Branching, release branches, what Netlify can and cannot preview |
+| `docs/GIT_BRANCHING.md` | Branch naming, release branches, what Netlify can and cannot preview |
 | `docs/ISSUE_TEMPLATE.md` | App and issue frontmatter |
 | `docs/PUBLISHING.md` | Weekly release work |
 
@@ -76,7 +76,10 @@ that have shipped misleads whoever reads it next. `docs/TAG_AUDIT.md` section 8 
 the pattern in use.
 
 1. Start from the latest `main` and create a short-lived task branch. Never make a
-   production change directly on `main`.
+   production change directly on `main`. A single stream of work takes a descriptive
+   branch name; the weekly release takes `issue-NNN-weekly-update`, matching the
+   three-digit issue `number`. Do not create or switch branches on your own
+   initiative — propose the branch and wait for the editor's answer.
 2. Read the task-relevant documentation before making changes.
 3. Inspect the relevant component, content schema and current content before editing.
 4. Create or update Markdown content rather than copying page markup.
