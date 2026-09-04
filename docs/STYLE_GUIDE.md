@@ -42,6 +42,12 @@ The site should feel like a small, premium editorial publication for experienced
 
 - Do not use Oxford commas in App Waypoint editorial copy. In lists of three or
   more, write `A, B and C`, not `A, B, and C`.
+- **A list item takes no full stop at its end**, even when it runs to several
+  sentences. Sentences inside the item are punctuated normally, so a bold lead-in
+  keeps its own: `**It's alive.** Still being updated by someone paying attention`.
+  A bullet is a fragment in a list, not a sentence in a paragraph, and the trailing
+  stop is the tell that it was written as prose and then chopped up. The selection
+  criteria on the About page are the pattern.
 - Write an issue number two digits wide wherever a reader sees it: `Issue 08`, not
   `Issue 008`. The frontmatter keeps three digits because the schema fixes the width.
   Never format the number by hand: use `issueLabel` or `issueName` from

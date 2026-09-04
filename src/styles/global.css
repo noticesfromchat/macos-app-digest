@@ -1450,7 +1450,12 @@ a { color: inherit; }
 /* The one line on the page that is a commitment rather than an explanation, so it is the
    one line set in full-strength ink. */
 .about-page p.about-emphasis { color: var(--text); }
-.about-page .about-close p + p { margin-top: 20px; }
+/* The action gets group separation rather than paragraph rhythm: it is the one thing on
+   the page to press, not another line to read. */
+/* Matches the sibling rule's specificity deliberately: `.about-page p:not(.dek) + p`
+   scores higher than a plain class here, so the paragraph rhythm won and the button
+   sat at 18px. */
+.about-page p:not(.dek) + p.about-cta { margin-top: 24px; }
 /* The archive route. A hairline runs the length of the page and every issue is a
    stop on it, marked by the buoy's own beacon: an open ring, filled on the newest
    issue because "this is the current one" is a state, which is what blue is for.

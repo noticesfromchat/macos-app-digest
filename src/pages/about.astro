@@ -25,12 +25,13 @@ const latestIssue = [...issues].sort((a, b) => b.data.slug.localeCompare(a.data.
   <article class="page-shell archive-page about-page">
     <Breadcrumb trail={trail} />
     <h1>About</h1>
-    {/* No dek. Every other page opens with one under The One Page Title Rule, and this
-        page is the exception on the editor's call: the summary line was doing the job the
-        first paragraph does better, in a voice the rest of the page had already dropped.
-        The introduction follows the enthusiasm rather than preceding it. */}
+    {/* The dek, under The One Page Title Rule, which every page obeys. What changed is
+        what fills it: a summary line written in a marketing register the rest of the page
+        had already dropped, replaced by the sentence the page actually opens on. The
+        introduction follows the enthusiasm rather than preceding it. */}
+    <p class="dek">I love Mac apps. I like trying them out, tinkering and using them to help me be more productive. To help me organize. To make my everyday tasks as a communicator, manager and leader that much more enjoyable to do.</p>
+
     <div class="about-content">
-      <p>I love Mac apps. I like trying them out, tinkering and using them to help me be more productive. To help me organize. To make my everyday tasks as a communicator, manager and leader that much more enjoyable to do.</p>
       <p>Hey, I'm Zac. The editor.</p>
       <p>App Waypoint is a little project I've been working on that highlights apps every Friday while building up a <a href="/explore/">database</a> that is browseable, filterable and refinable in as many ways as possible. My goal with this project is to help you find that one tool or utility that solves actual problems and reduces friction or pain points. And to share a couple of things I think are worth reading or watching.</p>
       <p>I'm not trying to cover everything, I'm still learning and absorbing new stuff every day. There are a lot of Mac apps and I will probably miss plenty of good ones. What I can tell you is that nothing lands here without being opened, poked at and thought about first.</p>
@@ -42,11 +43,11 @@ const latestIssue = [...issues].sort((a, b) => b.data.slug.localeCompare(a.data.
       </div>
       <p>Five things I'm looking for when selecting apps:</p>
       <ul class="about-criteria">
-        <li><strong>It's actually useful.</strong> Not clever for its own sake. It fixes something you've been putting up with.</li>
-        <li><strong>People are actually recommending it.</strong> Not marketing, someone bothered to tell someone else or shared enthusiasm about it.</li>
-        <li><strong>It's well made.</strong> Somebody cared about how it feels to use. I think that's important.</li>
-        <li><strong>It's alive.</strong> Still being updated by someone paying attention.</li>
-        <li><strong>It has a point of view.</strong> If three apps do the same job, I want the one that does it differently.</li>
+        <li><strong>It's actually useful.</strong> Not clever for its own sake. It fixes something you've been putting up with</li>
+        <li><strong>People are actually recommending it.</strong> Not marketing, someone bothered to tell someone else or shared enthusiasm about it</li>
+        <li><strong>It's well made.</strong> Somebody cared about how it feels to use. I think that's important</li>
+        <li><strong>It's alive.</strong> Still being updated by someone paying attention</li>
+        <li><strong>It has a point of view.</strong> If three apps do the same job, I want the one that does it differently</li>
       </ul>
       <p>Not everything is always going to hit all five. And I might still highlight the competitors.</p>
     </section>
@@ -73,13 +74,11 @@ const latestIssue = [...issues].sort((a, b) => b.data.slug.localeCompare(a.data.
         <h2>What do I get out of all of this?</h2>
       </div>
       <p>I get to share my passion for finding new apps with you. And to support hard working developers and hopefully help shine a light on their apps that helps them keep going. That's it.</p>
-    </section>
-
-    {/* No heading. Every block above opens with one, and a fifth would make the close
-        read as another topic rather than as the page finishing. */}
-    <section class="section about-close">
+      {/* The thanks and the route out close this section rather than forming their own.
+          A section of their own drew a rule across the page and gave a sign-off the same
+          weight as a topic, when it is the same thought finishing. */}
       <p>Thank you for reading. For clicking the link that led you here and for spending a little time with me and my project.</p>
-      <p><a class="button" href={`/issues/${latestIssue.data.slug}/`}>Check out the latest issue</a></p>
+      <p class="about-cta"><a class="button" href={`/issues/${latestIssue.data.slug}/`}>Check out the latest issue</a></p>
     </section>
   </article>
 </BaseLayout>
