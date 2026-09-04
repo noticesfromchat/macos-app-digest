@@ -47,6 +47,14 @@ Astro Content Collections are the editorial source of truth:
 Reuse existing records. Do not duplicate app data, hand-build generated detail pages
 or edit generated output in `dist/`.
 
+**Social cards need a trailing slash on the dev server.** The site sets
+`trailingSlash: 'always'`, and Astro applies that to the dynamic route behind the cards,
+so `/og/issue-008.png` returns 404 locally while `/og/issue-008.png/` renders. The built
+site has no such quirk: the cards are real files in `dist/og/`, Netlify serves them
+directly, and the URL in every `og:image` tag is the one without the slash. A 404 on the
+card URL from a local dev server is this, not a broken card. Confirm against
+`npm run build` output before treating it as a defect.
+
 ## 3. Validate before publishing
 
 Run both commands from the repository root:

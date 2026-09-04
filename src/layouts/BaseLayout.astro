@@ -2,6 +2,8 @@
 import { Archive, Check, Compass, Copy, Info, Moon, Rss, Search, Sun, X } from 'lucide-astro';
 import BrandMark from '../components/BrandMark.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import { breadcrumbSchema, type Crumb } from '../data/breadcrumb';
+import { OG_SIZE, ogPath } from '../data/og';
 import '../styles/global.css';
 import '../styles/search.css';
 
@@ -11,9 +13,16 @@ const {
   current = '',
   type = 'website',
   publishedTime,
-  socialImage = '/harbor-hero-clean.webp',
+  socialImage = ogPath('default'),
   socialImageAlt = 'App Waypoint, a weekly guide to curated Mac apps for experienced users.',
-  structuredData = []
+  /* Every card is 1200x630, so the dimensions are the default rather than a prop a
+     page has to remember. Override only if a page ever points `socialImage` at
+     something a different shape: a scraper trusts this tag over the file itself. */
+  socialImageSize = OG_SIZE,
+  structuredData = [],
+  /* The page's breadcrumb trail. The same array renders the visible list inside the
+     page, so the BreadcrumbList below always describes something a reader can see. */
+  breadcrumb = [] as Crumb[]
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -21,6 +30,7 @@ const socialImageUrl = new URL(socialImage, Astro.site);
 const rssUrl = new URL('/rss.xml', Astro.site);
 const searchIndexUrl = new URL('/search-index.json', Astro.site);
 const isHomepage = Astro.url.pathname === '/';
+const googleAnalyticsId = 'G-1WLLER0K5L';
 const graph = [
   {
     '@type': 'Organization',
@@ -60,12 +70,23 @@ const graph = [
         url: canonical.href,
         isPartOf: { '@id': new URL('/#website', Astro.site).href }
       },
+  ...(breadcrumb.length > 1 ? [breadcrumbSchema(breadcrumb, Astro.site)] : []),
   ...structuredData
 ];
 ---
 <!doctype html>
 <html lang="en">
   <head>
+    <script async src={`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}`}></script>
+    <script
+      is:inline
+      set:html={`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', ${JSON.stringify(googleAnalyticsId)}, {
+  debug_mode: new URLSearchParams(window.location.search).has('_dbg')
+});`}
+    />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
@@ -78,6 +99,8 @@ const graph = [
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={socialImageUrl} />
+    {socialImageSize && <meta property="og:image:width" content={String(socialImageSize.width)} />}
+    {socialImageSize && <meta property="og:image:height" content={String(socialImageSize.height)} />}
     <meta property="og:image:alt" content={socialImageAlt} />
     <link rel="alternate" type="application/rss+xml" title="App Waypoint RSS feed" href={rssUrl} />
     {publishedTime && <meta property="article:published_time" content={publishedTime} />}
@@ -252,17 +275,21 @@ const graph = [
       </section>
     </div>
     <script is:inline>
-      /* The Editor's Pick gleam runs continuously, so it is paused whenever the
-         card is off screen. A loop nobody can see is a loop that should not run. */
+      /* A Struck Light gleam runs continuously, so it is paused whenever its card
+         is off screen. A loop nobody can see is a loop that should not run. Every
+         lit card is watched, not just the hero's: the archive terminus carries the
+         same treatment, and a second observer for it would be the same rule twice. */
       (() => {
-        const pick = document.querySelector('.hero-pick-card.has-pick-accent');
-        if (!pick || !('IntersectionObserver' in window)) return;
+        const lit = document.querySelectorAll('.has-pick-accent');
+        if (!lit.length || !('IntersectionObserver' in window)) return;
 
         const watching = new IntersectionObserver((entries) => {
-          for (const entry of entries) pick.classList.toggle('is-resting', !entry.isIntersecting);
+          for (const entry of entries) {
+            entry.target.classList.toggle('is-resting', !entry.isIntersecting);
+          }
         }, { threshold: 0 });
 
-        watching.observe(pick);
+        for (const card of lit) watching.observe(card);
       })();
     </script>
     <script is:inline>

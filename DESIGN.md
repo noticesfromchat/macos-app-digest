@@ -93,7 +93,7 @@ typography:
     lineHeight: 1
     letterSpacing: "0"
   displayAsset:
-    fontFamily: 'Philippine, Iowan Old Style, Baskerville, "Times New Roman", serif'
+    fontFamily: 'Iowan Old Style, Baskerville, "Times New Roman", serif'
     fontSize: "clamp(3.25rem, 5.1vw, 4.25rem)"
     fontWeight: 400
     lineHeight: 0.96
@@ -243,9 +243,11 @@ The rhythm is two values, not one. **11px binds an eyebrow to its content; 24px 
 
 **The One Measure Rule.** All prose runs to `--measure` (52ch) and nothing else. Because `ch` scales with the element's own font size, the same token holds roughly seventy characters at the dek's 17.9px, at body's 16px, and at the footnote's 13.4px — a pixel column cannot do that, it just widens as the type shrinks. Every prose surface is on it: deks, About, footnotes, best-for, panel copy, feature-card copy, and category descriptions. A fixed-pixel `max-width` on running text is a bug.
 
-**The One Page Title Rule.** Every page opens the same way: the title in Headline at `--type-page-title`, hard against the shell's `--page-start-space`, with no margin of its own, and the dek 15px beneath it at `--type-dek`. App detail pages are not an exception — the app name is a page title, not a bigger thing. A page that wants more presence gets it from its composition below the fold, never from a private type scale.
+**The One Page Title Rule.** Every page opens the same way: the breadcrumb trail at the shell's `--page-start-space`, the title in Headline at `--type-page-title` 11px beneath it, and the dek 15px beneath that at `--type-dek`. The title carries no margin of its own; the trail owns the gap, at `--eyebrow-gap`, because it names the page under it exactly as an eyebrow does. Until 2026-09-02 the title itself sat hard against `--page-start-space` and nothing preceded it. That changed when the trail arrived, and it changed on every page at once rather than on the deep ones only, so the opening stayed one shape. App detail pages are not an exception — the app name is a page title, not a bigger thing. A page that wants more presence gets it from its composition below the fold, never from a private type scale.
 
 **The Plain Dash Rule.** Public editorial copy uses no em dash and no en dash. Restructure to a period, a comma, a colon, or parentheses, and set number and date ranges with a plain hyphen: `August 5-19, 2026`, not `August 5–19, 2026`. The em dash is the clearest tell of machine-drafted prose, and this publication is human-led by design. Three things sit outside the rule and stay as they are. Page-title separators are an SEO and publishing convention and are indexed, so `Archive — App Waypoint` is correct. Quoted external titles in source notes and reading lists keep their own punctuation, because changing it misquotes the source; source notes stopped being published on 2026-09-01 but are still written and still validated, so the exception still governs how they are recorded. Code comments are not copy and no reader sees them. The rule governs the site's public copy, not this repository's documentation. General frontend guidance in `.agents/skills/taste-skill` states a blanket zero-tolerance ban covering titles as well; that is a marketing-page heuristic, this narrower rule is what governs here, and the vendored skill is deliberately left unedited so it stays diffable against upstream.
+
+**The Two Digit Issue Rule.** An issue number is recorded three digits wide and published two: `Issue 08`, never `Issue 008`, and three digits only once there is a hundredth issue. `src/data/issue.ts` is the single place that produces the label, `issueLabel` for the digits and `issueName` for the whole phrase, and `scripts/check-editorial-style.mjs` fails the build on a literal three-digit form. Both of those exist because the rule was written down nowhere until 2026-09-03: it had been implemented three times over (the issue hero, the archive list, and the RSS summary by a different mechanism) and skipped in five more places, so the breadcrumb printed `Issue 008` directly above a heading reading `Issue 08`, and the archive's `ItemList` disagreed with the rows a reader could see. The record keeps its three digits, because the schema fixes the width and the frontmatter sorts on it; only the reader-facing form is two.
 
 **The Serif-Utility Split.** Serif type carries the editorial voice; the system sans carries the operational voice. Mixing them casually weakens both jobs. The mono face is the third voice and the narrowest: it is for data a reader might copy, which today means the RSS feed URL and nothing else. It is not a costume for looking technical.
 
@@ -281,7 +283,13 @@ The system prefers clipped rectangles, thin borders, and deliberate rounding ove
 
 Motion is used sparingly and always to mark passage: where the reader is in a page, and what they have just reached. The vocabulary is four easing tokens and everything on the site uses one of them. `ease-standard` (180ms) for routine state changes on buttons, links, and cards. `ease-quick` (120ms) for micro-feedback such as search-result highlighting. `ease-emphasis` (240ms) for the hero-aware header states. `ease-settle` (320ms on `cubic-bezier(.16, 1, .3, 1)`) for card hover elevation, an exponential ease-out that settles instead of snapping.
 
-**The Struck Light Rule.** The Editor's Pick card in the hero is lit by the featured app's own colour, and that light moves. Two continuous animations, both on pseudo-elements of that one card: a wide, soft wash that drifts across the interior over 28s, and a gleam that travels the card's edge over 11s like light crossing a struck plate. Nothing else on the site does this, and nothing else should; the effect is reserved for the one app an issue argues for.
+**The Earned Motion Rule.** Motion is rationed by purpose, not by count. A surface may carry one moving thing or several; what disqualifies any of them is moving without a job. Motion earns its place when it acknowledges an action, makes a state change or a spatial relationship legible, preserves continuity through a change, or marks a moment the surface has genuinely earned. Movement that does none of those is animation debt however small, and one decorative flourish is worse than three devices that each explain something. Two obligations follow from the purpose rather than from a budget: every animation needs a `prefers-reduced-motion` path that reduces movement without erasing the meaning it carries, and anything that loops stops while it is off screen. Reserving a specific device to its own surface, which is what The Struck Light Rule does, is about not diluting that device; it is not a quota.
+
+Until 2026-09-03 this was a count: the divider buoy and the Editor's Pick light were declared the two motions with a voice and a third was forbidden. That was arbitrary. It would have permitted a decorative third on another page and forbidden a fourth that explained something, which is backwards.
+
+**The Struck Light Rule.** The Editor's Pick card in the hero is lit by the featured app's own colour, and that light moves. Two continuous animations, both on pseudo-elements of that one card: a wide, soft wash that drifts across the interior over 28s, and a gleam that travels the card's edge over 11s like light crossing a struck plate.
+
+The effect is reserved for **arrivals**: a card the reader is meant to stop at, at most one per surface. Two carry it. In the hero it is the Editor's Pick, the one app an issue argues for, lit by that app's own normalised colour. On the archive it is the terminus, the card that says where the publication started, lit by the site accent rather than an app's colour because what is being marked there is the journey ending and no app is being argued for. Until 2026-09-03 the rule read that nothing else should ever carry it; that was a reservation to the hero specifically, and the terminus is the same kind of moment on a page that earns one. It stays scarce by that test, not by a list: a second lit card on either surface would dilute both.
 
 Four things hold it inside the design system:
 
@@ -292,7 +300,19 @@ Four things hold it inside the design system:
 
 Because the card rests at Hover Lift rather than Ambient Card, it cannot answer the pointer with elevation the way The One Hover Rule describes. It answers with light instead: an accent-tinted depth under the card. Both loops pause when the card is off screen and stop entirely under reduced motion.
 
-**The buoy stays the one authored moment.** The mark on the content divider flashes once as the reader passes it. That is deliberate, and it is the motion on the page with a voice, alongside the light on the Editor's Pick card. The old archive timeline in the removed `Keep Exploring` closer retired with that section on 2026-09-01, leaving the issue page calmer at the finish.
+**The buoy stays the one authored moment.** The mark on the content divider flashes once as the reader passes it. That is deliberate: it marks the passage the divider stands for, and it sits alongside the light on the Editor's Pick card. The old archive timeline in the removed `Keep Exploring` closer retired with that section on 2026-09-01, leaving the issue page calmer at the finish.
+
+**The Pilot Rule.** The archive's beacon marks which stop the reader is at. One lit dot rests inside a ring, and when the nearest stop changes it makes a single bounded move to the new one over 420ms on `ease-settle`, then rests again. It is confined to `/archive/`.
+
+It earns its place under The Earned Motion Rule by carrying the page's own subject. The archive is the only surface here that is genuinely a sequence, so a marker moving through that sequence explains where the reader is; nothing else on the site has a state like it.
+
+The first version got this wrong in a way worth recording, because the fault was structural and four rounds of tuning its speed never touched it. It followed the scroll position every frame, which meant it was in motion the whole time the reader was, and easing it toward a target made it travel faster the harder they scrolled. A marker that continuously chases the viewport explains nothing and competes with the reading. The state it represents is discrete: the reader is at a stop, and what changes is which stop. Once the dot belonged to a ring rather than to the scroll, the qualities that had been chased with constants fell out of the structure. It holds, because resting is its default. It arrives, because the move is bounded rather than asymptotic. And scrolling faster cannot make it hurry, because speed changes when the stop flips, never how long the move takes.
+
+Three things keep it quiet. Scroll decides only which stop is current and CSS owns the movement, so nothing runs on a still page and the browser retargets cleanly when a reader passes several stops at once. The dot is the only lit thing on the route: its fill is a state, so it takes the accent under The Beacon Rule, and no stop stays lit behind it. Under `prefers-reduced-motion` the marker stays and only the travel between stops is dropped, because which issue the reader is at is meaningful state and reduced motion means less movement, not less meaning.
+
+Two details decide whether the dock reads as exact, and both were wrong at first. The travel is **not rounded to whole pixels**: a stop's centre lands on a half pixel as often as not, so rounding put the beacon up to half a pixel off the ring it was filling, which is a whole device pixel of misplaced blue on a 2x display and a different error at every stop. And **the route stops at each ring rather than passing under it**. Hiding the line behind a ring's own fill left it crossing the ring's outer band, where the beacon's halo sits, so the reader saw a line drawn through the stop; each mark now clears the line for the width of that halo, which makes the ring an object the route arrives at instead of a bead threaded on it. The halo stays translucent so the ring's outline still reads through the docked beacon.
+
+**The Landfall Ping.** Reaching the terminus is the one completion this page has, so the origin answers it: the same three-pulse `beacon-ping` the RSS mark uses when the subscribe card is hovered, on the same keyframes and the same curve. It fires on arrival rather than on load, because landing is the moment and a reader at the top of the page has not travelled anywhere yet. It is three pulses rather than a loop, so it cannot become friction on the way back down, and it re-arms only after the reader leaves, so returning is acknowledged again. Reduced motion drops it entirely: it carries feeling, not state, and nothing is lost by its absence.
 
 **The Swell Rule.** The water moves, and it is the only thing on the page that moves without wanting to be noticed. Both wave bands, the hero's waterline and the content divider's, breathe: the crests hold their positions while the height of the water and the weight of its second harmonic settle and return, on periods of 23 and 31 seconds that do not divide into one another, so the band never repeats a state the eye can catch.
 
@@ -302,7 +322,7 @@ Two earlier versions got this wrong in opposite ways, and both were measured rat
 
 The pair is deliberately unequal, 0.46 against 0.32, because an even pair cancels to a flat line at the bottom of each beat. Unequal, the water calms without going still, and since each line carries its own phase offset the calm never crosses the whole band at once.
 
-Two things keep it ambient rather than a fourth animation competing for attention. **It is slow**: a crest takes over two minutes to cross the band, so the eye reads it as atmosphere and never tracks it. **The still painting is the high-water mark**, not the midpoint; the swell only ever calms below it. That is not an aesthetic choice but a structural one, because the band was already tuned so the topmost crest clears its canvas by 7px, and a swing either side of the still level spent that margin and flattened the crests against the edge. **Each band is drawn only while it is on screen**, the loop stops when the tab is hidden, and reduced motion leaves the water painted once and still. Component weights are kept small because four waves can align where two could not: at their first values the band cut straight through the top of its canvas at the narrowest hero, where `--sea-h` clamps to 78px. Any change to a weight has to be checked against every height that clamp can produce, not just the widest.
+Two things keep it ambient rather than another animation competing for attention. **It is slow**: a crest takes over two minutes to cross the band, so the eye reads it as atmosphere and never tracks it. **The still painting is the high-water mark**, not the midpoint; the swell only ever calms below it. That is not an aesthetic choice but a structural one, because the band was already tuned so the topmost crest clears its canvas by 7px, and a swing either side of the still level spent that margin and flattened the crests against the edge. **Each band is drawn only while it is on screen**, the loop stops when the tab is hidden, and reduced motion leaves the water painted once and still. Component weights are kept small because four waves can align where two could not: at their first values the band cut straight through the top of its canvas at the narrowest hero, where `--sea-h` clamps to 78px. Any change to a weight has to be checked against every height that clamp can produce, not just the widest.
 
 The hero previously stated that its atmosphere never moved. That was true of the star field, which is still painted once, and it is the right instinct for a page that should feel calm. It was wrong about the water: a harbour whose sea is frozen reads as a photograph of a harbour.
 
@@ -461,6 +481,50 @@ renderer took both with it.
   focusing it would land the keyboard on a node hidden from assistive technology, and the
   only other named link in a card leaves the site.
 
+### Breadcrumb
+
+A text trail above every page title on the 174 pages that sit below the root. It answers
+one question, where am I, and it is the third time that question has been asked: an August
+critique wanted "one restrained, product-specific orientation cue" and said explicitly not
+badges or decorative clutter, and a September critique scored Visibility of System Status
+2 of 4 citing no breadcrumbs and no sense of where an issue sits in the sequence.
+
+- **It is a trail, not a drawn course.** Sentence case at `--type-meta`, muted, middle-dot
+  separators between the ancestors. The gap before the last crumb carries the position
+  marker instead of a separator: the marker is already a dot in that slot, so a middle dot
+  in front of it reads as two dots rather than as a mark. The site already carries its nautical world in the buoy lockup and the wave
+  bands; a rope, a compass or a chart line here would be a fourth voice saying the same
+  thing louder. The waypoint idea is in the marking of the current position, which is the
+  one thing a chart does that a list of links does not.
+- **One dot marks where you are.** The last crumb is not a link, carries `aria-current`,
+  and takes a 7px filled dot in the accent, sized against the separator glyph's 4px so it reads as a mark and not as another separator. That is the only ornament. It keeps The Beacon
+  Rule because a current-page marker is an active state, which is what the desktop nav
+  already uses the accent for.
+- **App pages route through Explore, not a category.** 92 of the 102 apps carry more than
+  one category and up to four, and the `categories` array is derived from tags by
+  `scripts/sync-app-categories.mjs`, so its first entry carries no editorial decision and
+  would change under the page without anyone choosing it. Explore is the honest parent: the
+  one page that holds every app. Trails are Home / Explore / App, Home / Archive / Issue,
+  Home / Explore / lane, and Home / Explore, Home / Archive or Home / About for the three
+  pages one hop from the root. Those three carry a trail for the same reason the deep ones
+  do: the opening is one shape across the site, and Archive is already a parent in the
+  issue trail, so a bare Archive page without one read as an oversight.
+- **The homepage and the 404 have none.** The root has nowhere to point, and a not-found
+  page is not in the hierarchy. The homepage renders through the same `IssuePage` component
+  as an archived issue, so its trail is gated on the component's `homepage` flag rather
+  than on the route.
+- **The visible trail and the JSON-LD are one array.** `src/data/breadcrumb.ts` builds it,
+  the page passes it to both `BaseLayout` (which emits `BreadcrumbList` into the graph) and
+  the component. Google's guidance is that structured data describes what a reader can see,
+  and a single source is the only thing that keeps that true after the next edit. All 174
+  pages were verified to match name for name.
+- **It wraps rather than truncates.** The middle crumb is the one carrying the orientation,
+  so a trail that drops it to fit has given up the thing it exists for. The longest today,
+  Home / Explore / Files, Research & Documents, still holds one line at 375px.
+- **The issue page borrows the shell.** Its hero runs full bleed, so the trail sits in a
+  `.page-shell` wrapper to line up with the wordmark, and pays `--page-start-space` above
+  itself because the hero's own top padding sits below it.
+
 ### Site Header and Navigation
 The header is sticky, translucent, and restrained. The brand wordmark uses the same editorial serif as the headline system, while the icon controls stay compact and monochrome until hover or focus gives them blue.
 - **Desktop:** brand on the left, then Explore Apps, Archive, About, an icon-only Lucide Search control and the icon-only theme toggle on the right.
@@ -584,6 +648,57 @@ smaller makes iOS Safari zoom the page when the field takes focus.
 The mechanical detector reports these seven as `design-system-font-size` advisories on
 every run. That is expected. Treat a change in the count as the signal, not the count.
 
+### Social Cards
+
+**The Borrowed Type Rule.** A social card is the only surface that cannot use the site's own
+typeface. Iowan Old Style is a macOS system font with no file to embed, so a build-time
+renderer has nothing to load. Vollkorn stands in: it is the closest embeddable face measured
+against Iowan on the two things that decide whether a line breaks the same way, x-height over
+cap at +0.010 and the width of `Hamburgefonstiv` within 0.1% at 100px, and unlike the Charter
+derivatives it ships the 500 and 600 weights this scale uses. Inter stands in for
+`-apple-system`. Both are SIL OFL 1.1 and carry the licence in their package, which is the
+standing condition for any font entering this repository: the Philippine files were deleted in
+September 2026 for arriving without one. Nothing else on the site may substitute a typeface.
+
+Cards are 1200x630, drawn by `src/data/og-card.ts` and generated at build time by
+`src/pages/og/[slug].png.ts`, one for every URL in the sitemap: each issue, each app, each
+category, collection and tag, plus the homepage, About, Explore, Archive and the 404. There
+is no shared fallback image any more. `harbor-hero-clean.webp`, a 1200x800 photograph that
+all 175 pages pointed at, was deleted on 2026-09-03: it had stopped being the homepage hero
+at the redesign and was the wrong shape for a social card, so a scraper cropped roughly 85px
+off the top and bottom of it. The layout's default is a generated card like any other. They are generated rather than authored so a Friday issue arrives
+with its own card and no separate asset step to forget. The composition is the page's own
+opening, in the page's own tokens: the buoy and wordmark, the eyebrow, the title, the buoy's
+wave in Beacon Blue, then the dek at the house measure over a hairline footer. The mark
+geometry comes from `src/data/mark.ts`, so a card and the site's header cannot drift.
+
+There is one renderer and no second way to make a card. A card is never hand-authored, a
+page never points `socialImage` at a one-off asset, and a surface with no card of its own
+keeps the shared brand image rather than getting a bespoke one. That is the whole
+consistency mechanism: not a template anyone follows, but a single function nobody
+bypasses.
+
+**A lane card puts its count in the eyebrow.** A category, collection, tag, Explore or the
+Archive says what kind of page it is and how many things are on it, above its own name and
+dek: `Category · 33 apps`, `Archive · 8 issues`. The count is the one fact the title cannot
+give a reader deciding whether to open the link, and it is the same information scent the
+archive critique asked for on the page itself. The titles and deks come from
+`src/data/lanes.ts`, which the lane pages themselves also read, so a card cannot name a lane
+something other than its own heading.
+
+**An app card is the detail page's identity block:** the icon on its plate, the name, what
+the app does, then who it is for. It carries no wave rule, because the icon is already the
+anchor and the Best For eyebrow already divides; a third device would be decoration on a
+card that has to read at thumbnail size. The mark is drawn at 112px rather than the ~160 the
+canvas would take, because app icons top out at 128px source and upscaling them would undo
+the payload work that put them there for a blurrier result. An icon-less app falls back to
+its first category's Lucide mark on the same stable colour its cards use, read out of the
+`lucide-astro` package at build time rather than copied into this repository.
+
+**Titles are never truncated; the type gives way instead.** A longer title steps down the
+scale and takes a shorter dek with it. Deks may be trimmed at a word boundary, because a dek
+is a standfirst and reads whole either way; a title is the editorial line itself.
+
 ## Do's and Don'ts
 
 ### Do:
@@ -601,6 +716,7 @@ every run. That is expected. Treat a change in the count as the signal, not the 
 - **Don't** use tinted text as neutral gray on colored surfaces.
 - **Don't** make chips, filters, or buttons feel like separate UI worlds.
 - **Don't** let the brand wordmark typography spread into body copy.
+- **Don't** add a font to this repository without its licence file. See The Borrowed Type Rule.
 - **Don't** use em dashes or en dashes in public editorial copy.
 - **Don't** let the Editor's Pick accent leave that one card, or reach a link, control or state. It is light, not a second accent.
 - **Don't** hand-write an `iconAccent`. Generate it so every pick lands in the same lightness and chroma band.

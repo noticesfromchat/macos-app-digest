@@ -16,6 +16,17 @@ const { current = '' } = Astro.props;
         aria-controls="rss-feed-modal"
         data-rss-open
       >Subscribe</button>
+      <a
+        class="footer-social-link"
+        href="https://x.com/macappwaypoint"
+        aria-label="App Waypoint on X"
+        rel="me noopener noreferrer"
+        target="_blank"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M18.9 1.15h3.68l-8.04 9.19L24 22.85h-7.41l-5.8-7.58-6.64 7.58H.47l8.6-9.83L0 1.15h7.59l5.25 6.94 6.06-6.94Zm-1.61 19.49h2.04L6.49 3.24H4.3l12.99 17.4Z" />
+        </svg>
+      </a>
     </nav>
   </div>
 </footer>
@@ -83,6 +94,17 @@ const { current = '' } = Astro.props;
   .site-footer nav button:focus-visible {
     outline: 2px solid color-mix(in srgb, var(--accent) 34%, transparent);
     outline-offset: 4px;
+  }
+
+  .footer-social-link {
+    width: 24px;
+    justify-content: center;
+  }
+
+  .footer-social-link svg {
+    width: 15px;
+    height: 15px;
+    fill: currentColor;
   }
 
   @media (pointer: coarse) {

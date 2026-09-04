@@ -1,9 +1,12 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import { appTrail } from '../../data/breadcrumb';
 import AppCard from '../../components/AppCard.astro';
 import MetaIcon from '../../components/MetaIcon.astro';
 import { fallbackIconColor, fallbackIconCategory } from '../../data/app-icon';
+import { OG_SIZE, appOgSlug, ogPath } from '../../data/og';
 import {
   categories,
   collectionLabels,
@@ -77,12 +80,18 @@ const appSchema = [
     mainEntityOfPage: appUrl
   }
 ];
+
+const trail = appTrail(app.data.name);
 ---
 
 <BaseLayout
+  breadcrumb={trail}
   title={`${app.data.name} for Mac — App Waypoint`}
-  description={`${app.data.description} ${app.data.bestFor}`}
+  description={app.data.metaDescription ?? app.data.description}
   current="app"
+  socialImage={ogPath(appOgSlug(app.id))}
+  socialImageSize={OG_SIZE}
+  socialImageAlt={`${app.data.name} for Mac on App Waypoint. ${app.data.description}`}
   structuredData={appSchema}
 >
   <article class="page-shell app-detail-page">
@@ -92,12 +101,13 @@ const appSchema = [
         the previously empty right half of the fold to work. Below 920px, where the
         site collapses to one column everywhere else, the rail stacks under the
         masthead and stays in reading order. */}
+    <Breadcrumb trail={trail} />
     <header class="app-detail-hero">
       <div class="app-detail-masthead">
         <div class:list={['app-detail-identity', iconClass]}>
           {app.data.icon && (
             <div class="app-icon-frame app-detail-app-icon" aria-hidden="true">
-              <img class="app-icon" src={app.data.icon} alt="" fetchpriority="high" decoding="async" />
+              <img class="app-icon" src={app.data.icon} alt="" width="76" height="76" fetchpriority="high" decoding="async" />
             </div>
           )}
           {fallbackCategory && (

@@ -96,11 +96,16 @@ Preview review.
     to the app's real icon, record the problem and ask the editor whether to crop the
     local asset, find a better official source, change `iconStyle` or use the
     first-category fallback.
-19. Push the release candidate once, wait for required GitHub checks and the Netlify
+19. Review the issue's social card at `/og/issue-NNN.png` in the built output. It is
+    generated from the issue's number, date, `rss.title` and `dek`, so there is no
+    asset to prepare and nothing to author. Confirm the title fits the card and the
+    dek still reads as a sentence where it is trimmed. If either is wrong, fix the
+    issue record rather than the card. See Social Cards in `DESIGN.md`.
+20. Push the release candidate once, wait for required GitHub checks and the Netlify
     Deploy Preview to succeed, then review the Deploy Preview.
-20. Ask the editor for final approval to use that reviewed release candidate for
+21. Ask the editor for final approval to use that reviewed release candidate for
     Friday's production deployment.
-21. Do not merge, close, consolidate or otherwise alter competing previews without
+22. Do not merge, close, consolidate or otherwise alter competing previews without
     the editor's direction.
 
 An idle preview may remain open without creating another build. Minimize Netlify

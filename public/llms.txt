@@ -10,6 +10,7 @@ New issues are published every Friday. Each issue contains original editorial re
 
 ## Browse
 
+- [Every recommended app, browsable by category, collection or tag](https://appwaypoint.app/explore/)
 - [Issue archive](https://appwaypoint.app/archive/)
 - [Editor's Picks](https://appwaypoint.app/collections/editors-picks/)
 

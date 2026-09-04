@@ -1,8 +1,11 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import { laneTrail, itemListSchema } from '../../data/breadcrumb';
 import AppDirectory from '../../components/AppDirectory.astro';
 import { categories, getCategoryBySlug } from '../../data/categories';
+import { OG_SIZE, categoryOgSlug, ogPath } from '../../data/og';
 
 export async function getStaticPaths() {
   const apps = await getCollection('apps');
@@ -22,12 +25,22 @@ const { category, apps } = Astro.props as {
 };
 
 const resolvedCategory = getCategoryBySlug(category.slug) ?? category;
+
+const trail = laneTrail(resolvedCategory.title);
+
+const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, href: `/apps/${entry.id}/` })), Astro.site);
 ---
 <BaseLayout
+  structuredData={[listSchema]}
+  breadcrumb={trail}
   title={`${resolvedCategory.title} Mac Apps — App Waypoint`}
+  socialImage={ogPath(categoryOgSlug(resolvedCategory.slug))}
+  socialImageSize={OG_SIZE}
+  socialImageAlt={`${resolvedCategory.title} Mac apps on App Waypoint. ${resolvedCategory.description}`}
   description={resolvedCategory.description}
 >
   <section class="page-shell archive-page tag-page">
+    <Breadcrumb trail={trail} />
     <h1>{resolvedCategory.title}</h1>
     <p class="dek">{resolvedCategory.description}</p>
     <AppDirectory apps={apps} />

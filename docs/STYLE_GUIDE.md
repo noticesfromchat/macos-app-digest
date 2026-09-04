@@ -18,8 +18,18 @@ The site should feel like a small, premium editorial publication for experienced
 ### Motion
 
 - The site is calm and close to still. Motion is reserved, not decorative.
-- The divider buoy and the light on the Editor's Pick card are the motion with a voice
-  on an issue page. Do not add a third.
+- **Motion is rationed by purpose, not by count.** There is no budget of animations per
+  page. An animation belongs if it acknowledges an action, makes a state change or a
+  spatial relationship legible, preserves continuity through a change, or marks a moment
+  the surface has earned. If it does none of those it is decoration, and being the only
+  one on the page does not redeem it. See The Earned Motion Rule in `DESIGN.md`.
+- Two things follow from that and are not negotiable: every animation needs a
+  `prefers-reduced-motion` path that reduces movement without erasing the meaning it
+  carries, and anything that loops stops while it is off screen.
+- The archive carries two of its own. The pilot beacon marks which stop the reader is
+  at, resting in a ring and moving once when that changes. The origin answers with a
+  three-pulse ping when the reader reaches it, the same beacon the RSS mark uses. See
+  The Pilot Rule and The Landfall Ping in `DESIGN.md`.
 - The two wave bands are the exception, because they are not asking to be noticed. They
   swell without anything travelling, below the still water level, paused off screen and
   stopped under reduced motion. See The Swell Rule in `DESIGN.md`. Motion that wants
@@ -32,6 +42,11 @@ The site should feel like a small, premium editorial publication for experienced
 
 - Do not use Oxford commas in App Waypoint editorial copy. In lists of three or
   more, write `A, B and C`, not `A, B, and C`.
+- Write an issue number two digits wide wherever a reader sees it: `Issue 08`, not
+  `Issue 008`. The frontmatter keeps three digits because the schema fixes the width.
+  Never format the number by hand: use `issueLabel` or `issueName` from
+  `src/data/issue.ts`, which every surface reads from. See The Two Digit Issue Rule in
+  `DESIGN.md`.
 - Do not use em dashes or en dashes in App Waypoint editorial copy. Restructure to a
   period, a comma, a colon or parentheses. Date and number ranges take a plain hyphen:
   `August 5-19, 2026`, not `August 5-19, 2026` with an en dash.
@@ -280,6 +295,12 @@ recognition without making cards feel like an app-store grid.
 - Use official app assets from the app homepage, canonical repository or official
   product files. Prefer high-resolution product icons or Apple touch icons over small
   favicons.
+- **128px square is both the ceiling and the floor.** Anything larger is resized down,
+  because the site renders icons at 44px and 76px and oversized files were once shipping
+  12 MB to do it. Anything smaller has to be re-sourced rather than accepted: since
+  2026-09-03 the icon also carries the app's Open Graph card at 112px, where a 32px or
+  64px favicon is visibly soft. A source under 128px is a reason to keep looking, and an
+  app with no adequate icon uses the category fallback, which is sharp at any size.
 - Do not use generic marketplace favicons, Product Hunt marks, GitHub organization
   avatars or unrelated publisher logos unless that asset is clearly the app's own
   identity.
@@ -388,6 +409,10 @@ Complete every item before merging a new issue:
       issue-specific RSS title, the issue-number-prefixed summary and the linked CTA.
 - [ ] Copy meets the editorial limits, avoids Oxford commas, avoids em dashes and en
       dashes, and uses role-based editor attribution.
+- [ ] The issue's Open Graph card built at `/og/issue-NNN.png` and reads correctly. It is
+      generated from the issue's own number, date, `rss.title` and dek, so there is no
+      asset to prepare; the check is that the title fits the card and the dek reads well
+      where it is trimmed. See Social Cards in `DESIGN.md`.
 - [ ] Light mode, dark mode, mobile layout, keyboard access and reduced motion remain
       intact.
 - [ ] `npm run validate` passes, including the repository privacy check.

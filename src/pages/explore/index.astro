@@ -1,6 +1,9 @@
 ---
 import { getCollection } from 'astro:content';
+import { OG_SIZE, ogPath } from '../../data/og';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import { topLevelTrail, itemListSchema } from '../../data/breadcrumb';
 import AppDirectory from '../../components/AppDirectory.astro';
 import SubscribeCard from '../../components/SubscribeCard.astro';
 import MetaIcon from '../../components/MetaIcon.astro';
@@ -48,13 +51,23 @@ const collectionDescriptions: Record<string, string> = {
   'editors-picks': 'Editor-selected standouts with distinctive utility, polish or an especially memorable point of view.',
   'community-favorites': 'Apps Mac readers keep recommending for dependable workflows, practical value and repeat use.'
 };
+
+const trail = topLevelTrail('Explore');
+
+const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, href: `/apps/${entry.id}/` })), Astro.site);
 ---
 <BaseLayout
+  structuredData={[listSchema]}
+  breadcrumb={trail}
   title="Explore Mac Apps — App Waypoint"
+  socialImage={ogPath('explore')}
+  socialImageSize={OG_SIZE}
+  socialImageAlt="Explore every Mac app App Waypoint has recommended, by category, collection or tag."
   description="Browse every Mac app App Waypoint has recommended, by category, collection or tag, with the full catalog filterable and sortable on one page."
   current="explore"
 >
   <section class="page-shell archive-page explore-page">
+    <Breadcrumb trail={trail} />
     <header class="explore-hero">
       <h1>Explore Apps</h1>
       <p class="dek">

@@ -4,3 +4,6 @@ dist/
 .DS_Store
 .netlify/
 .pnpm-store/
+
+# Bytecode from the vendored SEO skill's Python scripts
+__pycache__/

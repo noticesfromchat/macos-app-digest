@@ -101,3 +101,15 @@
   from = "/tags/icloud/"
   to = "/tags/rss/"
   status = 301
+
+# Applied to every response. None of these change how the site renders; they are the
+# baseline a static publication should send. HSTS is already set by Netlify, restated
+# here with subdomains so the whole apex is covered.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "DENY"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"

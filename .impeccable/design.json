@@ -186,7 +186,7 @@
       },
       "brand": {
         "displayName": "Brand",
-        "purpose": "The Seamless and Philippine wordmark role only."
+        "purpose": "The wordmark role only."
       },
       "mono": {
         "displayName": "Mono",
@@ -325,7 +325,7 @@
       "refersTo": "nav-link",
       "description": "The sticky shell that carries the brand, search, archive, and theme controls.",
       "html": "<header class=\"ds-header\"><a class=\"ds-brand\" href=\"#\"><span class=\"ds-brand-mark\"></span><span class=\"ds-brand-name\">App Waypoint</span></a><nav class=\"ds-nav\"><button class=\"ds-icon-btn\" type=\"button\" aria-label=\"Search apps\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"7\"></circle><path d=\"m16 16 4 4\"></path></svg></button><a class=\"ds-icon-link\" href=\"#\" aria-label=\"Past issues\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 5h16\"></path><path d=\"M4 12h16\"></path><path d=\"M4 19h16\"></path></svg></a><button class=\"ds-icon-btn\" type=\"button\" aria-label=\"Switch to dark theme\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M21 12.79A9 9 0 1 1 11.21 3c0 5 4 9 9 9 .27 0 .53-.01.79-.21Z\"></path></svg></button></nav></header>",
-      "css": ".ds-header { display: flex; align-items: center; justify-content: space-between; gap: 28px; min-height: 84px; padding: 0 clamp(24px, 3.2vw, 38px); border-bottom: 1px solid var(--line); background: radial-gradient(circle at 17% 32%, rgba(255,255,255,.05), transparent 34%), var(--header-fog); backdrop-filter: blur(20px) saturate(115%); } .ds-brand, .ds-nav { display: inline-flex; align-items: center; } .ds-brand { gap: 21px; color: var(--text); font-family: \"Seamless\", \"Philippine\", var(--display); font-size: clamp(1.65rem, 2.45vw, 2rem); letter-spacing: .12em; text-decoration: none; text-transform: uppercase; white-space: nowrap; } .ds-brand-mark { width: 56px; height: 56px; border-radius: 50%; background: #f7f0e4; } .ds-nav { gap: clamp(22px, 3.4vw, 42px); } .ds-icon-btn, .ds-icon-link { display: grid; width: 38px; height: 38px; padding: 0; place-items: center; border: 0; background: transparent; color: var(--text); text-decoration: none; transition: color 180ms ease, transform 180ms ease; } .ds-icon-btn svg, .ds-icon-link svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; } .ds-icon-btn:hover, .ds-icon-btn:focus-visible, .ds-icon-link:hover, .ds-icon-link:focus-visible { color: var(--accent); outline: 0; } .ds-icon-btn:hover, .ds-icon-btn:focus-visible { transform: rotate(12deg); } @media (pointer: coarse) { .ds-icon-btn, .ds-icon-link { width: 44px; height: 44px; } } @media (max-width: 680px) { .ds-header { min-height: 70px; gap: 10px; padding: 0 16px; } .ds-brand { gap: 9px; font-size: 1.35rem; letter-spacing: .08em; } .ds-brand-mark { width: 40px; height: 40px; } .ds-nav { gap: 12px; } .ds-icon-btn, .ds-icon-link { width: 44px; height: 44px; } .ds-icon-btn svg, .ds-icon-link svg { width: 19px; height: 19px; } }"
+      "css": ".ds-header { display: flex; align-items: center; justify-content: space-between; gap: 28px; min-height: 84px; padding: 0 clamp(24px, 3.2vw, 38px); border-bottom: 1px solid var(--line); background: radial-gradient(circle at 17% 32%, rgba(255,255,255,.05), transparent 34%), var(--header-fog); backdrop-filter: blur(20px) saturate(115%); } .ds-brand, .ds-nav { display: inline-flex; align-items: center; } .ds-brand { gap: 21px; color: var(--text); font-family: var(--display); font-size: clamp(1.65rem, 2.45vw, 2rem); letter-spacing: .12em; text-decoration: none; text-transform: uppercase; white-space: nowrap; } .ds-brand-mark { width: 56px; height: 56px; border-radius: 50%; background: #f7f0e4; } .ds-nav { gap: clamp(22px, 3.4vw, 42px); } .ds-icon-btn, .ds-icon-link { display: grid; width: 38px; height: 38px; padding: 0; place-items: center; border: 0; background: transparent; color: var(--text); text-decoration: none; transition: color 180ms ease, transform 180ms ease; } .ds-icon-btn svg, .ds-icon-link svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; } .ds-icon-btn:hover, .ds-icon-btn:focus-visible, .ds-icon-link:hover, .ds-icon-link:focus-visible { color: var(--accent); outline: 0; } .ds-icon-btn:hover, .ds-icon-btn:focus-visible { transform: rotate(12deg); } @media (pointer: coarse) { .ds-icon-btn, .ds-icon-link { width: 44px; height: 44px; } } @media (max-width: 680px) { .ds-header { min-height: 70px; gap: 10px; padding: 0 16px; } .ds-brand { gap: 9px; font-size: 1.35rem; letter-spacing: .08em; } .ds-brand-mark { width: 40px; height: 40px; } .ds-nav { gap: 12px; } .ds-icon-btn, .ds-icon-link { width: 44px; height: 44px; } .ds-icon-btn svg, .ds-icon-link svg { width: 19px; height: 19px; } }"
     },
     {
       "name": "Directory Controls",
@@ -439,6 +439,31 @@
         "name": "The Swell Rule",
         "body": "Each wave line is four components, and the two carrying most of its height travel in opposite directions at almost the same wavelength, so they beat and crests build and dissolve in place rather than marching across. Measured: amplitude breathing alone was invisible at 0.2px/s, a single travelling wave was 83% pure translation and read as a sliding picture, the counter-travelling pair is 70% shape change. The pair is unequal, 0.46 to 0.32, so it calms without ever going flat. Weights stay small because four waves can align where two could not, and the band clipped its canvas at the 78px minimum of --sea-h; any weight change must be checked at every height the clamp produces. Runs at 30fps, draws only while on screen, stops on tab hide, still under reduced motion, and canvas sizing is split from drawing so the loop never reallocates a backing store.",
         "section": "motion"
+      },
+      {
+        "name": "The Borrowed Type Rule",
+        "body": "A social card is the only surface that cannot use the site's own typeface: Iowan Old Style is a macOS system font with no file to embed. Vollkorn stands in, as the closest embeddable face measured against Iowan (x-height over cap +0.010, the width of Hamburgefonstiv within 0.1% at 100px) and the only close match shipping the 500 and 600 weights this scale uses; Inter stands in for -apple-system. Both are SIL OFL 1.1 and carry their licence in the package, which is the standing condition for any font entering this repository. Nothing else on the site may substitute a typeface, and a card never truncates a title: the type steps down the scale instead.",
+        "section": "components"
+      },
+      {
+        "name": "The Two Digit Issue Rule",
+        "body": "An issue number is recorded three digits wide and published two: Issue 08, never Issue 008, and three digits only once there is a hundredth issue. src/data/issue.ts is the single place that produces the label (issueLabel for the digits, issueName for the whole phrase) and scripts/check-editorial-style.mjs fails the build on a literal three-digit form. Both exist because the rule was written down nowhere until 2026-09-03: it had been implemented three times over and skipped in five more places, so the breadcrumb printed Issue 008 directly above a heading reading Issue 08.",
+        "section": "typography"
+      },
+      {
+        "name": "The Earned Motion Rule",
+        "body": "Motion is rationed by purpose, not by count. A surface may carry one moving thing or several; what disqualifies any of them is moving without a job. Motion earns its place when it acknowledges an action, makes a state change or spatial relationship legible, preserves continuity through a change, or marks a moment the surface has genuinely earned. Movement that does none of those is animation debt however small, and one decorative flourish is worse than three devices that each explain something. Two obligations follow: every animation needs a prefers-reduced-motion path that reduces movement without erasing meaning, and anything that loops stops while it is off screen. Until 2026-09-03 this was a count, with a third motion forbidden outright; that was arbitrary, permitting a decorative third and forbidding a fourth that explained something.",
+        "section": "motion"
+      },
+      {
+        "name": "The Pilot Rule",
+        "body": "The archive's beacon marks which stop the reader is at. One lit dot rests inside a ring and, when the nearest stop changes, makes a single bounded 420ms move to the new one on ease-settle, then rests again. Confined to /archive/. An earlier version followed the scroll position every frame, so it moved the whole time the reader did and travelled faster the harder they scrolled; the state it represents is discrete, and once the dot belonged to a ring rather than to the scroll it held, arrived and stopped responding to scroll speed without any of that being tuned. Scroll decides only which stop is current and CSS owns the movement, so nothing runs on a still page. The fill is a state, so it takes the accent under The Beacon Rule and no stop stays lit behind it. Under prefers-reduced-motion the marker stays and only the travel is dropped.",
+        "section": "motion"
+      },
+      {
+        "name": "The Landfall Ping",
+        "body": "Reaching the archive's terminus is the one completion that page has, so the origin answers it with the same three-pulse beacon-ping the RSS mark uses on the subscribe card, on the same keyframes and curve. It fires on arrival rather than on load, because landing is the moment; it is three pulses rather than a loop so it cannot become friction on the way back down; and it re-arms after the reader leaves so returning is acknowledged again. Reduced motion drops it entirely: it carries feeling, not state.",
+        "section": "motion"
       }
     ],
     "dos": [
@@ -466,7 +491,8 @@
       "Don't derive an app's fallback icon or colour in a component. Both come from src/data/app-icon.ts, or the surfaces drift apart.",
       "Don't hard-code an overlay scrim. It is --scrim, and a dark scrim over a light page reads as a dimmed screen rather than frosted glass.",
       "Don't ship a tap target at the height of its text. A nav link is a target, not prose.",
-      "Don't swing an ambient animation either side of its still state without checking the still state was not already at the edge of its canvas."
+      "Don't swing an ambient animation either side of its still state without checking the still state was not already at the edge of its canvas.",
+      "Don't add a font to this repository without its licence file."
     ]
   }
 }

@@ -1,0 +1,70 @@
+/* One trail per page, used twice: once for the visible list and once for the
+   BreadcrumbList in the page's JSON-LD graph. They are built from the same array on
+   purpose. Google's guidance is that structured data describes what a reader can see,
+   and the only way to keep that true over time is to give the two one source.
+
+   App pages route through Explore rather than a category. 92 of the 102 apps carry more
+   than one category (up to four), and the `categories` array is derived from tags and
+   rewritten by scripts/sync-app-categories.mjs, so its first entry carries no editorial
+   meaning and would change under the page without anyone deciding it had. Explore is the
+   honest parent: it is the one page that contains every app. */
+
+import { issueName } from './issue';
+
+export type Crumb = {
+  label: string;
+  /** Omitted on the last crumb, which is the page you are on and is not a link. */
+  href?: string;
+};
+
+const HOME: Crumb = { label: 'Home', href: '/' };
+const EXPLORE: Crumb = { label: 'Explore', href: '/explore/' };
+const ARCHIVE: Crumb = { label: 'Archive', href: '/archive/' };
+
+export const appTrail = (name: string): Crumb[] => [HOME, EXPLORE, { label: name }];
+
+export const issueTrail = (number: string): Crumb[] => [
+  HOME,
+  ARCHIVE,
+  { label: issueName(number) }
+];
+
+/** Categories, collections and tags are the three lanes Explore opens onto. */
+export const laneTrail = (title: string): Crumb[] => [HOME, EXPLORE, { label: title }];
+
+/* Explore, Archive and About all sit one hop from the root. They carry a trail for the
+   same reason the deep pages do: the opening is one shape across the site, and a reader
+   who lands on About from search should see the same orientation as one who lands on an
+   app. */
+export const topLevelTrail = (label: string): Crumb[] => [HOME, { label }];
+
+/** The BreadcrumbList node for the page's JSON-LD graph. */
+export const breadcrumbSchema = (trail: Crumb[], site: URL | undefined) => ({
+  '@type': 'BreadcrumbList',
+  itemListElement: trail.map((crumb, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: crumb.label,
+    /* The last crumb is the current page and carries no `item`, which is what Google
+       expects for the end of a trail. */
+    ...(crumb.href ? { item: new URL(crumb.href, site).href } : {})
+  }))
+});
+
+/* The list pages carry an ItemList describing what a reader can already see on them:
+   Explore and the three lanes list apps, the archive lists issues. Unlike the breadcrumb
+   this raises no visibility question, because the list is the page. Names and URLs only;
+   a richer node would restate the cards without adding anything a crawler can use. */
+export const itemListSchema = (
+  items: { name: string; href: string }[],
+  site: URL | undefined
+) => ({
+  '@type': 'ItemList',
+  numberOfItems: items.length,
+  itemListElement: items.map((entry, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: entry.name,
+    url: new URL(entry.href, site).href
+  }))
+});
