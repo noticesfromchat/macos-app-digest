@@ -1416,8 +1416,37 @@ a { color: inherit; }
 
 /* The measure belongs to the prose, not to the page: About's headings and
    section rules run the full shell like every other page. */
+/* About runs in one narrow column, headings and rules included, where every other page
+   fills the 1160px shell.
+
+   The shell is that wide because Explore, the lanes and the issue pages put a
+   three-column card grid in it, so a full-width rule there divides full-width content.
+   About has nothing to fill it: the rules and h2s were spanning 1032px to head a 524px
+   column, leaving a 508px dead field and a divider that promised content to the right of
+   it that does not exist.
+
+   The shell itself is untouched, so the page keeps the same left edge as every other
+   page and the column is left aligned rather than centred: narrowing the shell would
+   have centred it and made About the one page whose content starts somewhere else. Only
+   the blocks inside are capped. 620px is set by the dek, which is 52ch at 17.9px and so
+   the widest line of type on the page, and the cap does nothing on a phone where the
+   shell is already narrower. */
+.about-page > * { max-width: 620px; }
+/* Prose fills that column instead of taking `--measure` inside it. The measure exists to
+   hold a readable line, and at 620px this one runs about 73 characters, inside the 65 to
+   75 the craft floor asks for and slightly wider than the 62 that 52ch was giving. So the
+   column and the reading measure become one number here, which is what lets the rules sit
+   with the text rather than reaching past it. A wider column cannot: at 800px the line
+   would run about 94 characters, which is why the headings widened at 800 and the prose
+   correctly refused to follow.
+
+   Nothing overrides the cap. The dek needs no rule of its own, because `.about-page > *`
+   already reaches it and wins on order over the global `.dek`. Two earlier attempts got
+   this wrong in opposite directions: `none` released the dek to the full 1160, and `100%`
+   resolved against the 1160 shell rather than the 620 cap, which is the same bug wearing
+   a different value. */
 .about-content { margin-top: 18px; padding-bottom: var(--section-space); color: var(--muted); font-size: 1rem; }
-.about-page p:not(.dek) { max-width: var(--measure); margin: 0; color: var(--muted); }
+.about-page p:not(.dek) { margin: 0; color: var(--muted); }
 .about-page p:not(.dek) + p { margin-top: 18px; }
 /* The selection criteria are the one list on the page. They take the same measure and
    muted ink the prose does, so the block reads as part of the writing rather than as a
@@ -1425,7 +1454,6 @@ a { color: inherit; }
    what makes each item scannable, and it is also the emphasis the critique found the
    page had none of, every paragraph having carried the same muted weight. */
 .about-page .about-criteria {
-  max-width: var(--measure);
   /* Symmetric, because the paragraph rhythm is sibling-based: `p + p` carries 18px, and
      a list between two paragraphs broke that chain, leaving the sentence after it sitting
      flush against the final bullet. */
