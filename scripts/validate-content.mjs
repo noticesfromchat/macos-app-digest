@@ -307,6 +307,37 @@ for (let index = 1; index < chronologicalIssues.length; index += 1) {
   }
 }
 
+/* The editor-name rule reaches pages now, not only content frontmatter. It did not
+   before, which is how a personal name and three social-card descriptions shipped on
+   About past a check that had existed all along: the guard was right and its reach was
+   the defect.
+
+   Pages are allowed the first name, since 2026-09-04, because About speaks in the
+   editor's voice. The full name is not allowed anywhere. So this matches the shape of a
+   full name rather than the name itself, "Zac" followed by any capitalised word, which
+   enforces the rule without writing a private surname into a public repository. */
+const pagesDir = path.join(root, 'src/pages');
+const fullNamePattern = /\b[Zz]ac\s+[A-Z][a-z]+/;
+
+async function sourceFiles(directory) {
+  const entries = await readdir(directory, { withFileTypes: true });
+  const found = [];
+  for (const entry of entries) {
+    const full = path.join(directory, entry.name);
+    if (entry.isDirectory()) found.push(...await sourceFiles(full));
+    else if (/\.(astro|ts|js|mjs)$/.test(entry.name)) found.push(full);
+  }
+  return found;
+}
+
+for (const file of await sourceFiles(pagesDir)) {
+  const relative = path.relative(root, file);
+  const source = await readFile(file, 'utf8');
+  if (fullNamePattern.test(source)) {
+    errors.push(`${relative}: public pages must not carry the editor's full name`);
+  }
+}
+
 if (errors.length) {
   console.error(`Content validation failed with ${errors.length} issue${errors.length === 1 ? '' : 's'}:\n`);
   for (const error of errors) console.error(`- ${error}`);
