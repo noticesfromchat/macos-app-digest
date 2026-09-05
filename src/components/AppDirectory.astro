@@ -193,7 +193,11 @@ const sortedApps = [...apps].sort((a, b) =>
           aria-expanded="false"
           data-sort-trigger
         >
-          <span>Sort</span>
+          {/* The trigger reads as its current value rather than as the word "Sort",
+              so the applied order is visible without opening the menu. The label is
+              the value alone, with the control's name carried for assistive tech in
+              the span before it, which keeps the button announcing "Sort by A-Z". */}
+          <span><span class="sr-only">Sort by </span><span data-sort-label>A-Z</span></span>
           <svg
             aria-hidden="true"
             viewBox="0 0 24 24"
@@ -609,11 +613,14 @@ const sortedApps = [...apps].sort((a, b) =>
 
     const appName = (card: HTMLElement) => card.dataset.appName ?? '';
     const featuredDate = (card: HTMLElement) => card.dataset.featuredDate ?? '';
+    const sortLabel = directory.querySelector<HTMLElement>('[data-sort-label]');
     const updateSortUi = () => {
       const selectedButton = sortButtons.find((button) => button.dataset.sortValue === selectedSort);
       sortButtons.forEach((button) => {
         button.setAttribute('aria-checked', String(button === selectedButton));
       });
+      /* The menu option's own text is the label, so the two can never disagree. */
+      if (sortLabel && selectedButton) sortLabel.textContent = selectedButton.textContent ?? '';
     };
     const sortCards = (updateUrl = true) => {
       cards.sort((a, b) => {
