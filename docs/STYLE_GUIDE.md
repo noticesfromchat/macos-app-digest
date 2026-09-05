@@ -276,18 +276,26 @@ it. See Issue Subscribe Card in `DESIGN.md` for the structure and the reasoning.
 
 ## 7. Weekend Reading
 
-- Weekend Reading covers the wider Mac app ecosystem, not only Apple company or
-  platform news.
-- At least two of the three selections should primarily concern apps, app discovery,
-  app workflows or app developers.
-- Good candidates include substantive app stories, credible must-try or best-app
-  lists, practical workflows, developer posts, notable releases and unusually
-  high-signal discussions from `r/macapps`.
-- Apple coverage may be included when it has a meaningful connection to Mac apps or
-  software workflows.
-- Prefer original, specific and useful sources. Avoid thin listicles, routine news
-  summaries and promotional posts whose popularity does not translate into reader
-  value.
+Weekend Reading is about the wider Mac app ecosystem, not only Apple company or
+platform news.
+
+- Select three worthwhile links with a clear connection to Mac apps, software
+  discovery, app workflows or the people who make Mac software.
+- At least two of the three selections should primarily concern apps. Strong
+  candidates include thoughtful app stories, practical workflows, developer essays,
+  notable app releases, and credible “must-try” or best-app collections.
+- Apple coverage remains welcome when it materially affects Mac apps or how people use
+  them. Avoid filling the section with general Apple news that lacks a meaningful app
+  angle.
+- Check high-signal community sources, including `r/macapps`. An unusually popular,
+  substantive post may be selected when its engagement and discussion indicate genuine
+  reader value; popularity alone is not enough.
+- Link directly to the original article, list, developer post or Reddit discussion.
+  Prefer useful, specific material over press-release rewrites, thin listicles,
+  promotional posts or routine news summaries.
+- Keep the three selections varied in source and subject whenever the week's material
+  allows.
+
 
 ## 8. Old Favorites
 
@@ -309,16 +317,36 @@ it. See Issue Subscribe Card in `DESIGN.md` for the structure and the reasoning.
 
 ## 9. Up and Coming
 
-- `Up and Coming` is a standard three-card app section built from the current
-  `r/macapps` App Pile moderator selections and other approved recent-launch sources.
-- Never repeat an app from the immediately preceding issue. When an App Pile selection
-  would repeat, replace it with a verified recent discovery from Product Hunt's Mac
-  launches or another approved source.
+Every weekly publishing run must check both the current `r/macapps` promotional
+megathread, currently titled **The App Pile**, and recent launches from the approved
+research sources. The section must never repeat an app from the immediately preceding
+issue.
+
+- Read the moderator-authored **Top 3 From Last Month's Megathread** block at the top
+  of the current thread.
+- Begin with those moderator selections when they are eligible, but exclude any app
+  that appeared in the immediately preceding issue.
+- Replace excluded or unavailable selections with credible recent discoveries from
+  sources such as Product Hunt's recent Mac launches, substantive `r/macapps`
+  discussions, GitHub activity or independent developer launch notes.
+- Use the exact eyebrow `Up and Coming`. Do not infer rankings from raw comment order
+  or votes.
+- Verify each app's official homepage or canonical repository before adding it.
+- Reuse an existing app record when the app already exists; otherwise create one
+  standard Markdown app file following all normal content limits.
+- The section must contain exactly three app IDs. Preserve the megathread's order for
+  any eligible moderator selections, followed by verified alternates.
+- Do not duplicate an app elsewhere in the same issue. If a selected app already
+  appears in another section, move it into `Up and Coming` rather than listing it twice.
+- Credit every source used for the final slate in `sourceNotes`. The field is recorded,
+  not published: the issue page stopped rendering source notes on 2026-09-01, and they
+  remain in frontmatter as the editorial audit trail.
+
+
+
 - Render it after AI & Automation and before the route divider, video and reading
   features.
 - Use the standard app-card grid without a special badge, icon or alternate card style.
-- Preserve the megathread's order for eligible selections, then place alternates in
-  editorial order.
 - The section title should describe the three selections as community discoveries
   without implying that App Waypoint independently ranked them.
 

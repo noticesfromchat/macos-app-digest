@@ -133,6 +133,46 @@ will use the app's first category icon with the approved missing-icon color pale
 Because fallback icons use the first category, order `categories` with the most
 representative app category first when the fallback will appear publicly.
 
+## Required editorial limits
+
+These limits protect card alignment and are not optional unless the complete card system is being redesigned.
+
+### App files
+
+- `name`: preferably 2–28 characters; hard maximum 40 characters.
+- `description`: one sentence, preferably 90–150 characters; hard maximum 180 characters.
+- `bestFor`: one sentence, preferably 85–150 characters; hard maximum 180 characters.
+- `tags`: 3–5 concise lowercase tags; hard maximum 6.
+- Individual tag: preferably one word; hard maximum 20 characters.
+- Before adding a tag to any app record, check `docs/TAG_AUDIT.md`. Reuse an existing
+  tag wherever one already covers the reader intent, and never use a tag from its
+  retired list without an explicit editorial reason stated in the pull request. A new
+  tag that applies to one app is a feature, not a discovery tag.
+- `source`: preferably 25–80 characters; hard maximum 110 characters.
+- `homepage`: official app homepage or canonical project page.
+
+### Issue files
+
+- `dek`: one sentence, preferably 120–220 characters; hard maximum 260 characters.
+  Also the body copy of the issue's social card, where it is trimmed at a word
+  boundary to roughly 205 characters. A dek whose first sentence stands alone reads
+  best in a feed.
+- `rss.title`: 4–90 characters. No longer a feed-only string: it is the issue's
+  headline on its social card, set at up to 72px. Nothing breaks at any allowed
+  length, because the card steps the type down rather than truncating a title, but
+  a title under about 34 characters gets the full display size.
+- Section eyebrow: 1–4 words; hard maximum 30 characters.
+- Section title: preferably 4–10 words; hard maximum 70 characters.
+- Video title: hard maximum 100 characters.
+- Video description: one sentence, preferably 120–220 characters; hard maximum 260 characters.
+- Reading title: hard maximum 110 characters.
+- Reading description: one sentence, preferably 100–190 characters; hard maximum 220 characters.
+- Source note: hard maximum 140 characters. Unpublished since 2026-09-01, so the limit
+  keeps the record readable rather than fitting a layout.
+
+If text exceeds a preferred range, rewrite it before adjusting CSS. Exceeding a hard maximum requires an explicit exception and visual review.
+
+
 ## Required checks
 
 Run these before opening or merging a publishing pull request:
@@ -171,7 +211,7 @@ that still earn community attention because they are unusually useful, overlooke
 continuously recommended. Every referenced app must include `community-favorites` in
 its app file's `collections` array, preserving any existing collection entries.
 
-Weekend Reading must follow the curation rules in `AGENTS.md`: cover the broader Mac
+Weekend Reading must follow the curation rules in `docs/STYLE_GUIDE.md` section 7: cover the broader Mac
 app ecosystem, make at least two selections primarily about apps, and use general
 Apple coverage only when it has a meaningful connection to Mac software or workflows.
 High-signal `r/macapps` discussions are valid sources when the post is substantive and
