@@ -8,10 +8,10 @@ Do not write code or choose visual direction yet.
 
 ### Cadence
 
-- Use the structured question tool when available; otherwise ask and stop.
-- Ask two or three related questions per round, then wait. One round is the default; add a second only when the answers expose a material gap.
+- Ask only for unresolved information that materially affects the brief, using the available question tool or chat.
+- Group related questions and reuse supplied answers; a clear brief needs no interview round.
 - Do not dump a questionnaire, repeat settled facts, or turn obvious facts into menus. Assert the likely reading and invite correction.
-- A sparse prompt requires at least one answer round. A precise prompt may need only a compact confirmation.
+- Infer low-impact details from available context and label material assumptions. Wait only for essential missing information.
 
 ### Round 1: purpose, people, and outcome
 
@@ -54,6 +54,6 @@ Use three to five bullets when the task is settled; use the full structure only 
 
 ## Confirm and stop
 
-Present the brief for explicit confirmation or one correction round, then stop: shape never writes code or a direction contract.
+Deliver the brief and any unresolved decisions, then stop: shape is planning-only. Ask for confirmation only when requested or needed to resolve an essential decision; do not require an extra turn for a complete brief.
 
 When no human or structured answer mechanism exists, mark assumptions plainly, return the brief, and stop.

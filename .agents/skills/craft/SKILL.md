@@ -1,8 +1,9 @@
 ---
 name: craft
-description: "Deprecated compatibility alias for an ordinary Impeccable new-work request. It adds no behavior; natural build and redesign requests use the same flow."
-argument-hint: "[feature description]"
-user-invocable: true
+description: "Compatibility shortcut for Impeccable new visual work."
+metadata:
+  argument-hint: "[feature description]"
+  user-invocable: true
 ---
 
 <!-- impeccable-pinned-skill -->

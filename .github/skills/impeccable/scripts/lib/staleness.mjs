@@ -66,14 +66,6 @@ const KNOWN_CONFIG_KEYS = new Set([
 // reporting rather than coercing.
 const BUILD_PATH_VALUES = Object.freeze(['comp', 'code']);
 
-// Evidence that this project does the kind of work `buildPath` governs. A
-// project that only ever ran polish or audit has no use for the setting and
-// should never be told it exists. Two stats, so Tier 1 can afford it.
-const DIRECTION_WORK_PATHS = Object.freeze([
-  path.join('.impeccable', 'surfaces'),
-  path.join('.impeccable', 'mocks', 'decision'),
-]);
-
 // `detector` is a closed set, so a typo here is worth reporting. `hook` is not
 // checked: it carries runtime settings from several writers and the false
 // positive rate would outweigh the catch.
@@ -350,7 +342,7 @@ export function checkConfig({ projectRoot, repoRoot }) {
           summary: `${rel} sets \`buildPath\` to ${JSON.stringify(raw.buildPath)}, which nothing reads. `
             + `The values are ${BUILD_PATH_VALUES.map((value) => `\`${value}\``).join(' and ')}.`,
           fix: 'Report the value. An unread `buildPath` does not fall back to the other path; '
-            + 'it falls back to the default, so a project meaning `code` has been building comp-led.',
+            + 'it is ignored, so the task determines the workflow instead of this preference.',
         }));
       }
 
@@ -374,45 +366,10 @@ export function checkConfig({ projectRoot, repoRoot }) {
   return findings;
 }
 
-/**
- * No recorded build-path preference on a project that plainly does visual
- * direction work. Not drift in the usual sense: the setting is newer than the
- * project, so every project that predates it lands here at once. That is why
- * it is gated twice, on a product record and on evidence of the work the
- * setting governs, and why it says the choice rather than assuming a harness
- * can make it. Image generation is the real precondition and this module
- * cannot see it: a harness-native image tool leaves no trace on disk, so the
- * finding hands the question to the one reader that knows.
- */
-export function checkBuildPathUnset({ projectRoot, repoRoot, product }) {
-  if (!projectRoot || !product) return [];
-  const roots = [...new Set([projectRoot, repoRoot].filter(Boolean).map((root) => path.resolve(root)))];
-
-  for (const root of roots) {
-    for (const name of ['config.json', 'config.local.json']) {
-      const raw = readJson(path.join(root, '.impeccable', name));
-      // Any declared value ends this, valid or not: an invalid one already has
-      // its own finding and two reports of one key is noise.
-      if (raw && Object.prototype.hasOwnProperty.call(raw, 'buildPath')) return [];
-    }
-  }
-
-  const evidence = DIRECTION_WORK_PATHS.filter((rel) => fs.existsSync(path.join(projectRoot, rel)));
-  if (!evidence.length) return [];
-
-  return [finding({
-    id: 'config-build-path-unset',
-    artifact: 'config.json',
-    filePath: '.impeccable/config.json',
-    severity: 'mention',
-    summary: 'This project has run visual direction work but records no `buildPath`, '
-      + 'so every direction round takes the comp-first default without anyone having chosen it.',
-    fix: 'Only when image generation exists in your tool surface, offer the choice once: '
-      + '**comp-first** (an image sets the bar before any code; bolder composition, slower) or '
-      + '**code-first** (build directly; ambition carried by the direction contract; leaner, faster). '
-      + 'Write the answer to `.impeccable/config.json` as `"buildPath": "comp"` or `"buildPath": "code"`, '
-      + 'merging with the keys already there. Without image generation there is no choice to record: stay silent.',
-  })];
+/** An absent optional workflow preference is valid. Retain the exported check
+ * for callers; malformed declared values are still checked by checkConfig. */
+export function checkBuildPathUnset() {
+  return [];
 }
 
 // ─── Surface briefs ────────────────────────────────────────────────────────

@@ -1,7 +1,13 @@
 ---
 name: design-taste-frontend-v1
-description: The original v1 taste-skill, preserved for projects depending on its exact behavior. The current default is `design-taste-frontend` (v2 experimental), which is a substantial rewrite. Use this v1 install name only if you need exact backward compatibility.
+description: "Use the legacy frontend taste workflow only when backward compatibility is requested."
 ---
+
+Use the style below only within the user's requested aesthetic. Existing product
+constraints and explicit instructions take precedence over these example recipes.
+Do not add a library, replace fonts, introduce motion or change content just because
+an example uses it. Preserve accessibility and reduced-motion behavior.
+
 
 # High-Agency Frontend Skill
 
@@ -201,10 +207,10 @@ When generating modern SaaS dashboards or feature sections, you MUST utilize the
 * **Pixel-Perfection:** Use generous `p-8` or `p-10` padding inside cards.
 
 ### B. The Animation Engine Specs (Perpetual Motion)
-All cards must contain **"Perpetual Micro-Interactions."** Use the following Framer Motion principles:
+For a requested animated dashboard, these Framer Motion patterns are optional:
 * **Spring Physics:** No linear easing. Use `type: "spring", stiffness: 100, damping: 20` for a premium, weighty feel.
 * **Layout Transitions:** Heavily utilize the `layout` and `layoutId` props to ensure smooth re-ordering, resizing, and shared element state transitions.
-* **Infinite Loops:** Every card must have an "Active State" that loops infinitely (Pulse, Typewriter, Float, or Carousel) to ensure the dashboard feels "alive".
+* **Infinite Loops:** Use a looping state only when it communicates a real status; provide a static reduced-motion equivalent and pause off-screen loops.
 * **Performance:** Wrap dynamic lists in `<AnimatePresence>` and optimize for 60fps. **PERFORMANCE CRITICAL:** Any perpetual motion or infinite loop MUST be memoized (React.memo) and completely isolated in its own microscopic Client Component. Never trigger re-renders in the parent layout.
 
 ### C. The 5-Card Archetypes (Micro-Animation Specs)

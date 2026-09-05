@@ -1,7 +1,13 @@
 ---
 name: stitch-design-taste
-description: Semantic Design System Skill for Google Stitch. Generates agent-friendly DESIGN.md files that enforce premium, anti-generic UI standards — strict typography, calibrated color, asymmetric layouts, perpetual micro-motion, and hardware-accelerated performance.
+description: "Describe an explicitly requested Google Stitch design system."
 ---
+
+Use the style below only within the user's requested aesthetic. Existing product
+constraints and explicit instructions take precedence over these example recipes.
+Do not add a library, replace fonts, introduce motion or change content just because
+an example uses it. Preserve accessibility and reduced-motion behavior.
+
 
 # Stitch Design Taste — Semantic Design System Skill
 
@@ -89,8 +95,8 @@ Every design must work across all viewports:
 
 ### 8. Encode Motion Philosophy
 - **Spring Physics default:** `stiffness: 100, damping: 20` — premium, weighty feel. No linear easing
-- **Perpetual Micro-Interactions:** Every active component should have an infinite loop state (Pulse, Typewriter, Float, Shimmer)
-- **Staggered Orchestration:** Never mount lists instantly — use cascade delays for waterfall reveals
+- **Perpetual Micro-Interactions:** Use a loop only when it communicates a useful state; pause it off-screen and provide reduced-motion behavior
+- **Staggered Orchestration:** Use staggered reveals only when they clarify order; instant rendering is valid
 - **Performance:** Animate exclusively via `transform` and `opacity`. Never animate `top`, `left`, `width`, `height`. Grain/noise filters on fixed pseudo-elements only
 
 ### 9. List Anti-Patterns (AI Tells)

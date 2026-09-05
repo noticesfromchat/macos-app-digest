@@ -1394,7 +1394,7 @@ function appendBuildPathDirective(parts, ctx) {
     // case where a flip really is session-only. Saying so inline because the
     // bare absolute reads as a rule that overrides new-work's one-time offer,
     // which is exactly how the same wording misfired in serve-question.
-    parts.push(`BUILD_PATH_DEFAULT: ${found.value} (from ${found.source}). Author direction and surface rounds with this as buildPath.value and toggle: true; a flip on the page binds that session only and is never written back, because a default is already recorded here. New-work's one-time offer to record a flipped value applies only where no default exists, which is why you are not seeing this line on those projects.`);
+    parts.push(`BUILD_PATH_DEFAULT: ${found.value} (from ${found.source}). Honor this preference when relevant; the current user request takes precedence. Do not introduce direction rounds solely because a preference exists. Session overrides are not saved unless the user asks.`);
     return;
   }
 }

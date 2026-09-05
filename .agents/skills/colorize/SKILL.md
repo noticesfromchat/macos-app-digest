@@ -1,8 +1,9 @@
 ---
 name: colorize
-description: "Add strategic color to features that are too monochromatic or lack visual interest, making interfaces more engaging and expressive. Use when the user mentions the design looking gray, dull, lacking warmth, needing more color, or wanting a more vibrant or expressive palette."
-argument-hint: "[target]"
-user-invocable: true
+description: "Refine an interface palette when the user requests more color."
+metadata:
+  argument-hint: "[target]"
+  user-invocable: true
 ---
 
 <!-- impeccable-pinned-skill -->
