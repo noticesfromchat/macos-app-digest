@@ -11,7 +11,7 @@ Codex and other development agents.
    a single stream of work descriptively (`hero-redesign`, `tag-audit`); name the
    weekly release branch `issue-NNN-weekly-update` for the issue it publishes. Which
    branch the work belongs on is the editor's call, so ask rather than assume.
-4. Read `AGENTS.md` and the task-relevant documentation:
+4. Use `AGENTS.md` to select the task-relevant documentation and read the relevant sections:
    - `docs/STYLE_GUIDE.md` for any content or presentation change
    - `docs/ISSUE_TEMPLATE.md` for app or issue content
    - `docs/PUBLISHING.md` for weekly release work
@@ -60,6 +60,11 @@ card URL from a local dev server is this, not a broken card. Confirm against
 `npm run build` output before treating it as a defect.
 
 ## 3. Validate before publishing
+
+During local work, use checks relevant to the change. Do not run the complete suite
+for every intermediate edit. Inspect focused patches and preserve unrelated behavior.
+Before committing or preparing publication, run the full checks below. After they
+pass, repeat only when further changes or unresolved failures justify it.
 
 Run both commands from the repository root:
 

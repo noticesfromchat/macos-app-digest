@@ -153,9 +153,10 @@ When exactly one reviewed, passing and editor-approved release-candidate PR exis
 5. Confirm the Netlify production deployment succeeds before claiming the issue is
    live or sending the weekly email.
 
-Routine issue content added to an already approved release candidate does not require
-another manual approval after all checks pass. Do not add new unapproved design,
-architecture or functionality changes during this run.
+Approval applies to the reviewed release candidate. Any subsequent content, app-record,
+design, architecture or functionality change requires refreshed checks, preview review
+and editor approval before deployment. On Friday, pause deployment for a new
+Thursday-style review cycle when the editor requests such a change.
 
 ### No reviewed release candidate
 
