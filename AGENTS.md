@@ -327,10 +327,15 @@ issue.
 
 ## Editor attribution
 
-- Public website content must never identify the editor by personal name.
-- Use `Editor`, `Editor's Pick` or similarly role-based language for attribution.
-- Personal names may remain in private workflow instructions, but not in app records,
-  issue content or generated page copy.
+- The editor's first name may appear on the About page, where the page speaks in the
+  editor's own voice and a byline is the point. This was a deliberate change on
+  2026-09-04, not a drift: an About page that says "I'm not a developer" and then refuses
+  to say who "I" is reads as evasive, and the follow-up critique found the anonymity was
+  costing the page the trust it exists to build.
+- Everywhere else, public website content must not identify the editor by personal name.
+- Use `Editor`, `Editor's Pick` or similarly role-based language for attribution in app
+  records, issue content and generated page copy.
+- The editor's full name is not public anywhere, About included.
 
 ## Non-negotiable presentation rules
 

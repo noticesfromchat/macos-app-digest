@@ -33,72 +33,52 @@ const latestIssue = [...issues].sort((a, b) => b.data.slug.localeCompare(a.data.
 
     <div class="about-content">
       <p>Hey, I'm Zac. The editor.</p>
-      <p>App Waypoint is a little project I've been working on that highlights apps every Friday while building up a <a href="/explore/">database</a> that is browseable, filterable and refinable in as many ways as possible. My goal with this project is to help you find that one tool or utility that solves actual problems and reduces friction or pain points. And to share a couple of things I think are worth reading or watching.</p>
+      <p>App Waypoint is a little project I've been working on that highlights apps every Friday while building up a <a href="/explore/">database</a> that is browsable, filterable and sortable. My goal with this project is to help you find that one tool or utility that solves actual problems and reduces friction or pain points. And to share a couple of things I think are worth reading or watching.</p>
       <p>I'm not trying to cover everything, I'm still learning and absorbing new stuff every day. There are a lot of Mac apps and I will probably miss plenty of good ones. What I can tell you is that nothing lands here without being opened, poked at and thought about first.</p>
     </div>
 
     <section class="section">
-      <details class="about-disclosure">
-        <summary>
-          <h2>What earns a spot</h2>
-          <svg class="about-disclosure-mark" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
-        </summary>
-        <div class="about-disclosure-body">
-        <p>Five things I'm looking for when selecting apps:</p>
-        <ul class="about-criteria">
-          <li><strong>It's actually useful.</strong> Not clever for its own sake. It fixes something you've been putting up with</li>
-          <li><strong>People are actually recommending it.</strong> Not marketing, someone bothered to tell someone else or shared enthusiasm about it</li>
-          <li><strong>It's well made.</strong> Somebody cared about how it feels to use. I think that's important</li>
-          <li><strong>It's alive.</strong> Still being updated by someone paying attention</li>
-          <li><strong>It has a point of view.</strong> If three apps do the same job, I want the one that does it differently</li>
-        </ul>
-        <p>Not everything is always going to hit all five. And I might still highlight the competitors.</p>
-        </div>
-      </details>
+      <div class="section-heading">
+        <h2>What earns a spot</h2>
+      </div>
+      <p>Five things I'm looking for when selecting apps:</p>
+      <ul class="about-criteria">
+        <li><strong>It's actually useful.</strong> Not clever for its own sake. It fixes something you've been putting up with</li>
+        <li><strong>People are actually recommending it.</strong> Not marketing, someone bothered to tell someone else or shared enthusiasm about it</li>
+        <li><strong>It's well made.</strong> Somebody cared about how it feels to use. I think that's important</li>
+        <li><strong>It's alive.</strong> Still being updated by someone paying attention</li>
+        <li><strong>It has a point of view.</strong> If three apps do the same job, I want the one that does it differently</li>
+      </ul>
+      <p>Not everything is always going to hit all five. And I might still highlight the competitors.</p>
     </section>
 
     <section class="section">
-      <details class="about-disclosure">
-        <summary>
-          <h2>Where I look</h2>
-          <svg class="about-disclosure-mark" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
-        </summary>
-        <div class="about-disclosure-body">
-        <p>Developer releases, community threads (Reddit, X), other publications (like <a href="https://www.producthunt.com/" rel="noopener">Product Hunt</a> or <a href="https://www.macstories.net/" rel="noopener">MacStories</a>), podcasts and videos from YouTube. Neat stuff surfaces in weird places, so I try to look in a few of them.</p>
-        </div>
-      </details>
+      <div class="section-heading">
+        <h2>Where I look</h2>
+      </div>
+      <p>Developer releases, community threads (Reddit, X), other publications (like <a href="https://www.producthunt.com/" rel="noopener">Product Hunt</a> or <a href="https://www.macstories.net/" rel="noopener">MacStories</a>), podcasts and videos from YouTube. Neat stuff surfaces in weird places, so I try to look in a few of them.</p>
     </section>
 
     <section class="section">
-      <details class="about-disclosure">
-        <summary>
-          <h2>How I use AI</h2>
-          <svg class="about-disclosure-mark" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
-        </summary>
-        <div class="about-disclosure-body">
-        <p>This site exists because AI helped me build it. The code, the layout, all the fiddly parts. I just pop wireframes I think up into Claude Code or Codex from <a href="https://apps.apple.com/us/app/freeform/id6443742539" rel="noopener">Freeform</a> or Excalidraw (<a href="https://github.com/zsviczian/obsidian-excalidraw-plugin" rel="noopener">there's an awesome Obsidian plugin for it by the way</a>). I'm not going to pretend like I built this all by myself. This website simply would not exist without it.</p>
-        <p>For the issues, AI helps me research: turning up candidates, checking facts, comparing things, catching me repeating myself. It doesn't pick the apps. It sends me a list and I prune, curate and add to it throughout the week. <a href="/collections/editors-picks/">Editor's Picks</a> and <a href="/collections/community-favorites/">Community Favorites</a> are purely up to me.</p>
-        <p class="about-emphasis"><strong>Every app in every issue is here because I decided it should be.</strong></p>
-        <p>I'm still working out exactly where that line sits. If you think I've got it wrong, <a href="https://x.com/macappwaypoint" rel="noopener">tell me</a>. Help me make this a useful, awesome place people enjoy.</p>
-        </div>
-      </details>
+      <div class="section-heading">
+        <h2>How I use AI</h2>
+      </div>
+      <p>This site exists because AI helped me build it. The code, the layout, all the fiddly parts. I just pop wireframes I think up into Claude Code or Codex from <a href="https://apps.apple.com/us/app/freeform/id6443742539" rel="noopener">Freeform</a> or Excalidraw (<a href="https://github.com/zsviczian/obsidian-excalidraw-plugin" rel="noopener">there's an awesome Obsidian plugin for it by the way</a>). I'm not going to pretend like I built this all by myself. This website simply would not exist without it.</p>
+      <p>For the issues, AI helps me research: turning up candidates, checking facts, comparing things, catching me repeating myself. It doesn't pick the apps. It sends me a list and I prune, curate and add to it throughout the week. <a href="/collections/editors-picks/">Editor's Picks</a> and <a href="/collections/community-favorites/">Community Favorites</a> are purely up to me.</p>
+      <p class="about-emphasis"><strong>Every app in every issue is here because I decided it should be.</strong></p>
+      <p>I'm still working out exactly where that line sits. If you think I've got it wrong, <a href="https://x.com/macappwaypoint" rel="noopener">tell me</a>. Help me make this a useful, awesome place people enjoy.</p>
     </section>
 
     <section class="section">
-      <details class="about-disclosure">
-        <summary>
-          <h2>What do I get out of all of this?</h2>
-          <svg class="about-disclosure-mark" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
-        </summary>
-        <div class="about-disclosure-body">
-        <p>I get to share my passion for finding new apps with you. And to support hard working developers and hopefully help shine a light on their apps that helps them keep going. That's it.</p>
-        {/* The thanks and the route out close this section rather than forming their own.
-            A section of their own drew a rule across the page and gave a sign-off the same
-            weight as a topic, when it is the same thought finishing. */}
-        <p class="about-emphasis"><strong>Thank you for reading. For clicking the link that led you here and for spending a little time with me and my project.</strong></p>
-        <p class="about-cta"><a class="button" href={`/issues/${latestIssue.data.slug}/`}>Check out the latest issue</a></p>
-        </div>
-      </details>
+      <div class="section-heading">
+        <h2>What do I get out of all of this?</h2>
+      </div>
+      <p>I get to share my passion for finding new apps with you. And to support hard working developers and hopefully help shine a light on their apps that helps them keep going. That's it.</p>
+      {/* The thanks and the route out close this section rather than forming their own.
+          A section of their own drew a rule across the page and gave a sign-off the same
+          weight as a topic, when it is the same thought finishing. */}
+      <p class="about-emphasis"><strong>Thank you for reading. For clicking the link that led you here and for spending a little time with me and my project.</strong></p>
+      <p class="about-cta"><a class="button" href={`/issues/${latestIssue.data.slug}/`}>Check out the latest issue</a></p>
     </section>
   </article>
 </BaseLayout>

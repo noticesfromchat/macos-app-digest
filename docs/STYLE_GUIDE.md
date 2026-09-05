@@ -320,9 +320,14 @@ it. See Issue Subscribe Card in `DESIGN.md` for the structure and the reasoning.
 
 ## 10. Editor attribution
 
-- Refer to the editor by role only in all public website content.
+- Refer to the editor by role in public website content, with one exception: the About
+  page carries the editor's first name, because that page speaks in the editor's own
+  voice and a byline is the point of it. Changed deliberately on 2026-09-04 after the
+  About follow-up critique found the anonymity was costing the page the trust it exists
+  to build.
 - Never display the editor's personal name in app sources, issue copy, notes or
-  generated pages.
+  generated pages. The exception is About and nowhere else.
+- The editor's full name is not public anywhere, About included.
 
 ## 11. App icons
 
