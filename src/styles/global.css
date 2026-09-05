@@ -12,7 +12,23 @@
   --accent-hover: #004caf;
   /* An eyebrow names the block beneath it, so the gap that binds the two is one
      value for the whole site. Any surface that sets its own drifts out of the pair. */
-  --eyebrow-gap: 11px;
+  /* Base unit. Every spacing value in the system is a whole multiple of it.
+     Adopted 2026-09-05, following Marvin Schwaibold's layered component grid:
+     one number declared up front so later components inherit the rhythm instead
+     of each being tuned by hand. The scale below is the mechanism; before this
+     the scale existed only as prose in DESIGN.md and every value was typed
+     literally at its use site. */
+  --base: 8px;
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-6: 48px;
+  --space-7: 56px;
+  --space-8: 64px;
+  --space-9: 72px;
+  --eyebrow-gap: 8px;
   --header-bg: rgba(244, 246, 249, 0.96);
   /* The scrim behind search, the nav menu and the subscribe dialog. It was a
      near-black navy in both themes, which is right on a dark page and turns a
@@ -25,14 +41,20 @@
      vocabulary had no token for it and the three overlays each invented their own
      black. Light keeps the same ink the other shadows use rather than pure black. */
   --shadow-modal: 0 30px 90px rgba(27, 35, 42, 0.18);
-  --radius: 16px;
+  /* Radius scale, on the base unit. A component's radius matches its own inset;
+     an element nested N px inside another takes the parent's radius minus N, so
+     the two curves stay concentric instead of showing a second arc at the corner. */
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius: var(--radius-lg);
   --content-width: 1160px;
   --content-inset: 40px;
   /* Reduced 25% from 36px on 2026-09-04. The trail keeps its 11px bind to the title
      under The One Page Title Rule; what was reading as the trail having fallen down a gap
      was the space above it, between the header and the trail, not the space below. */
-  --page-start-space: 27px;
-  --section-space: clamp(26px, 3.8vw, 40px);
+  --page-start-space: 24px;
+  --section-space: clamp(24px, 3.8vw, 40px);
   --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
   --display: "Iowan Old Style", "Baskerville", "Times New Roman", serif;
   --type-brand-nav: clamp(1.125rem, 1.8vw, 1.375rem);
@@ -86,7 +108,7 @@
   color: var(--muted);
   font-size: var(--type-meta);
   font-weight: 500;
-  line-height: 1.45;
+  line-height: 1.4286;
 }
 .breadcrumb ol {
   display: flex;
@@ -142,8 +164,8 @@
   /* 7px against the separator glyph's ~4px. At 5px it read as another separator; past
      8px it starts reading as a bullet. This is the size where it is unmistakably a mark
      and still quiet. */
-  width: 7px;
-  height: 7px;
+  width: 8px;
+  height: 8px;
   flex: none;
   border-radius: 50%;
   background: var(--accent);
@@ -198,9 +220,26 @@ body {
   background: var(--page);
   color: var(--text);
   font-family: var(--sans);
-  line-height: 1.55;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
+
+/* Line boxes on the base. Body's 1.5 ratio gives 16px text a 24px line box, three
+   base units. Anything set smaller inherits that same ratio and lands off the grid
+   instead: 14px becomes 21 and 12px becomes 18. These restate the ratio each size
+   needs to keep its line box on a whole step, 14px -> 20 and 12px -> 16. */
+.skip-link,
+.directory-select,
+.directory-select-trigger,
+.directory-filter-label,
+.desktop-nav-links a,
+.site-footer-inner p { line-height: 1.4286; }
+
+/* The footer's own nav links are left alone deliberately. Their line box is 21px, but
+   they are inline-flex with min-height 24px for WCAG 2.2 target size, so the rendered
+   box is 24px and already lands on the base. The line box is the wrong measure for a
+   flex item that carries its own height. */
+.directory-count { line-height: 1.3333; }
 /* Grows to fill what the header and footer do not, and never shrinks below its content. */
 main { flex: 1 0 auto; }
 
@@ -209,10 +248,10 @@ a { color: inherit; }
 .skip-link {
   position: fixed;
   z-index: 120;
-  top: 12px;
-  left: 12px;
+  top: 16px;
+  left: 16px;
   display: inline-flex;
-  min-height: 44px;
+  min-height: 48px;
   align-items: center;
   padding: 0 16px;
   border: 1px solid var(--accent);
@@ -239,12 +278,12 @@ a { color: inherit; }
   z-index: 10;
   display: flex;
   width: 100%;
-  min-height: 84px;
+  min-height: 80px;
   align-items: center;
   justify-content: space-between;
-  gap: 28px;
+  gap: 32px;
   margin: 0;
-  padding: 0 clamp(24px, 3.2vw, 38px);
+  padding: 0 clamp(24px, 3.2vw, 40px);
   border: 1px solid var(--line);
   border-top: 0;
   border-right: 0;
@@ -261,14 +300,14 @@ a { color: inherit; }
 
 .brand {
   color: var(--text);
-  gap: 12px;
+  gap: 16px;
   text-decoration: none;
 }
 
 .brand-mark {
   display: block;
-  width: 46px;
-  height: 46px;
+  width: 48px;
+  height: 48px;
   flex: 0 0 auto;
 }
 
@@ -295,7 +334,7 @@ a { color: inherit; }
 .site-header nav {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .desktop-nav-links {
@@ -306,7 +345,7 @@ a { color: inherit; }
 
 .desktop-nav-links a {
   display: inline-flex;
-  min-height: 44px;
+  min-height: 48px;
   align-items: center;
   color: var(--text);
   font-size: var(--type-meta);
@@ -326,8 +365,8 @@ a { color: inherit; }
 }
 
 .theme-toggle svg {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   fill: none;
   stroke: currentColor;
   stroke-linecap: round;
@@ -337,8 +376,8 @@ a { color: inherit; }
 
 .theme-toggle {
   display: grid;
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   padding: 0;
   place-items: center;
   border: 0;
@@ -385,9 +424,9 @@ a { color: inherit; }
 }
 
 .hero-rule {
-  width: 148px;
-  height: 33px;
-  margin: 10px 0 0;
+  width: 144px;
+  height: 32px;
+  margin: 8px 0 0;
   color: var(--accent);
 }
 
@@ -402,19 +441,19 @@ a { color: inherit; }
 
 .dek {
   max-width: var(--measure);
-  margin: 15px 0 0;
+  margin: 16px 0 0;
   color: var(--muted);
   font-size: var(--type-dek);
-  line-height: 1.58;
+  line-height: 1.6842;
 }
 
 .button {
   display: inline-flex;
-  min-height: 44px;
+  min-height: 48px;
   align-items: center;
   justify-content: center;
-  gap: 20px;
-  padding: 0 23px;
+  gap: 16px;
+  padding: 0 24px;
   border: 1px solid var(--accent);
   border-radius: 999px;
   /* Outlined, not filled. The dark theme's blue is tuned to be legible as ink on
@@ -456,8 +495,8 @@ a { color: inherit; }
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  padding-block: clamp(32px, 4.2vw, 52px)
-                 calc(clamp(36px, 4.4vw, 54px) + var(--sea-h));
+  padding-block: clamp(32px, 4.2vw, 48px)
+                 calc(clamp(32px, 4.4vw, 56px) + var(--sea-h));
   /* The band settles onto the page ground across the sea, so the hero ends
      on the colour the section below starts with and leaves no seam. */
   background: linear-gradient(to top, var(--page) 0, var(--bg) calc(var(--sea-h) + 38px));
@@ -471,7 +510,7 @@ a { color: inherit; }
   margin-inline: auto;
   grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
   align-items: stretch;
-  gap: clamp(22px, 2.8vw, 40px);
+  gap: clamp(24px, 2.8vw, 40px);
 }
 
 .home-hero-sky,
@@ -492,7 +531,7 @@ a { color: inherit; }
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: clamp(34px, 3vw, 38px);
+  gap: clamp(32px, 3vw, 40px);
 }
 .home-hero-intro { display: flex; flex-direction: column; }
 
@@ -506,21 +545,21 @@ a { color: inherit; }
   text-wrap: balance;
 }
 
-.home-hero .hero-rule { margin: 12px 0 0; }
+.home-hero .hero-rule { margin: 16px 0 0; }
 
 .home-hero-tagline {
   max-width: 34ch;
   margin: 16px 0 0;
   color: var(--text);
   font-size: 1rem;
-  line-height: 1.55;
+  line-height: 1.5;
 }
 
 .home-hero-issue {
   max-width: 42ch;
   /* One value owns the gap under the rule, matching the site's other
      hairline-topped block, instead of a padding and a margin stacking. */
-  padding-top: clamp(30px, 2.4vw, 32px);
+  padding-top: clamp(32px, 2.4vw, 32px);
   border-top: 1px solid var(--line);
 }
 
@@ -534,7 +573,7 @@ a { color: inherit; }
 }
 
 .home-hero-date {
-  margin: 6px 0 0;
+  margin: 8px 0 0;
   color: var(--muted);
   font-size: var(--type-meta);
   font-weight: 600;
@@ -542,15 +581,15 @@ a { color: inherit; }
 }
 
 .home-hero-dek {
-  margin: 14px 0 0;
+  margin: 16px 0 0;
   color: var(--muted);
   font-size: .98rem;
-  line-height: 1.58;
+  line-height: 1.5306;
 }
 
 .section { padding: var(--section-space) 0; border-top: 1px solid var(--line); }
 .home-hero + .section { border-top: 0; }
-.section-heading { width: 100%; max-width: none; margin-bottom: 28px; }
+.section-heading { width: 100%; max-width: none; margin-bottom: 32px; }
 .section h2 { margin: 0; font-family: var(--display); font-size: var(--type-section-title); font-weight: 500; letter-spacing: -.03em; line-height: 1; }
 
 .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
@@ -606,14 +645,14 @@ a { color: inherit; }
      directory. Below 921px each card is its own height. */
   @media (min-width: 921px) {
     .grid:has(> .app-card:not(.reading-card)) {
-      grid-auto-rows: minmax(205px, auto) minmax(124px, auto) minmax(96px, auto);
+      grid-auto-rows: minmax(232px, auto) minmax(120px, auto) minmax(136px, auto);
     }
   }
 
   /* Above 1100px the content column has stopped growing, so the budget settles. */
   @media (min-width: 1100px) {
     .grid:has(> .app-card:not(.reading-card)) {
-      grid-auto-rows: minmax(181px, auto) minmax(100px, auto) minmax(62px, auto);
+      grid-auto-rows: minmax(184px, auto) minmax(96px, auto) minmax(96px, auto);
     }
   }
 
@@ -627,7 +666,7 @@ a { color: inherit; }
     display: grid;
     grid-row: span 3;
     grid-template-rows: subgrid;
-    row-gap: 10px;
+    row-gap: 8px;
   }
 
   .grid > .reading-card h3,
@@ -645,18 +684,18 @@ a { color: inherit; }
     "note"
     "tags";
   row-gap: 0;
-  padding: clamp(24px, 3vw, 34px);
+  padding: clamp(24px, 3vw, 32px);
 }
 .editors-pick-card .app-summary { grid-area: summary; min-height: 0; margin-bottom: 0; }
 .editors-pick-card .best-for { grid-area: best; min-height: 0; margin-top: 16px; }
 .editors-pick-card .editor-note {
   grid-area: note;
   align-self: start;
-  margin-top: 22px;
-  padding-top: 18px;
+  margin-top: 24px;
+  padding-top: 16px;
   border-top: 1px solid var(--line);
 }
-.editors-pick-card .tag-list { grid-area: tags; min-height: 0; margin-top: 20px; padding-top: 0; }
+.editors-pick-card .tag-list { grid-area: tags; min-height: 0; margin-top: 16px; padding-top: 0; }
 .editor-note { padding-left: 0; border-left: 0; }
 .editor-note p { margin: 0; }
 
@@ -680,28 +719,31 @@ a { color: inherit; }
 
 .hero-pick-card .app-summary { margin-bottom: 0; }
 .hero-pick-card .app-summary.has-app-icon .app-summary-heading {
-  grid-template-columns: 52px minmax(0, 1fr);
+  grid-template-columns: 56px minmax(0, 1fr);
   column-gap: 16px;
 }
+/* The pick card's icon is a step larger than a directory card's, because it is the
+   one app the issue is arguing for. The base-unit pass briefly flattened the two to
+   48 and lost that. */
 .hero-pick-card .app-icon-frame {
-  width: 52px;
-  height: 52px;
-  border-radius: 13px;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
 }
 .hero-pick-card h3 { font-size: var(--type-subhead); letter-spacing: -.02em; line-height: 1.08; }
 .hero-pick-card .app-summary p { font-size: 1rem; }
 
-.hero-pick-card .editor-note { margin-top: 22px; padding-top: 0; border-top: 0; }
+.hero-pick-card .editor-note { margin-top: 24px; padding-top: 0; border-top: 0; }
 
 .hero-pick-card .best-for {
-  margin-top: 22px;
-  padding-top: 18px;
+  margin-top: 24px;
+  padding-top: 16px;
   border-top: 1px solid var(--line);
   font-size: .97rem;
 }
 
 .hero-pick-card .best-for p { margin: 0; color: var(--muted); }
-.hero-pick-card .tag-list { margin-top: auto; padding-top: 22px; }
+.hero-pick-card .tag-list { margin-top: auto; padding-top: 24px; }
 /* Struck Light. The Editor's Pick is the one app the issue argues for, so in the
    hero it is lit by its own colour: a bounded halo behind the icon and a slow
    gleam travelling the card's edge, the way light moves across a struck plate.
@@ -749,7 +791,7 @@ a { color: inherit; }
   isolation: isolate;
   /* The gleam traces the card's own corner, so the radius is a parameter rather
      than a constant repeated in the ring. */
-  --pick-radius: 12px;
+  --pick-radius: var(--radius);
 }
 /* The one card in the fold the issue is arguing for; it rests proud of the rest. */
 .hero-pick-card.has-pick-accent { box-shadow: var(--shadow-hover); }
@@ -850,12 +892,12 @@ a { color: inherit; }
   text-transform: uppercase;
 }
 .card,
-.archive-card { border: 1px solid var(--line); border-radius: 12px; background: var(--surface); box-shadow: var(--shadow); }
+.archive-card { border: 0; border-radius: var(--radius); background: var(--surface); box-shadow: inset 0 0 0 1px transparent, var(--shadow); }
 
-.app-card { position: relative; display: flex; min-height: 286px; flex-direction: column; padding: 24px; }
-.app-card-link { position: absolute; z-index: 2; inset: 0; border-radius: inherit; }
+.app-card { position: relative; display: flex; min-height: 288px; flex-direction: column; padding: 24px; }
+.app-card-link { position: absolute; z-index: 2; inset: 0; border-radius: var(--radius); }
 .app-card a:not(.app-card-link) { position: relative; z-index: 3; }
-.app-card h3 { margin: 0 0 11px; font-family: var(--display); font-size: 1.4375rem; font-weight: 600; line-height: 1.15; }
+.app-card h3 { margin: 0 0 8px; font-family: var(--display); font-size: 1.4375rem; font-weight: 600; line-height: 1.2174; }
 .app-card h3 a { color: var(--text); text-decoration: none; transition: color 180ms ease; }
 .app-card h3 a:hover,
 .app-card h3 a:focus-visible { color: var(--accent); }
@@ -864,20 +906,24 @@ a { color: inherit; }
 }
 .app-summary.has-app-icon .app-summary-heading {
   display: grid;
-  grid-template-columns: 44px minmax(0, 1fr);
-  column-gap: 14px;
+  /* The column is the frame. Sizes here move together or the icon stops sitting in
+     its own track. */
+  grid-template-columns: 48px minmax(0, 1fr);
+  column-gap: 16px;
   align-items: center;
 }
 .app-summary.has-app-icon h3 { margin-bottom: 0; }
 .app-icon-frame {
   display: flex;
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   border: 0;
-  border-radius: 11px;
+  /* Derived, not chosen: 25% of the frame's side, which is what keeps a rendered
+     mark reading as a macOS icon rather than a rounded box. It follows the size. */
+  border-radius: 12px;
   background: transparent;
 }
 .app-icon {
@@ -888,7 +934,7 @@ a { color: inherit; }
 }
 .app-icon-backed .app-icon-frame {
   background: #fff;
-  padding: 5px;
+  padding: 8px;
 }
 .app-icon-backed .app-icon,
 .app-icon-contain .app-icon {
@@ -927,22 +973,22 @@ a { color: inherit; }
 
 .editors-pick-icon { width: 100%; height: 100%; }
 .app-card p { margin: 0; color: var(--muted); }
-.app-summary.has-app-icon .app-description { margin-top: 12px; }
+.app-summary.has-app-icon .app-description { margin-top: 16px; }
 .app-summary { min-height: 136px; margin-bottom: 16px; }
 .best-for { min-height: 96px; font-size: 1rem; }
 .best-for strong,
 .reading-source strong { color: var(--text); }
 
-.tag-list { display: flex; min-height: 86px; flex-wrap: wrap; align-content: flex-start; gap: 6px; padding-top: 12px; }
-.tag { display: inline-flex; width: fit-content; align-items: center; margin: 0; padding: 7px 10px; border: 0; border-radius: 999px; background: var(--chip); color: var(--muted); font-size: var(--type-label); font-weight: 700; line-height: 1.15; text-decoration: none; text-transform: lowercase; transition: color 180ms ease, background-color 180ms ease; }
+.tag-list { display: flex; min-height: 88px; flex-wrap: wrap; align-content: flex-start; gap: 8px; padding-top: 16px; }
+.tag { display: inline-flex; width: fit-content; align-items: center; margin: 0; padding: 8px 8px; border: 0; border-radius: 999px; background: var(--chip); color: var(--muted); font-size: var(--type-label); font-weight: 700; line-height: 1.3333; text-decoration: none; text-transform: lowercase; transition: color 180ms ease, background-color 180ms ease; }
 .tag:hover,
 .tag:focus-visible { background: color-mix(in srgb, var(--chip) 82%, var(--accent)); color: var(--accent-hover); }
-.reading-card h3 { min-height: 108px; }
-.reading-card .reading-source { min-height: 30px; }
-.reading-card .reading-description { min-height: 108px; }
+.reading-card h3 { min-height: 112px; }
+.reading-card .reading-source { min-height: 32px; }
+.reading-card .reading-description { min-height: 112px; }
 
-.feature-card { padding: 28px; }
-.feature-card p { max-width: var(--measure); margin: 0 0 14px; color: var(--muted); }
+.feature-card { padding: 32px; }
+.feature-card p { max-width: var(--measure); margin: 0 0 16px; color: var(--muted); }
 /* A standalone link on its own line is a target, not prose, so it carries the
    minimum. The inline RSS link in the subscribe copy is left alone: WCAG exempts a
    target sitting inside a sentence, and padding one out would break the line. */
@@ -954,7 +1000,7 @@ a { color: inherit; }
   font-weight: 700;
 }
 
-.app-detail-page { padding: var(--page-start-space) 0 36px; }
+.app-detail-page { padding: var(--page-start-space) 0 32px; }
 /* The detail page reads: what is this, is it for me, go and get it. The masthead
    carries that path. Everything that files the app rather than describes it sits
    in the rail, which also puts the right half of the fold to work. The rail is
@@ -970,26 +1016,26 @@ a { color: inherit; }
   padding: 0 0 var(--section-space);
   border-bottom: 1px solid var(--line);
 }
-.app-detail-masthead { min-width: 0; max-width: 900px; }
+.app-detail-masthead { min-width: 0; max-width: 896px; }
 
 .app-detail-identity {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
-  gap: clamp(16px, 1.8vw, 22px);
+  gap: clamp(16px, 1.8vw, 24px);
 }
 /* Sized against the page title's cap height so the two read as one lockup. */
 .app-detail-app-icon {
-  width: clamp(56px, 6vw, 76px);
-  height: clamp(56px, 6vw, 76px);
-  border-radius: 12px;
+  width: clamp(56px, 6vw, 80px);
+  height: clamp(56px, 6vw, 80px);
+  border-radius: 16px;
 }
 .app-detail-identity h1 { margin: 0; }
 
 /* The One Page Title Rule's 15px gap, measured from the lockup rather than the
    title alone, then a generous step before Best For so the two do not run together. */
-.app-detail-masthead > .dek { margin-top: 15px; }
-.app-detail-masthead > .app-detail-best-for { margin-top: 26px; }
+.app-detail-masthead > .dek { margin-top: 16px; }
+.app-detail-masthead > .app-detail-best-for { margin-top: 24px; }
 
 /* One rhythm for the whole rail, on the documented spacing scale: xl between
    groups, md from an eyebrow to the content it names. Every group is built the
@@ -1011,14 +1057,14 @@ a { color: inherit; }
   display: grid;
   /* Same icon column and gap as the collection badge above it, so every mark in
      the rail sits on one centre axis and every label starts at the same x. */
-  grid-template-columns: 34px minmax(0, 1fr);
+  grid-template-columns: 32px minmax(0, 1fr);
   align-items: center;
-  gap: 12px;
-  min-height: 34px;
+  gap: 16px;
+  min-height: 32px;
   color: var(--muted);
   font-size: var(--type-meta);
   font-weight: 600;
-  line-height: 1.3;
+  line-height: 1.4286;
   text-decoration: none;
   transition: color 180ms ease;
 }
@@ -1033,21 +1079,21 @@ a { color: inherit; }
   border-radius: 8px;
 }
 .app-detail-category-mark { display: inline-flex; align-items: center; justify-content: center; }
-.app-detail-category-mark svg { width: 19px; height: 19px; }
+.app-detail-category-mark svg { width: 16px; height: 16px; }
 /* Named by its own eyebrow like every other group in the rail, and given more air
    than they get. It stays in the rail's utility voice: rank comes from the label
    sitting in ink at weight 700 where a category label sits muted at 600, from the
    44px row against their 34px, and from leading the rail. */
 .collection-badge {
   display: grid;
-  grid-template-columns: 34px minmax(0, 1fr);
+  grid-template-columns: 32px minmax(0, 1fr);
   align-items: center;
-  gap: 12px;
-  min-height: 44px;
+  gap: 16px;
+  min-height: 48px;
   color: var(--text);
   font-size: var(--type-meta);
   font-weight: 700;
-  line-height: 1.2;
+  line-height: 1.1429;
   text-decoration: none;
   transition: color 180ms ease;
 }
@@ -1055,8 +1101,8 @@ a { color: inherit; }
    row's colour and turns blue with it on hover. A ring here made the mark itself
    the loud thing; the honour's rank comes from its label and its position. */
 .collection-badge-icon {
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   color: inherit;
 }
 .collection-badge-label { min-width: 0; }
@@ -1067,14 +1113,14 @@ a { color: inherit; }
   align-items: center;
   justify-content: center;
 }
-.category-directory-icon svg { width: 18px; height: 18px; }
+.category-directory-icon svg { width: 16px; height: 16px; }
 /* Same size as a category mark, so the two render the same 1.58px stroke: lucide
    scales its stroke with the glyph, and any size difference here would put one
    icon family at two weights in a single column. */
-.collection-badge-icon svg { width: 19px; height: 19px; }
+.collection-badge-icon svg { width: 16px; height: 16px; }
 .app-detail-best-for { max-width: var(--measure); }
-.app-detail-best-for p:not(.eyebrow) { margin: 0; color: var(--muted); font-size: 1rem; line-height: 1.55; }
-.app-detail-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 24px; }
+.app-detail-best-for p:not(.eyebrow) { margin: 0; color: var(--muted); font-size: 1rem; line-height: 1.5; }
+.app-detail-actions { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 24px; }
 .app-detail-actions .button { gap: 8px; }
 .app-detail-actions .button svg { width: 1em; height: 1em; }
 .app-detail-tags { min-height: 0; padding-top: 0; }
@@ -1087,7 +1133,7 @@ a { color: inherit; }
   position: relative;
   display: flex;
   width: min(var(--content-width), calc(100% - var(--content-inset)));
-  height: 84px;
+  height: 80px;
   align-items: center;
   justify-content: center;
   margin: 0 auto;
@@ -1102,7 +1148,7 @@ a { color: inherit; }
   pointer-events: none;
 }
 
-.content-divider-mark { position: relative; width: 34px; height: 34px; }
+.content-divider-mark { position: relative; width: 32px; height: 32px; }
 
 /* The light is drawn but unlit; it fires once when the divider is passed. */
 .brand-mark-ping {
@@ -1123,13 +1169,13 @@ a { color: inherit; }
   12% { opacity: .7; transform: scale(1); }
   100% { opacity: 0; transform: scale(2.1); }
 }
-.video-section { border-top: 0; padding-top: 26px; }
+.video-section { border-top: 0; padding-top: 24px; }
 
 .issue-subscribe { padding-bottom: 88px; }
 
 .archive-page {
-  min-height: calc(100vh - 130px);
-  padding: var(--page-start-space) 0 36px;
+  min-height: calc(100vh - 128px);
+  padding: var(--page-start-space) 0 32px;
   border: 0;
   border-radius: 0;
   background: transparent;
@@ -1138,14 +1184,14 @@ a { color: inherit; }
 .app-detail-page { min-height: 0; }
 .archive-page h1,
 .app-detail-hero h1 { max-width: 920px; overflow-wrap: anywhere; text-wrap: balance; }
-.explore-page .explore-hero { max-width: 780px; }
+.explore-page .explore-hero { max-width: 784px; }
 .explore-page .explore-section:first-of-type { border-top: 0; }
 .archive-page .section:last-child,
-.app-detail-page .section:last-child { padding-bottom: 12px; }
+.app-detail-page .section:last-child { padding-bottom: 16px; }
 .explore-discovery-section + .explore-section,
 .explore-rss-section + .explore-section { border-top: 0; }
 .explore-discovery-section {
-  padding-top: clamp(24px, 3vw, 34px);
+  padding-top: clamp(24px, 3vw, 32px);
   padding-bottom: 0;
 }
 .explore-utility-grid {
@@ -1169,7 +1215,7 @@ a { color: inherit; }
   color: var(--muted);
   font-size: var(--type-meta);
   font-weight: 500;
-  line-height: 1.45;
+  line-height: 1.4286;
 }
 
 .explore-discovery-card {
@@ -1186,7 +1232,7 @@ a { color: inherit; }
 }
 .explore-category-list {
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: 26px;
+  column-gap: 24px;
 }
 .explore-discovery-collections {
   align-content: start;
@@ -1197,29 +1243,29 @@ a { color: inherit; }
 .explore-utility-tags-panel {
   border-left: 1px solid var(--line);
 }
-.explore-utility-card .section-heading { margin-bottom: 18px; }
+.explore-utility-card .section-heading { margin-bottom: 16px; }
 .explore-utility-card .section-heading h2 { font-size: var(--type-subhead); }
-.explore-collection-list { display: grid; gap: 14px; }
-.explore-category-list { gap: 18px 26px; }
+.explore-collection-list { display: grid; gap: 16px; }
+.explore-category-list { gap: 16px 24px; }
 .explore-discovery-link {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   gap: 16px;
   align-items: start;
-  min-height: 92px;
-  padding: 6px 0;
+  min-height: 96px;
+  padding: 8px 0;
   color: var(--text);
   text-decoration: none;
 }
 .explore-discovery-icon {
   display: inline-flex;
   flex: 0 0 44px;
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   align-items: center;
   justify-content: center;
   line-height: 0;
-  border-radius: 14px;
+  border-radius: 16px;
   background: var(--surface-strong);
   color: var(--text);
   opacity: .92;
@@ -1267,7 +1313,7 @@ a { color: inherit; }
   margin-top: 4px;
   color: var(--muted);
   font-size: 1rem;
-  line-height: 1.45;
+  line-height: 1.5;
 }
 /* Both of these have to outrank `.explore-discovery-link small`, which owns `display`
    for every description in a discovery row (the collection rows use it too, so the
@@ -1278,7 +1324,7 @@ a { color: inherit; }
    silently dead. */
 .explore-discovery-link small.explore-category-description-mobile { display: none; }
 .explore-popular-tags { min-height: 0; padding-top: 4px; }
-.explore-popular-tags .tag { gap: 6px; }
+.explore-popular-tags .tag { gap: 8px; }
 /* A real colour, not an opacity. Dimmed with `opacity: .72` the count blended to 3.47:1
    in light theme and failed AA at this size; --muted holds about 6.6:1 on the chip. The
    category and collection counts in the discovery card are set the same way. */
@@ -1289,7 +1335,7 @@ a { color: inherit; }
 }
 .explore-subscribe-card {
   display: grid;
-  gap: 14px;
+  gap: 16px;
   /* 24px, the padding every other card on the page uses. */
   padding: 24px;
   border-color: var(--line);
@@ -1304,16 +1350,16 @@ a { color: inherit; }
 }
 .explore-subscribe-icon {
   display: inline-grid;
-  width: 44px;
-  min-width: 44px;
-  height: 44px;
+  width: 48px;
+  min-width: 48px;
+  height: 48px;
   flex: 0 0 44px;
   place-items: center;
-  border-radius: 14px;
+  border-radius: 16px;
   background: color-mix(in srgb, var(--accent) 18%, var(--surface-strong));
   color: color-mix(in srgb, var(--text) 72%, var(--accent));
 }
-.explore-subscribe-icon svg { width: 22px; height: 22px; }
+.explore-subscribe-icon svg { width: 24px; height: 24px; }
 .explore-subscribe-card h2 {
   margin: 0;
   text-wrap: balance;
@@ -1322,16 +1368,16 @@ a { color: inherit; }
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   align-items: start;
-  gap: 10px;
-  max-width: 700px;
-  margin-left: 60px;
+  gap: 8px;
+  max-width: 704px;
+  margin-left: 64px;
 }
 .explore-subscribe-body {
   max-width: var(--measure);
   margin: 0;
   color: var(--muted);
   font-size: 1rem;
-  line-height: 1.55;
+  line-height: 1.5;
 }
 /* An inline link in a sentence is exempt from WCAG 2.5.8, and padding one out would
    break the line it sits in. The hit area is expanded with a pseudo-element instead: the
@@ -1357,13 +1403,13 @@ a { color: inherit; }
 .explore-subscribe-url {
   width: 100%;
   max-width: 640px;
-  margin: 10px 0 0;
+  margin: 8px 0 0;
   align-self: start;
 }
 .explore-subscribe-url .rss-copy-button {
-  width: 30px;
-  min-width: 30px;
-  height: 30px;
+  width: 32px;
+  min-width: 32px;
+  height: 32px;
   padding: 0;
   border-radius: 8px;
   background: transparent;
@@ -1427,7 +1473,7 @@ a { color: inherit; }
   border-top: 0;
 }
 @media (pointer: coarse) {
-  .feature-card a { min-height: 44px; }
+  .feature-card a { min-height: 48px; }
 }
 
 /* The measure belongs to the prose, not to the page: About's headings and
@@ -1447,7 +1493,7 @@ a { color: inherit; }
    the blocks inside are capped. 620px is set by the dek, which is 52ch at 17.9px and so
    the widest line of type on the page, and the cap does nothing on a phone where the
    shell is already narrower. */
-.about-page > * { max-width: 620px; }
+.about-page > * { max-width: 624px; }
 /* Prose fills that column instead of taking `--measure` inside it. The measure exists to
    hold a readable line, and at 620px this one runs about 73 characters, inside the 65 to
    75 the craft floor asks for and slightly wider than the 62 that 52ch was giving. So the
@@ -1461,9 +1507,9 @@ a { color: inherit; }
    this wrong in opposite directions: `none` released the dek to the full 1160, and `100%`
    resolved against the 1160 shell rather than the 620 cap, which is the same bug wearing
    a different value. */
-.about-content { margin-top: 18px; padding-bottom: var(--section-space); color: var(--muted); font-size: 1rem; }
+.about-content { margin-top: 16px; padding-bottom: var(--section-space); color: var(--muted); font-size: 1rem; }
 .about-page p:not(.dek) { margin: 0; color: var(--muted); }
-.about-page p:not(.dek) + p { margin-top: 18px; }
+.about-page p:not(.dek) + p { margin-top: 16px; }
 /* The selection criteria are the one list on the page. They take the same measure and
    muted ink the prose does, so the block reads as part of the writing rather than as a
    panel: DESIGN.md is explicit that About is not a special case. The bold lead-in is
@@ -1473,20 +1519,20 @@ a { color: inherit; }
   /* Symmetric, because the paragraph rhythm is sibling-based: `p + p` carries 18px, and
      a list between two paragraphs broke that chain, leaving the sentence after it sitting
      flush against the final bullet. */
-  margin: 18px 0;
+  margin: 16px 0;
   padding: 0;
   color: var(--muted);
   list-style: none;
 }
-.about-page .about-criteria li { position: relative; padding-left: 18px; }
-.about-page .about-criteria li + li { margin-top: 12px; }
+.about-page .about-criteria li { position: relative; padding-left: 16px; }
+.about-page .about-criteria li + li { margin-top: 16px; }
 .about-page .about-criteria li::before {
   content: '';
   position: absolute;
   top: .62em;
   left: 2px;
-  width: 5px;
-  height: 5px;
+  width: 8px;
+  height: 8px;
   border-radius: 999px;
   background: var(--accent);
 }
@@ -1509,7 +1555,7 @@ a { color: inherit; }
 .archive-filter-bar {
   display: flex;
   flex-wrap: wrap;
-  gap: 14px 20px;
+  gap: 16px 16px;
   align-items: center;
   justify-content: space-between;
   margin-top: var(--section-space);
@@ -1522,12 +1568,12 @@ a { color: inherit; }
   letter-spacing: .04em;
   text-transform: uppercase;
 }
-.archive-search { flex: 1 1 260px; max-width: 340px; }
+.archive-search { flex: 1 1 260px; max-width: 336px; }
 
 .archive-route { margin-top: var(--section-space); }
 .archive-year + .archive-year { margin-top: var(--section-space); }
 .archive-year-heading {
-  margin: 0 0 14px;
+  margin: 0 0 16px;
   padding-left: 40px;
   color: var(--muted);
   font-family: var(--sans);
@@ -1539,7 +1585,7 @@ a { color: inherit; }
 .archive-stops {
   position: relative;
   display: grid;
-  gap: 14px;
+  gap: 16px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -1559,15 +1605,15 @@ a { color: inherit; }
 .archive-stop {
   position: relative;
   display: grid;
-  grid-template-columns: 17px minmax(0, 1fr);
-  gap: 23px;
+  grid-template-columns: 16px minmax(0, 1fr);
+  gap: 24px;
   align-items: center;
 }
 .archive-stop[hidden] { display: none; }
 .archive-stop-mark {
   position: relative;
-  width: 17px;
-  height: 17px;
+  width: 16px;
+  height: 16px;
   border: 1.5px solid var(--muted);
   border-radius: 50%;
   background: var(--page);
@@ -1604,18 +1650,21 @@ a { color: inherit; }
    boat that leads a vessel through a harbour. One object for the whole page, moved
    by scroll position rather than by an animation of its own, so it holds at a stop
    while the reader keeps scrolling and then catches up to the next. It is the same
-   17px as a stop mark, so docking reads as that stop lighting up. Hidden until the
+   16px as a stop mark, so docking reads as that stop lighting up. Hidden until the
    script places it, and never shown under reduced motion. */
 .archive-pilot {
   position: absolute;
   top: 0;
-  /* Sized to the ring's interior, 17px less its 1.5px border on each side, and
-     inset to match. Docking then fills the ring and leaves its outline drawn,
-     rather than covering the stop or hiding beneath it. */
+  /* Derived, not chosen: the ring's interior is 16px less its 1.5px border on each
+     side, so the pilot is 13px and insets by that same 1.5px. Docking then fills the
+     ring and leaves its outline drawn, rather than covering the stop or hiding
+     beneath it. The base-unit pass moved the ring 17 -> 16 and briefly took the pilot
+     to 16 with it, which put a 16px dot inside a 13px hole. Sizes here follow the
+     ring; they are not independent values to round. */
   left: 1.5px;
-  width: 14px;
-  height: 14px;
-  margin-top: -7px;
+  width: 13px;
+  height: 13px;
+  margin-top: -6.5px;
   /* The stops carry an opaque background and come later in the document, so
      without this the pilot paints behind the ring it is meant to fill. */
   z-index: 2;
@@ -1634,7 +1683,12 @@ a { color: inherit; }
 }
 .archive-pilot.is-live { opacity: 1; }
 .archive-route { position: relative; }
-.archive-card { display: grid; gap: 10px; padding: 25px; text-decoration: none; box-shadow: none; }
+/* No box-shadow of its own: an archive row is an app card in every respect that
+   matters, so it takes the shared card rest state and the shared hover contract
+   rather than opting out of both. It carried `box-shadow: none` until 2026-09-05,
+   which was right while a border drew its edge and left it with nothing once the
+   border went. */
+.archive-card { display: grid; gap: 8px; padding: 24px; text-decoration: none; }
 .archive-card span { color: var(--muted); }
 .archive-card strong { font-family: var(--display); font-size: 1.38rem; color: var(--text); }
 .archive-card-dek {
@@ -1647,7 +1701,7 @@ a { color: inherit; }
 .archive-card-scent {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 12px;
+  gap: 4px 16px;
   align-items: baseline;
   margin: 0;
   color: var(--muted);
@@ -1658,9 +1712,8 @@ a { color: inherit; }
   color: var(--muted);
   font-variant-numeric: tabular-nums;
 }
-.archive-card-total::before { content: "· "; }
 
-.archive-more { margin-top: 18px; margin-left: 40px; }
+.archive-more { margin-top: 16px; margin-left: 40px; }
 .archive-empty {
   max-width: var(--measure);
   margin: var(--section-space) 0 0 40px;
@@ -1680,12 +1733,12 @@ a { color: inherit; }
      distance, because centring the marks on their cards puts the last ring halfway
      up Issue 01 rather than at the foot of the list. The fallback covers the plain
      margin for a reader without JavaScript, where the line runs to the list's edge. */
-  height: var(--origin-bridge, 27px);
+  height: var(--origin-bridge, 24px);
   /* Ends on the mark's centre. The mark now centres on the card rather than sitting
      a fixed 4px down from the top, so that centre is measured rather than stated;
      without the script it is the block's own middle, which is where a centred mark
      lands anyway. */
-  top: calc(var(--origin-mark-centre, 50%) - var(--origin-bridge, 27px));
+  top: calc(var(--origin-mark-centre, 50%) - var(--origin-bridge, 24px));
   left: 8px;
   width: 1px;
   background: var(--line);
@@ -1693,17 +1746,17 @@ a { color: inherit; }
 .archive-origin--empty::before { content: none; }
 .archive-origin {
   display: grid;
-  grid-template-columns: 17px minmax(0, 1fr);
+  grid-template-columns: 16px minmax(0, 1fr);
   /* The terminus is a card like every stop above it, so the mark sits at the same
-     23px from it and centres on it the way a stop's does. */
-  gap: 23px;
+     24px from it and centres on it the way a stop's does. */
+  gap: 24px;
   align-items: center;
-  margin-top: 14px;
+  margin-top: 16px;
 }
 .archive-origin-mark {
   position: relative;
-  width: 17px;
-  height: 17px;
+  width: 16px;
+  height: 16px;
   border: 1.5px solid var(--line);
   border-radius: 50%;
   background: var(--page);
@@ -1735,11 +1788,15 @@ a { color: inherit; }
 .archive-origin-body {
   position: relative;
   max-width: none;
-  padding: 25px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
+  padding: 24px;
+  border: 0;
+  /* The accent rim is drawn from `--pick-radius`, which tracks `--radius`. At 16px
+     this card's own corner sat inside a 25.5px rim and the two arcs diverged. */
+  border-radius: var(--radius);
   background: var(--surface);
-  box-shadow: var(--shadow);
+  /* Rests proud, as the Editor's Pick card does: it is the one block the page is
+     arguing for. */
+  box-shadow: var(--shadow-hover);
   --pick-accent: var(--accent);
 }
 .archive-origin-body > * { max-width: var(--measure); }
@@ -1763,16 +1820,19 @@ a { color: inherit; }
 .category-directory-card {
   grid-template-columns: auto minmax(0, 1fr);
   column-gap: 16px;
-  row-gap: 6px;
+  row-gap: 8px;
   align-items: start;
-  border-color: color-mix(in srgb, var(--category-accent) 28%, var(--line));
+  /* Its resting accent is an inset ring, matching the way cards carry every other
+     edge now that they have no border. The One Hover Rule replaces this layer with
+     the hover accent, so the card still gives its category tint up on hover. */
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--category-accent) 28%, var(--line)), var(--shadow);
   background: var(--surface);
 }
 .category-directory-icon {
   grid-row: span 3;
-  width: 46px;
-  height: 46px;
-  border-radius: 14px;
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
   background: color-mix(in srgb, var(--category-accent) 75%, var(--surface));
   color: color-mix(in srgb, var(--text) 80%, var(--accent));
 }
@@ -1829,7 +1889,7 @@ a { color: inherit; }
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 10px 14px;
+  gap: 8px 16px;
   margin-top: 16px;
 }
 .directory-actives {
@@ -1838,7 +1898,7 @@ a { color: inherit; }
   align-items: center;
   /* Zero the block margins explicitly. A <ul> carries margin-block: 1em from the user
      agent, and setting margin-left alone left 16px above and below the chips inside a
-     row whose own gaps were 12px — 32px of invisible height that made the row look
+     row whose own gaps were 16px — 32px of invisible height that made the row look
      mispositioned rather than merely padded. The auto left margin carries the chips to
      the end of the row, under Filter and Sort, so they read as belonging to the controls
      that produced them; it has to live in the shorthand or this reset would drop it. */
@@ -1856,11 +1916,11 @@ a { color: inherit; }
      line-height in a 2.65 box-to-type ratio, the airiest box in the directory around its
      smallest type, against 1.98 for the chip it sits above. 30px puts it one step above
      `.tag`, which is what its being interactive earns, and no more. */
-  min-height: 30px;
+  min-height: 32px;
   max-width: 100%;
   align-items: center;
-  gap: 6px;
-  padding: 0 10px;
+  gap: 8px;
+  padding: 0 8px;
   border: 1px solid color-mix(in srgb, var(--accent) 38%, transparent);
   border-radius: 999px;
   /* No resting fill. An accent tint behind accent text cost 0.98 of contrast in light
@@ -1873,7 +1933,7 @@ a { color: inherit; }
   font: inherit;
   font-size: var(--type-label);
   font-weight: 700;
-  line-height: 1.15;
+  line-height: 1.3333;
   transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease;
 }
 /* The query pill can be a hundred characters. It gives up width before the row wraps
@@ -1884,8 +1944,8 @@ a { color: inherit; }
   white-space: nowrap;
 }
 .directory-active svg {
-  width: 13px;
-  height: 13px;
+  width: 16px;
+  height: 16px;
   flex: none;
 }
 .directory-active-x { opacity: .7; transition: opacity 180ms ease; }
@@ -1909,17 +1969,17 @@ a { color: inherit; }
   flex: 0 1 280px;
   grid-template-columns: auto minmax(0, 1fr);
   min-width: 0;
-  min-height: 52px;
+  min-height: 48px;
   align-items: center;
-  gap: 10px;
-  padding: 10px 13px;
+  gap: 8px;
+  padding: 8px 16px;
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: 16px;
   background: var(--surface);
 }
 .directory-search svg {
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   color: var(--muted);
 }
 .directory-query-input {
@@ -1940,8 +2000,8 @@ a { color: inherit; }
 }
 .directory-query-input:disabled { cursor: not-allowed; }
 .filter-option input {
-  width: 15px;
-  height: 15px;
+  width: 16px;
+  height: 16px;
   flex: none;
   margin: 0;
   accent-color: var(--accent);
@@ -1971,7 +2031,7 @@ a { color: inherit; }
   /* It sat at 52px to hold the controls' centre line while it was among them. Out of that
      row it answers to the chips beside it instead, and the 56px full-width band it became
      on a phone is what made it read as orphaned. */
-  min-height: 30px;
+  min-height: 32px;
   align-items: center;
   justify-content: flex-start;
   margin: 0;
@@ -1988,9 +2048,9 @@ a { color: inherit; }
 .directory-sort {
   display: flex;
   min-width: 0;
-  min-height: 52px;
+  min-height: 48px;
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: 16px;
   background: var(--surface);
 }
 .directory-select {
@@ -2007,9 +2067,9 @@ a { color: inherit; }
   text-transform: none;
 }
 .directory-filter-bar > .directory-select {
-  min-height: 52px;
+  min-height: 48px;
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: 16px;
   background: var(--surface);
 }
 .directory-select-trigger {
@@ -2018,10 +2078,10 @@ a { color: inherit; }
   min-height: 100%;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 16px;
   padding: 0 16px;
   border: 0;
-  border-radius: 11px;
+  border-radius: calc(var(--radius-md) - 1px);
   background: transparent;
   color: var(--text);
   font: inherit;
@@ -2046,20 +2106,20 @@ a { color: inherit; }
   /* 12px, the same gap the mobile nav menu leaves below the header edge. At 1px the
      panel butted against its own trigger and the query field inside it read as part of
      the button rather than as the top of a menu. */
-  top: calc(100% + 12px);
+  top: calc(100% + 8px);
   right: 0;
   width: 100%;
   overflow: hidden;
   border: 1px solid var(--line);
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   background: var(--surface);
   box-shadow: var(--shadow);
 }
 .directory-select-options button {
   display: block;
   width: 100%;
-  min-height: 38px;
-  padding: 0 13px;
+  min-height: 40px;
+  padding: 0 16px;
   border: 0;
   background: transparent;
   color: var(--text);
@@ -2080,15 +2140,15 @@ a { color: inherit; }
 .directory-filter-label {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
 }
 .directory-filter-count {
   display: inline-flex;
-  min-width: 19px;
-  height: 19px;
+  min-width: 16px;
+  height: 16px;
   align-items: center;
   justify-content: center;
-  padding: 0 5px;
+  padding: 0 8px;
   border-radius: 999px;
   background: var(--surface-strong);
   color: var(--text);
@@ -2113,24 +2173,28 @@ a { color: inherit; }
      comes up 4px short of the two 180px triggers, and the added term owes the gap plus
      those four pixels: 16 + 4 = 20, giving exactly the 376px the pair spans. The old
      `+ 16px` rendered 372px and left the panel 3px inside Sort's right edge. */
+  /* Derived, not chosen: the panel spans Filter + the 16px control gap + Sort,
+     which is 180 + 16 + 180 = 376. The 20px is the border-box remainder that makes
+     the panel's right edge land exactly on Sort's. Snapping it to 16 breaks that
+     alignment by 4px, so this is an exception to the base unit, not a miss. */
   width: calc(200% + 20px);
 }
 .filter-scroll {
-  max-height: min(282px, 42vh);
+  max-height: min(280px, 42vh);
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 6px 0;
+  padding: 8px 0;
 }
 @media (max-width: 680px) {
-  .filter-scroll { max-height: min(282px, 36vh); }
+  .filter-scroll { max-height: min(280px, 36vh); }
 }
 .filter-group + .filter-group {
-  margin-top: 6px;
+  margin-top: 8px;
   border-top: 1px solid var(--line);
 }
 .filter-group-label {
   margin: 0;
-  padding: 10px 13px 5px;
+  padding: 8px 16px 8px;
   color: var(--muted);
   font-size: var(--type-label);
   font-weight: 800;
@@ -2139,10 +2203,10 @@ a { color: inherit; }
 }
 .filter-option {
   display: flex;
-  min-height: 34px;
+  min-height: 32px;
   align-items: center;
-  gap: 10px;
-  padding: 0 13px;
+  gap: 8px;
+  padding: 0 16px;
   color: var(--text);
   font-size: var(--type-label);
   font-weight: 700;
@@ -2172,12 +2236,12 @@ a { color: inherit; }
 .filter-actions {
   display: flex;
   justify-content: flex-end;
-  padding: 9px 13px;
+  padding: 8px 16px;
   border-top: 1px solid var(--line);
 }
 .filter-reset {
   min-height: 32px;
-  padding: 0 11px;
+  padding: 0 8px;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: transparent;
@@ -2203,13 +2267,13 @@ a { color: inherit; }
 .directory-more {
   display: flex;
   justify-content: center;
-  margin-top: 28px;
+  margin-top: 32px;
 }
 
 .directory-empty {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
   flex-wrap: wrap;
   /* No margin of its own. The grid is still in the flow above it with every card hidden,
      so its own top margin already sets this off the results row; a second margin here
@@ -2246,7 +2310,7 @@ a { color: inherit; }
   .archive-card { transition: box-shadow 320ms cubic-bezier(.16, 1, .3, 1), border-color 320ms cubic-bezier(.16, 1, .3, 1), background-color 320ms cubic-bezier(.16, 1, .3, 1); }
   .app-card:hover,
   .feature-card:hover,
-  .archive-card:hover { border-color: color-mix(in srgb, var(--accent) 42%, var(--line)); background: var(--surface); box-shadow: var(--shadow-hover); }
+  .archive-card:hover { background: var(--surface); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 42%, var(--line)), var(--shadow-hover); }
 
   /* That shorthand would drop the pick card's wash, and the card already rests at
      Hover Lift, so it needs its own answer to the pointer. The light gives it: the
@@ -2266,14 +2330,14 @@ a { color: inherit; }
      focus order do not change when the columns collapse. */
   .app-detail-hero {
     grid-template-columns: minmax(0, 1fr);
-    gap: 28px;
+    gap: 32px;
   }
   /* No rule here either. The 28px the collapse already opens up is the separation;
      a hairline would read as a seam between two halves of the same block. */
   .app-detail-rail { padding-top: 2px; }
 
-  .site-header { min-height: 76px; }
-  .brand-mark { width: 42px; height: 42px; }
+  .site-header { min-height: 80px; }
+  .brand-mark { width: 40px; height: 40px; }
   /* Stacked, the wave stops being the hero's floor and becomes a divider
      inside it: the fold ends at the water and the pick gets its own beat.
      `display: contents` lets the shell's two columns sit as siblings of the
@@ -2282,8 +2346,8 @@ a { color: inherit; }
     --sea-h: 84px;
     display: flex;
     flex-direction: column;
-    gap: 30px;
-    padding-block: 34px 46px;
+    gap: 32px;
+    padding-block: 32px 48px;
   }
 
   .home-hero-inner { display: contents; }
@@ -2306,7 +2370,7 @@ a { color: inherit; }
     clip: auto;
     clip-path: none;
     white-space: normal;
-    margin: 0 0 22px;
+    margin: 0 0 24px;
     font-family: var(--display);
     font-size: var(--type-subhead);
     font-weight: 500;
@@ -2318,15 +2382,15 @@ a { color: inherit; }
   .grid { grid-template-columns: 1fr; }
   .directory-filter-bar,
   .directory-filter-bar--no-filters {
-    gap: 12px;
+    gap: 16px;
   }
   /* Opposite ends of a phone-width row reads as two things, which is the problem this
      regrouping exists to fix. Left, together, as one block. */
   .directory-actives { margin-left: 0; }
   /* One rhythm down the stacked column: the bar's own 12px carries through the results
      row to the grid, so nothing in the column sits on a different interval. */
-  .directory-results { margin-top: 12px; }
-  .directory-results + .directory-grid { margin-top: 12px; }
+  .directory-results { margin-top: 16px; }
+  .directory-results + .directory-grid { margin-top: 16px; }
   .directory-search { flex: 1 1 100%; }
   .directory-filter-bar > .directory-filter,
   .directory-filter-bar > .directory-sort,
@@ -2351,49 +2415,49 @@ a { color: inherit; }
 
 @media (max-width: 680px) {
   :root { --content-inset: 24px; }
-  .site-header { position: sticky; top: 0; width: 100%; min-height: 70px; gap: 10px; margin: 0; padding: 0 16px; }
+  .site-header { position: sticky; top: 0; width: 100%; min-height: 72px; gap: 8px; margin: 0; padding: 0 16px; }
   .issue > .section { width: min(var(--content-width), calc(100% - var(--content-inset))); }
-  .brand-mark { width: 38px; height: 38px; }
-  .brand { gap: 10px; }
-  .site-header nav { gap: 10px; }
-  .theme-toggle { width: 44px; height: 44px; }
-  .theme-toggle svg { width: 19px; height: 19px; }
-  .home-hero { --sea-h: 72px; padding-block: 30px 46px; }
-  .content-divider { height: 68px; }
-  .video-section { padding-top: 20px; }
+  .brand-mark { width: 40px; height: 40px; }
+  .brand { gap: 8px; }
+  .site-header nav { gap: 8px; }
+  .theme-toggle { width: 48px; height: 48px; }
+  .theme-toggle svg { width: 16px; height: 16px; }
+  .home-hero { --sea-h: 72px; padding-block: 32px 48px; }
+  .content-divider { height: 64px; }
+  .video-section { padding-top: 16px; }
   :root { --page-start-space: 28px; }
-  .archive-page { padding: var(--page-start-space) 0 36px; }
-  .app-detail-page { padding: var(--page-start-space) 0 36px; }
+  .archive-page { padding: var(--page-start-space) 0 32px; }
+  .app-detail-page { padding: var(--page-start-space) 0 32px; }
   .app-detail-hero { padding: 0 0 24px; }
   .app-detail-actions { flex-direction: column; align-items: flex-start; }
   .explore-subscribe-card { grid-template-columns: 1fr; }
   .explore-utility-grid { grid-template-columns: 1fr; }
   .explore-utility-tags-panel { border-top: 1px solid var(--line); border-left: 0; }
   .explore-category-list { grid-template-columns: 1fr; }
-  .explore-category-list { row-gap: 12px; }
+  .explore-category-list { row-gap: 16px; }
   .explore-category-link { min-height: 0; }
   .explore-discovery-link small.explore-category-description-desktop { display: none; }
   .explore-discovery-link small.explore-category-description-mobile { display: block; }
-  .explore-discovery-section { padding-top: 20px; padding-bottom: 0; }
+  .explore-discovery-section { padding-top: 16px; padding-bottom: 0; }
   .explore-subscribe-heading { align-items: start; }
   .explore-page .explore-section:has(+ .explore-rss-section) { padding-bottom: 24px; }
   .explore-rss-section + .explore-section { padding-top: 24px; }
   .explore-subscribe-content {
-    gap: 14px;
+    gap: 16px;
     max-width: none;
-    margin-left: 60px;
+    margin-left: 64px;
   }
   .explore-subscribe-url .rss-copy-button {
-    width: 44px;
-    min-width: 44px;
-    height: 44px;
+    width: 48px;
+    min-width: 48px;
+    height: 48px;
     justify-self: start;
   }
   .directory-filter-bar {
     margin-top: 0;
   }
-  .directory-search { gap: 10px; padding: 10px 14px; }
-  .directory-search svg { width: 21px; height: 21px; }
+  .directory-search { gap: 8px; padding: 8px 16px; }
+  .directory-search svg { width: 24px; height: 24px; }
   .directory-query-input { font-size: 16px; }
   .directory-search,
   .directory-filter-bar > .directory-select,
@@ -2402,13 +2466,13 @@ a { color: inherit; }
 
 @media (pointer: coarse) {
   .theme-toggle {
-    width: 44px;
-    height: 44px;
+    width: 48px;
+    height: 48px;
   }
-  .collection-badge { min-height: 44px; }
+  .collection-badge { min-height: 48px; }
   .directory-select-options button,
   .filter-option,
-  .filter-reset { min-height: 44px; }
+  .filter-reset { min-height: 48px; }
   /* The Target Floor Rule grows the area around a target that is too small rather than
      padding the target out, which is how the Editor's Pick mark already works. The chip
      stays 30px in both pointer worlds and reaches 44 through this layer, so the row reads
@@ -2424,18 +2488,18 @@ a { color: inherit; }
   }
   /* The area grows 7px past the visible chip on each side, so wrapped rows need 14px
      between them or two chips would claim the same tap. */
-  .directory-actives { gap: 14px 8px; }
+  .directory-actives { gap: 16px 8px; }
 }
 
 @media (max-width: 560px) {
   .directory-filter { position: static; }
   .directory-filter-panel {
-    top: calc(100% + 6px);
+    top: calc(100% + 8px);
     right: 0;
     left: 0;
     width: auto;
     border-top: 1px solid var(--line);
-    border-radius: 10px;
+    border-radius: 8px;
   }
 }
 

@@ -181,7 +181,7 @@ let stopIndex = 0;
           topic or an issue number.
         </p>
 
-        <section class="archive-origin" aria-labelledby="archive-origin-heading">
+        <section class="archive-origin" data-archive-origin aria-labelledby="archive-origin-heading">
           <span class="archive-origin-mark" aria-hidden="true"></span>
           <div class="archive-origin-body has-pick-accent">
             <h2 id="archive-origin-heading">Where it started</h2>
@@ -221,6 +221,7 @@ let stopIndex = 0;
   const countEl = document.querySelector<HTMLElement>('[data-archive-count]');
   const emptyEl = document.querySelector<HTMLElement>('[data-archive-empty]');
   const moreButton = document.querySelector<HTMLButtonElement>('[data-archive-more]');
+  const originEl = document.querySelector<HTMLElement>('[data-archive-origin]');
 
   if (route && input && countEl) {
     const stops = [...route.querySelectorAll<HTMLElement>('[data-archive-stop]')];
@@ -252,6 +253,16 @@ let stopIndex = 0;
 
       countEl.textContent = query ? `${label(shown)} matching` : label(stops.length);
       if (emptyEl) emptyEl.hidden = shown !== 0;
+
+      /* A search that finds nothing leaves the message and nothing else. The route
+         draws a line to stops that are not there, and the terminus answers a journey
+         the reader did not take, so both go with the results rather than hanging
+         under an empty count. The route carries the pilot and the year headings, and
+         the origin carries its bridge, its mark and the card, so hiding the two
+         sections takes all six things with them. */
+      const found = shown !== 0;
+      route.hidden = !found;
+      if (originEl) originEl.hidden = !found;
       if (moreButton) moreButton.hidden = expanded || query !== '';
     };
 

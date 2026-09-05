@@ -11,8 +11,8 @@
 .desktop-search-button,
 .nav-menu-toggle {
   display: grid;
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   padding: 0;
   place-items: center;
   border: 0;
@@ -25,8 +25,8 @@
 }
 
 .desktop-search-button svg {
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   fill: none;
   stroke: currentColor;
   stroke-linecap: round;
@@ -34,7 +34,7 @@
   stroke-width: 1.8;
 }
 
-.desktop-search-button { margin-left: 14px; }
+.desktop-search-button { margin-left: 16px; }
 
 .nav-menu-toggle { display: none; }
 
@@ -53,8 +53,8 @@
 }
 
 .nav-theme-toggle {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
 }
 
@@ -71,14 +71,14 @@
 .nav-menu-toggle-lines {
   position: relative;
   display: block;
-  width: 22px;
-  height: 18px;
+  width: 24px;
+  height: 16px;
 }
 
 .nav-menu-toggle-lines span {
   position: absolute;
   left: 0;
-  width: 22px;
+  width: 24px;
   height: 2px;
   border-radius: 999px;
   background: currentColor;
@@ -96,7 +96,7 @@
 }
 
 .nav-menu-toggle-lines span:nth-child(3) {
-  top: 15px;
+  top: 16px;
 }
 
 .mobile-nav-open .nav-menu-toggle-lines span:nth-child(1) {
@@ -127,7 +127,7 @@
   inset: 0;
   display: grid;
   place-items: start center;
-  padding: min(9vh, 92px) 20px 24px;
+  padding: min(9vh, 96px) 16px 24px;
   overflow: hidden;
 }
 
@@ -139,7 +139,7 @@
   inset: 0;
   display: grid;
   place-items: start end;
-  padding: 98px clamp(24px, 3.2vw, 38px) 24px;
+  padding: 96px clamp(24px, 3.2vw, 40px) 24px;
   overflow: hidden;
 }
 
@@ -155,7 +155,7 @@
   inset: 0;
   display: grid;
   place-items: center;
-  padding: min(10vh, 96px) 20px 24px;
+  padding: min(10vh, 96px) 16px 24px;
   overflow: hidden;
 }
 
@@ -189,10 +189,10 @@
 .search-modal {
   position: relative;
   z-index: 1;
-  width: min(820px, 100%);
+  width: min(824px, 100%);
   overflow: hidden;
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: 16px;
   background: var(--surface);
   box-shadow: var(--shadow-modal);
 }
@@ -202,11 +202,11 @@
   z-index: 1;
   display: grid;
   width: min(344px, 100%);
-  max-height: calc(100dvh - 122px);
+  max-height: calc(100dvh - 120px);
   grid-template-rows: minmax(0, 1fr) auto;
   overflow: hidden;
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: 16px;
   background: var(--surface);
   box-shadow: var(--shadow-modal);
   transform-origin: top right;
@@ -230,7 +230,7 @@
   width: min(760px, 100%);
   overflow: hidden;
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: 16px;
   background: var(--surface);
   box-shadow: var(--shadow-modal);
 }
@@ -238,7 +238,7 @@
 .mobile-nav-actions {
   display: grid;
   gap: 4px;
-  padding: 10px 10px 4px;
+  padding: 8px 8px 4px;
   overflow-y: auto;
   overscroll-behavior: contain;
 }
@@ -247,11 +247,11 @@
 .mobile-nav-search,
 .mobile-nav-rss {
   display: flex;
-  min-height: 54px;
+  min-height: 56px;
   align-items: center;
   justify-content: flex-start;
-  gap: 14px;
-  padding: 0 14px;
+  gap: 16px;
+  padding: 0 16px;
   border: 0;
   border-radius: 8px;
   background: transparent;
@@ -282,7 +282,7 @@
   content: '';
   position: absolute;
   right: 0;
-  bottom: -6px;
+  bottom: -8px;
   left: 0;
   height: 1px;
   background: var(--line);
@@ -290,8 +290,8 @@
 }
 
 .mobile-nav-search svg {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   flex: none;
   stroke: currentColor;
   stroke-linecap: round;
@@ -302,8 +302,8 @@
 
 .mobile-nav-actions a svg,
 .mobile-nav-rss svg {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   flex: none;
   stroke: currentColor;
   stroke-linecap: round;
@@ -339,7 +339,7 @@
 .mobile-nav-utilities {
   display: grid;
   gap: 4px;
-  padding: 4px 10px 9px;
+  padding: 4px 8px 8px;
 }
 
 @keyframes mobile-nav-backdrop-in {
@@ -371,8 +371,8 @@
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  gap: 14px;
-  padding: 18px 20px;
+  gap: 16px;
+  padding: 16px 16px;
   border-bottom: 1px solid var(--line);
 }
 
@@ -397,8 +397,8 @@
 
 .search-close {
   display: grid;
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   padding: 0;
   place-items: center;
   border: 1px solid transparent;
@@ -410,8 +410,8 @@
 }
 
 .search-close svg {
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
 }
 
 .search-close:hover,
@@ -424,7 +424,7 @@
 
 .search-count {
   margin: 0;
-  padding: 10px 20px 0;
+  padding: 8px 16px 0;
   color: var(--muted);
   font-size: var(--type-label);
   font-weight: 800;
@@ -437,14 +437,14 @@
   max-height: min(58vh, 560px);
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 10px;
+  padding: 8px;
 }
 
 .search-result {
   display: grid;
   align-items: center;
-  padding: 14px 16px;
-  border-radius: 12px;
+  padding: 16px 16px;
+  border-radius: 16px;
   color: var(--text);
   text-decoration: none;
   transition: background-color 120ms ease, color 120ms ease;
@@ -467,7 +467,7 @@
   font-family: var(--display);
   font-size: 1.18rem;
   font-weight: 600;
-  line-height: 1.18;
+  line-height: 1.2712;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -476,14 +476,14 @@
   overflow: hidden;
   color: var(--muted);
   font-size: .9rem;
-  line-height: 1.38;
+  line-height: 1.3889;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .search-empty {
   margin: 0;
-  padding: 26px 16px 30px;
+  padding: 24px 16px 32px;
   color: var(--muted);
   font-size: .95rem;
 }
@@ -493,7 +493,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 18px 20px 0;
+  padding: 16px 16px 0;
 }
 
 .rss-kicker {
@@ -507,8 +507,8 @@
 
 .rss-close {
   display: grid;
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   padding: 0;
   place-items: center;
   border: 1px solid transparent;
@@ -520,8 +520,8 @@
 }
 
 .rss-close svg {
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
 }
 
 .rss-close:hover,
@@ -533,7 +533,7 @@
 }
 
 .rss-modal h2 {
-  margin: 16px 20px 0;
+  margin: 16px 16px 0;
   color: var(--text);
   font-family: var(--display);
   font-size: clamp(2rem, 4vw, 2.85rem);
@@ -542,20 +542,20 @@
 }
 
 .rss-description {
-  margin: 14px 20px 0;
+  margin: 16px 16px 0;
   color: var(--muted);
   font-size: 1rem;
-  line-height: 1.6;
+  line-height: 1.5;
   max-width: 60ch;
 }
 
 .rss-url-card {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  gap: 14px;
+  gap: 16px;
   align-items: center;
-  margin: 20px 20px 24px;
-  padding: 16px 18px;
+  margin: 16px 16px 24px;
+  padding: 16px 16px;
   border: 1px solid var(--line);
   border-radius: 16px;
   background: var(--surface-strong);
@@ -575,14 +575,14 @@
   color: var(--text);
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
   font-size: .94rem;
-  line-height: 1.35;
+  line-height: 1.3298;
   overflow-wrap: anywhere;
 }
 
 .rss-copy-button {
   display: grid;
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   padding: 0;
   place-items: center;
   border: 0;
@@ -596,8 +596,8 @@
 
 .rss-copy-button svg {
   grid-area: 1 / 1;
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   flex: 0 0 auto;
   stroke: currentColor;
   stroke-linecap: round;
@@ -661,12 +661,12 @@
   .mobile-nav-overlay {
     height: 100dvh;
     place-items: start center;
-    padding: calc(70px + max(12px, env(safe-area-inset-top))) 12px 24px;
+    padding: calc(72px + max(16px, env(safe-area-inset-top))) 16px 24px;
   }
   .mobile-nav-modal {
     width: 100%;
     max-height: calc(100dvh - 106px - env(safe-area-inset-top));
-    border-radius: 12px;
+    border-radius: 16px;
     transform-origin: top center;
   }
   .mobile-nav-actions { gap: 3px; padding: 8px 8px 4px; }
@@ -677,32 +677,32 @@
   .mobile-nav-search,
   .mobile-nav-rss {
     min-height: 48px;
-    padding: 0 14px;
+    padding: 0 16px;
     font-size: .98rem;
   }
   .search-overlay {
     height: 100dvh;
-    padding: max(12px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom));
+    padding:max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
     place-items: start center;
   }
   .rss-overlay {
     height: 100dvh;
-    padding: max(12px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom));
+    padding:max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
   }
-  .search-modal { border-radius: 14px; }
-  .rss-modal { border-radius: 14px; }
-  .search-input-wrap { gap: 10px; padding: 14px; }
-  .search-input-icon { width: 21px; height: 21px; }
-  .search-close { width: 44px; height: 44px; }
+  .search-modal { border-radius: 16px; }
+  .rss-modal { border-radius: 16px; }
+  .search-input-wrap { gap: 8px; padding: 16px; }
+  .search-input-icon { width: 24px; height: 24px; }
+  .search-close { width: 48px; height: 48px; }
   .search-input { font-size: 16px; }
-  .search-count { padding: 14px 14px 12px; }
+  .search-count { padding: 16px 16px 16px; }
   .search-results {
     max-height: calc(100dvh - 168px);
     padding: 0 8px 8px;
   }
   .search-result {
     align-items: start;
-    padding: 13px 12px;
+    padding: 16px 16px;
   }
   .search-result-copy strong { font-size: 1.08rem; }
   .search-result-copy span {
@@ -712,14 +712,14 @@
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
   }
-  .rss-modal-topline { padding: 16px 14px 0; }
-  .rss-modal h2 { margin: 14px 14px 0; font-size: clamp(1.75rem, 10vw, 2.4rem); }
-  .rss-description { margin: 12px 14px 0; font-size: .96rem; }
+  .rss-modal-topline { padding: 16px 16px 0; }
+  .rss-modal h2 { margin: 16px 16px 0; font-size: clamp(1.75rem, 10vw, 2.4rem); }
+  .rss-description { margin: 16px 16px 0; font-size: .96rem; }
   .rss-url-card {
     grid-template-columns: minmax(0, 1fr) auto;
-    gap: 10px;
-    margin: 16px 14px 18px;
-    padding: 13px 14px;
+    gap: 8px;
+    margin: 16px 16px 16px;
+    padding: 16px 16px;
   }
   .rss-url-card.explore-subscribe-url {
     width: 100%;
@@ -729,11 +729,11 @@
   }
   .rss-url-value {
     font-size: .84rem;
-    line-height: 1.4;
+    line-height: 1.4881;
   }
-  .rss-close { width: 44px; height: 44px; }
-  .rss-copy-button { width: 44px; height: 44px; }
-  .rss-copy-button svg { width: 18px; height: 18px; }
+  .rss-close { width: 48px; height: 48px; }
+  .rss-copy-button { width: 48px; height: 48px; }
+  .rss-copy-button svg { width: 16px; height: 16px; }
 }
 
 @media (pointer: coarse) {
@@ -742,8 +742,8 @@
   .search-close,
   .rss-close,
   .rss-copy-button {
-    width: 44px;
-    height: 44px;
+    width: 48px;
+    height: 48px;
   }
 }
 

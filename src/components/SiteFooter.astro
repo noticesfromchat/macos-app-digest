@@ -34,7 +34,7 @@ const { current = '' } = Astro.props;
 <style>
   .site-footer {
     width: 100%;
-    margin-top: clamp(48px, 6vw, 76px);
+    margin-top: clamp(48px, 6vw, 80px);
     border-top: 1px solid var(--line);
     background: var(--bg);
   }
@@ -45,8 +45,8 @@ const { current = '' } = Astro.props;
     align-items: center;
     justify-content: space-between;
     gap: 24px;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding-top: 16px;
+    padding-bottom: 16px;
   }
 
   .site-footer p {
@@ -58,7 +58,7 @@ const { current = '' } = Astro.props;
   .site-footer nav {
     display: flex;
     align-items: center;
-    gap: clamp(20px, 2.8vw, 32px);
+    gap: clamp(16px, 2.8vw, 32px);
     white-space: nowrap;
   }
 
@@ -102,14 +102,14 @@ const { current = '' } = Astro.props;
   }
 
   .footer-social-link svg {
-    width: 15px;
-    height: 15px;
+    width: 16px;
+    height: 16px;
     fill: currentColor;
   }
 
   @media (pointer: coarse) {
     .site-footer a,
-    .site-footer nav button { min-height: 44px; }
+    .site-footer nav button { min-height: 48px; }
   }
 
   @media (max-width: 680px) {
@@ -117,7 +117,7 @@ const { current = '' } = Astro.props;
       min-height: 0;
       flex-direction: column;
       align-items: flex-start;
-      gap: 14px;
+      gap: 16px;
       padding-top: 24px;
       padding-bottom: 24px;
     }
@@ -125,7 +125,7 @@ const { current = '' } = Astro.props;
     .site-footer nav {
       width: 100%;
       flex-wrap: wrap;
-      gap: 14px 24px;
+      gap: 16px 24px;
     }
   }
 </style>
