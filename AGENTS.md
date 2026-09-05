@@ -55,7 +55,7 @@ The minimum read for any presentation or content change:
 | `docs/STYLE_GUIDE.md` | Visual system, page structure, responsive and interaction rules, editorial punctuation, publishing conventions |
 | `DESIGN.md` | Tokens, named house rules, motion, the committed visual world |
 | `docs/DEVELOPMENT.md` | Local-to-production path, validation, preview and deploy contract |
-| `docs/GIT_BRANCHING.md` | Branching, release branches, what Netlify can and cannot preview |
+| `docs/GIT_BRANCHING.md` | Branch naming, release branches, what Netlify can and cannot preview |
 | `docs/ISSUE_TEMPLATE.md` | App and issue frontmatter |
 | `docs/PUBLISHING.md` | Weekly release work |
 
@@ -76,7 +76,10 @@ that have shipped misleads whoever reads it next. `docs/TAG_AUDIT.md` section 8 
 the pattern in use.
 
 1. Start from the latest `main` and create a short-lived task branch. Never make a
-   production change directly on `main`.
+   production change directly on `main`. A single stream of work takes a descriptive
+   branch name; the weekly release takes `issue-NNN-weekly-update`, matching the
+   three-digit issue `number`. Do not create or switch branches on your own
+   initiative — propose the branch and wait for the editor's answer.
 2. Read the task-relevant documentation before making changes.
 3. Inspect the relevant component, content schema and current content before editing.
 4. Create or update Markdown content rather than copying page markup.
@@ -128,14 +131,31 @@ the single production deployment point. Follow the complete workflow in
 
 - On Thursday, research candidate apps, links and sources for the upcoming issue,
   then propose the Friday slate for editor review.
-- For each proposed app, include draft description, `bestFor`, tags, source or
-  homepage and any collection recommendations.
+- For each proposed app, include draft description, `bestFor`, `tagline`, tags, source
+  or homepage and any collection recommendations. The tagline is the app's
+  differentiator in its page title and is written for that title alone; section 6 of
+  `docs/STYLE_GUIDE.md` carries the pattern and the length budget.
+- Include app selections from the editor's
+  [App Selections note](https://app.notion.com/p/App-selections-3d1d6482d47f8069b146c4dfec0c0c43?source=copy_link)
+  in the candidate pool before proposing the slate.
+- Do not select more than two apps from any single discovery source for one issue,
+  counting regular section apps and the optional Editor's Pick together. Product
+  Hunt, `r/macapps` and the editor's App Selections note each count as separate
+  sources under this cap. If the best slate would exceed the cap, present the
+  affected choices as checkbox decisions in the Notion review page and use
+  verified alternates for any rejected or over-cap selections.
 - Proposed issue slates must preserve the standard section spine:
   `New Discoveries`, `Trending`, `Old Favorites`, `AI & Automation`,
   `Up and Coming`. Do not substitute alternate section names such as utility,
   workbench or themed catchall sections.
 - Every app placed in an `Old Favorites` section must include `community-favorites`
   in its app record's `collections` array. Preserve any existing collection entries.
+- Render app icons at **128px square**, resizing larger sources down and smaller ones
+  up. Prefer a source that already meets it, because the icon also carries the app's Open
+  Graph card at 112px, but use the best one available rather than refusing it. The
+  category fallback is a sharp vector mark and is for sources too poor to be worth
+  showing, at the cost of the app's own identity. Section 11 of `docs/STYLE_GUIDE.md`
+  owns the rule and the reasoning.
 - During the Thursday check, audit existing tags for underuse, duplication, vague
   labels, overly narrow labels and apps that appear mistagged or undertagged. Follow
   `docs/TAG_AUDIT.md`, which defines the method, the protected single-app tags and the
@@ -307,10 +327,15 @@ issue.
 
 ## Editor attribution
 
-- Public website content must never identify the editor by personal name.
-- Use `Editor`, `Editor's Pick` or similarly role-based language for attribution.
-- Personal names may remain in private workflow instructions, but not in app records,
-  issue content or generated page copy.
+- The editor's first name may appear on the About page, where the page speaks in the
+  editor's own voice and a byline is the point. This was a deliberate change on
+  2026-09-04, not a drift: an About page that says "I'm not a developer" and then refuses
+  to say who "I" is reads as evasive, and the follow-up critique found the anonymity was
+  costing the page the trust it exists to build.
+- Everywhere else, public website content must not identify the editor by personal name.
+- Use `Editor`, `Editor's Pick` or similarly role-based language for attribution in app
+  records, issue content and generated page copy.
+- The editor's full name is not public anywhere, About included.
 
 ## Non-negotiable presentation rules
 

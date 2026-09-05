@@ -28,17 +28,20 @@
   --radius: 16px;
   --content-width: 1160px;
   --content-inset: 40px;
-  --page-start-space: 36px;
+  /* Reduced 25% from 36px on 2026-09-04. The trail keeps its 11px bind to the title
+     under The One Page Title Rule; what was reading as the trail having fallen down a gap
+     was the space above it, between the header and the trail, not the space below. */
+  --page-start-space: 27px;
   --section-space: clamp(26px, 3.8vw, 40px);
   --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
   --display: "Iowan Old Style", "Baskerville", "Times New Roman", serif;
-  --type-brand-nav: clamp(1.15rem, 2.1vw, 1.55rem);
-  --type-label: .78rem;
-  --type-meta: .84rem;
-  --type-subhead: clamp(1.9rem, 2.4vw, 2.35rem);
-  --type-page-title: clamp(3.25rem, 5.1vw, 4.25rem);
-  --type-section-title: clamp(2.2rem, 4vw, 3.8rem);
-  --type-dek: clamp(1.12rem, 1.4vw, 1.25rem);
+  --type-brand-nav: clamp(1.125rem, 1.8vw, 1.375rem);
+  --type-label: .75rem;
+  --type-meta: .875rem;
+  --type-subhead: clamp(1.375rem, 2.2vw, 1.75rem);
+  --type-page-title: clamp(1.875rem, 3.1vw, 2.5rem);
+  --type-section-title: clamp(1.5rem, 2.6vw, 2.0625rem);
+  --type-dek: 1.1875rem;
   /* One reading measure. Set in ch so it holds ~70 characters at any of the
      sizes below it, not a fixed pixel column that widens as type shrinks. */
   --measure: 52ch;
@@ -116,11 +119,16 @@
 /* Recedes behind the crumbs without needing a token of its own, the same color-mix
    the focus ring uses. */
 .breadcrumb-sep { color: color-mix(in srgb, var(--muted) 55%, transparent); }
+/* The mark sits inside this crumb rather than between the two, so the space to its right
+   is set here while the space to its left is the list's own column gap. They have to be
+   the same number or the mark is off centre: at 7px against the list's 8 it sat a pixel
+   nearer its own label, which is small but visible on a 7px dot. The 7 looks as though it
+   was echoing the mark's size rather than answering the gap opposite it. */
 .breadcrumb-here {
   display: inline-flex;
   min-height: 24px;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
   color: var(--text);
 }
 /* The position marker: one filled dot, the size of the buoy's light. It is the only
@@ -174,8 +182,18 @@ html {
   white-space: nowrap;
 }
 
+/* The footer sits at the bottom of the page, and on a page whose content does not fill
+   the window that means the bottom of the window rather than the bottom of the content.
+   Without this the column simply ended where `main` ended, which never showed while every
+   page ran long, and appears the moment one does not: a filtered directory with no
+   matches, a short tag page, a narrow window. `100dvh` rather than `100vh` so mobile
+   browser chrome collapsing does not leave a strip of page under the footer. The header is
+   sticky and every overlay is fixed, so neither is disturbed by the column. */
 body {
+  display: flex;
+  flex-direction: column;
   min-width: 320px;
+  min-height: 100dvh;
   margin: 0;
   background: var(--page);
   color: var(--text);
@@ -183,6 +201,8 @@ body {
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
 }
+/* Grows to fill what the header and footer do not, and never shrinks below its content. */
+main { flex: 1 0 auto; }
 
 a { color: inherit; }
 
@@ -328,7 +348,6 @@ a { color: inherit; }
   font: inherit;
   transition: color 180ms ease, transform 180ms ease;
 }
-
 
 .theme-toggle:hover,
 .theme-toggle:focus-visible { color: var(--accent); transform: rotate(12deg); }
@@ -564,7 +583,12 @@ a { color: inherit; }
      below it as well as the one beside it.
 
      The floors are what the tallest record in the catalogue actually needs, measured
-     across all 102 of them. Note the first and last include the card's 24px padding:
+     across all of them. Re-measured on 2026-09-04 against 118 records and the revised
+     type scale, by releasing the floors and reading what the content asked for: every
+     track was carrying about 25px more than it needed, roughly 50px of dead air per
+     card on the wide band, which read as a gap between the description and Best For.
+     They are numbers taken from the content, so they want re-measuring whenever the
+     type scale or the card padding moves, not adjusting by eye. Note the first and last include the card's 24px padding:
      a subgrid item's padding comes out of the tracks it spans, so track one carries
      the summary plus the top padding and track three the tags plus the bottom.
 
@@ -582,14 +606,14 @@ a { color: inherit; }
      directory. Below 921px each card is its own height. */
   @media (min-width: 921px) {
     .grid:has(> .app-card:not(.reading-card)) {
-      grid-auto-rows: minmax(230px, auto) minmax(149px, auto) minmax(122px, auto);
+      grid-auto-rows: minmax(205px, auto) minmax(124px, auto) minmax(96px, auto);
     }
   }
 
   /* Above 1100px the content column has stopped growing, so the budget settles. */
   @media (min-width: 1100px) {
     .grid:has(> .app-card:not(.reading-card)) {
-      grid-auto-rows: minmax(205px, auto) minmax(99px, auto) minmax(88px, auto);
+      grid-auto-rows: minmax(181px, auto) minmax(100px, auto) minmax(62px, auto);
     }
   }
 
@@ -831,7 +855,7 @@ a { color: inherit; }
 .app-card { position: relative; display: flex; min-height: 286px; flex-direction: column; padding: 24px; }
 .app-card-link { position: absolute; z-index: 2; inset: 0; border-radius: inherit; }
 .app-card a:not(.app-card-link) { position: relative; z-index: 3; }
-.app-card h3 { margin: 0 0 11px; font-family: var(--display); font-size: 1.4rem; font-weight: 600; line-height: 1.15; }
+.app-card h3 { margin: 0 0 11px; font-family: var(--display); font-size: 1.4375rem; font-weight: 600; line-height: 1.15; }
 .app-card h3 a { color: var(--text); text-decoration: none; transition: color 180ms ease; }
 .app-card h3 a:hover,
 .app-card h3 a:focus-visible { color: var(--accent); }
@@ -1208,7 +1232,11 @@ a { color: inherit; }
 .explore-discovery-link strong {
   display: block;
   font-family: var(--display);
-  font-size: 1.4rem;
+  /* Sized against the group heading above it rather than on its own. That heading takes
+     --type-subhead at 500, and this sits at 600, so a heading only 1.27x larger read as
+     the smaller of the two: weight was contradicting what size was saying. 1.25rem puts
+     a clear 1.4x between them and lets the weight difference stop fighting it. */
+  font-size: 1.25rem;
   font-weight: 600;
   line-height: 1.2;
   transition: color 180ms ease;
@@ -1404,9 +1432,75 @@ a { color: inherit; }
 
 /* The measure belongs to the prose, not to the page: About's headings and
    section rules run the full shell like every other page. */
+/* About runs in one narrow column, headings and rules included, where every other page
+   fills the 1160px shell.
+
+   The shell is that wide because Explore, the lanes and the issue pages put a
+   three-column card grid in it, so a full-width rule there divides full-width content.
+   About has nothing to fill it: the rules and h2s were spanning 1032px to head a 524px
+   column, leaving a 508px dead field and a divider that promised content to the right of
+   it that does not exist.
+
+   The shell itself is untouched, so the page keeps the same left edge as every other
+   page and the column is left aligned rather than centred: narrowing the shell would
+   have centred it and made About the one page whose content starts somewhere else. Only
+   the blocks inside are capped. 620px is set by the dek, which is 52ch at 17.9px and so
+   the widest line of type on the page, and the cap does nothing on a phone where the
+   shell is already narrower. */
+.about-page > * { max-width: 620px; }
+/* Prose fills that column instead of taking `--measure` inside it. The measure exists to
+   hold a readable line, and at 620px this one runs about 73 characters, inside the 65 to
+   75 the craft floor asks for and slightly wider than the 62 that 52ch was giving. So the
+   column and the reading measure become one number here, which is what lets the rules sit
+   with the text rather than reaching past it. A wider column cannot: at 800px the line
+   would run about 94 characters, which is why the headings widened at 800 and the prose
+   correctly refused to follow.
+
+   Nothing overrides the cap. The dek needs no rule of its own, because `.about-page > *`
+   already reaches it and wins on order over the global `.dek`. Two earlier attempts got
+   this wrong in opposite directions: `none` released the dek to the full 1160, and `100%`
+   resolved against the 1160 shell rather than the 620 cap, which is the same bug wearing
+   a different value. */
 .about-content { margin-top: 18px; padding-bottom: var(--section-space); color: var(--muted); font-size: 1rem; }
-.about-page p:not(.dek) { max-width: var(--measure); margin: 0; color: var(--muted); }
+.about-page p:not(.dek) { margin: 0; color: var(--muted); }
 .about-page p:not(.dek) + p { margin-top: 18px; }
+/* The selection criteria are the one list on the page. They take the same measure and
+   muted ink the prose does, so the block reads as part of the writing rather than as a
+   panel: DESIGN.md is explicit that About is not a special case. The bold lead-in is
+   what makes each item scannable, and it is also the emphasis the critique found the
+   page had none of, every paragraph having carried the same muted weight. */
+.about-page .about-criteria {
+  /* Symmetric, because the paragraph rhythm is sibling-based: `p + p` carries 18px, and
+     a list between two paragraphs broke that chain, leaving the sentence after it sitting
+     flush against the final bullet. */
+  margin: 18px 0;
+  padding: 0;
+  color: var(--muted);
+  list-style: none;
+}
+.about-page .about-criteria li { position: relative; padding-left: 18px; }
+.about-page .about-criteria li + li { margin-top: 12px; }
+.about-page .about-criteria li::before {
+  content: '';
+  position: absolute;
+  top: .62em;
+  left: 2px;
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--accent);
+}
+.about-page .about-criteria strong { color: var(--text); font-weight: 700; }
+/* Full-strength ink, where the rest of the prose is muted. Two lines take it: the
+   commitment that no app is here without the editor choosing it, and the thanks that
+   closes the page. Both are addressed to the reader rather than explaining something to
+   them, which is what separates them from the paragraphs around them. */
+.about-page p.about-emphasis { color: var(--text); }
+/* The action gets group separation rather than paragraph rhythm: it is the one thing on
+   the page to press, not another line to read. The selector matches the sibling rule's
+   specificity deliberately, because `.about-page p:not(.dek) + p` outscores a plain class
+   here and the paragraph rhythm won, leaving the button at 18px. */
+.about-page p:not(.dek) + p.about-cta { margin-top: 24px; }
 /* The archive route. A hairline runs the length of the page and every issue is a
    stop on it, marked by the buoy's own beacon: an open ring, filled on the newest
    issue because "this is the current one" is a state, which is what blue is for.
@@ -1693,6 +1787,9 @@ a { color: inherit; }
   position: relative;
   display: flex;
   flex-wrap: wrap;
+  /* The count used to sit here and push the controls over with an auto right margin. It
+     now lives with the chips above the grid, so the row aligns its own contents. */
+  justify-content: flex-end;
   gap: 16px;
   align-items: stretch;
   margin-top: 0;
@@ -1707,6 +1804,106 @@ a { color: inherit; }
    Scoped to the dek's sibling because on Explore the directory follows a section heading
    that carries its own spacing. */
 .dek + .app-directory { display: block; margin-top: var(--section-space); }
+
+/* Applied filters, one pill each, between the toolbar and the grid. The row is absent
+   rather than empty when nothing is applied, so it never leaves a gap above the cards.
+
+   A pill is a secondary control under The Two Control Heights: inline-flex, a
+   `min-height`, horizontal padding and no vertical padding, at 38px and rising to 44px
+   on a coarse pointer. It takes the accent because an applied filter is an active state,
+   which is what The Beacon Rule gives blue. It descends from `.tag` for radius and label
+   type but not for `text-transform`: tags are lowercase, collection labels are not.
+
+   The whole pill removes. Putting a separate target around the cross would be two
+   controls inside 38px, and The Target Floor Rule wants the area grown around a glyph
+   rather than the glyph made into its own button. */
+/* How many, and why that many, on one line against the grid they describe.
+
+   This row takes the same gap above and below, and that gap is the one the control stack
+   above it already uses — 16px on the wide bar, 12px once the bar stacks. An earlier pass
+   split it 24 above and 11 below, reading the row as a label naming the grid and giving
+   it the eyebrow binding gap. That was the wrong classification. Stacked on a phone the
+   row is the last item of the control stack, not a caption on the cards, and unequal gaps
+   around a full-width item in a stack read as a mistake rather than as a relationship. */
+.directory-results {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  margin-top: 16px;
+}
+.directory-actives {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  /* Zero the block margins explicitly. A <ul> carries margin-block: 1em from the user
+     agent, and setting margin-left alone left 16px above and below the chips inside a
+     row whose own gaps were 12px — 32px of invisible height that made the row look
+     mispositioned rather than merely padded. The auto left margin carries the chips to
+     the end of the row, under Filter and Sort, so they read as belonging to the controls
+     that produced them; it has to live in the shorthand or this reset would drop it. */
+  margin: 0 0 0 auto;
+  gap: 8px;
+  padding: 0;
+  list-style: none;
+}
+.directory-active {
+  display: inline-flex;
+  position: relative;
+  /* A chip, not a pill control. It carries `.tag`'s type role exactly — 12.48px at 700 —
+     and sits directly above a grid of `.tag` chips, so it belongs to that family and not
+     to The Two Control Heights, which governs buttons. At 38px it wrapped 14.35px of
+     line-height in a 2.65 box-to-type ratio, the airiest box in the directory around its
+     smallest type, against 1.98 for the chip it sits above. 30px puts it one step above
+     `.tag`, which is what its being interactive earns, and no more. */
+  min-height: 30px;
+  max-width: 100%;
+  align-items: center;
+  gap: 6px;
+  padding: 0 10px;
+  border: 1px solid color-mix(in srgb, var(--accent) 38%, transparent);
+  border-radius: 999px;
+  /* No resting fill. An accent tint behind accent text cost 0.98 of contrast in light
+     mode and landed the 12.5px label at 4.19:1, under the 4.5:1 floor. The border is
+     what carries the active state; the fill only ever arrives on hover, where the label
+     has already darkened to --accent-hover and can afford it. */
+  background: transparent;
+  color: var(--accent);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--type-label);
+  font-weight: 700;
+  line-height: 1.15;
+  transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease;
+}
+/* The query pill can be a hundred characters. It gives up width before the row wraps
+   badly; the full text stays in the accessible name and the tooltip. */
+.directory-active-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.directory-active svg {
+  width: 13px;
+  height: 13px;
+  flex: none;
+}
+.directory-active-x { opacity: .7; transition: opacity 180ms ease; }
+.directory-active-glyph { opacity: .8; }
+.directory-active:hover,
+.directory-active:focus-visible {
+  border-color: color-mix(in srgb, var(--accent) 58%, transparent);
+  background: color-mix(in srgb, var(--accent) 17%, transparent);
+  color: var(--accent-hover);
+}
+.directory-active:hover .directory-active-x,
+.directory-active:focus-visible .directory-active-x { opacity: 1; }
+.directory-active:focus-visible {
+  outline: 0;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 34%, transparent);
+}
+/* Removing the last chip empties the row, which is the same outcome a clear-all button
+   offered, one tap later. */
 .directory-search {
   display: grid;
   flex: 0 1 280px;
@@ -1771,13 +1968,13 @@ a { color: inherit; }
    row's height so it still sits on the controls' centre line, and nothing else. */
 .directory-count {
   display: flex;
-  min-height: 52px;
+  /* It sat at 52px to hold the controls' centre line while it was among them. Out of that
+     row it answers to the chips beside it instead, and the 56px full-width band it became
+     on a phone is what made it read as orphaned. */
+  min-height: 30px;
   align-items: center;
   justify-content: flex-start;
-  /* The auto right margin is what pushes the controls to the end of the row. It has to
-     live in the shorthand: a separate `margin-right` above this line was silently reset
-     by it. */
-  margin: 0 auto 0 0;
+  margin: 0;
   padding: 0;
   color: var(--muted);
   /* The metadata role: a step below the controls beside it, tracked and muted, so a
@@ -2014,12 +2211,17 @@ a { color: inherit; }
   align-items: center;
   gap: 14px;
   flex-wrap: wrap;
-  margin: 16px 0 0;
-  padding: 26px 24px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: var(--surface);
-  box-shadow: var(--shadow);
+  /* No margin of its own. The grid is still in the flow above it with every card hidden,
+     so its own top margin already sets this off the results row; a second margin here
+     stacked on top of it and put it 28px down a column running on 12. Taking zero means
+     this inherits whichever interval the grid is on at that breakpoint. */
+  margin: 0;
+  /* A readout, not an object. The card treatment gave a sentence the same border,
+     surface and shadow the app cards carry, so an absence of results was drawn as
+     heavily as a result — and inset 24px, it did not even align with the count above it
+     or the cards it replaces. Set on the page field it reads as what it is. The same
+     move the count already made when it stopped looking like a third control. */
+  padding: 2px 0;
   color: var(--muted);
   font-size: 1rem;
 }
@@ -2118,7 +2320,13 @@ a { color: inherit; }
   .directory-filter-bar--no-filters {
     gap: 12px;
   }
-  .directory-count { width: 100%; margin: 0; }
+  /* Opposite ends of a phone-width row reads as two things, which is the problem this
+     regrouping exists to fix. Left, together, as one block. */
+  .directory-actives { margin-left: 0; }
+  /* One rhythm down the stacked column: the bar's own 12px carries through the results
+     row to the grid, so nothing in the column sits on a different interval. */
+  .directory-results { margin-top: 12px; }
+  .directory-results + .directory-grid { margin-top: 12px; }
   .directory-search { flex: 1 1 100%; }
   .directory-filter-bar > .directory-filter,
   .directory-filter-bar > .directory-sort,
@@ -2153,7 +2361,7 @@ a { color: inherit; }
   .home-hero { --sea-h: 72px; padding-block: 30px 46px; }
   .content-divider { height: 68px; }
   .video-section { padding-top: 20px; }
-  :root { --page-start-space: 38px; --type-page-title: clamp(2.8rem, 12vw, 3.75rem); }
+  :root { --page-start-space: 28px; }
   .archive-page { padding: var(--page-start-space) 0 36px; }
   .app-detail-page { padding: var(--page-start-space) 0 36px; }
   .app-detail-hero { padding: 0 0 24px; }
@@ -2189,8 +2397,7 @@ a { color: inherit; }
   .directory-query-input { font-size: 16px; }
   .directory-search,
   .directory-filter-bar > .directory-select,
-  .directory-sort,
-  .directory-count { min-height: 56px; }
+  .directory-sort { min-height: 56px; }
 }
 
 @media (pointer: coarse) {
@@ -2202,6 +2409,22 @@ a { color: inherit; }
   .directory-select-options button,
   .filter-option,
   .filter-reset { min-height: 44px; }
+  /* The Target Floor Rule grows the area around a target that is too small rather than
+     padding the target out, which is how the Editor's Pick mark already works. The chip
+     stays 30px in both pointer worlds and reaches 44 through this layer, so the row reads
+     the same on a phone as on a desktop. Only the vertical is grown: every chip is
+     already wider than 44px, and growing sideways would run neighbours together. */
+  .directory-active::after {
+    content: '';
+    position: absolute;
+    /* Offset from the padding box, not the border box: `box-sizing: border-box` puts the
+       1px borders inside the 30px, so the pseudo-element starts from 28px and -7px
+       reached only 41. -8px is what actually lands on 44. */
+    inset: -8px 0;
+  }
+  /* The area grows 7px past the visible chip on each side, so wrapped rows need 14px
+     between them or two chips would claim the same tap. */
+  .directory-actives { gap: 14px 8px; }
 }
 
 @media (max-width: 560px) {

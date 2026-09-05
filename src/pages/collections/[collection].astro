@@ -4,7 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import { laneTrail, itemListSchema } from '../../data/breadcrumb';
 import AppDirectory from '../../components/AppDirectory.astro';
-import { collectionDek, collectionTitle } from '../../data/lanes';
+import { collectionDek, collectionTagline, collectionTitle } from '../../data/lanes';
 import { OG_SIZE, collectionOgSlug, ogPath } from '../../data/og';
 
 export async function getStaticPaths() {
@@ -33,7 +33,7 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
 <BaseLayout
   structuredData={[listSchema]}
   breadcrumb={trail}
-  title={`${title} Mac Apps — App Waypoint`}
+  title={`${title} Mac Apps — ${collectionTagline(collection)} — App Waypoint`}
   socialImage={ogPath(collectionOgSlug(collection))}
   socialImageSize={OG_SIZE}
   socialImageAlt={`${title} on App Waypoint. ${description}`}

@@ -2,6 +2,7 @@
 name: SuperDuper!
 description: Creates fast, direct Mac backups with scheduled copy jobs, Smart Update, previews, network destinations and Shortcuts-driven follow-up actions.
 bestFor: Mac users who want inspectable file copies and resilient backup automation alongside Time Machine.
+tagline: bootable backups
 tags: [backup, files, automation, utility]
 categories: [files-research-documents, productivity-workflow, mac-utilities-customization]
 collections: [community-favorites]

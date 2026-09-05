@@ -42,6 +42,12 @@ The site should feel like a small, premium editorial publication for experienced
 
 - Do not use Oxford commas in App Waypoint editorial copy. In lists of three or
   more, write `A, B and C`, not `A, B, and C`.
+- **A list item takes no full stop at its end**, even when it runs to several
+  sentences. Sentences inside the item are punctuated normally, so a bold lead-in
+  keeps its own: `**It's alive.** Still being updated by someone paying attention`.
+  A bullet is a fragment in a list, not a sentence in a paragraph, and the trailing
+  stop is the tell that it was written as prose and then chopped up. The selection
+  criteria on the About page are the pattern.
 - Write an issue number two digits wide wherever a reader sees it: `Issue 08`, not
   `Issue 008`. The frontmatter keeps three digits because the schema fixes the width.
   Never format the number by hand: use `issueLabel` or `issueName` from
@@ -86,6 +92,14 @@ the release candidate.
 
 The optional `editorsPick` module is the only app feature outside the regular
 section spine. When present, it renders between `Trending` and `Old Favorites`.
+
+Across the full app slate, including the optional Editor's Pick, do not select more
+than two apps from any single discovery source. Product Hunt, `r/macapps` and the
+editor's
+[App Selections note](https://app.notion.com/p/App-selections-3d1d6482d47f8069b146c4dfec0c0c43?source=copy_link)
+each count as separate sources under this cap. Use the Notion review page to present
+over-cap choices and verified alternates as checkbox decisions before building the
+release candidate.
 
 Below the spine every issue closes the same way, in this order: `Video of the Week`,
 `Weekend Reading`, then the RSS subscribe card. The first two are authored in the
@@ -166,6 +180,18 @@ it. See Issue Subscribe Card in `DESIGN.md` for the structure and the reasoning.
   filter and no sort until 2026-09-01, while every tag, collection and category page had
   all three.
 - Tag and collection pages share the same sortable app-directory component.
+- **Tag and collection titles carry a tagline**, the same way app pages do:
+  `{lane} Mac Apps — {tagline} — App Waypoint`. Tag titles ran between 26 and 37
+  characters against the roughly 60 a search result shows, the widest gap of any page
+  type here. Both maps live in `src/data/lanes.ts` beside the titles they extend.
+- **Categories deliberately have none.** `Mac Utilities & Customization Mac Apps —
+  App Waypoint` is already 53 characters, so four of the six have no room for one.
+  Adding it to the two that do would make the page type inconsistent for little gain.
+- **A tag's display name is not its slug sentence-cased.** Initialisms and product
+  names spelled a particular way are held in `tagDisplayNames`: `ai` is AI, `ios` is
+  iOS, `quicklook` is Quick Look. Until 2026-09-04 only `rss` was handled and the rest
+  shipped as `Ai`, `Cli`, `Ios`, `Pdf`, `Airdrop`, `Menubar` and `Quicklook` in titles,
+  headings and social cards alike. Add to the map rather than adding another branch.
 - Apps default to A–Z order.
 - Available sorting options are A–Z, Z–A and Date featured.
 - Date featured sorts by the app's most recent issue appearance, newest first, with
@@ -230,6 +256,19 @@ it. See Issue Subscribe Card in `DESIGN.md` for the structure and the reasoning.
   tags as Label-scale chips, and the collection badge leads the rail because it is the
   rarest fact on the page. See the App Detail Page and Collection Badges entries in
   `DESIGN.md`.
+- **The page title carries a `tagline`.** The pattern is
+  `{name} for Mac — {tagline} — App Waypoint`. Without one the title ran to a median of
+  31 characters against the roughly 60 a search result shows, so half of every result
+  line went unused on the site's largest page type.
+- Write the tagline for the title and nowhere else. It says what the app **is**, not who
+  it is for: `bestFor` is audience-first and `description` is verb-first, which is why
+  neither is derived into it. Keep it to about 16 to 20 characters. The budget is
+  whatever the app's own name leaves behind, and the longest name leaves 11.
+- Do not spend it on words the title already carries. It sits beside "for Mac" and the
+  app's own name, so neither belongs in it: `Meta AI for Mac — Meta assistant for Mac`
+  wastes a third of the line. Aim to land between 50 and 60 characters assembled, and
+  never on 60 exactly, because the real limit is pixel width rather than a character
+  count.
 
 ## 7. Weekend Reading
 
@@ -281,9 +320,14 @@ it. See Issue Subscribe Card in `DESIGN.md` for the structure and the reasoning.
 
 ## 10. Editor attribution
 
-- Refer to the editor by role only in all public website content.
+- Refer to the editor by role in public website content, with one exception: the About
+  page carries the editor's first name, because that page speaks in the editor's own
+  voice and a byline is the point of it. Changed deliberately on 2026-09-04 after the
+  About follow-up critique found the anonymity was costing the page the trust it exists
+  to build.
 - Never display the editor's personal name in app sources, issue copy, notes or
-  generated pages.
+  generated pages. The exception is About and nowhere else.
+- The editor's full name is not public anywhere, About included.
 
 ## 11. App icons
 
@@ -295,12 +339,15 @@ recognition without making cards feel like an app-store grid.
 - Use official app assets from the app homepage, canonical repository or official
   product files. Prefer high-resolution product icons or Apple touch icons over small
   favicons.
-- **128px square is both the ceiling and the floor.** Anything larger is resized down,
-  because the site renders icons at 44px and 76px and oversized files were once shipping
-  12 MB to do it. Anything smaller has to be re-sourced rather than accepted: since
-  2026-09-03 the icon also carries the app's Open Graph card at 112px, where a 32px or
-  64px favicon is visibly soft. A source under 128px is a reason to keep looking, and an
-  app with no adequate icon uses the category fallback, which is sharp at any size.
+- **128px square is the target, and the ceiling is firm.** Anything larger is resized
+  down, because the site renders icons at 44px and 76px and oversized files were once
+  shipping 12 MB to do it. Below the target, prefer a better source: since 2026-09-03 the
+  icon also carries the app's Open Graph card at 112px, where a 32px or 64px favicon is
+  visibly soft. A smaller source that is the best available is resized up and used rather
+  than refused. The category fallback is a vector mark and stays sharp at any size, so it
+  is the right answer when a source is too poor to be worth showing, but it trades the
+  app's own identity for that sharpness and 27 to 40 apps share each mark. Which loss is
+  worse is a judgment about the artwork, not a consequence of a pixel count.
 - Do not use generic marketplace favicons, Product Hunt marks, GitHub organization
   avatars or unrelated publisher logos unless that asset is clearly the app's own
   identity.
@@ -389,6 +436,8 @@ Complete every item before merging a new issue:
 - [ ] Every new app uses its official homepage or canonical repository.
 - [ ] No app is duplicated within the issue or repeated from the immediately previous
   issue where the publishing rules prohibit it.
+- [ ] No discovery source contributes more than two apps to the issue's full app
+      slate, including the optional Editor's Pick.
 - [ ] The Editor's Pick, if present, was supplied or approved by the editor, appears
       only once and belongs to the `editors-picks` collection.
 - [ ] Old Favorites contains exactly three eligible apps, highlights established
@@ -402,6 +451,11 @@ Complete every item before merging a new issue:
       reason the icon is intentionally deferred.
 - [ ] The Editor's Pick app has a reviewed `iconAccent`, or a documented reason the pick
       renders without the Struck Light treatment.
+- [ ] The `rss` title is a headline, not a sentence: title case and no full stop. It is
+      also the issue page's title, sitting beside the issue label, so the assembled
+      `{rss.title} — Issue NN — App Waypoint` stays under 60 characters. The 90-character
+      schema cap is right for a feed entry and far too loose for a search result; issue
+      09 shipped a 55-character sentence that assembled to 82.
 - [ ] The issue includes an `rss` block with a concise issue-specific title and the
       standard `Read this issue` CTA.
 - [ ] The built `/rss.xml` feed includes every published issue exactly once, newest-

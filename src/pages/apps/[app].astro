@@ -86,7 +86,7 @@ const trail = appTrail(app.data.name);
 
 <BaseLayout
   breadcrumb={trail}
-  title={`${app.data.name} for Mac — App Waypoint`}
+  title={`${app.data.name} for Mac — ${app.data.tagline} — App Waypoint`}
   description={app.data.metaDescription ?? app.data.description}
   current="app"
   socialImage={ogPath(appOgSlug(app.id))}

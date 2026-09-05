@@ -13,6 +13,11 @@ Do not rename, omit, reorder or add regular app sections. Weekly variation belon
 section titles and app choices, not in the section eyebrows. The optional
 `editorsPick` object renders between `Trending` and `Old Favorites`.
 
+Before finalizing the app slate, include candidates from the editor's
+[App Selections note](https://app.notion.com/p/App-selections-3d1d6482d47f8069b146c4dfec0c0c43?source=copy_link)
+and confirm that no single discovery source contributes more than two apps across
+the issue, including the optional Editor's Pick.
+
 ```yaml
 ---
 number: '002'
@@ -20,6 +25,8 @@ slug: 2026-07-17
 date: July 17, 2026
 dek: Write one concise 18-45 word sentence that previews the issue without listing every item.
 rss:
+  # A headline, not a sentence: title case, no full stop. It is also the issue page
+  # title, so `{title} — Issue NN — App Waypoint` must stay under 60 characters.
   title: Short issue-specific RSS title aligned with the issue theme
   cta: Read this issue
 sections:
@@ -72,7 +79,7 @@ readings:
     url: https://example.com/article-three
 # Recorded, not rendered. Kept as the editorial audit trail since 2026-09-01.
 sourceNotes:
-  - Discovery source or research note
+  - Discovery source or research note, with no source contributing more than two app selections
   - Official app homepages were checked before publishing
 ---
 ```
@@ -93,6 +100,10 @@ from the tags.
 name: App Name
 description: Write exactly one concrete 12-35 word sentence explaining the app's primary job.
 bestFor: Write exactly one 8-24 word sentence describing a recognizable user or workflow.
+# The differentiator in the page title: {name} for Mac — {tagline} — App Waypoint.
+# About 16-20 characters, saying what the app is. Do not repeat the app's name or
+# "Mac"; the title already carries both. See STYLE_GUIDE.md section 6.
+tagline: clipboard history
 tags: [productivity, utility, menubar]
 # Optional editorial curation. Required for Editor's Pick and Old Favorites apps;
 # preserve other values when adding either collection.
@@ -172,6 +183,12 @@ preceding issue. Replace repeats or unavailable selections with verified discove
 from Product Hunt's recent Mac launches or another approved source. Verify official
 links, reuse existing app records, create missing records and credit every source used
 in `sourceNotes`, which is recorded for review rather than published. Do not substitute apps based solely on raw votes.
+
+The full issue may include no more than two app selections from any single discovery
+source, including Product Hunt, `r/macapps` and the editor's App Selections Notion
+note. If the current App Pile or another source yields more than two eligible apps,
+keep the strongest two from that source and present verified alternates from other
+sources for editor approval.
 
 ## When the user supplies an Editor's Pick
 

@@ -80,10 +80,6 @@ const sortedApps = [...apps].sort((a, b) =>
       the outline whole; there is no visible heading here by design. */}
   <h2 class="sr-only">Apps</h2>
   <div class:list={['directory-filter-bar', !showFilterMenu && 'directory-filter-bar--no-filters']}>
-    <p class="directory-count" aria-live="polite" data-directory-count>
-      {apps.length} {apps.length === 1 ? 'app' : 'apps'}
-    </p>
-
     <div class="directory-search">
       <svg
         aria-hidden="true"
@@ -197,7 +193,11 @@ const sortedApps = [...apps].sort((a, b) =>
           aria-expanded="false"
           data-sort-trigger
         >
-          <span>Sort</span>
+          {/* The trigger reads as its current value rather than as the word "Sort",
+              so the applied order is visible without opening the menu. The label is
+              the value alone, with the control's name carried for assistive tech in
+              the span before it, which keeps the button announcing "Sort by A-Z". */}
+          <span><span class="sr-only">Sort by </span><span data-sort-label>A-Z</span></span>
           <svg
             aria-hidden="true"
             viewBox="0 0 24 24"
@@ -219,6 +219,24 @@ const sortedApps = [...apps].sort((a, b) =>
     </div>
 
   </div>
+  {/* The count and the chips answer the same question — how many, and why that many — so
+      they share a row, and that row sits against the grid it describes rather than at the
+      top of the toolbar. In the toolbar the count was a 56px full-width band on a phone,
+      three rows above the first card and attached to nothing.
+
+      The chips stay a sibling of the count and never move inside it: .directory-count is
+      aria-live, and controls in a live region get re-announced on every result change.
+
+      The list is empty in the markup on purpose. Filtering is script-owned — the query
+      input ships disabled — so without JavaScript there is nothing here to remove. The
+      script fills it from the same state that drives the count and the URL, which is what
+      makes filters restored from ?tags= arrive as chips on load. */}
+  <div class="directory-results">
+    <p class="directory-count" aria-live="polite" data-directory-count>
+      {apps.length} {apps.length === 1 ? 'app' : 'apps'}
+    </p>
+    <ul class="directory-actives" aria-label="Active filters" hidden data-directory-actives></ul>
+  </div>
   <div class="grid directory-grid" data-app-grid data-directory-cap={DIRECTORY_BATCH}>
     {sortedApps.map((entry) => (
       <AppCard
@@ -231,7 +249,6 @@ const sortedApps = [...apps].sort((a, b) =>
   <p class="directory-empty" hidden data-directory-empty>
     <span data-directory-empty-message>No apps match every selected filter</span>
     <button type="button" class="directory-empty-action" hidden data-query-reset>Clear search</button>
-    <button type="button" class="button" hidden data-filter-reset>Reset filters</button>
   </p>
   <div class="directory-more">
     <button type="button" class="button" hidden data-directory-more></button>
@@ -265,12 +282,12 @@ const sortedApps = [...apps].sort((a, b) =>
     const emptyState = directory.querySelector<HTMLElement>('[data-directory-empty]');
     const emptyMessage = directory.querySelector<HTMLElement>('[data-directory-empty-message]');
     const queryReset = directory.querySelector<HTMLButtonElement>('[data-query-reset]');
-    const emptyFilterReset = emptyState?.querySelector<HTMLButtonElement>('[data-filter-reset]');
     const moreButton = directory.querySelector<HTMLButtonElement>('[data-directory-more]');
     const filterMenu = directory.querySelector<HTMLElement>('[data-filter-menu]');
     const filterTrigger = directory.querySelector<HTMLButtonElement>('[data-filter-trigger]');
     const filterPanel = directory.querySelector<HTMLElement>('[data-filter-panel]');
     const filterCount = directory.querySelector<HTMLElement>('[data-filter-count]');
+    const activesList = directory.querySelector<HTMLElement>('[data-directory-actives]');
     const sortMenu = directory.querySelector<HTMLElement>('[data-sort-menu]');
     const sortTrigger = directory.querySelector<HTMLButtonElement>('[data-sort-trigger]');
     const sortOptions = directory.querySelector<HTMLElement>('[data-sort-options]');
@@ -409,6 +426,101 @@ const sortedApps = [...apps].sort((a, b) =>
       window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`);
     };
 
+    /* Everything the reader added, which is exactly what the badge counts and the URL
+       carries. The page's own filter is never in here: on a lane page it is checked and
+       disabled, and the h1 directly above already states it. */
+    const removableFilters = () =>
+      selectedFilters().filter((filter) => !isDefaultFilter(filter));
+
+    /* Built as nodes rather than markup because the query pill's label is whatever the
+       reader typed. */
+    const SVG_NS = 'http://www.w3.org/2000/svg';
+    const svgIcon = (className: string, shapes: [string, Record<string, string>][]) => {
+      const svg = document.createElementNS(SVG_NS, 'svg');
+      svg.setAttribute('class', className);
+      svg.setAttribute('aria-hidden', 'true');
+      svg.setAttribute('viewBox', '0 0 24 24');
+      svg.setAttribute('fill', 'none');
+      svg.setAttribute('stroke', 'currentColor');
+      svg.setAttribute('stroke-width', '2');
+      svg.setAttribute('stroke-linecap', 'round');
+      svg.setAttribute('stroke-linejoin', 'round');
+      for (const [tag, attrs] of shapes) {
+        const node = document.createElementNS(SVG_NS, tag);
+        for (const [name, value] of Object.entries(attrs)) node.setAttribute(name, value);
+        svg.append(node);
+      }
+      return svg;
+    };
+
+    const buildPill = (
+      label: string,
+      actionLabel: string,
+      kind: string,
+      value: string,
+      leading?: SVGElement
+    ) => {
+      const item = document.createElement('li');
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'directory-active';
+      button.dataset.removeKind = kind;
+      button.dataset.removeValue = value;
+      /* The visible label is the tag alone, which does not say what pressing it does. */
+      button.setAttribute('aria-label', actionLabel);
+      button.title = actionLabel;
+      if (leading) button.append(leading);
+      const text = document.createElement('span');
+      text.className = 'directory-active-label';
+      text.textContent = label;
+      button.append(text, svgIcon('directory-active-x', [
+        ['path', { d: 'M18 6 6 18' }],
+        ['path', { d: 'm6 6 12 12' }]
+      ]));
+      item.append(button);
+      return item;
+    };
+
+    /* Coarsest first: the query, then collections, then tags. */
+    const renderActiveFilters = () => {
+      if (!activesList) return;
+      const removable = removableFilters();
+      const rawQuery = queryValue();
+
+      activesList.replaceChildren();
+
+      if (rawQuery) {
+        activesList.append(buildPill(
+          rawQuery,
+          `Clear search: ${rawQuery}`,
+          'query',
+          '',
+          svgIcon('directory-active-glyph', [
+            ['circle', { cx: '11', cy: '11', r: '8' }],
+            ['path', { d: 'm21 21-4.3-4.3' }]
+          ])
+        ));
+      }
+
+      for (const filter of removable) {
+        if (filter.dataset.filterType !== 'collection') continue;
+        /* The panel already holds the display label, so a collection reads as
+           "Editor's Picks" here rather than as its slug. */
+        const name = filter
+          .closest('.filter-option')
+          ?.querySelector('.filter-option-name')
+          ?.textContent?.trim() || filter.value;
+        activesList.append(buildPill(name, `Remove filter: ${name}`, 'collection', filter.value));
+      }
+
+      for (const filter of removable) {
+        if (filter.dataset.filterType !== 'tag') continue;
+        activesList.append(buildPill(filter.value, `Remove filter: ${filter.value}`, 'tag', filter.value));
+      }
+
+      activesList.hidden = activesList.childElementCount === 0;
+    };
+
     const applyFilters = (updateUrl = true) => {
       if (requiredFilter) requiredFilter.checked = true;
       const selected = selectedFilters();
@@ -450,9 +562,6 @@ const sortedApps = [...apps].sort((a, b) =>
             : 'No apps match every selected filter';
         }
         if (queryReset) queryReset.hidden = !query;
-        if (emptyFilterReset) {
-          emptyFilterReset.hidden = selected.filter((filter) => !isDefaultFilter(filter)).length === 0;
-        }
       }
       if (moreButton) {
         moreButton.hidden = remaining === 0;
@@ -469,6 +578,8 @@ const sortedApps = [...apps].sort((a, b) =>
         filterCount.hidden = optionalFilterCount === 0;
         filterMenu?.classList.toggle('has-custom-filters', optionalFilterCount > 0);
       }
+
+      renderActiveFilters();
 
       filters.forEach((filter, index) => {
         const row = filterRows[index];
@@ -502,11 +613,14 @@ const sortedApps = [...apps].sort((a, b) =>
 
     const appName = (card: HTMLElement) => card.dataset.appName ?? '';
     const featuredDate = (card: HTMLElement) => card.dataset.featuredDate ?? '';
+    const sortLabel = directory.querySelector<HTMLElement>('[data-sort-label]');
     const updateSortUi = () => {
       const selectedButton = sortButtons.find((button) => button.dataset.sortValue === selectedSort);
       sortButtons.forEach((button) => {
         button.setAttribute('aria-checked', String(button === selectedButton));
       });
+      /* The menu option's own text is the label, so the two can never disagree. */
+      if (sortLabel && selectedButton) sortLabel.textContent = selectedButton.textContent ?? '';
     };
     const sortCards = (updateUrl = true) => {
       cards.sort((a, b) => {
@@ -598,6 +712,37 @@ const sortedApps = [...apps].sort((a, b) =>
         visibleLimit = batchSize;
         applyFilters();
       });
+    });
+
+    activesList?.addEventListener('click', (event) => {
+      const button = (event.target as HTMLElement)
+        .closest<HTMLButtonElement>('[data-remove-kind]');
+      if (!button || !activesList) return;
+
+      const index = [...activesList.querySelectorAll('button')].indexOf(button);
+
+      if (button.dataset.removeKind === 'query') {
+        if (queryInput) queryInput.value = '';
+      } else {
+        const match = filters.find((filter) =>
+          filter.dataset.filterType === button.dataset.removeKind
+          && filter.value === button.dataset.removeValue
+        );
+        if (match && !isDefaultFilter(match)) match.checked = false;
+      }
+
+      visibleLimit = batchSize;
+      applyFilters();
+
+      /* The pill that was focused has just been destroyed. Land on whatever took its
+         place, then the last pill, then Clear all, then the control that opens the
+         filters. Anything else drops focus to the top of the document. */
+      const remaining = [...activesList.querySelectorAll<HTMLButtonElement>('button')];
+      const next = remaining[index] ?? remaining[remaining.length - 1];
+
+      if (next) next.focus();
+      else if (filterTrigger) filterTrigger.focus();
+      else queryInput?.focus();
     });
 
     queryInput?.addEventListener('input', () => {

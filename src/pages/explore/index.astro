@@ -5,7 +5,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import { topLevelTrail, itemListSchema } from '../../data/breadcrumb';
 import AppDirectory from '../../components/AppDirectory.astro';
-import SubscribeCard from '../../components/SubscribeCard.astro';
 import MetaIcon from '../../components/MetaIcon.astro';
 import {
   categories,
@@ -160,8 +159,5 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
       <AppDirectory apps={apps} />
     </section>
 
-    <section class="section explore-section explore-rss-section">
-      <SubscribeCard />
-    </section>
   </section>
 </BaseLayout>

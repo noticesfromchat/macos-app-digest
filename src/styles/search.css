@@ -114,43 +114,11 @@
   transform: rotate(-45deg);
 }
 
+/* Subscribe carries a label, so it is a row in the menu and not an icon button. Its
+   construction, height, hit area and states all come from the shared row rules below;
+   the only thing it owns is the pointer every button needs. */
 .mobile-nav-rss {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  min-height: 44px;
-  padding: 0 14px;
-  border: 0;
-  border-radius: 8px;
-  background: transparent;
-  color: var(--text);
   cursor: pointer;
-  font: inherit;
-  font-size: .98rem;
-  font-weight: 600;
-  transition: color 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
-}
-
-.mobile-nav-rss svg {
-  width: 18px;
-  height: 18px;
-  flex: 0 0 auto;
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 2;
-}
-
-.mobile-nav-rss:hover {
-  color: var(--accent);
-}
-
-.mobile-nav-rss:focus-visible {
-  background: color-mix(in srgb, var(--surface-strong) 62%, transparent);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 34%, transparent);
-  color: var(--accent);
-  outline: 0;
 }
 
 .search-overlay {
@@ -276,7 +244,8 @@
 }
 
 .mobile-nav-actions a,
-.mobile-nav-search {
+.mobile-nav-search,
+.mobile-nav-rss {
   display: flex;
   min-height: 54px;
   align-items: center;
@@ -331,7 +300,8 @@
   fill: none;
 }
 
-.mobile-nav-actions a svg {
+.mobile-nav-actions a svg,
+.mobile-nav-rss svg {
   width: 18px;
   height: 18px;
   flex: none;
@@ -343,7 +313,8 @@
 }
 
 .mobile-nav-actions a:hover,
-.mobile-nav-search:hover {
+.mobile-nav-search:hover,
+.mobile-nav-rss:hover {
   color: var(--accent);
 }
 
@@ -357,7 +328,8 @@
 .mobile-nav-modal:focus-visible { outline: 0; }
 
 .mobile-nav-actions a:focus-visible,
-.mobile-nav-search:focus-visible {
+.mobile-nav-search:focus-visible,
+.mobile-nav-rss:focus-visible {
   background: color-mix(in srgb, var(--surface-strong) 68%, transparent);
   box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--accent) 38%, transparent);
   color: var(--accent);
@@ -365,9 +337,7 @@
 }
 
 .mobile-nav-utilities {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: grid;
   gap: 4px;
   padding: 4px 10px 9px;
 }
@@ -700,8 +670,12 @@
     transform-origin: top center;
   }
   .mobile-nav-actions { gap: 3px; padding: 8px 8px 4px; }
+  /* The utilities row sits under the actions list and must share its inset, or the
+     Subscribe row starts 2px inside every row above it. */
+  .mobile-nav-utilities { padding: 4px 8px 8px; }
   .mobile-nav-actions a,
-  .mobile-nav-search {
+  .mobile-nav-search,
+  .mobile-nav-rss {
     min-height: 48px;
     padding: 0 14px;
     font-size: .98rem;
@@ -765,7 +739,6 @@
 @media (pointer: coarse) {
   .desktop-search-button,
   .nav-menu-toggle,
-  .mobile-nav-rss,
   .search-close,
   .rss-close,
   .rss-copy-button {
