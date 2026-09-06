@@ -621,8 +621,33 @@ renderer took both with it.
   the card grid collapses, count and search each take a full row while Filter and Sort share
   the row beneath them, preserving DOM and focus order. Each visible control stays flat with
   a border and no lift.
+- **The default order follows what the surface is doing.** Unnarrowed, the grid sorts by
+  date featured; the moment a query or a filter is applied it sorts A-Z. Adopted
+  2026-09-05, because the alphabet is a lookup order and this grid is not a lookup. With
+  no query it put the same eighteen names on screen forever — Actions, Agent Mac,
+  AgentPeek — chosen by nothing but their first letter, on the largest block of the page.
+  Date featured is the publication's own order, it turns over completely with every issue
+  at no editorial cost, and 117 of the 118 apps carry a date for it. Once a reader states
+  what they are after, they are looking something up rather than browsing, and a narrowed
+  set gains nothing from recency, so the index order returns.
+
+  A lane page — a category, collection or tag — is narrowed from the first paint and stays
+  A-Z throughout. It is detected as having been handed fewer apps than the catalogue holds,
+  not from `defaultFilterType`: only collection and tag pages set that, because a category
+  page passes its own subset and there is no category filter in the menu for it to pass.
+  The subset test is the one fact all three share and there is no prop for a future lane to
+  forget.
+
+  Choosing from the Sort menu takes the control over permanently. After that the order is
+  the reader's and stops moving when they type, which is the difference between a default
+  and an override. Ties inside an issue fall back to the app name, so the order is total
+  and the server and the client cannot disagree about it — the server renders the first
+  eighteen cards and CSS caps the grid at parse time, so whatever it emits is what appears
+  before any script runs.
 - **Directory state is shareable.** Query, optional collections, optional tags and a
-  non-default sort are written to the query string and restored on load. Typing uses
+  sort that differs from the one the current state would derive are written to the query
+  string and restored on load. A sort in the URL is treated as a choice the reader made,
+  so it is honoured as an explicit one and does not move when they narrow further. Typing uses
   `replaceState`, so the browser history does not receive one entry per character. A tag,
   collection or category named by the path remains the page's immutable starting set;
   tag and collection controls stay checked and disabled, and no path-defining value is

@@ -67,8 +67,39 @@ const tagOptions = [
    first paint is already short and the page does not collapse from full height once the
    module runs. Keep this in step with the nth-child rule in global.css. */
 const DIRECTORY_BATCH = 18;
+
+/* The default order says what the surface is for. Unnarrowed, this grid is a browse
+   surface and the alphabet means nothing — it just puts the same first eighteen names
+   on screen forever, chosen by nothing but their first letter. Recency is the
+   publication's own order and it turns over with every issue at no editorial cost.
+   Narrowed, the reader has stated what they are after and is looking something up, so
+   the index order is the useful one and a small result set gains nothing from recency.
+
+   A lane page (a category, collection or tag) is narrowed by definition, which is why
+   the server can pick the order here: it is the one form of narrowing that is known at
+   build time. A `?q=` arriving on Explore is settled by the script instead.
+
+   Detected from the catalogue the surface was handed rather than from `defaultFilterType`,
+   because only two of the three lane kinds set it: collection and tag pages pass a filter
+   the reader cannot remove, while a category page just passes its own subset, and there is
+   no category filter in the menu for it to pass. Being given fewer apps than exist is the
+   one fact all three share, and it needs no prop that a future lane could forget. */
+const SORT_LABELS: Record<string, string> = {
+  'a-z': 'A-Z',
+  'z-a': 'Z-A',
+  'date-featured': 'Date featured'
+};
+const isLanePage = apps.length < allApps.length;
+const initialSort = isLanePage ? 'a-z' : 'date-featured';
+
+const byName = (a: CollectionEntry<'apps'>, b: CollectionEntry<'apps'>) =>
+  a.data.name.localeCompare(b.data.name, undefined, { sensitivity: 'base' });
+/* Ties inside an issue fall back to the name, so the order is total and the server and
+   the client cannot disagree about it. */
 const sortedApps = [...apps].sort((a, b) =>
-  a.data.name.localeCompare(b.data.name, undefined, { sensitivity: 'base' })
+  initialSort === 'date-featured'
+    ? (featuredDates.get(b.id) ?? '').localeCompare(featuredDates.get(a.id) ?? '') || byName(a, b)
+    : byName(a, b)
 );
 ---
 <div
@@ -76,6 +107,7 @@ const sortedApps = [...apps].sort((a, b) =>
   data-app-directory
   data-default-type={defaultFilterType}
   data-default-value={defaultFilterValue}
+  data-lane={isLanePage ? '' : undefined}
 >
   {/* The page title is the h1 and every card title is an h3, so without this the
       directory skipped a level. A surface with its own visible heading passes it instead,
@@ -202,8 +234,10 @@ const sortedApps = [...apps].sort((a, b) =>
           {/* The trigger reads as its current value rather than as the word "Sort",
               so the applied order is visible without opening the menu. The label is
               the value alone, with the control's name carried for assistive tech in
-              the span before it, which keeps the button announcing "Sort by A-Z". */}
-          <span><span class="sr-only">Sort by </span><span data-sort-label>A-Z</span></span>
+              the span before it, which keeps the button announcing "Sort by A-Z". It
+              ships the order the server actually rendered, so the control is not
+              claiming one order while the grid shows another. */}
+          <span><span class="sr-only">Sort by </span><span data-sort-label>{SORT_LABELS[initialSort]}</span></span>
           <svg
             aria-hidden="true"
             viewBox="0 0 24 24"
@@ -217,9 +251,14 @@ const sortedApps = [...apps].sort((a, b) =>
           </svg>
         </button>
         <div class="directory-select-options" role="menu" aria-label="Sort apps" hidden data-sort-options>
-          <button type="button" role="menuitemradio" aria-checked="true" data-sort-value="a-z">A-Z</button>
-          <button type="button" role="menuitemradio" aria-checked="false" data-sort-value="z-a">Z-A</button>
-          <button type="button" role="menuitemradio" aria-checked="false" data-sort-value="date-featured">Date featured</button>
+          {(['a-z', 'z-a', 'date-featured'] as const).map((value) => (
+            <button
+              type="button"
+              role="menuitemradio"
+              aria-checked={String(value === initialSort)}
+              data-sort-value={value}
+            >{SORT_LABELS[value]}</button>
+          ))}
         </div>
       </div>
     </div>
@@ -314,7 +353,12 @@ const sortedApps = [...apps].sort((a, b) =>
     const requiredFilter = filters.find((filter) => isDefaultFilter(filter));
     const batchSize = Number(grid.dataset.directoryCap) || 24;
     let visibleLimit = batchSize;
+    /* Resolved from the narrowing state below before anything is sorted. `sortExplicit`
+       is the reader taking the control over: until they pick from the menu the order
+       follows what the surface is currently doing, and once they pick it stops moving
+       under them. */
     let selectedSort = 'a-z';
+    let sortExplicit = false;
 
     /* CSS owns the first-paint cap. Once the module runs, `hidden` becomes the single
        visibility mechanism and the query field becomes interactive. */
@@ -425,7 +469,9 @@ const sortedApps = [...apps].sort((a, b) =>
       optionalCollections.length
         ? url.searchParams.set('collections', optionalCollections.sort().join(','))
         : url.searchParams.delete('collections');
-      selectedSort === 'a-z'
+      /* Omitted when it matches what this filter state derives on its own, so a shared
+         link reproduces the screen without carrying a value it would have picked. */
+      selectedSort === derivedSort()
         ? url.searchParams.delete('sort')
         : url.searchParams.set('sort', selectedSort);
 
@@ -619,6 +665,12 @@ const sortedApps = [...apps].sort((a, b) =>
 
     const appName = (card: HTMLElement) => card.dataset.appName ?? '';
     const featuredDate = (card: HTMLElement) => card.dataset.featuredDate ?? '';
+    /* A lane page is narrowed from the first paint and stays that way. The verdict comes
+       from the server so both sides cannot disagree about what the default order is. */
+    const isLane = directory.dataset.lane !== undefined;
+    const isNarrowed = () =>
+      Boolean(normalizedQuery()) || removableFilters().length > 0 || isLane;
+    const derivedSort = () => (isNarrowed() ? 'a-z' : 'date-featured');
     const sortLabel = directory.querySelector<HTMLElement>('[data-sort-label]');
     const updateSortUi = () => {
       const selectedButton = sortButtons.find((button) => button.dataset.sortValue === selectedSort);
@@ -644,6 +696,20 @@ const sortedApps = [...apps].sort((a, b) =>
       applyFilters(updateUrl);
     };
 
+    /* Narrowing can change which order is the right default, so these paths re-sort
+       rather than only re-hiding cards. The comparison keeps that to the moments the
+       answer actually changes: re-appending 118 nodes on every keystroke would be a
+       real cost for no visible difference. */
+    const refilter = () => {
+      const next = sortExplicit ? selectedSort : derivedSort();
+      if (next === selectedSort) {
+        applyFilters();
+        return;
+      }
+      selectedSort = next;
+      sortCards();
+    };
+
     const initialUrl = new URL(window.location.href);
     const knownTags = new Set(
       filters.filter((filter) => filter.dataset.filterType === 'tag').map((filter) => filter.value)
@@ -659,10 +725,9 @@ const sortedApps = [...apps].sort((a, b) =>
         .split(',')
         .filter((value) => knownCollections.has(value))
     );
-    const urlSort = initialUrl.searchParams.get('sort') ?? 'a-z';
+    const urlSort = initialUrl.searchParams.get('sort') ?? '';
 
     if (queryInput) queryInput.value = (initialUrl.searchParams.get('q') ?? '').slice(0, 100);
-    selectedSort = allowedSorts.has(urlSort) ? urlSort : 'a-z';
     filters.forEach((filter) => {
       if (isDefaultFilter(filter)) {
         filter.checked = true;
@@ -672,6 +737,12 @@ const sortedApps = [...apps].sort((a, b) =>
         ? urlTags.has(filter.value)
         : urlCollections.has(filter.value);
     });
+
+    /* After the query and the filters are restored, because the derivation reads both.
+       A `sort` in the URL is a choice the reader made and shared, so it is honoured as
+       an explicit one. */
+    sortExplicit = allowedSorts.has(urlSort);
+    selectedSort = sortExplicit ? urlSort : derivedSort();
 
     let filterMenuRegistration: (typeof menus)[number] | undefined;
     if (filterMenu && filterTrigger && filterPanel) {
@@ -688,7 +759,8 @@ const sortedApps = [...apps].sort((a, b) =>
       sortButtons.forEach((option) => {
         option.addEventListener('click', () => {
           const nextSort = option.dataset.sortValue ?? 'a-z';
-          selectedSort = allowedSorts.has(nextSort) ? nextSort : 'a-z';
+          selectedSort = allowedSorts.has(nextSort) ? nextSort : derivedSort();
+          sortExplicit = true;
           sortCards();
           closeMenu(sortMenuRegistration, true);
         });
@@ -698,7 +770,7 @@ const sortedApps = [...apps].sort((a, b) =>
     filters.forEach((filter) => {
       filter.addEventListener('change', () => {
         visibleLimit = batchSize;
-        applyFilters();
+        refilter();
         if (
           filterMenuRegistration
           && filter.dataset.filterType === 'tag'
@@ -716,7 +788,7 @@ const sortedApps = [...apps].sort((a, b) =>
           filter.checked = isDefaultFilter(filter);
         });
         visibleLimit = batchSize;
-        applyFilters();
+        refilter();
       });
     });
 
@@ -738,7 +810,7 @@ const sortedApps = [...apps].sort((a, b) =>
       }
 
       visibleLimit = batchSize;
-      applyFilters();
+      refilter();
 
       /* The pill that was focused has just been destroyed. Land on whatever took its
          place, then the last pill, then Clear all, then the control that opens the
@@ -753,7 +825,7 @@ const sortedApps = [...apps].sort((a, b) =>
 
     queryInput?.addEventListener('input', () => {
       visibleLimit = batchSize;
-      applyFilters();
+      refilter();
     });
     queryInput?.addEventListener('keydown', (event) => {
       if (event.key !== 'Enter') return;
@@ -764,7 +836,7 @@ const sortedApps = [...apps].sort((a, b) =>
       if (!queryInput) return;
       queryInput.value = '';
       visibleLimit = batchSize;
-      applyFilters();
+      refilter();
       queryInput.focus();
     });
 
