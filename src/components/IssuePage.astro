@@ -32,14 +32,19 @@ const IssueHeading = homepage ? 'p' : 'h1';
 ---
 
 <article class="issue">
-  {!homepage && (
-    <div class="page-shell issue-breadcrumb-shell">
-      <Breadcrumb trail={trail} />
-    </div>
-  )}
   <header class="home-hero">
     <canvas class="home-hero-sky" aria-hidden="true"></canvas>
     <canvas class="home-hero-sea" aria-hidden="true"></canvas>
+
+    {/* The trail sits inside the hero rather than above it. Above it, it pushed the hero
+        down the page and exposed the page ground as a band between the header and the
+        hero's darker opening. Inside, it stands on the ground the hero already paints and
+        costs the hero no vertical position. */}
+    {!homepage && (
+      <div class="page-shell issue-breadcrumb-shell">
+        <Breadcrumb trail={trail} />
+      </div>
+    )}
 
     <div class="home-hero-inner">
     <div class="home-hero-copy">

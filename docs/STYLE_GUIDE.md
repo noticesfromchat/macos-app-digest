@@ -202,8 +202,10 @@ it. See Issue Subscribe Card in `DESIGN.md` for the structure and the reasoning.
   each count is the number of apps within that collection.
 - Omit filter options whose contextual count is zero. Options and counts are generated
   automatically from app content during each Astro build.
-- Place one always-visible directory-control group immediately above the app cards. The live
-  count leads, followed by the visible `Search apps` field, Filter and Sort. Collections and
+- Place one always-visible directory-control group immediately above the app cards. The
+  section heading leads the row where the surface has one, followed by the visible
+  `Search apps` field, Filter and Sort. The live count does not sit in this row; it sits with
+  the active-filter chips directly above the grid, because the two answer the same question. Collections and
   Tags stay inside Filter. Keep the Filter trigger labelled `Filter` regardless of
   selection, and count only selected facets in its badge. The Sort trigger reads its
   current value instead, `A-Z` by default, taken from the selected option's own text so
@@ -218,10 +220,9 @@ it. See Issue Subscribe Card in `DESIGN.md` for the structure and the reasoning.
   desktop controls. When the app grid collapses to one column, give the count and search field
   their own full rows, then split Filter and Sort across the row beneath them. Keep a 16px
   mobile input floor.
-- On Explore, keep the full category descriptions on larger screens and category pages. Below
-  680px, substitute the approved shorter descriptions and remove fixed row height so the six
-  category links remain useful without delaying the catalogue. Put taxonomy explanations in
-  normal flow beneath their headings, never in overlays that cover the first result row.
+- On Explore, use compact category and collection cards with icons, names and live
+  counts. Keep full descriptions on category pages and tags in the directory filter.
+  Follow the Field Grid and responsive card layout in `DESIGN.md`.
 - When a query produces no results, name the query safely with `textContent` and offer to
   clear only the query, preserving every other active filter.
 - Do not display a separate “Sort apps” label.

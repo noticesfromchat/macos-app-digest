@@ -64,6 +64,13 @@
   --type-page-title: clamp(1.875rem, 3.1vw, 2.5rem);
   --type-section-title: clamp(1.5rem, 2.6vw, 2.0625rem);
   --type-dek: 1.1875rem;
+  /* Card and tile titles. The scale ran from --type-meta at 14px straight to
+     --type-dek at 19px, so every card title was a literal typed at its use site:
+     18px, 22.08px and 23px were all in the stylesheet for one role. Two roles is
+     what the content actually needs, because a 180px tile cannot carry a card's
+     title without wrapping to four lines. */
+  --type-card-title: 1.4375rem;
+  --type-tile-title: 1.125rem;
   /* One reading measure. Set in ch so it holds ~70 characters at any of the
      sizes below it, not a fixed pixel column that widens as type shrinks. */
   --measure: 52ch;
@@ -155,10 +162,10 @@
 }
 /* The position marker: one filled dot, the size of the buoy's light. It is the only
    ornament here and it earns its place by saying which crumb is the page you are on. */
-/* An issue page opens on a full-bleed hero rather than a page shell, so its trail
-   borrows the shell to line up with the wordmark, and pays the page's own opening space
-   above itself since the hero's top padding sits below it. */
-.issue-breadcrumb-shell { padding-top: var(--page-start-space); }
+/* An issue page opens on a full-bleed hero rather than a page shell, so its trail sits
+   inside the hero and borrows the shell to line up with the wordmark beneath it. It needs
+   no ground of its own: the hero already paints one. */
+.issue-breadcrumb-shell { position: relative; z-index: 1; }
 
 .breadcrumb-mark {
   /* 7px against the separator glyph's ~4px. At 5px it read as another separator; past
@@ -497,6 +504,10 @@ a { color: inherit; }
   overflow: hidden;
   padding-block: clamp(32px, 4.2vw, 48px)
                  calc(clamp(32px, 4.4vw, 56px) + var(--sea-h));
+  /* A hero carrying the trail opens on the page's own start space instead, so the trail
+     sits the same 24px below the header that it does on every other page. Without this it
+     inherited the hero's larger opening and sat 24px lower than the rest of the site. */
+  &:has(.issue-breadcrumb-shell) { padding-block-start: var(--page-start-space); }
   /* The band settles onto the page ground across the sea, so the hero ends
      on the colour the section below starts with and leaves no seam. */
   background: linear-gradient(to top, var(--page) 0, var(--bg) calc(var(--sea-h) + 38px));
@@ -557,10 +568,9 @@ a { color: inherit; }
 
 .home-hero-issue {
   max-width: 42ch;
-  /* One value owns the gap under the rule, matching the site's other
-     hairline-topped block, instead of a padding and a margin stacking. */
-  padding-top: clamp(32px, 2.4vw, 32px);
-  border-top: 1px solid var(--line);
+  /* No rule and no padding under it. The hero's copy column is `space-between`, so the
+     interval here is whatever the column's height leaves rather than a value of its own,
+     and the hairline was dividing space that was already dividing itself. */
 }
 
 .home-hero-number {
@@ -589,6 +599,39 @@ a { color: inherit; }
 
 .section { padding: var(--section-space) 0; border-top: 1px solid var(--line); }
 .home-hero + .section { border-top: 0; }
+/* Issues and About separate their sections with space alone. The rule was doing the
+   work a grid now does, and a hairline between two blocks that already sit a full
+   section apart is a second statement of the same boundary. The space it was flanking
+   stays: `--section-space` above and below meant the rule landed centred between two
+   blocks, and without it that pair simply reads as one interval. */
+.issue .section,
+.about-page .section {
+  border-top: 0;
+  /* One interval, not two halves flanking a rule. `--section-space` is a fluid clamp,
+     so the doubled value only landed on the base at the clamp's own endpoints: 48px on
+     a phone and 80px past 1053px, but 76px at 1000px and every arbitrary value between.
+     With the rule gone the gap is the boundary, so it takes a fixed step instead.
+
+     Asymmetric for the same reason the issue rule below is: the gap is one section's
+     bottom plus the next one's top, so a symmetric pair can only reach even multiples
+     of 16. 24 above and 8 below sums to 32, the group boundary, with both halves whole
+     and three times as much space above a heading as below it. */
+  padding: var(--space-3) 0 var(--space-1);
+}
+/* At a 24px interval the section heading has to bind tighter to its own content than the
+   gap above it, or it reads as the tail of the section before. 32px below a heading was
+   right against a 72px gap and wrong against a 24px one; 16px keeps the pair the right
+   way round. Scoped to About because the issue page still runs the wider pair. */
+.about-page .section-heading { margin-bottom: var(--space-1); }
+/* An issue is a run of card sections, each already bounded by its own cards, so it reads
+   tighter than About's prose, which has only its headings to separate it.
+
+   The padding is asymmetric so the interval can be 56px, seven base units. A symmetric
+   pair can only reach even multiples of 16 — 48, 64, 80 — because the gap is one
+   section's bottom plus the next one's top. 32 above and 24 below sums to 56 with both
+   halves still whole steps, and it puts more space above a section's heading than below
+   its content, which is the rhythm this page already wanted. */
+.issue .section { padding: var(--space-4) 0 var(--space-3); }
 .section-heading { width: 100%; max-width: none; margin-bottom: 32px; }
 .section h2 { margin: 0; font-family: var(--display); font-size: var(--type-section-title); font-weight: 500; letter-spacing: -.03em; line-height: 1; }
 
@@ -897,7 +940,7 @@ a { color: inherit; }
 .app-card { position: relative; display: flex; min-height: 288px; flex-direction: column; padding: 24px; }
 .app-card-link { position: absolute; z-index: 2; inset: 0; border-radius: var(--radius); }
 .app-card a:not(.app-card-link) { position: relative; z-index: 3; }
-.app-card h3 { margin: 0 0 8px; font-family: var(--display); font-size: 1.4375rem; font-weight: 600; line-height: 1.2174; }
+.app-card h3 { margin: 0 0 8px; font-family: var(--display); font-size: var(--type-card-title); font-weight: 600; line-height: 1.2174; }
 .app-card h3 a { color: var(--text); text-decoration: none; transition: color 180ms ease; }
 .app-card h3 a:hover,
 .app-card h3 a:focus-visible { color: var(--accent); }
@@ -1013,8 +1056,7 @@ a { color: inherit; }
   grid-template-columns: minmax(0, 1fr) 400px;
   align-items: start;
   gap: clamp(32px, 5vw, 72px);
-  padding: 0 0 var(--section-space);
-  border-bottom: 1px solid var(--line);
+  padding: 0;
 }
 .app-detail-masthead { min-width: 0; max-width: 896px; }
 
@@ -1186,6 +1228,15 @@ a { color: inherit; }
 .app-detail-hero h1 { max-width: 920px; overflow-wrap: anywhere; text-wrap: balance; }
 .explore-page .explore-hero { max-width: 784px; }
 .explore-page .explore-section:first-of-type { border-top: 0; }
+/* No rule between the fold and what follows it, as on issues and About: the hero
+   drew one and `.section` drew another directly beneath it, so the seam was two
+   hairlines thick. The boundary is one interval of space now, and one element
+   owns it — the section — rather than the hero's padding and the section's
+   compounding into 80px. 32px is the same step the issue page uses. */
+.app-detail-page .section {
+  padding: var(--space-4) 0 var(--space-3);
+  border-top: 0;
+}
 .archive-page .section:last-child,
 .app-detail-page .section:last-child { padding-bottom: 16px; }
 .explore-discovery-section + .explore-section,
@@ -1507,25 +1558,30 @@ a { color: inherit; }
    this wrong in opposite directions: `none` released the dek to the full 1160, and `100%`
    resolved against the 1160 shell rather than the 620 cap, which is the same bug wearing
    a different value. */
-.about-content { margin-top: 16px; padding-bottom: var(--section-space); color: var(--muted); font-size: 1rem; }
+/* The intro is not a `.section`, so it supplies the bottom half of the boundary itself:
+   8px here plus the first section's 16px top makes the same 24px every section pair
+   carries. It used to close on `--section-space`, a fluid clamp, which made this one
+   boundary 56px while the rest were 24. */
+.about-content { margin-top: var(--space-4); padding-bottom: var(--space-1); color: var(--muted); font-size: 1rem; }
 .about-page p:not(.dek) { margin: 0; color: var(--muted); }
-.about-page p:not(.dek) + p { margin-top: 16px; }
+.about-page p:not(.dek) + p { margin-top: var(--space-2); }
 /* The selection criteria are the one list on the page. They take the same measure and
    muted ink the prose does, so the block reads as part of the writing rather than as a
    panel: DESIGN.md is explicit that About is not a special case. The bold lead-in is
    what makes each item scannable, and it is also the emphasis the critique found the
    page had none of, every paragraph having carried the same muted weight. */
 .about-page .about-criteria {
-  /* Symmetric, because the paragraph rhythm is sibling-based: `p + p` carries 18px, and
+  /* Symmetric, because the paragraph rhythm is sibling-based: `p + p` carries 16px, and
      a list between two paragraphs broke that chain, leaving the sentence after it sitting
-     flush against the final bullet. */
-  margin: 16px 0;
+     flush against the final bullet. The list joins the paragraph rhythm at 16; its own
+     items bind at 8, so the block reads as one thing. */
+  margin: var(--space-2) 0;
   padding: 0;
   color: var(--muted);
   list-style: none;
 }
 .about-page .about-criteria li { position: relative; padding-left: 16px; }
-.about-page .about-criteria li + li { margin-top: 16px; }
+.about-page .about-criteria li + li { margin-top: var(--space-1); }
 .about-page .about-criteria li::before {
   content: '';
   position: absolute;
@@ -1552,6 +1608,15 @@ a { color: inherit; }
    issue because "this is the current one" is a state, which is what blue is for.
    See The Beacon Rule in DESIGN.md. The line is drawn on the list rather than per
    card so it reads as one continuous route rather than eight segments. */
+/* The title leads and the search sits at the end of the same row, the way the Explore
+   directory's heading and controls do. The h1 takes the auto right margin. */
+.archive-masthead {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
+.archive-masthead h1 { margin-right: auto; }
 .archive-filter-bar {
   display: flex;
   flex-wrap: wrap;
@@ -1574,7 +1639,6 @@ a { color: inherit; }
 .archive-year + .archive-year { margin-top: var(--section-space); }
 .archive-year-heading {
   margin: 0 0 16px;
-  padding-left: 40px;
   color: var(--muted);
   font-family: var(--sans);
   font-size: var(--type-meta);
@@ -1590,98 +1654,8 @@ a { color: inherit; }
   padding: 0;
   list-style: none;
 }
-/* The route itself. Script tightens it to the first and last beacon centres; the
-   static fallback runs the height of the list so a reader without JavaScript still
-   gets a continuous line rather than a dangling one. */
-.archive-stops::before {
-  content: "";
-  position: absolute;
-  top: var(--route-top, 0px);
-  bottom: var(--route-bottom, 0px);
-  left: 8px;
-  width: 1px;
-  background: var(--line);
-}
-.archive-stop {
-  position: relative;
-  display: grid;
-  grid-template-columns: 16px minmax(0, 1fr);
-  gap: 24px;
-  align-items: center;
-}
+.archive-stop { position: relative; }
 .archive-stop[hidden] { display: none; }
-.archive-stop-mark {
-  position: relative;
-  width: 16px;
-  height: 16px;
-  border: 1.5px solid var(--muted);
-  border-radius: 50%;
-  background: var(--page);
-  /* The route stops at each ring rather than running under it. Covering the line with
-     the ring's own fill left it showing in the ring's outer band, where the beacon's
-     translucent halo sits, so the reader saw a line crossing the stop. This clears the
-     line for the whole width of that halo and leaves the ring an object the route
-     arrives at. */
-  box-shadow: 0 0 0 4px var(--page);
-  transition: background-color 420ms cubic-bezier(.16, 1, .3, 1), border-color 420ms cubic-bezier(.16, 1, .3, 1);
-}
-/* The current issue is marked when nothing else is travelling: with no script, or
-   under reduced motion, this is the only cue for which issue is the latest. */
-.archive-stop.is-current .archive-stop-mark {
-  border-color: var(--accent);
-  background: var(--accent);
-  /* Mixed into the page rather than into transparency. The halo sits on the route,
-     so a translucent one let the line show straight through the ring it surrounds.
-     Over this ground the two mixes resolve to the same colour; only this one hides
-     the line. */
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 16%, var(--page));
-}
-/* Once the pilot is running it is the only lit thing on the route. The blue moves
-   on with the reader rather than leaving a filled stop behind it, so every ring the
-   pilot is not currently in reads the same. */
-.archive-route.is-piloted .archive-stop.is-current .archive-stop-mark {
-  border-color: var(--muted);
-  background: var(--page);
-  /* Drops the accent halo, not the one that keeps the route off the ring. */
-  box-shadow: 0 0 0 4px var(--page);
-}
-
-/* The pilot: the lit beacon that travels the route with the reader, named for the
-   boat that leads a vessel through a harbour. One object for the whole page, moved
-   by scroll position rather than by an animation of its own, so it holds at a stop
-   while the reader keeps scrolling and then catches up to the next. It is the same
-   16px as a stop mark, so docking reads as that stop lighting up. Hidden until the
-   script places it, and never shown under reduced motion. */
-.archive-pilot {
-  position: absolute;
-  top: 0;
-  /* Derived, not chosen: the ring's interior is 16px less its 1.5px border on each
-     side, so the pilot is 13px and insets by that same 1.5px. Docking then fills the
-     ring and leaves its outline drawn, rather than covering the stop or hiding
-     beneath it. The base-unit pass moved the ring 17 -> 16 and briefly took the pilot
-     to 16 with it, which put a 16px dot inside a 13px hole. Sizes here follow the
-     ring; they are not independent values to round. */
-  left: 1.5px;
-  width: 13px;
-  height: 13px;
-  margin-top: -6.5px;
-  /* The stops carry an opaque background and come later in the document, so
-     without this the pilot paints behind the ring it is meant to fill. */
-  z-index: 2;
-  border-radius: 50%;
-  background: var(--accent);
-  /* Translucent on purpose: the halo overlaps the ring it is docking into, and the
-     stop's outline has to stay drawn through it. The route line is kept out of this
-     annulus by the stop's own opaque halo, not by this one. */
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 16%, transparent);
-  pointer-events: none;
-  opacity: 0;
-  /* One bounded move per change of stop, on the house deceleration curve. A view
-     transition rather than a tracker: it rests until the current stop changes, and
-     the browser retargets it cleanly when a reader scrolls past several at once. */
-  transition: transform 420ms cubic-bezier(.16, 1, .3, 1), opacity 300ms ease;
-}
-.archive-pilot.is-live { opacity: 1; }
 .archive-route { position: relative; }
 /* No box-shadow of its own: an archive row is an app card in every respect that
    matters, so it takes the shared card rest state and the shared hover contract
@@ -1690,7 +1664,7 @@ a { color: inherit; }
    border went. */
 .archive-card { display: grid; gap: 8px; padding: 24px; text-decoration: none; }
 .archive-card span { color: var(--muted); }
-.archive-card strong { font-family: var(--display); font-size: 1.38rem; color: var(--text); }
+.archive-card strong { font-family: var(--display); font-size: var(--type-card-title); line-height: 1.2174; color: var(--text); }
 .archive-card-dek {
   max-width: var(--measure);
   margin: 0;
@@ -1713,10 +1687,10 @@ a { color: inherit; }
   font-variant-numeric: tabular-nums;
 }
 
-.archive-more { margin-top: 16px; margin-left: 40px; }
+.archive-more { margin-top: 16px; }
 .archive-empty {
   max-width: var(--measure);
-  margin: var(--section-space) 0 0 40px;
+  margin: var(--section-space) 0 0;
   color: var(--muted);
 }
 
@@ -1726,61 +1700,10 @@ a { color: inherit; }
    the last stop down to the centre of this mark, so the line ends where the archive
    does. */
 .archive-origin { position: relative; }
-.archive-origin::before {
-  content: "";
-  position: absolute;
-  /* Bridges from the last stop's ring down to this one. Script measures the real
-     distance, because centring the marks on their cards puts the last ring halfway
-     up Issue 01 rather than at the foot of the list. The fallback covers the plain
-     margin for a reader without JavaScript, where the line runs to the list's edge. */
-  height: var(--origin-bridge, 24px);
-  /* Ends on the mark's centre. The mark now centres on the card rather than sitting
-     a fixed 4px down from the top, so that centre is measured rather than stated;
-     without the script it is the block's own middle, which is where a centred mark
-     lands anyway. */
-  top: calc(var(--origin-mark-centre, 50%) - var(--origin-bridge, 24px));
-  left: 8px;
-  width: 1px;
-  background: var(--line);
-}
 .archive-origin--empty::before { content: none; }
 .archive-origin {
   display: grid;
-  grid-template-columns: 16px minmax(0, 1fr);
-  /* The terminus is a card like every stop above it, so the mark sits at the same
-     24px from it and centres on it the way a stop's does. */
-  gap: 24px;
-  align-items: center;
   margin-top: 16px;
-}
-.archive-origin-mark {
-  position: relative;
-  width: 16px;
-  height: 16px;
-  border: 1.5px solid var(--line);
-  border-radius: 50%;
-  background: var(--page);
-  /* Same cut as a stop: the bridge from the last issue ends at this ring's edge
-     rather than running down into it. */
-  box-shadow: 0 0 0 4px var(--page), inset 0 0 0 3px var(--page), inset 0 0 0 9px var(--muted);
-}
-/* Delight, at the one moment on this page that has earned it. A reader who reaches
-   the terminus has travelled the whole archive, so the origin answers the way the
-   RSS mark does: the same harbour beacon, on the same keyframes, acknowledging a
-   vessel that has come in. It fires on arrival rather than on load, because landing
-   is the completion; it is three pings rather than a loop, so it cannot become
-   friction on the way back down; and it re-arms only after the reader leaves. */
-.archive-origin-mark::after {
-  content: "";
-  position: absolute;
-  inset: -2px;
-  border-radius: 50%;
-  border: 1.5px solid color-mix(in srgb, var(--accent) 60%, transparent);
-  opacity: 0;
-  pointer-events: none;
-}
-.archive-origin.is-arrived .archive-origin-mark::after {
-  animation: beacon-ping 2400ms cubic-bezier(0.16, 1, 0.3, 1) 3;
 }
 /* The terminus is the one arrival this page has, so it is a card and it is lit,
    under The Struck Light Rule. The light is the site accent rather than an app's
@@ -1803,13 +1726,18 @@ a { color: inherit; }
 .archive-origin h2 {
   margin: 0;
   font-family: var(--display);
-  font-size: 1.38rem;
+  font-size: var(--type-card-title);
   font-weight: 600;
+  line-height: 1.2174;
   letter-spacing: -.02em;
 }
 .archive-origin p { margin: 8px 0 0; color: var(--muted); }
 .archive-origin--empty { margin-top: var(--section-space); }
-.archive-subscribe-section { margin-top: var(--section-space); }
+/* The archive closes on the subscribe card, and space marks that boundary rather than a
+   rule, the same as issues and About. 40px of margin plus the section's own 32px of top
+   padding makes 72px, nine steps, which is the wider interval this one boundary earns:
+   it is the page ending, not one section following another. */
+.archive-subscribe-section { margin-top: var(--section-space); border-top: 0; padding-top: var(--space-4); }
 .archive-card .archive-card-date {
   color: var(--muted);
   font-size: var(--type-meta);
@@ -1851,11 +1779,19 @@ a { color: inherit; }
      now lives with the chips above the grid, so the row aligns its own contents. */
   justify-content: flex-end;
   gap: 16px;
+  /* Stretch, not center: the controls size themselves from this, and centring the row
+     left the Filter trigger at its 20px content height inside a 48px shell. Only the
+     heading opts out, below. */
   align-items: stretch;
   margin-top: 0;
 }
 .directory-filter-bar > .directory-filter,
 .directory-filter-bar > .directory-sort { flex: 0 0 180px; }
+/* Takes the auto right margin the count used to carry, so the controls sit at the end
+   of a row that now has something at its start. Scoped to the bar because `.section h2`
+   sets `margin: 0` and is the more specific selector, which swallowed the auto. It is
+   the one item that centres itself; the row stays on stretch for the controls. */
+.directory-filter-bar > .directory-heading { margin: 0 auto 0 0; align-self: center; }
 .directory-filter-bar--no-filters > .directory-sort { flex: 0 0 180px; }
 /* On a lane page the directory follows the dek directly, and the bar's own zero margin
    left no interval at all: the controls sat closer to the dek than the dek sits to the
@@ -2188,7 +2124,10 @@ a { color: inherit; }
 @media (max-width: 680px) {
   .filter-scroll { max-height: min(280px, 36vh); }
 }
-.filter-group + .filter-group {
+/* The rule divides one visible group from another, so the previous sibling has to be
+   visible for it to apply. A `hidden` group is still a sibling to `+`, which left a rule
+   drawn across the top of Tags whenever a filter narrowed Collections to nothing. */
+.filter-group:not([hidden]) + .filter-group {
   margin-top: 8px;
   border-top: 1px solid var(--line);
 }
@@ -2380,6 +2319,8 @@ a { color: inherit; }
   }
   
   .grid { grid-template-columns: 1fr; }
+  .issue .section { padding: var(--space-3) 0; }
+  .about-page .section { padding: var(--space-3) 0 var(--space-1); }
   .directory-filter-bar,
   .directory-filter-bar--no-filters {
     gap: 16px;
@@ -2428,7 +2369,8 @@ a { color: inherit; }
   :root { --page-start-space: 28px; }
   .archive-page { padding: var(--page-start-space) 0 32px; }
   .app-detail-page { padding: var(--page-start-space) 0 32px; }
-  .app-detail-hero { padding: 0 0 24px; }
+  .app-detail-hero { padding: 0; }
+  .app-detail-page .section { padding: var(--space-3) 0; }
   .app-detail-actions { flex-direction: column; align-items: flex-start; }
   .explore-subscribe-card { grid-template-columns: 1fr; }
   .explore-utility-grid { grid-template-columns: 1fr; }
@@ -2531,11 +2473,6 @@ a { color: inherit; }
   .archive-card:hover,
   .theme-toggle:hover { transform: none; }
   .content-divider.is-lit .brand-mark-ping { animation: none; }
-  /* Reduced motion keeps the marker, because which stop you are at is meaningful
-     state, and drops the travel between stops. */
-  .archive-pilot { transition: opacity 300ms ease; }
-  .archive-stop-mark { transition: none; }
-  .archive-origin.is-arrived .archive-origin-mark::after { animation: none; }
   .has-pick-accent::before,
   .has-pick-accent::after { animation: none; }
 }

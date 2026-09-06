@@ -233,7 +233,11 @@ The type system is split between a classic editorial serif for the headlines and
 **The two small roles use the opposite tokens to their names.** Control Label is delivered by `--type-meta` and the count's metadata variant by `--type-label`. This is backwards and it is deliberate for now: the tokens are plain sizes used across dozens of rules, and renaming them to match the roles is a site-wide pass, not a footnote to this one. Read the role from the entry above, never from the token name, and do not "correct" a measured page back toward the token that names it.
 - **Brand** (500, fluid 1.35-2rem): the App Waypoint wordmark set in the same editorial serif as the headline system.
 
-**The Even Rule Rule.** A horizontal rule carries the same space above it as below it. That space is `--section-space` — clamp(26px, 3.8vw, 40px), one value for the whole site — and it belongs to whatever sits on either side, which means a page's opening block pays the bottom half before the first divider. A rule that hugs the content above it is the tell that a block forgot to close on the rhythm. The rhythm is close rather than airy on purpose: the pages are dense and the rules are hairlines, so a wide gap reads as a gap rather than as a division. The only blocks that sit tighter are the ones that follow a drawn divider instead of a rule, where there is no rule to be symmetric with.
+**No section draws a rule.** Content is separated by the grid, not by hairlines. A hairline between two blocks already a full section apart states the boundary twice, and once the spacing scale was doing the work honestly the rules had nothing left to say. They went from issues and About on 2026-09-05, then from the archive, Explore and app detail pages the same day; the site now draws no horizontal rule that divides content anywhere.
+
+A hairline that *constitutes a control* is not a divider and stays: the RSS URL card's edge, the filter panel's structure, an input's border. The test is whether removing it would make something harder to operate rather than merely less ruled.
+
+This replaced **The Even Rule Rule**, which asked that a rule carry the same space above it as below — `--section-space`, one value for the whole site, paid half by each side. That rule was sound and it is recorded because it was load-bearing for a year: it is the reason section spacing was ever symmetric, and why removing the lines meant re-deriving the intervals rather than simply deleting a border. Sections now sit on one interval instead of two halves flanking a line, and the padding is asymmetric so that interval can be an odd number of steps.
 
 **The Base Unit.** Every spacing value, dimension and radius on the site is a whole
 multiple of 8px. It is held as `--base`, with the scale `--space-1` through `--space-9`
@@ -330,7 +334,47 @@ cannot. The division should follow what the content will need rather than what t
 composition minimally requires; that choice is recorded here and not yet made in the code,
 which still runs on six.
 
-About is the one page that narrows its column. Its shell is the usual 1160px, so the page starts on the same left edge as every other page, but the blocks inside it cap at 620px, so its headings and section rules sit with its prose instead of spanning the full shell. Narrowing the shell itself would have centred the column and made About the one page whose content begins somewhere else. Everywhere else the shell is 1160px because a three-column card grid fills it, and a full-width rule there divides full-width content. About has nothing to fill it: its rules were running 1032px to head a 524px column, leaving a 508px dead field and a divider promising content to its right that was never coming. Prose still takes `--measure` inside that column, so the reading measure is unchanged at roughly seventy characters; what changed is that the dividers now match the thing they divide. This page previously followed the shell like every other, and that is recorded here because the uniformity was deliberate rather than accidental: the rule was written for pages the shell fits, and this is the one it does not. A section rule is always flanked symmetrically by `--section-space` (clamp(24px, 3.8vw, 40px), so 40px on desktop and 24px on a phone — the cap is `--space-5`, five base units, and the floor is three), including the first rule on a page — a page's opening block closes on that same space so the rule lands centred rather than hugging the paragraph above it. The homepage opens wider and more scenic, but its content still obeys the same page rhythm: full-width header and footer, then a controlled interior with sections separated by thin rules. Desktop cards usually live in a three-column grid; below 920px the grid collapses to one column and the pages stop pretending they are desktops. Around 680px the mobile gutters tighten, the header simplifies further, and coarse-pointer contexts inherit larger hit targets even when they are wider than a phone.
+About is the one page that narrows its column. Its shell is the usual 1160px, so the page starts on the same left edge as every other page, but the blocks inside it cap at 620px, so its headings sit with its prose instead of spanning the full shell (its section rules did too, while it had any). Narrowing the shell itself would have centred the column and made About the one page whose content begins somewhere else. Everywhere else the shell is 1160px because a three-column card grid fills it, and a full-width rule there divides full-width content. About has nothing to fill it: its rules were running 1032px to head a 524px column, leaving a 508px dead field and a divider promising content to its right that was never coming. Prose still takes `--measure` inside that column, so the reading measure is unchanged at roughly seventy characters; what changed is that the dividers now match the thing they divide. This page previously followed the shell like every other, and that is recorded here because the uniformity was deliberate rather than accidental: the rule was written for pages the shell fits, and this is the one it does not. Issues and About draw no section rules. The grid separates their content, and a hairline
+between two blocks already a full section apart was a second statement of the same boundary.
+Their sections sit on one interval instead of two halves flanking a line, and the padding is
+asymmetric so that interval can be an odd number of steps: the gap is one section's bottom
+plus the next one's top, so a symmetric pair only reaches even multiples of 16. It also puts
+more space above a heading than below the content it introduces, which is the rhythm these
+pages already wanted.
+
+An issue is a run of card sections, each already bounded by its own cards, so it reads at
+**56px**, seven steps, from 32 above and 24 below. About is prose rather than cards, so it runs on a
+three-step ladder of its own instead of a single section value.
+
+**The About ladder.** Three intervals, each double the last, so every gap says which level
+of grouping it marks: **8px binds** a heading to the content it introduces and one list item
+to the next, **16px is paragraph rhythm** between siblings in a block, and **32px is a group
+boundary** between the dek and the body, the intro and the first section, and one section and
+the next. The section padding is 24 above and 8 below, which sums to that 32 while putting
+three times as much space above a heading as beneath it.
+
+Before this the page had one value doing nine jobs: 16px separated the title from the dek,
+the dek from the body, paragraph from paragraph, a heading from its content, a list from its
+lead-in, and one list item from the next, while sections sat at 24 — eight pixels more than a
+paragraph break, which is not enough difference to mean anything. Every value was on the base
+and the page still read as arbitrary, because a scale is only legible when the steps are far
+enough apart to be told apart. Both fall back
+to a symmetric `--space-3` and 48px below 920px, where a single column makes every section
+long anyway.
+
+The issue page has one wider boundary by design: an 80px `content-divider` sits between the
+launches and video sections, so that gap measures 136px rather than 56. Both are whole steps at every
+width, which the old pair was not — `--section-space` is a fluid clamp, so doubling it landed
+on the base only at the clamp's endpoints and gave 76px at a 1000px viewport.
+
+Explore, the archive and app detail pages were the last three surfaces still drawing section
+rules, and they stopped on 2026-09-05. Each one had the same fault underneath: the rule was
+carrying a boundary that the interval on either side of it was also carrying, so removing it
+left the space doubled rather than correct. The app detail page was the clearest case — the
+hero's `border-bottom` and `.section`'s `border-top` sat directly on each other, two hairlines
+thick, with 40px of padding on each side. It resolved to one owner and one interval: the hero
+carries no bottom padding, the section carries 32px, which is the step the issue page uses.
+The homepage opens wider and more scenic, but its content obeys the same page rhythm: full-width header and footer, then a controlled interior whose sections are separated by space. Desktop cards usually live in a three-column grid; below 920px the grid collapses to one column and the pages stop pretending they are desktops. Around 680px the mobile gutters tighten, the header simplifies further, and coarse-pointer contexts inherit larger hit targets even when they are wider than a phone.
 
 Prose everywhere runs to `--measure`, so the reading column is the same width in characters on every page regardless of the type size sitting in it. App detail pages use the same shell and the same page-title and dek roles as every other interior page; what makes them editorial is the composition below the title — content set directly on the page field rather than in a card, a two-column best-for/tags panel, and a narrower related-apps grid. Section spacing is generous but disciplined, with more space above headings than below them.
 
@@ -389,17 +433,23 @@ Because the card rests at Hover Lift rather than Ambient Card, it cannot answer 
 
 **The buoy stays the one authored moment.** The mark on the content divider flashes once as the reader passes it. That is deliberate: it marks the passage the divider stands for, and it sits alongside the light on the Editor's Pick card. The old archive timeline in the removed `Keep Exploring` closer retired with that section on 2026-09-01, leaving the issue page calmer at the finish.
 
-**The Pilot Rule.** The archive's beacon marks which stop the reader is at. One lit dot rests inside a ring, and when the nearest stop changes it makes a single bounded move to the new one over 420ms on `ease-settle`, then rests again. It is confined to `/archive/`.
+**The archive carried a route and a pilot until 2026-09-05.** Its issue cards sat in a
+timeline: a vertical line down the left, a ring at each stop, and one lit dot that moved to
+whichever stop the reader was nearest, plus a Landfall Ping when they reached the terminus.
+It is recorded here because it was deliberate work and because its removal was a judgement
+about reliability rather than taste.
 
-It earns its place under The Earned Motion Rule by carrying the page's own subject. The archive is the only surface here that is genuinely a sequence, so a marker moving through that sequence explains where the reader is; nothing else on the site has a state like it.
+The pilot's position was measured in script from the live geometry of every ring, and
+re-measured on scroll, resize, search input, batch reveal and font load. Any of those could
+leave it out of step, and in practice it did: the base-unit pass alone put a 16px dot inside
+a 13px ring by changing the ring and the dot independently, because their sizes were derived
+from each other in a comment rather than in the code. A decoration that has five ways to
+desync and no way to fail visibly is a maintenance cost the page was paying every week.
 
-The first version got this wrong in a way worth recording, because the fault was structural and four rounds of tuning its speed never touched it. It followed the scroll position every frame, which meant it was in motion the whole time the reader was, and easing it toward a target made it travel faster the harder they scrolled. A marker that continuously chases the viewport explains nothing and competes with the reading. The state it represents is discrete: the reader is at a stop, and what changes is which stop. Once the dot belonged to a ring rather than to the scroll, the qualities that had been chased with constants fell out of the structure. It holds, because resting is its default. It arrives, because the move is bounded rather than asymptotic. And scrolling faster cannot make it hurry, because speed changes when the stop flips, never how long the move takes.
-
-Three things keep it quiet. Scroll decides only which stop is current and CSS owns the movement, so nothing runs on a still page and the browser retargets cleanly when a reader passes several stops at once. The dot is the only lit thing on the route: its fill is a state, so it takes the accent under The Beacon Rule, and no stop stays lit behind it. Under `prefers-reduced-motion` the marker stays and only the travel between stops is dropped, because which issue the reader is at is meaningful state and reduced motion means less movement, not less meaning.
-
-Two details decide whether the dock reads as exact, and both were wrong at first. The travel is **not rounded to whole pixels**: a stop's centre lands on a half pixel as often as not, so rounding put the beacon up to half a pixel off the ring it was filling, which is a whole device pixel of misplaced blue on a 2x display and a different error at every stop. And **the route stops at each ring rather than passing under it**. Hiding the line behind a ring's own fill left it crossing the ring's outer band, where the beacon's halo sits, so the reader saw a line drawn through the stop; each mark now clears the line for the width of that halo, which makes the ring an object the route arrives at instead of a bead threaded on it. The halo stays translucent so the ring's outline still reads through the docked beacon.
-
-**The Landfall Ping.** Reaching the terminus is the one completion this page has, so the origin answers it: the same three-pulse `beacon-ping` the RSS mark uses when the subscribe card is hovered, on the same keyframes and the same curve. It fires on arrival rather than on load, because landing is the moment and a reader at the top of the page has not travelled anywhere yet. It is three pulses rather than a loop, so it cannot become friction on the way back down, and it re-arms only after the reader leaves, so returning is acknowledged again. Reduced motion drops it entirely: it carries feeling, not state, and nothing is lost by its absence.
+The archive is now a plain column: cards span the full shell width and the reading order is
+the order they are in. What the timeline expressed — that an archive is a route back through
+the publication — the year headings and the dates already say. `beacon-ping` stays in the
+stylesheet; the RSS mark still uses it.
 
 **The Swell Rule.** The water moves, and it is the only thing on the page that moves without wanting to be noticed. Both wave bands, the hero's waterline and the content divider's, breathe: the crests hold their positions while the height of the water and the weight of its second harmonic settle and return, on periods of 23 and 31 seconds that do not divide into one another, so the band never repeats a state the eye can catch.
 
@@ -523,7 +573,7 @@ Three things are deliberately outside it. The app-detail rail's category rows ar
 
 ### Explore Directory
 
-Explore carries the catalogue itself, not a sample of it: the taxonomy card, then
+Explore carries the catalogue itself, not a sample of it: category and collection cards, then
 `AppDirectory` over all 102 apps with the count, filter and sort the tag, collection and
 category pages already use. One component, four pages.
 
@@ -542,16 +592,26 @@ recommended. And the client renderer carried a hand-copied duplicate of `AppCard
 that had already drifted from it. Removing the shelves removed the renderer, and the
 renderer took both with it.
 
-- **Order:** taxonomy, then catalogue. The card teaches the six lanes; the directory is
-  the thing itself. The subscribe card closes the page rather than interrupting it at a
-  third of the way down, where it used to sit between two app shelves.
+- **Order:** categories, collections, then catalogue. The opening uses six category
+  cards on the Field Grid's 16px gutters, with an icon, serif title and live app count.
+  The collection row divides evenly among the existing collections; two occupy three
+  fields each, and three occupy two each. Cards use 16px insets and matching corners,
+  with 8px between each muted section label and its row and 24px between groups.
+  The category row becomes three columns below 1100px, two below 680px and one below
+  360px. Collections stack below 680px. This compact opening follows the editor's
+  September 5 mockup; descriptions remain on category pages and tags in the directory filter.
 - **The count is stated, once.** The directory's filter bar carries it and keeps it live as
   filters narrow. The hero carried it too until 2026-09-02, which meant the page opened by
   announcing a number and then restated it a screen later; the dek now describes what the
   page holds and the count belongs to the control that changes it. The page previously
   never said how many apps existed at all.
-- **The directory controls are a row, not a grid.** The live count leads and Search apps,
-  Filter and Sort sit at the end, pushed there by the count's own auto right margin. It was a
+- **The directory controls are a row, not a grid.** The surface's own heading leads where it
+  has one, and Search apps, Filter and Sort sit at the end, pushed there by the heading's auto
+  right margin. The live count led that row until 2026-09-02, when it moved down to sit with
+  the active-filter chips against the grid they describe; the row kept the mechanism and lost
+  the element, which left 488px of empty field beside the controls until Explore's `All apps`
+  took the place. A surface with no heading of its own passes none, keeps its screen-reader
+  heading, and the row aligns to its end as before. It was a
   six-track grid until 2026-09-02, with the count spanning tracks 1-2, the menus at 5 and
   6, and tracks 3 and 4 existing only as spacers. Six tracks for three items reads as a
   layout right up until a fourth control arrives, and then it reads as a puzzle.
@@ -561,11 +621,6 @@ renderer took both with it.
   the card grid collapses, count and search each take a full row while Filter and Sort share
   the row beneath them, preserving DOM and focus order. Each visible control stays flat with
   a border and no lift.
-- **Mobile taxonomy keeps the lane, not the lecture.** Below 680px, Explore swaps each full
-  category description for its approved shorter line and removes the desktop row floor. The
-  full descriptions remain on larger screens and category pages. Categories, Collections and
-  Popular tags explain their roles in muted copy directly below each heading, in normal flow,
-  so help never covers the first link or depends on hover.
 - **Directory state is shareable.** Query, optional collections, optional tags and a
   non-default sort are written to the query string and restored on load. Typing uses
   `replaceState`, so the browser history does not receive one entry per character. A tag,
@@ -694,7 +749,7 @@ The detail page answers three questions in order: what is this, is it for me, an
 - **Rail:** a 400px column holding three labelled groups, Collections then Categories then Tags, each built the same way: an eyebrow, `--eyebrow-gap` beneath it, then its items at 2px. 24px separates the groups. Nothing is divided by a rule. It occupies what used to be empty space beside a 900px masthead on a 1160px page. The width is set by the tag chips: measured across all 102 apps a tag set needs 311px at the median and 399px at the 95th percentile, so 400px keeps 95% of the catalogue on a single line. The longest set needs 473px, and buying that last 2% would cost 60px of the prose column.
 - **Taxonomy rank:** categories are the most generic fact an app carries and read at Metadata scale in muted ink, as 32px rows with their marks. They were 22.4px serif inside 80px bordered cards, which made the least meaningful metadata the largest thing on the page after the title. Tags stay chips at Label scale. Nothing here outranks the app's own name, dek or Best For.
 - **One axis:** every mark in the rail shares a centre and every label starts at the same x, because the badge and the category rows use the same 32px icon column and 16px gap. Their glyphs are both 19px.
-- **Collapse:** at 920px, where the whole site drops to one column, the rail stacks under the masthead and keeps its DOM order, so reading and focus order do not change. No rule divides them, and none divides the badge from the taxonomy: inside the rail the separation is space. The only rule on the page closes the hero against the related apps below.
+- **Collapse:** at 920px, where the whole site drops to one column, the rail stacks under the masthead and keeps its DOM order, so reading and focus order do not change. No rule divides them, and none divides the badge from the taxonomy: inside the rail the separation is space. The hero used to close against the related apps on a rule; since 2026-09-05 that boundary is 32px of the section's own top padding, and the page draws no rule at all.
 
 ### Homepage Hero
 

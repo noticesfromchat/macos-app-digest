@@ -9,12 +9,14 @@ const {
   apps,
   defaultFilterType,
   defaultFilterValue,
-  showFilterMenu = true
+  showFilterMenu = true,
+  heading
 } = Astro.props as {
   apps: CollectionEntry<'apps'>[];
   defaultFilterType?: FilterType;
   defaultFilterValue?: string;
   showFilterMenu?: boolean;
+  heading?: string;
 };
 
 const [allApps, issues] = await Promise.all([
@@ -76,10 +78,14 @@ const sortedApps = [...apps].sort((a, b) =>
   data-default-value={defaultFilterValue}
 >
   {/* The page title is the h1 and every card title is an h3, so without this the
-      directory skipped a level. It names the region for a screen reader and keeps
-      the outline whole; there is no visible heading here by design. */}
-  <h2 class="sr-only">Apps</h2>
+      directory skipped a level. A surface with its own visible heading passes it instead,
+      and it leads the control row rather than sitting on a line of its own: the row was
+      built around a leading element with an auto right margin, and when the count moved
+      down to the grid nothing replaced it, leaving 488px of empty field beside the
+      controls. Either way the outline gets exactly one h2. */}
+  {!heading && <h2 class="sr-only">Apps</h2>}
   <div class:list={['directory-filter-bar', !showFilterMenu && 'directory-filter-bar--no-filters']}>
+    {heading && <h2 class="directory-heading">{heading}</h2>}
     <div class="directory-search">
       <svg
         aria-hidden="true"

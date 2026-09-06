@@ -91,47 +91,52 @@ let stopIndex = 0;
 >
   <section class="page-shell archive-page">
     <Breadcrumb trail={trail} />
-    <h1>Archive</h1>
+    {/* The search sits with the title rather than on a row of its own. The row it used to
+        share with the live count lost its other half when the count went visually quiet,
+        which would have left one control floating against an empty field. */}
+    <div class="archive-masthead">
+      <h1>Archive</h1>
+      {issues.length > 0 && (
+        <div class="directory-search archive-search">
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </svg>
+          <label class="sr-only" for="archive-query">Search issues</label>
+          <input
+            id="archive-query"
+            class="directory-query-input"
+            type="search"
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="Search issues"
+            maxlength="100"
+            disabled
+            data-archive-query
+          />
+        </div>
+      )}
+    </div>
     <p class="dek">Every issue published so far, newest first, back to where it started.</p>
 
     {issues.length > 0 ? (
       <>
-        <div class="archive-filter-bar">
-          <p class="archive-count" aria-live="polite" data-archive-count>
-            {issues.length} {issues.length === 1 ? 'issue' : 'issues'}
-          </p>
-          <div class="directory-search archive-search">
-            <svg
-              aria-hidden="true"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <circle cx="11" cy="11" r="8"></circle>
-              <path d="m21 21-4.3-4.3"></path>
-            </svg>
-            <label class="sr-only" for="archive-query">Search issues</label>
-            <input
-              id="archive-query"
-              class="directory-query-input"
-              type="search"
-              autocomplete="off"
-              spellcheck="false"
-              placeholder="Search issues"
-              maxlength="100"
-              disabled
-              data-archive-query
-            />
-          </div>
-        </div>
+        {/* Removed from view, kept for assistive tech: every card names its own issue
+            number, so the running total was saying what the list already says. It is
+            `aria-live`, and it is the only thing that announces how a search resolved. */}
+        <p class="archive-count sr-only" aria-live="polite" data-archive-count>
+          {issues.length} {issues.length === 1 ? 'issue' : 'issues'}
+        </p>
 
         <div class="archive-route" data-archive-route>
-          {/* The lit beacon that travels with the reader. Decorative: the stops
-              themselves carry the reading order and the links. */}
-          <span class="archive-pilot" aria-hidden="true" data-archive-pilot></span>
           {byYear.map(({ year, issues: yearIssues }) => (
             <section class="archive-year" data-archive-year={year}>
               <h2 class="archive-year-heading">{year}</h2>
@@ -148,7 +153,6 @@ let stopIndex = 0;
                       data-archive-haystack={haystack(issue)}
                       hidden={beyond}
                     >
-                      <span class="archive-stop-mark" aria-hidden="true"></span>
                       <a class="archive-card" href={`/issues/${issue.data.slug}/`}>
                         <strong>{issueName(issue.data.number)}</strong>
                         <span class="archive-card-date">
@@ -182,7 +186,6 @@ let stopIndex = 0;
         </p>
 
         <section class="archive-origin" data-archive-origin aria-labelledby="archive-origin-heading">
-          <span class="archive-origin-mark" aria-hidden="true"></span>
           <div class="archive-origin-body has-pick-accent">
             <h2 id="archive-origin-heading">Where it started</h2>
             <p>
@@ -197,7 +200,6 @@ let stopIndex = 0;
       </>
     ) : (
       <section class="archive-origin archive-origin--empty">
-        <span class="archive-origin-mark" aria-hidden="true"></span>
         <div class="archive-origin-body">
           <h2>The first issue is on its way</h2>
           <p>
@@ -257,9 +259,7 @@ let stopIndex = 0;
       /* A search that finds nothing leaves the message and nothing else. The route
          draws a line to stops that are not there, and the terminus answers a journey
          the reader did not take, so both go with the results rather than hanging
-         under an empty count. The route carries the pilot and the year headings, and
-         the origin carries its bridge, its mark and the card, so hiding the two
-         sections takes all six things with them. */
+         under an empty count. */
       const found = shown !== 0;
       route.hidden = !found;
       if (originEl) originEl.hidden = !found;
@@ -299,124 +299,5 @@ let stopIndex = 0;
     input.disabled = false;
     render();
 
-    /* The pilot marks which stop the reader is at. It is a state, not a tracker:
-       it rests in a ring and moves only when the current stop changes, on a single
-       bounded transition. An earlier version followed the scroll position every
-       frame, which meant it was in motion the whole time the reader was and its
-       speed rose with theirs. That is animation debt: it explained nothing and
-       competed with the reading.
-
-       Scroll only decides which stop is current. CSS owns the movement, so the
-       browser retargets cleanly when the reader scrolls through several stops at
-       once, and there is no loop running on a still page. */
-    const pilot = route.querySelector<HTMLElement>('[data-archive-pilot]');
-    const origin = document.querySelector<HTMLElement>('.archive-origin-mark');
-
-    if (pilot) {
-      let anchors: { y: number; el: HTMLElement }[] = [];
-      let routeTop = 0;
-      let activeIndex = -1;
-      let dirty = true;
-      let frame = 0;
-
-      const centreOf = (el: HTMLElement) => {
-        const box = el.getBoundingClientRect();
-        return box.top + window.scrollY + box.height / 2;
-      };
-
-      const measure = () => {
-        routeTop = route.getBoundingClientRect().top + window.scrollY;
-        const marks = stops
-          .filter((stop) => !stop.hidden)
-          .map((stop) => stop.querySelector<HTMLElement>('.archive-stop-mark')!)
-          .filter(Boolean);
-        anchors = marks.map((el) => ({ y: centreOf(el), el }));
-        /* The terminus is the last stop on the journey, so the pilot rests there too. */
-        if (origin && anchors.length) anchors.push({ y: centreOf(origin), el: origin });
-
-        for (const list of route.querySelectorAll<HTMLElement>('.archive-stops')) {
-          const listMarks = [...list.querySelectorAll<HTMLElement>('.archive-stop:not([hidden]) .archive-stop-mark')];
-          if (!listMarks.length) {
-            list.style.removeProperty('--route-top');
-            list.style.removeProperty('--route-bottom');
-            continue;
-          }
-          const listBox = list.getBoundingClientRect();
-          const listTop = listBox.top + window.scrollY;
-          list.style.setProperty('--route-top', `${Math.round(centreOf(listMarks[0]) - listTop)}px`);
-          list.style.setProperty('--route-bottom', `${Math.round(listTop + listBox.height - centreOf(listMarks[listMarks.length - 1]))}px`);
-        }
-
-        const lastMark = anchors.length > 1 ? anchors[anchors.length - 2].el : null;
-        if (origin && lastMark) {
-          const block = origin.parentElement;
-          block?.style.setProperty(
-            '--origin-bridge',
-            `${Math.round(centreOf(origin) - centreOf(lastMark))}px`
-          );
-          /* Where the bridge has to stop. The mark centres on the terminus card, so
-             its centre moves with the card's height rather than sitting a fixed
-             distance below the block's top. */
-          if (block) {
-            block.style.setProperty(
-              '--origin-mark-centre',
-              `${Math.round(centreOf(origin) - (block.getBoundingClientRect().top + window.scrollY))}px`
-            );
-          }
-        }
-        dirty = false;
-        activeIndex = -1;
-      };
-
-      const originBlock = origin?.closest<HTMLElement>('.archive-origin') ?? null;
-
-      const update = () => {
-        frame = 0;
-        if (dirty) measure();
-        if (!anchors.length) {
-          pilot.classList.remove('is-live');
-          route.classList.remove('is-piloted');
-          return;
-        }
-
-        /* Whichever stop the reader is nearest. Discrete on purpose: between two
-           stops the pilot stays in the one it is in until the other is closer. */
-        const line = window.scrollY + window.innerHeight / 2;
-        let next = 0;
-        for (let i = 1; i < anchors.length; i += 1) {
-          if (Math.abs(anchors[i].y - line) < Math.abs(anchors[next].y - line)) next = i;
-        }
-
-        pilot.classList.add('is-live');
-        route.classList.add('is-piloted');
-        if (next === activeIndex) return;
-
-        activeIndex = next;
-        /* Not rounded. A stop's centre lands on a half pixel as often as not, so
-           rounding the travel put the pilot up to half a pixel off the ring it is
-           meant to fill: on a 2x display that is a whole device pixel of blue
-           sitting outside the outline, and it read as a different error at each
-           stop because it depends where that stop's centre happens to fall. */
-        pilot.style.transform = `translateY(${anchors[next].y - routeTop}px)`;
-
-        /* Arriving at the terminus is the one completion this page has, so the
-           origin beacon answers. Toggled on the change of stop rather than every
-           frame, which also re-arms it: leaving clears the class, so coming back
-           restarts the animation instead of it playing once per page load. */
-        if (originBlock) {
-          originBlock.classList.toggle('is-arrived', next === anchors.length - 1);
-        }
-      };
-
-      const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
-      const remeasure = () => { dirty = true; schedule(); };
-
-      window.addEventListener('scroll', schedule, { passive: true });
-      window.addEventListener('resize', remeasure);
-      input.addEventListener('input', remeasure);
-      moreButton?.addEventListener('click', remeasure);
-      if (document.fonts) document.fonts.ready.then(remeasure);
-      remeasure();
-    }
   }
 </script>
