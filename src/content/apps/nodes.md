@@ -5,6 +5,7 @@ bestFor: Writers and researchers who want intelligent retrieval across plain Mar
 tagline: Markdown notebook
 tags: [notes, writing, local, ai, markdown]
 categories: [writing-notes-reading, ai-agents]
+collections: [hidden-gems]
 source: r/macapps release discussion and official homepage
 homepage: https://nodes-web.com/
 icon: /app-icons/nodes.svg

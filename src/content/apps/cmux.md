@@ -5,6 +5,7 @@ bestFor: Developers coordinating multiple repositories, shells and coding agents
 tagline: terminal with workspaces
 tags: [terminal, developer, automation, open-source]
 categories: [developer-tools, productivity-workflow]
+collections: [hidden-gems]
 source: AppStories, community discussion and official homepage
 homepage: https://cmux.com/
 icon: /app-icons/cmux.png

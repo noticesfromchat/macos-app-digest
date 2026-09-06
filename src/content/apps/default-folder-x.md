@@ -5,7 +5,7 @@ bestFor: People who work across deep folder structures and constantly open, save
 tagline: dialog enhancer
 tags: [files, finder, utility, productivity]
 categories: [files-research-documents, mac-utilities-customization, productivity-workflow]
-collections: [community-favorites]
+collections: [community-favorites, hidden-gems]
 source: Long-running Mac community recommendations and official homepage
 homepage: https://www.stclairsoft.com/DefaultFolderX/
 icon: /app-icons/default-folder-x.png

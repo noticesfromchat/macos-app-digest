@@ -17,7 +17,7 @@ export type Category = {
 };
 
 export type CollectionMeta = {
-  slug: 'community-favorites' | 'editors-picks';
+  slug: 'community-favorites' | 'editors-picks' | 'hidden-gems';
   title: string;
   icon: string;
 };
@@ -89,6 +89,11 @@ export const collections: CollectionMeta[] = [
     slug: 'community-favorites',
     title: 'Community Favorites',
     icon: 'heart'
+  },
+  {
+    slug: 'hidden-gems',
+    title: 'Hidden Gems',
+    icon: 'gem'
   }
 ];
 
