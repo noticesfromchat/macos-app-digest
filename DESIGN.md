@@ -388,7 +388,7 @@ Depth is soft and ambient rather than structural. Surfaces stay flat at rest, th
 - **Night Ambient** (`box-shadow: 0 20px 60px rgba(0, 0, 0, 0.24)`): dark-theme resting surfaces.
 - **Night Hover** (`box-shadow: 0 28px 72px rgba(0, 0, 0, 0.42)`): dark-theme hover elevation.
 
-**The Soft Hull Rule.** Surfaces lift with a soft shadow and an inset ring, not with hard edges or dramatic offsets. The lift settles rather than snaps: cards cross to their hover state over 320ms on `cubic-bezier(.16, 1, .3, 1)`, the same exponential ease-out the brand wordmark uses.
+**The Soft Hull Rule.** Surfaces lift with a soft shadow and an inset ring, not with hard edges or dramatic offsets. The lift settles rather than snaps: cards cross to their hover state over 320ms on `cubic-bezier(.16, 1, .3, 1)`, an exponential ease-out. The header wordmark used to fade in on the same curve at 520ms; that wordmark was removed on 2026-09-06 and the curve is now stated by the cards alone.
 
 ## Shapes
 
@@ -506,7 +506,16 @@ outline, because for those colour alone is not a focus indicator.
 
 An icon link too small to grow gets its hit area expanded around it instead of being padded out, so the line it sits in is undisturbed. The Editor's Pick mark beside an app name works that way, and stops at 24px rather than 48px because a larger area would start taking taps meant for the title. A link inside a sentence is exempt and stays inline; the RSS link in the subscribe copy is the one that qualifies.
 
-**The Two Control Heights.** Every pill control is built the same way — inline-flex, a `min-height`, horizontal padding, no vertical padding — and stands at one of two heights: **48px** for a primary action and **40px** for a secondary one, rising to 48px on coarse pointers. Both were 44 and 38 until the base-unit pass; targets round up, never down, so neither can fall under the 44px minimum. Rank comes from the height and from whether the border and label carry the accent or the neutral line, never from a fill and never from a different construction. Nothing on the site is a filled control. A control that sets vertical padding instead of a min-height will drift out of the pair the moment its type changes.
+**Control heights follow the grid.** Every pill control is built the same way — inline-flex,
+a `min-height`, horizontal padding, no vertical padding — and stands at a whole multiple of
+the 8px base unit. In practice that is **48px** for a primary action and **40px** for a
+secondary one, rising to 48px on coarse pointers, with **32px** for the chip class: tags,
+active-filter chips, category rows and collection badges, eleven cases that were never
+violations of a two-height rule so much as evidence it was written too narrowly. **24px**
+is the floor, for inline links inside running text that carry a target but not a control's
+weight. This was documented as *The Two Control Heights* until 2026-09-06, and five heights
+were in use the whole time; the base unit is the rule, and the pair was only ever the two
+most common answers to it. Both were 44 and 38 until the base-unit pass; targets round up, never down, so neither can fall under the 44px minimum. Rank comes from the height and from whether the border and label carry the accent or the neutral line, never from a fill and never from a different construction. Nothing on the site is a filled control. A control that sets vertical padding instead of a min-height will drift out of the pair the moment its type changes.
 
 ### Collection Badges
 The collection badge on an app detail page is a link to a curated collection, and it is the rarest fact on that page: six of a hundred apps carry one. It is an honour marker, not a chip. It was a 38px outlined pill sitting above the primary button, where it read as a second, weaker control; it now opens the detail rail.
@@ -567,6 +576,58 @@ This replaced a set of fixed `min-height` budgets on each region. Those were gue
 
 **Reading cards are the exception, and align on their own terms.** They carry `.app-card` too, but hold three parts inside a wrapper rather than three children, so the card and the wrapper both subgrid onto the shared rows. They take no floors: a reading card should be as tall as the longest of the three and no taller. Their own `min-height` budgets were doing the same job far worse, reserving three lines of title space for a one-line headline and leaving the card half again as tall as it needed to be.
 
+**One Glyph Contract.** Every stroked icon on the site is drawn by one rule, matched on
+Lucide's own class plus an explicit `.icon` opt-in for the handful that are hand-written.
+It carries the four presentation properties — `fill`, `stroke`, `stroke-linecap`,
+`stroke-linejoin` — and derives both size and weight from a single custom property, so a
+caller sets `--icon-size` and nothing else. Six rules used to restate those four properties
+and then choose their own size and weight, which is the mechanism behind every icon drift
+found in the week to 2026-09-06: a 16px search mark standing beside a 24px theme toggle, a
+modal icon silently inheriting Lucide's authored stroke because no rule had claimed it.
+
+**Two sizes, one line.** `--icon-sm` is 16 and `--icon-md` is 24, both on the base unit;
+14, 21 and 27 were in use until 2026-09-06, each set locally to fit one spot. `--icon-stroke`
+is **1.5px as it lands on screen**, which is the number that had never been controlled. A
+Lucide glyph is authored on a 24-unit viewBox, so its stroke scales with the glyph: an
+authored width of 2 draws at 1.33px inside a 16px box and at 2px inside a 24px one, and
+`getComputedStyle` reports `2px` for both. Dividing the authored width back out by the
+rendered size — `calc(var(--icon-stroke) * 24 / var(--icon-size))` — holds the line steady
+at every size. This is why the directory chevrons read heavier than the field's glyphs while
+every declared number matched.
+
+The rule is scoped, never applied to bare `svg`. The buoy mark, the hero wordmark and the
+footer's social marks are filled rather than stroked, and a blanket `fill: none` would erase
+all four. **An app icon frame's corner is also outside this system and outside the radius
+scale**: it takes 25% of its own side — 12px on a 48px frame, 14px on the 56px pick frame —
+which is what makes a rendered mark read as a macOS icon rather than a rounded box.
+
+**The One Focus Ring.** Every control that takes keyboard focus draws the same ring:
+`--focus-ring` (2px solid, the accent at 38%) at `--focus-offset` (3px). It is a token, not
+a convention, because a convention is what the site had — nine different treatments across
+six stylesheets on 2026-09-06, spanning four accent alphas, five offsets and two mechanisms,
+each written by whoever added the control. Three of them drew the ring with `box-shadow`
+behind `outline: 0`, which meant the ring did not follow the control's radius and vanished
+in forced-colours mode. The one legitimate variation is the offset: menu rows inside a panel
+take `-2px` so the ring sits inside the row rather than crossing its neighbours, and they
+override only that. Colour is never the indicator on its own — a control that answers a
+pointer with colour still owes a keyboard reader a ring. Adopted 2026-09-06.
+
+**Colour is the hover language.** A control answers a pointer by changing colour and nothing
+else. Two things are allowed to do more, and both earn it: a **card** lifts, under The One
+Hover Rule below, because the whole surface is the target; a **list row** inside a panel —
+menu options, search results, filter rows — fills, because the row is the target and colour
+alone would not show which of a stack of rows is live. Everything else is colour. This was
+already true of seventeen rules before it was written down, which is exactly why it kept
+being broken: the dropdown triggers filled their shells and the secondary button invented a
+surface it does not have at rest, both of them local decisions that nothing contradicted.
+A filled control shifting its fill on hover is not an exception to this — the primary
+`.button` is filled at rest, so that is a shift rather than an arrival.
+
+An **open** control stays lit. A dropdown trigger holds the accent, in its label and its
+chevron, for as long as its panel is showing, so the trigger and the menu it opened read as
+one object rather than two; it keeps a fill there as well, because a state that persists
+after the pointer has left cannot rely on a hover to carry it. Adopted 2026-09-06.
+
 **The One Hover Rule.** Every card that leads somewhere shares one hover contract: rest at Ambient Card, move to Hover Lift and an inset ring of `color-mix(in srgb, var(--accent) 42%, var(--line))`, cross over 320ms on `cubic-bezier(.16, 1, .3, 1)`, and do it only under `(hover: hover) and (pointer: fine)`. App cards, feature cards, reading cards, archive rows, and category directory rows are all on it, the last two through `.archive-card`. A card that carries a category accent keeps that accent in its resting ring and gives it up on hover; nothing else about the contract changes per card type.
 
 Three things are deliberately outside it. The app-detail rail's category rows are links in a list rather than cards, so they answer the pointer with the accent over 180ms and take no lift; they were bordered cards until the rail replaced them. Cards that are containers rather than destinations — the explore utility and subscribe cards, which hold their own links and controls — stay flat, because a lift would promise a click the card does not accept.
@@ -605,6 +666,15 @@ renderer took both with it.
   announcing a number and then restated it a screen later; the dek now describes what the
   page holds and the count belongs to the control that changes it. The page previously
   never said how many apps existed at all.
+- **One glyph treatment across the control row.** Search, Filter and Sort are three 48px
+  shells with a 1px border and a 16px radius, and the glyph in each — the magnifier, the
+  clear ×, the two chevrons — is a 24 viewBox drawn at 16px on a stroke of 2, which is
+  1.33px on screen. That was already true when the chevrons still looked heavier than the
+  field's glyphs: they sat at full `--text` while the magnifier and the × were `--muted`,
+  and brightness was doing the work that looked like weight. Every glyph in the row is muted
+  now, and a chevron comes up to `--text` on hover, focus or while its menu is open. It does
+  not go to the accent: blue is rationed, and a chevron acknowledging a pointer is not a
+  thing being chosen. The words carry the ink; the glyphs label what the control is.
 - **The directory controls are a row, not a grid.** The surface's own heading leads where it
   has one, and Search apps, Filter and Sort sit at the end, pushed there by the heading's auto
   right margin. The live count led that row until 2026-09-02, when it moved down to sit with
@@ -725,10 +795,68 @@ badges or decorative clutter, and a September critique scored Visibility of Syst
   itself because the hero's own top padding sits below it.
 
 ### Site Header and Navigation
-The header is sticky, translucent, and restrained. The brand wordmark uses the same editorial serif as the headline system, while the icon controls stay compact and monochrome until hover or focus gives them blue.
+The header is sticky, translucent, and restrained. The brand is the buoy mark alone; the icon controls stay compact and monochrome until hover or focus gives them blue.
+
+**The wordmark left the header on 2026-09-06.** It set "App Waypoint" in the editorial serif beside the mark, and on the homepage it was hidden until the reader scrolled past the hero's own large wordmark, then faded in over 520ms — a hand-off, so the name was never stated twice at once. The mark carries the brand on its own and the link keeps `aria-label="App Waypoint home"`, so nothing is lost to a screen reader. Removing it took the `is-homepage-brand` gate, the `is-brand-visible` state, the scroll listener that maintained it and the `--type-brand-nav` token with it: the whole apparatus existed to manage a conflict that no longer occurs. The hero wordmark on the homepage is untouched.
 - **Desktop:** brand on the left, then Explore Apps, Archive, About, an icon-only Lucide Search control and the icon-only theme toggle on the right.
 - **Mobile:** the header keeps the brand and theme toggle visible, then moves Search, Explore Apps, Archive, About and Subscribe into the navigation dialog.
-- **Hover / Active:** navigation links shift to the accent on hover, focus and current-page state. Icon controls stay circular and borderless, with the same accent response.
+- **Hover / Active:** everything in the header answers a pointer the same way — the label
+  or glyph shifts to the accent, and nothing else moves. The search button, menu toggle and
+  theme toggle used to fill a circle behind their glyph on hover, so two of the five things
+  in the row replied with a disc while the other three replied with colour. The discs went
+  on 2026-09-06. Focus keeps a ring, because colour alone is not an adequate focus
+  indicator: it is the links' own ring, an outline at 4px offset rather than a box-shadow,
+  so it follows each control's radius. The theme toggle additionally rotates 12°, which is
+  the one hover in the header that is not purely colour.
+- **One glyph size, one weight.** Every icon in the header is 24px in a 48px control at
+  stroke-width 1.8, the menu toggle's lines included, and the search modal's input icon
+  joins them: it is the same magnifier at the same size as the header button, so a reader
+  who opens search sees the mark they clicked. The search mark was 16px against the theme
+  toggle's 24px until 2026-09-06 — the two were declared in different stylesheets,
+  `global.css` for the toggle's base and `search.css` for the button, which is how they
+  drifted with nothing to catch it. The size and weight they must agree on are now stated
+  once, in a rule that names them together, and `global.css`'s shadowed `.theme-toggle svg`
+  block went with the fix rather than being left to describe a rendering that no longer
+  happened. The modal's input icon had no stroke-width at all and fell through to Lucide's
+  own `stroke-width="2"`, which made the heaviest glyph on the site one nobody had chosen.
+- **Two weights, by size.** The 24px glyphs in the chrome are 1.8; the 16px glyphs inside
+  modals — the close marks and the RSS copy control — are 2, so a smaller mark holds its
+  colour at the size it is actually drawn. Both close buttons rendered at 2 already, but
+  only because that is Lucide's attribute default; they now declare it, which is the whole
+  difference between a value and a coincidence.
+- **The directory's search field carries the site's own clear ×.** Both search inputs are
+  `type="search"`, so WebKit drew a native cancel button in them, and it behaved differently
+  per engine — Chrome reveals it on hover or focus, Safari whenever the field has text — so
+  the affordance appeared and vanished for reasons a reader could not see, and it shipped
+  with `cursor: default`, giving no sign it could be pressed. It is switched off on both
+  fields. In its place the directory gets `.field-clear`: the site's X at 16px and stroke 2
+  in a 24px control, muted at rest, accent on hover, present exactly when the field has a
+  value. Clearing returns focus to the field, since the button it was on is about to be
+  hidden. Adopted 2026-09-06.
+
+  The search modal deliberately has no clear of its own. Its × dismisses the modal, its
+  field empties on every open, and a second × beside the first read as two identical marks
+  doing different things. The directory's query is the one worth a control: it survives
+  navigation, it is shareable in the URL, and it is the one a reader arrives already holding.
+  Both fields are grids with a track per control, and the clear's track exists only while
+  the button does — the modal's close silently wrapped to a second row the first time a
+  fourth child appeared in that row without one.
+- **The modal close buttons take the same colour-only hover.** They filled a 32px disc and
+  drew a ring around themselves on hover, which made the control that dismisses a modal the
+  loudest thing in it. They shift to the accent now and nothing else moves, and the ring
+  they kept is a focus ring, since the fill they had been relying on for focus is gone.
+  Removed 2026-09-06 alongside the header's. The RSS copy button was already on colour plus
+  a 1px lift and did not change.
+- **The navigation menu is on the base unit.** Its rows carried a 16px inset and a 16px icon
+  gap already, but the space *between* them ran on 3px, and the two groups paid 4px each into
+  their shared boundary — the two values the base unit exists to remove. Every step in it is
+  now 8px or a multiple: rows are 40px, the gap between them is 8px, and the inset is 8px,
+  which also makes the corners concentric, since the modal's 16px radius less that inset is
+  the rows' own 8px. Search once led a group of its own, separated by a hairline and then by
+  16px of space; it sits on the same 8px step as every other row now, so the menu reads as
+  one list rather than an action above a list. The rows are the one control on the site under
+  the 48px height, which is a deliberate trade for a shorter menu: 40px clears WCAG 2.2's
+  24px minimum comfortably but is under the 44px Apple recommends for touch.
 - **Skip link:** every page starts with a hidden-until-focused skip link that lands on the main content landmark.
 
 ### Directory Controls

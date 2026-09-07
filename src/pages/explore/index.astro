@@ -142,7 +142,7 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
     align-items: center;
     min-height: var(--space-4);
   }
-  .explore-lane-icon :global(svg) { width: var(--space-3); height: var(--space-3); }
+  .explore-lane-icon :global(svg) { --icon-size: var(--icon-md); }
   .explore-lane strong {
     font-family: var(--display);
     font-size: var(--type-tile-title);
@@ -192,8 +192,8 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
   }
   /* The border used to carry focus. With it gone, focus takes the house ring. */
   .explore-lane:focus-visible {
-    outline: 2px solid color-mix(in srgb, var(--accent) 38%, transparent);
-    outline-offset: 3px;
+    outline: var(--focus-ring);
+    outline-offset: var(--focus-offset);
   }
   .explore-lane:focus-visible strong,
   .explore-lane:focus-visible .explore-lane-icon { color: var(--accent); }

@@ -92,8 +92,8 @@ const { current = '' } = Astro.props;
 
   .site-footer a:focus-visible,
   .site-footer nav button:focus-visible {
-    outline: 2px solid color-mix(in srgb, var(--accent) 34%, transparent);
-    outline-offset: 4px;
+    outline: var(--focus-ring);
+    outline-offset: var(--focus-offset);
   }
 
   .footer-social-link {

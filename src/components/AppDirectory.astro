@@ -120,6 +120,7 @@ const sortedApps = [...apps].sort((a, b) =>
     {heading && <h2 class="directory-heading">{heading}</h2>}
     <div class="directory-search">
       <svg
+        class="icon"
         aria-hidden="true"
         viewBox="0 0 24 24"
         fill="none"
@@ -145,6 +146,20 @@ const sortedApps = [...apps].sort((a, b) =>
         disabled
         data-directory-query
       />
+      {/* Ships hidden and is revealed by the script the moment the field has a value, so a
+          reader without JavaScript is never offered a control that cannot work. */}
+      <button
+        type="button"
+        class="field-clear"
+        aria-label="Clear search"
+        hidden
+        data-directory-query-clear
+      >
+        <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+          <path d="M18 6 6 18"></path>
+          <path d="m6 6 12 12"></path>
+        </svg>
+      </button>
     </div>
 
     {showFilterMenu && (
@@ -161,6 +176,7 @@ const sortedApps = [...apps].sort((a, b) =>
             <span class="directory-filter-count" hidden data-filter-count></span>
           </span>
           <svg
+            class="icon"
             aria-hidden="true"
             viewBox="0 0 24 24"
             fill="none"
@@ -239,6 +255,7 @@ const sortedApps = [...apps].sort((a, b) =>
               claiming one order while the grid shows another. */}
           <span><span class="sr-only">Sort by </span><span data-sort-label>{SORT_LABELS[initialSort]}</span></span>
           <svg
+            class="icon"
             aria-hidden="true"
             viewBox="0 0 24 24"
             fill="none"
@@ -327,6 +344,7 @@ const sortedApps = [...apps].sort((a, b) =>
     const emptyState = directory.querySelector<HTMLElement>('[data-directory-empty]');
     const emptyMessage = directory.querySelector<HTMLElement>('[data-directory-empty-message]');
     const queryReset = directory.querySelector<HTMLButtonElement>('[data-query-reset]');
+    const queryClear = directory.querySelector<HTMLButtonElement>('[data-directory-query-clear]');
     const moreButton = directory.querySelector<HTMLButtonElement>('[data-directory-more]');
     const filterMenu = directory.querySelector<HTMLElement>('[data-filter-menu]');
     const filterTrigger = directory.querySelector<HTMLButtonElement>('[data-filter-trigger]');
@@ -489,7 +507,10 @@ const sortedApps = [...apps].sort((a, b) =>
     const SVG_NS = 'http://www.w3.org/2000/svg';
     const svgIcon = (className: string, shapes: [string, Record<string, string>][]) => {
       const svg = document.createElementNS(SVG_NS, 'svg');
-      svg.setAttribute('class', className);
+      /* `icon` opts these into the site's one glyph contract, which is what gives them a
+         size at all: built here rather than in markup, they carry no Lucide class, and
+         the contract is deliberately not applied to bare `svg`. */
+      svg.setAttribute('class', `icon ${className}`);
       svg.setAttribute('aria-hidden', 'true');
       svg.setAttribute('viewBox', '0 0 24 24');
       svg.setAttribute('fill', 'none');
@@ -615,6 +636,10 @@ const sortedApps = [...apps].sort((a, b) =>
         }
         if (queryReset) queryReset.hidden = !query;
       }
+      /* Tracks the raw value, not the normalised one: a field holding only spaces still
+         has something to clear. */
+      if (queryClear) queryClear.hidden = !queryInput?.value;
+
       if (moreButton) {
         moreButton.hidden = remaining === 0;
         if (remaining > 0) {
@@ -833,6 +858,16 @@ const sortedApps = [...apps].sort((a, b) =>
       queryInput.blur();
     });
     queryReset?.addEventListener('click', () => {
+      if (!queryInput) return;
+      queryInput.value = '';
+      visibleLimit = batchSize;
+      refilter();
+      queryInput.focus();
+    });
+
+    /* Clearing hands focus back to the field. The button is about to be hidden, so leaving
+       focus on it would drop the reader to the top of the document. */
+    queryClear?.addEventListener('click', () => {
       if (!queryInput) return;
       queryInput.value = '';
       visibleLimit = batchSize;

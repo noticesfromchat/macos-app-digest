@@ -29,6 +29,22 @@
   --space-8: 64px;
   --space-9: 72px;
   --eyebrow-gap: 8px;
+  /* One focus ring for the whole site. There were nine treatments across six
+     stylesheets on 2026-09-06 — four accent alphas, five offsets and two mechanisms —
+     because every control declared its own. Nothing here is new; this is the most
+     common of the nine, named so the next control inherits it instead of inventing a
+     tenth. Colour alone is never the indicator: a ring is what a keyboard reader gets. */
+  --focus-ring: 2px solid color-mix(in srgb, var(--accent) 38%, transparent);
+  --focus-offset: 3px;
+  /* Glyph sizes, unitless so the stroke can be derived from them. Two sizes, both on the
+     base unit; 14, 21 and 27 were in use until 2026-09-06, each set locally to fit one
+     spot. `--icon-stroke` is the line as it lands on screen, which is the number that was
+     never being controlled: a Lucide glyph is authored on a 24-unit viewBox, so an
+     authored stroke of 2 draws at 1.33px inside a 16px box and 2px inside a 24px one.
+     Dividing the authored width back out by the rendered size holds the line steady. */
+  --icon-sm: 16;
+  --icon-md: 24;
+  --icon-stroke: 1.5;
   --header-bg: rgba(244, 246, 249, 0.96);
   /* The scrim behind search, the nav menu and the subscribe dialog. It was a
      near-black navy in both themes, which is right on a dark page and turns a
@@ -57,7 +73,6 @@
   --section-space: clamp(24px, 3.8vw, 40px);
   --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
   --display: "Iowan Old Style", "Baskerville", "Times New Roman", serif;
-  --type-brand-nav: clamp(1.125rem, 1.8vw, 1.375rem);
   --type-label: .75rem;
   --type-meta: .875rem;
   --type-subhead: clamp(1.375rem, 2.2vw, 1.75rem);
@@ -274,8 +289,8 @@ a { color: inherit; }
 }
 
 .skip-link:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--accent) 38%, transparent);
-  outline-offset: 3px;
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
   transform: translateY(0);
 }
 
@@ -305,10 +320,31 @@ a { color: inherit; }
 .brand,
 .site-header nav { display: inline-flex; align-items: center; }
 
+/* No gap: the mark is the only child since the wordmark left the header on 2026-09-06. */
 .brand {
   color: var(--text);
-  gap: 16px;
   text-decoration: none;
+}
+
+/* One contract for every glyph on the site. Six rules used to restate these four
+   presentation properties and then set their own size and weight, which is the mechanism
+   behind every icon drift found this week — a 16px search mark beside a 24px toggle, a
+   modal icon silently inheriting Lucide's authored stroke because no rule claimed it.
+   Callers now set `--icon-size` and nothing else.
+
+   Scoped to Lucide's own class plus an explicit opt-in, never to bare `svg`: the buoy
+   mark, the hero wordmark and the footer's social marks are filled rather than stroked,
+   and a blanket `fill: none` would erase all four. */
+svg[class~="lucide"],
+svg.icon {
+  width: calc(var(--icon-size, var(--icon-md)) * 1px);
+  height: calc(var(--icon-size, var(--icon-md)) * 1px);
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: calc(var(--icon-stroke) * 24 / var(--icon-size, var(--icon-md)));
 }
 
 .brand-mark {
@@ -316,26 +352,6 @@ a { color: inherit; }
   width: 48px;
   height: 48px;
   flex: 0 0 auto;
-}
-
-.brand-wordmark {
-  overflow: hidden;
-  max-width: 14ch;
-  margin-block: -.08em;
-  padding-block: .08em .14em;
-  color: var(--text);
-  font-family: var(--display);
-  font-size: var(--type-brand-nav);
-  font-weight: 500;
-  letter-spacing: 0;
-  line-height: 1.08;
-  opacity: 1;
-  transition: opacity 520ms cubic-bezier(.16, 1, .3, 1);
-  white-space: nowrap;
-}
-
-.site-header.is-homepage-brand:not(.is-brand-visible) .brand-wordmark {
-  opacity: 0;
 }
 
 .site-header nav {
@@ -366,20 +382,16 @@ a { color: inherit; }
 .desktop-nav-links a[aria-current='page'] { color: var(--accent); }
 
 .desktop-nav-links a:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--accent) 38%, transparent);
-  outline-offset: 4px;
-  border-radius: 8px;
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+  border-radius: var(--radius-sm);
 }
 
-.theme-toggle svg {
-  width: 24px;
-  height: 24px;
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 1.7;
-}
+/* The theme toggle's glyph is sized and weighted with the rest of the header cluster, in
+   search.css, because it has to agree with the search button standing next to it. The rule
+   that lived here set every one of the same properties at stroke-width 1.7 and was shadowed
+   in full by that one, so it described a control that had not rendered this way since the
+   glyph sizes were unified on 2026-09-06. */
 
 .theme-toggle {
   display: grid;
@@ -392,11 +404,14 @@ a { color: inherit; }
   color: var(--text);
   cursor: pointer;
   font: inherit;
-  transition: color 180ms ease, transform 180ms ease;
+  transition: color 180ms ease;
 }
 
+/* Colour, like every other control in the header. It rotated 12° on hover until
+   2026-09-06, which made it the one thing in that row answering a pointer with movement
+   while the search button beside it answered with colour. */
 .theme-toggle:hover,
-.theme-toggle:focus-visible { color: var(--accent); transform: rotate(12deg); }
+.theme-toggle:focus-visible { color: var(--accent); }
 
 .issue { width: 100%; margin: 0; }
 .page-shell {
@@ -489,8 +504,15 @@ a { color: inherit; }
   transform: translateY(-1px);
 }
 .button.secondary { border-color: var(--line); background: transparent; color: var(--text); }
+/* The secondary button is transparent at rest, so a fill on hover was inventing a surface
+   the control does not otherwise have. Its edge and its label carry the response instead.
+   The primary `.button` keeps its fill change: it is filled at rest, so that is a shift
+   rather than an arrival. */
 .button.secondary:hover,
-.button.secondary:focus-visible { border-color: var(--text); background: color-mix(in srgb, var(--surface) 50%, transparent); }
+.button.secondary:focus-visible {
+  border-color: color-mix(in srgb, var(--accent) 52%, var(--line));
+  color: var(--accent);
+}
 
 /* ── Homepage hero ───────────────────────────────────────────────
    No artwork: the name and the promise carry the left rail, and this
@@ -767,7 +789,9 @@ a { color: inherit; }
 }
 /* The pick card's icon is a step larger than a directory card's, because it is the
    one app the issue is arguing for. The base-unit pass briefly flattened the two to
-   48 and lost that. */
+   48 and lost that. Its 14px corner is not on the radius scale and should not be: an
+   app icon frame takes 25% of its own side, which is what makes a rendered mark read
+   as a macOS icon rather than as a rounded box. 56 × .25 = 14. */
 .hero-pick-card .app-icon-frame {
   width: 56px;
   height: 56px;
@@ -987,13 +1011,13 @@ a { color: inherit; }
 .missing-app-icon-frame {
   background: var(--missing-icon-bg);
 }
+/* Was 56% of its frame, which resolved to 27px at a 2.1 stroke — a size and a weight
+   that existed only here. It takes the scale like every other glyph. */
 .missing-app-icon-frame svg,
 .missing-app-icon {
   display: block;
-  width: 56%;
-  height: 56%;
+  --icon-size: var(--icon-md);
   color: #fff;
-  stroke-width: 2.1;
 }
 .app-icon-color-green { --missing-icon-bg: #2f8f5b; }
 .app-icon-color-orange { --missing-icon-bg: #c66a22; }
@@ -1014,7 +1038,10 @@ a { color: inherit; }
   color: var(--accent);
 }
 
-.editors-pick-icon { width: 100%; height: 100%; }
+/* The mark's box still tracks the title at .9em, so the lockup holds at any title size;
+   the glyph inside it sits on the scale rather than resolving to whatever 21px the em
+   happened to produce. */
+.editors-pick-icon { --icon-size: var(--icon-md); }
 .app-card p { margin: 0; color: var(--muted); }
 .app-summary.has-app-icon .app-description { margin-top: 16px; }
 .app-summary { min-height: 136px; margin-bottom: 16px; }
@@ -1070,7 +1097,7 @@ a { color: inherit; }
 .app-detail-app-icon {
   width: clamp(56px, 6vw, 80px);
   height: clamp(56px, 6vw, 80px);
-  border-radius: 16px;
+  border-radius: var(--radius-md);
 }
 .app-detail-identity h1 { margin: 0; }
 
@@ -1116,12 +1143,12 @@ a { color: inherit; }
 .app-detail-category-row:focus-visible,
 .collection-badge:focus-visible {
   color: var(--accent);
-  outline: 2px solid color-mix(in srgb, var(--accent) 38%, transparent);
-  outline-offset: 3px;
-  border-radius: 8px;
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+  border-radius: var(--radius-sm);
 }
 .app-detail-category-mark { display: inline-flex; align-items: center; justify-content: center; }
-.app-detail-category-mark svg { width: 16px; height: 16px; }
+.app-detail-category-mark svg { --icon-size: var(--icon-sm); }
 /* Named by its own eyebrow like every other group in the rail, and given more air
    than they get. It stays in the rail's utility voice: rank comes from the label
    sitting in ink at weight 700 where a category label sits muted at 600, from the
@@ -1155,16 +1182,16 @@ a { color: inherit; }
   align-items: center;
   justify-content: center;
 }
-.category-directory-icon svg { width: 16px; height: 16px; }
+.category-directory-icon svg { --icon-size: var(--icon-sm); }
 /* Same size as a category mark, so the two render the same 1.58px stroke: lucide
    scales its stroke with the glyph, and any size difference here would put one
    icon family at two weights in a single column. */
-.collection-badge-icon svg { width: 16px; height: 16px; }
+.collection-badge-icon svg { --icon-size: var(--icon-sm); }
 .app-detail-best-for { max-width: var(--measure); }
 .app-detail-best-for p:not(.eyebrow) { margin: 0; color: var(--muted); font-size: 1rem; line-height: 1.5; }
 .app-detail-actions { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 24px; }
 .app-detail-actions .button { gap: 8px; }
-.app-detail-actions .button svg { width: 1em; height: 1em; }
+.app-detail-actions .button svg { --icon-size: var(--icon-sm); }
 .app-detail-tags { min-height: 0; padding-top: 0; }
 .app-detail-section { width: 100%; padding-right: 0; padding-left: 0; }
 .app-detail-related-grid .app-card:nth-child(n + 7) { display: none; }
@@ -1316,7 +1343,7 @@ a { color: inherit; }
   align-items: center;
   justify-content: center;
   line-height: 0;
-  border-radius: 16px;
+  border-radius: var(--radius-md);
   background: var(--surface-strong);
   color: var(--text);
   opacity: .92;
@@ -1406,11 +1433,11 @@ a { color: inherit; }
   height: 48px;
   flex: 0 0 44px;
   place-items: center;
-  border-radius: 16px;
+  border-radius: var(--radius-md);
   background: color-mix(in srgb, var(--accent) 18%, var(--surface-strong));
   color: color-mix(in srgb, var(--text) 72%, var(--accent));
 }
-.explore-subscribe-icon svg { width: 24px; height: 24px; }
+.explore-subscribe-icon svg { --icon-size: var(--icon-md); }
 .explore-subscribe-card h2 {
   margin: 0;
   text-wrap: balance;
@@ -1462,7 +1489,7 @@ a { color: inherit; }
   min-width: 32px;
   height: 32px;
   padding: 0;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   background: transparent;
 }
 .explore-subscribe-url .rss-copy-button.is-copied {
@@ -1490,7 +1517,7 @@ a { color: inherit; }
   content: '';
   position: absolute;
   inset: 0;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   border: 1.5px solid color-mix(in srgb, var(--accent) 55%, transparent);
   opacity: 0;
   pointer-events: none;
@@ -1760,7 +1787,7 @@ a { color: inherit; }
   grid-row: span 3;
   width: 48px;
   height: 48px;
-  border-radius: 16px;
+  border-radius: var(--radius-md);
   background: color-mix(in srgb, var(--category-accent) 75%, var(--surface));
   color: color-mix(in srgb, var(--text) 80%, var(--accent));
 }
@@ -1879,11 +1906,7 @@ a { color: inherit; }
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.directory-active svg {
-  width: 16px;
-  height: 16px;
-  flex: none;
-}
+.directory-active svg { --icon-size: var(--icon-sm); }
 .directory-active-x { opacity: .7; transition: opacity 180ms ease; }
 .directory-active-glyph { opacity: .8; }
 .directory-active:hover,
@@ -1895,8 +1918,8 @@ a { color: inherit; }
 .directory-active:hover .directory-active-x,
 .directory-active:focus-visible .directory-active-x { opacity: 1; }
 .directory-active:focus-visible {
-  outline: 0;
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 34%, transparent);
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
 }
 /* Removing the last chip empties the row, which is the same outcome a clear-all button
    offered, one tap later. */
@@ -1910,14 +1933,10 @@ a { color: inherit; }
   gap: 8px;
   padding: 8px 16px;
   border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: var(--radius-md);
   background: var(--surface);
 }
-.directory-search svg {
-  width: 16px;
-  height: 16px;
-  color: var(--muted);
-}
+.directory-search svg { --icon-size: var(--icon-sm); color: var(--muted); }
 .directory-query-input {
   width: 100%;
   min-width: 0;
@@ -1935,6 +1954,48 @@ a { color: inherit; }
   opacity: 1;
 }
 .directory-query-input:disabled { cursor: not-allowed; }
+
+/* One clear control for every search field on the site. The browser's own cancel button
+   had been doing this job and doing it differently per engine — Chrome reveals it on hover
+   or focus, Safari whenever the field has text — so the affordance appeared and vanished
+   for reasons a reader could not see, and it shipped with `cursor: default`, giving no
+   sign it could be pressed at all. It is switched off on both fields and this stands in
+   its place: the site's own X at the site's own weight, present exactly when there is
+   something to clear. */
+.directory-query-input::-webkit-search-cancel-button,
+.search-input::-webkit-search-cancel-button {
+  appearance: none;
+  -webkit-appearance: none;
+  display: none;
+}
+
+.field-clear {
+  display: grid;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 180ms ease;
+}
+/* 16px at stroke 2, the weight the site gives a glyph at this size. */
+.field-clear svg { --icon-size: var(--icon-sm); }
+.field-clear:hover { color: var(--accent); }
+.field-clear:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+  color: var(--accent);
+}
+
+/* The third track exists only while the button does, so an empty field does not pay a
+   gap for a control that is not there. */
+.directory-search:has(.field-clear:not([hidden])) {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+}
 .filter-option input {
   width: 16px;
   height: 16px;
@@ -1956,8 +2017,8 @@ a { color: inherit; }
   background: var(--accent) url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e") center / 12px no-repeat;
 }
 :root[data-theme='dark'] .filter-option input:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 1px;
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
 }
 /* The count reads out, it does not act. Given the card treatment it looked like a third
    control sitting beside Filter and Sort, and a boxed, centred one at that. It keeps the
@@ -1986,7 +2047,7 @@ a { color: inherit; }
   min-width: 0;
   min-height: 48px;
   border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: var(--radius-md);
   background: var(--surface);
 }
 .directory-select {
@@ -2005,7 +2066,7 @@ a { color: inherit; }
 .directory-filter-bar > .directory-select {
   min-height: 48px;
   border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: var(--radius-md);
   background: var(--surface);
 }
 .directory-select-trigger {
@@ -2023,17 +2084,37 @@ a { color: inherit; }
   font: inherit;
   cursor: pointer;
 }
-.directory-select-trigger:hover {
-  background: color-mix(in srgb, var(--surface-strong) 72%, transparent);
-}
+/* Colour, like every other control that is not a card or a list row. It filled its shell
+   on hover, which made the two dropdown triggers the only things in the control row that
+   answered a pointer with a surface while the field beside them answered with nothing.
+   The open state keeps its fill: that is a state, not a hover. */
+.directory-select-trigger:hover,
+.directory-select-trigger:focus-visible { color: var(--accent); }
+/* Muted, like the magnifier and the clear × in the field beside it. The three controls in
+   this row already carried the same glyph geometry — a 24 viewBox drawn at 16px on a
+   stroke of 2, so 1.33px on screen for all of them — and the chevrons still read heavier
+   because they were at full `--text` while the field's glyphs were muted. Brightness was
+   doing what looked like weight. A glyph that labels a control is muted; the words are
+   what carry the ink. */
 .directory-select-trigger svg {
-  width: 16px;
-  height: 16px;
-  flex: none;
-  transition: transform 160ms ease;
+  --icon-size: var(--icon-sm);
+  color: var(--muted);
+  transition: color 180ms ease, transform 160ms ease;
 }
+/* Follows its label, in all three states. While the trigger filled its shell on hover the
+   chevron only had to come up to `--text`; with the fill gone, colour carries the entire
+   response and the two halves of the control move together. Open is the strongest of the
+   three, not an exception to it: the panel is showing because this control is doing
+   something, so it stays lit for as long as that is true. */
+.directory-select-trigger:hover svg,
+.directory-select-trigger:focus-visible svg,
+.directory-select.is-open .directory-select-trigger svg { color: var(--accent); }
+/* Lit for as long as the panel is open, so the trigger and the menu it opened read as one
+   thing. The fill stays because open is a state rather than a hover, and a state that
+   persists after the pointer leaves needs to hold its own without one. */
 .directory-select.is-open .directory-select-trigger {
   background: color-mix(in srgb, var(--surface-strong) 72%, transparent);
+  color: var(--accent);
 }
 .directory-select.is-open .directory-select-trigger svg { transform: rotate(180deg); }
 .directory-select-options {
@@ -2070,8 +2151,8 @@ a { color: inherit; }
   outline: 0;
 }
 .directory-select-trigger:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: -3px;
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
 }
 .directory-filter-label {
   display: inline-flex;
@@ -2182,7 +2263,7 @@ a { color: inherit; }
   min-height: 32px;
   padding: 0 8px;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   background: transparent;
   color: var(--muted);
   font: inherit;
@@ -2194,8 +2275,12 @@ a { color: inherit; }
 .filter-reset:focus-visible {
   border-color: color-mix(in srgb, var(--accent) 42%, var(--line));
   color: var(--accent);
-  outline: 2px solid color-mix(in srgb, var(--accent) 30%, transparent);
-  outline-offset: 2px;
+}
+/* Split out: the ring belongs to focus. It was firing on hover as well, which drew a
+   keyboard indicator around a control the pointer was merely resting on. */
+.filter-reset:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
 }
 /* The first-paint cap. The script removes the attribute and takes over with `hidden`, so
    this rule only ever governs the moment before the module runs, and the noscript block in
@@ -2362,7 +2447,6 @@ a { color: inherit; }
   .brand { gap: 8px; }
   .site-header nav { gap: 8px; }
   .theme-toggle { width: 48px; height: 48px; }
-  .theme-toggle svg { width: 16px; height: 16px; }
   .home-hero { --sea-h: 72px; padding-block: 32px 48px; }
   .content-divider { height: 64px; }
   .video-section { padding-top: 16px; }
@@ -2399,7 +2483,7 @@ a { color: inherit; }
     margin-top: 0;
   }
   .directory-search { gap: 8px; padding: 8px 16px; }
-  .directory-search svg { width: 24px; height: 24px; }
+  /* The magnifier is one size everywhere; this made it 24px on a phone. */
   .directory-query-input { font-size: 16px; }
   .directory-search,
   .directory-filter-bar > .directory-select,
@@ -2441,7 +2525,7 @@ a { color: inherit; }
     left: 0;
     width: auto;
     border-top: 1px solid var(--line);
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
   }
 }
 
@@ -2466,12 +2550,10 @@ a { color: inherit; }
   .collection-badge,
   .tag,
   .button,
-  .theme-toggle,
-  .brand-wordmark { transition: none; }
+  .theme-toggle { transition: none; }
   .app-card:hover,
   .feature-card:hover,
   .archive-card:hover,
-  .theme-toggle:hover { transform: none; }
   .content-divider.is-lit .brand-mark-ping { animation: none; }
   .has-pick-accent::before,
   .has-pick-accent::after { animation: none; }

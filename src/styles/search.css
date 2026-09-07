@@ -24,32 +24,28 @@
   transition: color 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
 }
 
-.desktop-search-button svg {
-  width: 16px;
-  height: 16px;
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 1.8;
-}
+.desktop-search-button svg,
+.nav-theme-toggle svg { --icon-size: var(--icon-md); }
 
 .desktop-search-button { margin-left: 16px; }
 
 .nav-menu-toggle { display: none; }
 
+/* The same hover the navigation links take, and nothing else. These controls used to
+   fill a circle behind the glyph, which made two of the five things in the header answer
+   a pointer differently from the other three — a filled disc against a word turning blue.
+   Colour is the header's one hover language now. Adopted 2026-09-06. */
 .desktop-search-button:hover,
-.nav-menu-toggle:hover {
-  background: color-mix(in srgb, var(--surface-strong) 52%, transparent);
-  color: var(--accent);
-}
+.nav-menu-toggle:hover { color: var(--accent); }
 
+/* Focus keeps a ring, because colour alone is not an adequate focus indicator. It is the
+   links' ring, drawn as an outline rather than a shadow so it follows the 50% radius and
+   stays visible in forced-colours mode. */
 .desktop-search-button:focus-visible,
 .nav-menu-toggle:focus-visible {
-  background: color-mix(in srgb, var(--surface-strong) 62%, transparent);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 38%, transparent);
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
   color: var(--accent);
-  outline: 0;
 }
 
 .nav-theme-toggle {
@@ -58,14 +54,11 @@
   border-radius: 50%;
 }
 
-.nav-theme-toggle:hover {
-  background: color-mix(in srgb, var(--surface-strong) 52%, transparent);
-}
-
+/* No hover rule of its own: `.theme-toggle` in global.css already turns it accent, which
+   is now the whole contract. */
 .nav-theme-toggle:focus-visible {
-  background: color-mix(in srgb, var(--surface-strong) 62%, transparent);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 38%, transparent);
-  outline: 0;
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
 }
 
 .nav-menu-toggle-lines {
@@ -192,7 +185,7 @@
   width: min(824px, 100%);
   overflow: hidden;
   border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: var(--radius-md);
   background: var(--surface);
   box-shadow: var(--shadow-modal);
 }
@@ -206,7 +199,7 @@
   grid-template-rows: minmax(0, 1fr) auto;
   overflow: hidden;
   border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: var(--radius-md);
   background: var(--surface);
   box-shadow: var(--shadow-modal);
   transform-origin: top right;
@@ -230,15 +223,20 @@
   width: min(760px, 100%);
   overflow: hidden;
   border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: var(--radius-md);
   background: var(--surface);
   box-shadow: var(--shadow-modal);
 }
 
+/* 8px inset and 8px between rows. It ran on 4px here and 3px in the phone override —
+   the two values the base unit exists to remove — while every other dimension in the
+   menu was already on the scale, so the rows were correct and the space between them
+   was not. The inset is also what makes the corners concentric: the modal's 16px radius
+   less this 8px inset is the rows' own 8px. */
 .mobile-nav-actions {
   display: grid;
-  gap: 4px;
-  padding: 8px 8px 4px;
+  gap: 8px;
+  padding: 8px;
   overflow-y: auto;
   overscroll-behavior: contain;
 }
@@ -247,13 +245,13 @@
 .mobile-nav-search,
 .mobile-nav-rss {
   display: flex;
-  min-height: 56px;
+  min-height: 40px;
   align-items: center;
   justify-content: flex-start;
   gap: 16px;
   padding: 0 16px;
   border: 0;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   background: transparent;
   color: var(--text);
   font: inherit;
@@ -272,45 +270,15 @@
 .mobile-nav-overlay.is-opening .mobile-nav-actions > :nth-child(3) { animation-delay: 105ms; }
 .mobile-nav-overlay.is-opening .mobile-nav-actions > :nth-child(4) { animation-delay: 135ms; }
 
-.mobile-nav-search {
-  position: relative;
-  margin-bottom: 8px;
-  cursor: pointer;
-}
+/* No boundary of its own. Search led a group of its own — a hairline until 2026-09-06,
+   then 16px of space — and now sits on the same 8px step as every other row, so the menu
+   reads as one list rather than an action above a list. */
+.mobile-nav-search { cursor: pointer; }
 
-.mobile-nav-search::after {
-  content: '';
-  position: absolute;
-  right: 0;
-  bottom: -8px;
-  left: 0;
-  height: 1px;
-  background: var(--line);
-  pointer-events: none;
-}
-
-.mobile-nav-search svg {
-  width: 16px;
-  height: 16px;
-  flex: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 1.8;
-  fill: none;
-}
+.mobile-nav-search svg { --icon-size: var(--icon-sm); }
 
 .mobile-nav-actions a svg,
-.mobile-nav-rss svg {
-  width: 16px;
-  height: 16px;
-  flex: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 1.8;
-  fill: none;
-}
+.mobile-nav-rss svg { --icon-size: var(--icon-sm); }
 
 .mobile-nav-actions a:hover,
 .mobile-nav-search:hover,
@@ -331,15 +299,19 @@
 .mobile-nav-search:focus-visible,
 .mobile-nav-rss:focus-visible {
   background: color-mix(in srgb, var(--surface-strong) 68%, transparent);
-  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--accent) 38%, transparent);
   color: var(--accent);
-  outline: 0;
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+  outline-offset: -2px;
 }
 
+/* No top padding: the actions list's bottom inset already puts 8px between the two
+   groups. They used to pay 4px each into that boundary, which summed correctly and left
+   both halves off the scale on their own. */
 .mobile-nav-utilities {
   display: grid;
-  gap: 4px;
-  padding: 4px 8px 8px;
+  gap: 8px;
+  padding: 0 8px 8px;
 }
 
 @keyframes mobile-nav-backdrop-in {
@@ -367,6 +339,10 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Three tracks: the magnifier, the field and the close. The modal carries no clear button
+   of its own — its × dismisses the modal, the field empties itself on every open, and a
+   second × beside the first read as a pair of identical marks doing different things. The
+   directory's field is the one that keeps a query worth clearing. */
 .search-input-wrap {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
@@ -376,11 +352,11 @@
   border-bottom: 1px solid var(--line);
 }
 
-.search-input-icon {
-  width: 24px;
-  height: 24px;
-  color: var(--muted);
-}
+
+/* The same magnifier as the header button, at the same 24px, so it takes the same weight.
+   It carried no stroke-width at all and fell through to Lucide's own `stroke-width="2"`
+   attribute, which made the heaviest glyph on the site one that had never been decided. */
+.search-input-icon { --icon-size: var(--icon-md); color: var(--muted); }
 
 .search-input {
   width: 100%;
@@ -401,25 +377,27 @@
   height: 32px;
   padding: 0;
   place-items: center;
-  border: 1px solid transparent;
+  border: 0;
   border-radius: 50%;
   background: transparent;
   color: var(--muted);
   cursor: pointer;
-  transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease;
+  transition: color 180ms ease;
 }
 
-.search-close svg {
-  width: 16px;
-  height: 16px;
-}
+.search-close svg { --icon-size: var(--icon-sm); }
 
-.search-close:hover,
+/* Colour, like everything else that answers a pointer. It used to fill a disc and draw a
+   ring around itself on hover, which made the one control in the modal that dismisses it
+   also the loudest thing in the header of that modal. Removed 2026-09-06. */
+.search-close:hover { color: var(--accent); }
+
+/* Focus keeps a ring of its own, because the fill it used to rely on is gone and colour
+   alone is not an adequate focus indicator. */
 .search-close:focus-visible {
-  border-color: var(--line);
-  background: var(--surface-strong);
-  color: var(--text);
-  outline: 0;
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+  color: var(--accent);
 }
 
 .search-count {
@@ -444,7 +422,7 @@
   display: grid;
   align-items: center;
   padding: 16px 16px;
-  border-radius: 16px;
+  border-radius: var(--radius-md);
   color: var(--text);
   text-decoration: none;
   transition: background-color 120ms ease, color 120ms ease;
@@ -511,25 +489,27 @@
   height: 32px;
   padding: 0;
   place-items: center;
-  border: 1px solid transparent;
+  border: 0;
   border-radius: 50%;
   background: transparent;
   color: var(--muted);
   cursor: pointer;
-  transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease;
+  transition: color 180ms ease;
 }
 
-.rss-close svg {
-  width: 16px;
-  height: 16px;
-}
+.rss-close svg { --icon-size: var(--icon-sm); }
 
-.rss-close:hover,
+/* Colour, like everything else that answers a pointer. It used to fill a disc and draw a
+   ring around itself on hover, which made the one control in the modal that dismisses it
+   also the loudest thing in the header of that modal. Removed 2026-09-06. */
+.rss-close:hover { color: var(--accent); }
+
+/* Focus keeps a ring of its own, because the fill it used to rely on is gone and colour
+   alone is not an adequate focus indicator. */
 .rss-close:focus-visible {
-  border-color: var(--line);
-  background: var(--surface-strong);
-  color: var(--text);
-  outline: 0;
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+  color: var(--accent);
 }
 
 .rss-modal h2 {
@@ -557,7 +537,7 @@
   margin: 16px 16px 24px;
   padding: 16px 16px;
   border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: var(--radius-md);
   background: var(--surface-strong);
 }
 
@@ -594,17 +574,7 @@
   transition: color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
 }
 
-.rss-copy-button svg {
-  grid-area: 1 / 1;
-  width: 16px;
-  height: 16px;
-  flex: 0 0 auto;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 2;
-  fill: none;
-}
+.rss-copy-button svg { grid-area: 1 / 1; --icon-size: var(--icon-sm); }
 
 .rss-copy-button .rss-copy-icon {
   display: block;
@@ -642,13 +612,13 @@
 .rss-copy-button:hover,
 .rss-copy-button:focus-visible {
   color: var(--accent);
-  outline: 0;
   transform: translateY(-1px);
 }
 
 .rss-copy-button:focus-visible {
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 32%, transparent);
-  border-radius: 8px;
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+  border-radius: var(--radius-sm);
 }
 
 @media (max-width: 680px) {
@@ -666,20 +636,15 @@
   .mobile-nav-modal {
     width: 100%;
     max-height: calc(100dvh - 106px - env(safe-area-inset-top));
-    border-radius: 16px;
+    border-radius: var(--radius-md);
     transform-origin: top center;
   }
-  .mobile-nav-actions { gap: 3px; padding: 8px 8px 4px; }
-  /* The utilities row sits under the actions list and must share its inset, or the
-     Subscribe row starts 2px inside every row above it. */
-  .mobile-nav-utilities { padding: 4px 8px 8px; }
+  /* The containers and the row height keep their base values here; only the label size
+     tightens for a phone. `padding: 0 16px` and the row height were restated identically
+     and are dropped. */
   .mobile-nav-actions a,
   .mobile-nav-search,
-  .mobile-nav-rss {
-    min-height: 48px;
-    padding: 0 16px;
-    font-size: .98rem;
-  }
+  .mobile-nav-rss { font-size: .98rem; }
   .search-overlay {
     height: 100dvh;
     padding:max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
@@ -689,10 +654,9 @@
     height: 100dvh;
     padding:max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
   }
-  .search-modal { border-radius: 16px; }
-  .rss-modal { border-radius: 16px; }
+  .search-modal { border-radius: var(--radius-md); }
+  .rss-modal { border-radius: var(--radius-md); }
   .search-input-wrap { gap: 8px; padding: 16px; }
-  .search-input-icon { width: 24px; height: 24px; }
   .search-close { width: 48px; height: 48px; }
   .search-input { font-size: 16px; }
   .search-count { padding: 16px 16px 16px; }
@@ -733,7 +697,6 @@
   }
   .rss-close { width: 48px; height: 48px; }
   .rss-copy-button { width: 48px; height: 48px; }
-  .rss-copy-button svg { width: 16px; height: 16px; }
 }
 
 @media (pointer: coarse) {
