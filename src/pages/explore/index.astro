@@ -147,7 +147,7 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
     font-family: var(--display);
     font-size: var(--type-tile-title);
     font-weight: 600;
-    line-height: 1.333333;
+    line-height: var(--leading-tile-title);
     overflow-wrap: anywhere;
   }
   .explore-lane-count {
@@ -162,7 +162,7 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
        qualifies. Taxonomy does not outrank identity, and the category name is the
        identity here while the count is metadata about it. */
     font-size: var(--type-tile-title);
-    line-height: 1.333333;
+    line-height: var(--leading-tile-title);
     font-variant-numeric: tabular-nums;
   }
   .explore-lane-count .eyebrow { margin: 0; font-family: var(--sans); color: var(--muted); }

@@ -405,6 +405,7 @@
   padding: 8px 16px 0;
   color: var(--muted);
   font-size: var(--type-label);
+  line-height: var(--leading-label);
   font-weight: 800;
   letter-spacing: .08em;
   text-transform: uppercase;
@@ -478,6 +479,7 @@
   margin: 0;
   color: var(--accent);
   font-size: var(--type-label);
+  line-height: var(--leading-label);
   font-weight: 800;
   letter-spacing: .12em;
   text-transform: uppercase;
@@ -668,7 +670,10 @@
     align-items: start;
     padding: 16px 16px;
   }
-  .search-result-copy strong { font-size: 1.08rem; }
+  /* 17.28px in the same 24px box the desktop row uses: the ratio is re-derived from
+     the new size rather than left at 1.2712, which was putting it in a 21.97px box and
+     taking the result rows off the rhythm on a phone only. */
+  .search-result-copy strong { font-size: 1.08rem; line-height: 1.3889; }
   .search-result-copy span {
     display: -webkit-box;
     overflow: hidden;
@@ -678,7 +683,9 @@
   }
   .rss-modal-topline { padding: 16px 16px 0; }
   .rss-modal h2 { margin: 16px 16px 0; font-size: clamp(1.75rem, 10vw, 2.4rem); }
-  .rss-description { margin: 16px 16px 0; font-size: .96rem; }
+  /* 15.36px in a 24px box, the size this prose has on every other surface. It kept
+     the 1.5 body ratio after the size dropped, which gave 23.04px. */
+  .rss-description { margin: 16px 16px 0; font-size: .96rem; line-height: 1.5625; }
   .rss-url-card {
     grid-template-columns: minmax(0, 1fr) auto;
     gap: 8px;

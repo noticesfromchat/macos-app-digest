@@ -158,31 +158,69 @@
     "typographyMeta": {
       "display": {
         "displayName": "Display",
-        "purpose": "Held in reserve; nothing currently uses it."
+        "purpose": "Held in reserve; nothing currently uses it.",
+        "size": "fluid",
+        "lineBox": "exempt — fluid"
       },
       "headline": {
         "displayName": "Headline",
-        "purpose": "Every page title, delivered through --type-page-title."
+        "purpose": "Every page title, delivered through --type-page-title.",
+        "size": "30-40px fluid",
+        "lineBox": "exempt — fluid (.96)"
       },
       "sectionTitle": {
         "displayName": "Section Title",
-        "purpose": "Headings that open a section within a page, delivered through --type-section-title."
+        "purpose": "Headings that open a section within a page, delivered through --type-section-title.",
+        "size": "24-33px fluid",
+        "lineBox": "exempt — fluid (1)"
+      },
+      "subhead": {
+        "displayName": "Subhead",
+        "purpose": "The step between a section title and a card title: the hero issue number, the Editor's Pick title, and headings nested inside a card. Delivered through --type-subhead.",
+        "size": "22-28px fluid",
+        "lineBox": "exempt — fluid (1.08-1.1)"
+      },
+      "cardTitle": {
+        "displayName": "Card Title",
+        "purpose": "Card titles, app names, and the name of a category or collection. Delivered through --type-card-title.",
+        "size": "23px",
+        "lineBox": "28px (1.2174)"
+      },
+      "tileTitle": {
+        "displayName": "Tile Title",
+        "purpose": "Titles on the Explore taxonomy tiles, where a card title would wrap. Delivered through --type-tile-title.",
+        "size": "18px",
+        "lineBox": "24px (1.3333)"
       },
       "dek": {
         "displayName": "Dek",
-        "purpose": "The standfirst under a page or section title, delivered through --type-dek; always one step above body."
+        "purpose": "The standfirst under a page or section title, delivered through --type-dek; always one step above body.",
+        "size": "19px",
+        "lineBox": "32px (1.6842)"
       },
       "body": {
         "displayName": "Body",
-        "purpose": "Descriptions, explanations, and editorial copy."
-      },
-      "label": {
-        "displayName": "Label",
-        "purpose": "Eyebrows, small UI labels, and control legends."
+        "purpose": "Descriptions, explanations, and editorial copy.",
+        "size": "16px",
+        "lineBox": "24px (--leading-body)"
       },
       "metadata": {
         "displayName": "Metadata",
-        "purpose": "Counts, sources, and secondary operational information."
+        "purpose": "Counts, sources, and secondary operational information.",
+        "size": "14px",
+        "lineBox": "20px (--leading-meta)"
+      },
+      "controlLabel": {
+        "displayName": "Control Label",
+        "purpose": "The text on something you press. The only small role that is neither tracked nor uppercase, because a control is read as a word.",
+        "size": "14px",
+        "lineBox": "20px (--leading-meta)"
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Eyebrows, small UI labels, and control legends.",
+        "size": "12px",
+        "lineBox": "16px (--leading-label)"
       },
       "brand": {
         "displayName": "Brand",
@@ -191,6 +229,17 @@
       "mono": {
         "displayName": "Mono",
         "purpose": "Data a reader might copy. Today that is the RSS feed URL and nothing else; it is not a costume for looking technical."
+      },
+      "_contract": {
+        "rule": "A role is a family, a size, a weight and a line box, defined together.",
+        "fixedRolesStepOn": "4px",
+        "fluidRolesExempt": "Page Title, Section Title and Subhead set size with clamp(), so no single leading puts them on a step across the range.",
+        "leadingTokens": {
+          "--leading-label": "1.3333 -> 16px at 12px",
+          "--leading-meta": "1.4286 -> 20px at 14px",
+          "--leading-body": "1.5 -> 24px at 16px"
+        },
+        "recorded": "2026-09-07"
       }
     },
     "shadows": [

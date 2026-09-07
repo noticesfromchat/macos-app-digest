@@ -86,6 +86,23 @@
      title without wrapping to four lines. */
   --type-card-title: 1.4375rem;
   --type-tile-title: 1.125rem;
+  /* Leading belongs to the role, not to the use site. A role is a size and a line box
+     together, which is what stops a size being changed at a breakpoint while the old
+     ratio stays behind — the defect that left mobile search titles in a 21.97px box.
+
+     Both values were already in the stylesheet, correct, as literals: `.tag` carried
+     1.3333 and `.breadcrumb` 1.4286, while nine other uses of the same two roles
+     inherited body's 1.5 and landed on 18px and 21px. Naming them is the whole fix.
+
+     Unitless so they survive a reader's zoom, and chosen to put each role's box on the
+     4px step The Line Box Rule allows: 12 x 1.3333 = 16, 14 x 1.4286 = 20. */
+  --leading-label: 1.3333;
+  --leading-meta: 1.4286;
+  --leading-body: 1.5;
+  /* Numerically the same ratio as the label, semantically a different role: 18px into a
+     24px box rather than 12px into 16. Named separately so a change to the tile title's
+     size moves its own leading and not an eyebrow's. */
+  --leading-tile-title: 1.3333;
   /* One reading measure. Set in ch so it holds ~70 characters at any of the
      sizes below it, not a fixed pixel column that widens as type shrinks. */
   --measure: 52ch;
@@ -130,7 +147,7 @@
   color: var(--muted);
   font-size: var(--type-meta);
   font-weight: 500;
-  line-height: 1.4286;
+  line-height: var(--leading-meta);
 }
 .breadcrumb ol {
   display: flex;
@@ -242,7 +259,7 @@ body {
   background: var(--page);
   color: var(--text);
   font-family: var(--sans);
-  line-height: 1.5;
+  line-height: var(--leading-body);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -255,13 +272,13 @@ body {
 .directory-select-trigger,
 .directory-filter-label,
 .desktop-nav-links a,
-.site-footer-inner p { line-height: 1.4286; }
+.site-footer-inner p { line-height: var(--leading-meta); }
 
 /* The footer's own nav links are left alone deliberately. Their line box is 21px, but
    they are inline-flex with min-height 24px for WCAG 2.2 target size, so the rendered
    box is 24px and already lands on the base. The line box is the wrong measure for a
    flex item that carries its own height. */
-.directory-count { line-height: 1.3333; }
+.directory-count { line-height: var(--leading-label); }
 /* Grows to fill what the header and footer do not, and never shrinks below its content. */
 main { flex: 1 0 auto; }
 
@@ -282,6 +299,7 @@ a { color: inherit; }
   box-shadow: var(--shadow-modal);
   color: var(--accent);
   font-size: var(--type-meta);
+  line-height: var(--leading-meta);
   font-weight: 800;
   text-decoration: none;
   transform: translateY(calc(-100% - 18px));
@@ -430,6 +448,7 @@ svg.icon {
   margin: 0 0 var(--eyebrow-gap);
   color: var(--accent);
   font-size: var(--type-label);
+  line-height: var(--leading-label);
   font-weight: 800;
   letter-spacing: .1em;
   text-transform: uppercase;
@@ -491,6 +510,7 @@ svg.icon {
      reason. */
   font-family: inherit;
   font-size: var(--type-meta);
+  line-height: var(--leading-meta);
   font-weight: 700;
   text-decoration: none;
   transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease, transform 180ms ease;
@@ -612,6 +632,7 @@ svg.icon {
   margin: 8px 0 0;
   color: var(--muted);
   font-size: var(--type-meta);
+  line-height: var(--leading-meta);
   font-weight: 600;
   letter-spacing: .02em;
 }
@@ -958,6 +979,7 @@ svg.icon {
   margin-bottom: 8px;
   color: var(--accent);
   font-size: var(--type-label);
+  line-height: var(--leading-label);
   font-weight: 800;
   letter-spacing: .1em;
   text-transform: uppercase;
@@ -1054,7 +1076,7 @@ svg.icon {
 .reading-source strong { color: var(--text); }
 
 .tag-list { display: flex; min-height: 88px; flex-wrap: wrap; align-content: flex-start; gap: 8px; padding-top: 16px; }
-.tag { display: inline-flex; width: fit-content; align-items: center; margin: 0; padding: 8px 8px; border: 0; border-radius: 999px; background: var(--chip); color: var(--muted); font-size: var(--type-label); font-weight: 700; line-height: 1.3333; text-decoration: none; text-transform: lowercase; transition: color 180ms ease, background-color 180ms ease; }
+.tag { display: inline-flex; width: fit-content; align-items: center; margin: 0; padding: 8px 8px; border: 0; border-radius: 999px; background: var(--chip); color: var(--muted); font-size: var(--type-label); font-weight: 700; line-height: var(--leading-label); text-decoration: none; text-transform: lowercase; transition: color 180ms ease, background-color 180ms ease; }
 .tag:hover,
 .tag:focus-visible { background: color-mix(in srgb, var(--chip) 82%, var(--accent)); color: var(--accent-hover); }
 .reading-card h3 { min-height: 112px; }
@@ -1137,7 +1159,7 @@ svg.icon {
   color: var(--muted);
   font-size: var(--type-meta);
   font-weight: 600;
-  line-height: 1.4286;
+  line-height: var(--leading-meta);
   text-decoration: none;
   transition: color 180ms ease;
 }
@@ -1300,7 +1322,7 @@ svg.icon {
   color: var(--muted);
   font-size: var(--type-meta);
   font-weight: 500;
-  line-height: 1.4286;
+  line-height: var(--leading-meta);
 }
 
 .explore-discovery-card {
@@ -1663,6 +1685,7 @@ svg.icon {
   margin: 0;
   color: var(--muted);
   font-size: var(--type-meta);
+  line-height: var(--leading-meta);
   font-weight: 700;
   letter-spacing: .04em;
   text-transform: uppercase;
@@ -1676,6 +1699,7 @@ svg.icon {
   color: var(--muted);
   font-family: var(--sans);
   font-size: var(--type-meta);
+  line-height: var(--leading-meta);
   font-weight: 700;
   letter-spacing: .1em;
   text-transform: uppercase;
@@ -1714,6 +1738,7 @@ svg.icon {
   margin: 0;
   color: var(--muted);
   font-size: var(--type-meta);
+  line-height: var(--leading-meta);
 }
 .archive-card-scent b { color: var(--text); font-weight: 600; }
 .archive-card-total {
@@ -1775,6 +1800,7 @@ svg.icon {
 .archive-card .archive-card-date {
   color: var(--muted);
   font-size: var(--type-meta);
+  line-height: var(--leading-meta);
   font-weight: 700;
   letter-spacing: .04em;
   text-transform: uppercase;
@@ -1799,7 +1825,8 @@ svg.icon {
   color: color-mix(in srgb, var(--text) 80%, var(--accent));
 }
 .category-directory-card strong { font-size: 1.4rem; }
-.category-directory-card span { font-size: var(--type-meta); font-weight: 700; }
+.category-directory-card span { font-size: var(--type-meta);
+  line-height: var(--leading-meta); font-weight: 700; }
 .category-directory-card em { max-width: var(--measure); }
 /* A row, not a six-track grid. The count leads and the controls sit at the end, pushed
    there by the count's own auto margin. The grid version reserved six tracks for three
@@ -1903,7 +1930,7 @@ svg.icon {
   font: inherit;
   font-size: var(--type-label);
   font-weight: 700;
-  line-height: 1.3333;
+  line-height: var(--leading-label);
   transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease;
 }
 /* The query pill can be a hundred characters. It gives up width before the row wraps
@@ -2224,6 +2251,7 @@ svg.icon {
   padding: 8px 16px 8px;
   color: var(--muted);
   font-size: var(--type-label);
+  line-height: var(--leading-label);
   font-weight: 800;
   letter-spacing: .1em;
   text-transform: uppercase;
@@ -2236,6 +2264,7 @@ svg.icon {
   padding: 0 16px;
   color: var(--text);
   font-size: var(--type-label);
+  line-height: var(--leading-label);
   font-weight: 700;
   cursor: pointer;
 }

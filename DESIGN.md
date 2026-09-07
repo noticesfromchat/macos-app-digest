@@ -219,16 +219,43 @@ These are drawn, not printed: they exist only inside the homepage hero's canvas 
 The type system is split between a classic editorial serif for the headlines and a practical system sans for everything that carries utility, metadata, or navigation. The App Waypoint wordmark uses the same editorial serif as the headline system so the brand voice stays consistent.
 
 ### Hierarchy
-- **Display** (500, clamp(4rem, 8vw, 6rem), 0.92): held in reserve. Nothing currently uses it — the app detail title was its last user and now takes Headline like every other page title. Reintroduce it only for a surface that genuinely outranks a page title.
-- **Headline** (500, clamp(3.25rem, 5.1vw, 4.25rem), 0.96): every page title — archive, explore, about, tag, collection, category, and app detail. Delivered through `--type-page-title`, which steps down to clamp(2.8rem, 12vw, 3.75rem) below 680px so long titles wrap instead of overflowing.
-- **Section Title** (500, clamp(2.2rem, 4vw, 3.8rem), 1.0, -0.03em): the heading that opens a section within a page, on every page including About. Delivered through `--type-section-title`. A heading nested *inside* a card is a rank below this and sets its own smaller size.
-- **Subhead** (600, fluid 1.9-2.35rem, 1.1): the hero's issue number, its Editor's Pick title, and headings nested inside a card — the step between a section title and a card title.
-- **Title** (600, 1.4rem, 1.15): card titles, app names, and the name of a category or collection wherever it appears — app detail, explore, and the category directory all set it at this one size.
-- **Dek** (400, clamp(1.12rem, 1.4vw, 1.25rem), 1.58): the standfirst under a title, page or section. One clear step above body — never level with it — muted in colour, and identical everywhere. Delivered through `--type-dek`.
-- **Body** (400, 1rem, 1.5): descriptions, explanations, and editorial copy. The 1.5 is not a taste call: it puts the body line box at 24px, three base units, which is what makes every other vertical measurement derivable. See The Line Box Rule.
-- **Label** (800, .78rem, .1em, uppercase): eyebrows, small UI labels, control legends, and counts inside chips. There is no size below this one — a label that felt it needed to be smaller was drift, not a role.
-- **Control Label** (700, .84rem): the text on something you press — `.button`, and the Filter and Sort triggers. It is the only small role that is neither tracked nor uppercase, because a control is read as a word and not as a heading.
-- **Metadata** (600, .84rem, 1.45): counts, sources, and secondary operational information. The directory's live count is the tracked variant of this role, at 700 with .04em and muted, sitting one step *below* the controls beside it so a readout is not mistaken for something to press.
+Every role is a family, a size, a weight **and a line box**, defined together. A size
+changed without its leading is how the same role ends up in two different boxes: mobile
+search titles sat in a 21.97px box until 2026-09-07 because a breakpoint moved the size
+and left the ratio behind. Leading is unitless so it survives a reader's zoom.
+
+The sizes below are the **implemented** scale, confirmed against the running site on
+2026-09-07. This file previously described page titles at 52-68px and section titles at
+35.2-60.8px, a scale nothing had rendered for weeks; a correction made faithfully against
+that text would have enlarged every title on the site by roughly seventy per cent. The
+implemented scale is the baseline and this table is now the record of it.
+
+| Role | Size | Line box | Weight | Token |
+| --- | --- | --- | --- | --- |
+| Page Title | 30-40px fluid | .96 — exempt | 500 | `--type-page-title` |
+| Section Title | 24-33px fluid | 1 — exempt | 500 | `--type-section-title` |
+| Subhead | 22-28px fluid | 1.08-1.1 — exempt | 600 | `--type-subhead` |
+| Card Title | 23px | **28px** (1.2174) | 600 | `--type-card-title` |
+| Tile Title | 18px | **24px** (1.3333) | 600 | `--type-tile-title` |
+| Dek | 19px | **32px** (1.6842) | 400 | `--type-dek` |
+| Body | 16px | **24px** (`--leading-body`) | 400 | — |
+| Metadata | 14px | **20px** (`--leading-meta`) | 600 | `--type-meta` |
+| Label | 12px | **16px** (`--leading-label`) | 800 | `--type-label` |
+
+**Fluid display type is exempt from the step.** Page Title, Section Title and Subhead set
+their size with `clamp()`, so no single leading can put them on a 4px box across the range.
+They keep tight ratios instead. Every fixed role lands on a 4px step, which is what The
+Line Box Rule allows and what makes an interval after a label predictable.
+
+**Leading is a token, not a literal.** `--leading-label` (1.3333) and `--leading-meta`
+(1.4286) both existed in the stylesheet before 2026-09-07 as correct numbers typed at two
+use sites — `.tag` and `.breadcrumb` — while nine other uses of the same two roles inherited
+body's 1.5 and landed on 18px and 21px boxes. The values did not change; naming them did.
+A repeated eyebrow was adding 18px to a stack built on 8px, which is why an 8px margin
+after one never produced a regular interval.
+
+There is no size below Label. A label that felt it needed to be smaller was drift, not a
+role.
 
 **The two small roles use the opposite tokens to their names.** Control Label is delivered by `--type-meta` and the count's metadata variant by `--type-label`. This is backwards and it is deliberate for now: the tokens are plain sizes used across dozens of rules, and renaming them to match the roles is a site-wide pass, not a footnote to this one. Read the role from the entry above, never from the token name, and do not "correct" a measured page back toward the token that names it.
 - **Brand** (500, fluid 1.35-2rem): the App Waypoint wordmark set in the same editorial serif as the headline system.
