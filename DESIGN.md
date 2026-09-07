@@ -266,9 +266,21 @@ A hairline that *constitutes a control* is not a divider and stays: the RSS URL 
 
 This replaced **The Even Rule Rule**, which asked that a rule carry the same space above it as below — `--section-space`, one value for the whole site, paid half by each side. That rule was sound and it is recorded because it was load-bearing for a year: it is the reason section spacing was ever symmetric, and why removing the lines meant re-deriving the intervals rather than simply deleting a border. Sections now sit on one interval instead of two halves flanking a line, and the padding is asymmetric so that interval can be an odd number of steps.
 
-**The Base Unit.** Every spacing value, dimension and radius on the site is a whole
-multiple of 8px. It is held as `--base`, with the scale `--space-1` through `--space-9`
-running 8 to 72. Adopted 2026-09-05.
+**The Base Unit.** Every *structural vertical* spacing value on the site is a whole
+multiple of 8px, held as `--base` with the scale `--space-1` through `--space-9` running
+8 to 72. Adopted 2026-09-05; made a real dependency 2026-09-07.
+
+The wording matters, and it is narrower than this rule used to claim. It said every
+spacing value, **dimension** and radius, which was not true of three things at once: the
+field grid's 180px is 22.5 units, an app icon frame's corner is 25% of its own side, and
+line boxes step on 4. The horizontal grid is a separate system and does not divide by the
+vertical base; that is the two-grid model, not a violation of it.
+
+**The scale is calculated, not typed.** `--space-3` is `calc(var(--base) * 3)` and
+`--eyebrow-gap` is `var(--space-1)`. Until 2026-09-07 every step repeated its own pixel
+literal, so the values agreed with the base by coincidence and changing `--base` changed
+nothing at all. They are now a dependency: setting the base to 10px moves the whole scale,
+which is the only test that tells you a token system is real.
 
 Before that the scale existed only in this file, as prose, while every value was typed
 literally at its use site. The stylesheet carried 11, 13, 14, 18, 20, 22, 27, 30, 34 and
@@ -276,6 +288,21 @@ literally at its use site. The stylesheet carried 11, 13, 14, 18, 20, 22, 27, 30
 hard-won decisions and which were accidents nobody had caught. The scale is now a
 mechanism rather than a description of what happened, and that is the whole point of it: a
 rule that cannot be read from the code is not a rule, it is a memory.
+
+**Structural vertical spacing steps; it does not interpolate.** `--section-space`,
+`--page-start-space`, the hero's own padding and the footer's margin were all `clamp()`
+expressions, so the one value the whole site uses for a section boundary was whatever the
+viewport made it — 38px at a 1000px viewport, 60px between the last section and the footer.
+Each now takes a token that steps at 921px and 1100px, the site's own breakpoints, landing
+on the values the clamps reached at their floor, middle and cap: the boundary is 24 / 32 /
+40, the hero opens 32 / 40 / 48 and closes 32 / 48 / 56, and the footer stands off 48 / 64
+/ 72. A width between two breakpoints now gets a spacing decision rather than an
+interpolation.
+
+Fluid values that remain are horizontal and are exceptions by the two-grid model rather
+than by oversight: the shell's own gutter, the column gaps in the homepage hero and the
+app-detail rail, and the icon frame that scales with its page. Fluid *display type* is also
+kept, under The Line Box Rule.
 
 Four things sit outside the base deliberately. Hairlines and optical nudges of 4px and
 under keep their own values, because a 1px border is not a spacing decision. Line boxes

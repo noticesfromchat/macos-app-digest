@@ -19,16 +19,16 @@
      the scale existed only as prose in DESIGN.md and every value was typed
      literally at its use site. */
   --base: 8px;
-  --space-1: 8px;
-  --space-2: 16px;
-  --space-3: 24px;
-  --space-4: 32px;
-  --space-5: 40px;
-  --space-6: 48px;
-  --space-7: 56px;
-  --space-8: 64px;
-  --space-9: 72px;
-  --eyebrow-gap: 8px;
+  --space-1: var(--base);
+  --space-2: calc(var(--base) * 2);
+  --space-3: calc(var(--base) * 3);
+  --space-4: calc(var(--base) * 4);
+  --space-5: calc(var(--base) * 5);
+  --space-6: calc(var(--base) * 6);
+  --space-7: calc(var(--base) * 7);
+  --space-8: calc(var(--base) * 8);
+  --space-9: calc(var(--base) * 9);
+  --eyebrow-gap: var(--space-1);
   /* One focus ring for the whole site. There were nine treatments across six
      stylesheets on 2026-09-06 — four accent alphas, five offsets and two mechanisms —
      because every control declared its own. Nothing here is new; this is the most
@@ -69,8 +69,17 @@
   /* Reduced 25% from 36px on 2026-09-04. The trail keeps its 8px bind to the title
      under The One Page Title Rule; what was reading as the trail having fallen down a gap
      was the space above it, between the header and the trail, not the space below. */
-  --page-start-space: 24px;
-  --section-space: clamp(24px, 3.8vw, 40px);
+  --page-start-space: var(--space-3);
+  /* Stepped, not interpolated. As `clamp(24px, 3.8vw, 40px)` this resolved to whatever
+     the viewport made it — 38px at 1000px — so the one value the whole site uses for a
+     section boundary was off the base at most widths between the endpoints. The steps
+     below take the same three values the clamp reached at its ends and in its middle,
+     at the site's own breakpoints, so the boundary is a spacing decision again rather
+     than a function of window width. */
+  --section-space: var(--space-3);
+  --hero-space-top: var(--space-4);
+  --hero-space-bottom: var(--space-4);
+  --footer-space: var(--space-6);
   --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
   --display: "Iowan Old Style", "Baskerville", "Times New Roman", serif;
   --type-label: .75rem;
@@ -250,6 +259,26 @@ html {
    matches, a short tag page, a narrow window. `100dvh` rather than `100vh` so mobile
    browser chrome collapsing does not leave a strip of page under the footer. The header is
    sticky and every overlay is fixed, so neither is disturbed by the column. */
+/* The section boundary steps twice. These are the values the old clamp reached at its
+   floor, its middle and its cap; what changes is that a width between two breakpoints now
+   gets one of them rather than an interpolation. */
+@media (min-width: 921px) {
+  :root {
+    --section-space: var(--space-4);
+    --hero-space-top: var(--space-5);
+    --hero-space-bottom: var(--space-6);
+    --footer-space: var(--space-8);
+  }
+}
+@media (min-width: 1100px) {
+  :root {
+    --section-space: var(--space-5);
+    --hero-space-top: var(--space-6);
+    --hero-space-bottom: var(--space-7);
+    --footer-space: var(--space-9);
+  }
+}
+
 body {
   display: flex;
   flex-direction: column;
@@ -548,8 +577,10 @@ svg.icon {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  padding-block: clamp(32px, 4.2vw, 48px)
-                 calc(clamp(32px, 4.4vw, 56px) + var(--sea-h));
+  /* Stepped with the section boundary rather than interpolated: the hero's opening and
+     its close are structural intervals like any other, and at 1000px the old clamps put
+     them at 42px and 44px. The bottom carries the sea's height on top of its step. */
+  padding-block: var(--hero-space-top) calc(var(--hero-space-bottom) + var(--sea-h));
   /* A hero carrying the trail opens on the page's own start space instead, so the trail
      sits the same 24px below the header that it does on every other page. Without this it
      inherited the hero's larger opening and sat 24px lower than the rest of the site. */
@@ -827,10 +858,12 @@ svg.icon {
 
 .hero-pick-card .editor-note { margin-top: 24px; padding-top: 0; border-top: 0; }
 
+/* The last content divider on the site. It separated the editor's note from Best For
+   inside the pick card, which is content divided from content — the case the site
+   stopped drawing on 2026-09-05 everywhere else. The 24px margin and 16px padding that
+   flanked it become one interval with one owner, at the same 40px they summed to. */
 .hero-pick-card .best-for {
-  margin-top: 24px;
-  padding-top: 16px;
-  border-top: 1px solid var(--line);
+  margin-top: var(--space-5);
   font-size: .97rem;
 }
 
@@ -2489,7 +2522,9 @@ svg.icon {
   .home-hero { --sea-h: 72px; padding-block: 32px 48px; }
   .content-divider { height: 64px; }
   .video-section { padding-top: 16px; }
-  :root { --page-start-space: 28px; }
+  /* Was 28px, which is not a step. Mobile deliberately opens wider than desktop's 24,
+     so it takes the next step up rather than flattening onto it. */
+  :root { --page-start-space: var(--space-4); }
   .archive-page { padding: var(--page-start-space) 0 32px; }
   .app-detail-page { padding: var(--page-start-space) 0 32px; }
   .app-detail-hero { padding: 0; }

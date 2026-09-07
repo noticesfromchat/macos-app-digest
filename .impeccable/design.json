@@ -333,7 +333,21 @@
         "name": "xl",
         "value": "1440px"
       }
-    ]
+    ],
+    "spacingMeta": {
+      "rule": "Structural vertical spacing is a whole multiple of --base (8px). The horizontal field grid is a separate system and does not divide by it.",
+      "derived": "--space-1..9 are calc(var(--base) * n); --eyebrow-gap is var(--space-1). Changing --base moves the whole scale.",
+      "stepped": {
+        "breakpoints": "921px and 1100px",
+        "--section-space": "24 / 32 / 40",
+        "--hero-space-top": "32 / 40 / 48",
+        "--hero-space-bottom": "32 / 48 / 56",
+        "--footer-space": "48 / 64 / 72",
+        "--page-start-space": "24 desktop, 32 at 680px and below"
+      },
+      "fluidExceptions": "Horizontal only: the shell gutter, the homepage hero and app-detail rail column gaps, and the app icon frame that scales with its page. Fluid display type is exempt under The Line Box Rule.",
+      "recorded": "2026-09-07"
+    }
   },
   "components": [
     {
