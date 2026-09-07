@@ -47,9 +47,9 @@ const { current = '' } = Astro.props;
     min-height: 88px;
     align-items: center;
     justify-content: space-between;
-    gap: 24px;
-    padding-top: 16px;
-    padding-bottom: 16px;
+    gap: var(--space-3) 24px;
+    padding-top: var(--space-2);
+    padding-bottom: var(--space-2);
   }
 
   .site-footer p {
@@ -120,15 +120,15 @@ const { current = '' } = Astro.props;
       min-height: 0;
       flex-direction: column;
       align-items: flex-start;
-      gap: 16px;
-      padding-top: 24px;
-      padding-bottom: 24px;
+      gap: var(--space-2) 16px;
+      padding-top: var(--space-3);
+      padding-bottom: var(--space-3);
     }
 
     .site-footer nav {
       width: 100%;
       flex-wrap: wrap;
-      gap: 16px 24px;
+      gap: var(--space-2) 24px;
     }
   }
 </style>

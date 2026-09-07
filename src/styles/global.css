@@ -66,9 +66,9 @@
   /* Radius scale, on the base unit. A component's radius matches its own inset;
      an element nested N px inside another takes the parent's radius minus N, so
      the two curves stay concentric instead of showing a second arc at the corner. */
-  --radius-sm: 8px;
-  --radius-md: 16px;
-  --radius-lg: 24px;
+  --radius-sm: var(--space-1);
+  --radius-md: var(--space-2);
+  --radius-lg: var(--space-3);
   --radius: var(--radius-lg);
   --content-width: 1160px;
   --content-inset: 40px;
@@ -185,7 +185,7 @@
 .breadcrumb li {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-1) 8px;
 }
 .breadcrumb a {
   /* The Target Floor Rule's 24px, reached with padding rather than a taller line, so the
@@ -211,7 +211,7 @@
   display: inline-flex;
   min-height: 24px;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-1) 8px;
   color: var(--text);
 }
 /* The position marker: one filled dot, the size of the buoy's light. It is the only
@@ -363,7 +363,7 @@ a { color: inherit; }
   min-height: 80px;
   align-items: center;
   justify-content: space-between;
-  gap: 32px;
+  gap: var(--space-4) 32px;
   margin: 0;
   padding: 0 clamp(24px, 3.2vw, 40px);
   border: 1px solid var(--line);
@@ -417,13 +417,13 @@ svg.icon {
 .site-header nav {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-1) 8px;
 }
 
 .desktop-nav-links {
   display: inline-flex;
   align-items: center;
-  gap: 24px;
+  gap: var(--space-3) 24px;
 }
 
 .desktop-nav-links a {
@@ -509,7 +509,7 @@ svg.icon {
 .hero-rule {
   width: 144px;
   height: 32px;
-  margin: 8px 0 0;
+  margin: var(--space-1) 0 0;
   color: var(--accent);
 }
 
@@ -524,7 +524,7 @@ svg.icon {
 
 .dek {
   max-width: var(--measure);
-  margin: 16px 0 0;
+  margin: var(--space-2) 0 0;
   color: var(--muted);
   font-size: var(--type-dek);
   line-height: 1.6842;
@@ -535,7 +535,7 @@ svg.icon {
   min-height: 48px;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: var(--space-2) 16px;
   padding: 0 24px;
   border: 1px solid var(--accent);
   border-radius: 999px;
@@ -646,11 +646,11 @@ svg.icon {
   text-wrap: balance;
 }
 
-.home-hero .hero-rule { margin: 16px 0 0; }
+.home-hero .hero-rule { margin: var(--space-2) 0 0; }
 
 .home-hero-tagline {
   max-width: 34ch;
-  margin: 16px 0 0;
+  margin: var(--space-2) 0 0;
   color: var(--text);
   font-size: 1rem;
   line-height: 1.5;
@@ -673,7 +673,7 @@ svg.icon {
 }
 
 .home-hero-date {
-  margin: 8px 0 0;
+  margin: var(--space-1) 0 0;
   color: var(--muted);
   font-size: var(--type-meta);
   line-height: var(--leading-meta);
@@ -682,7 +682,7 @@ svg.icon {
 }
 
 .home-hero-dek {
-  margin: 16px 0 0;
+  margin: var(--space-2) 0 0;
   color: var(--muted);
   font-size: .98rem;
   line-height: 1.5306;
@@ -698,7 +698,7 @@ svg.icon {
 .issue .section,
 .about-page .section {
   border-top: 0;
-  /* One interval, not two halves flanking a rule. `--section-space` is a fluid clamp,
+  /* One interval, not two halves flanking a rule. `--section-space` was a fluid clamp,
      so the doubled value only landed on the base at the clamp's own endpoints: 48px on
      a phone and 80px past 1053px, but 76px at 1000px and every arbitrary value between.
      With the rule gone the gap is the boundary, so it takes a fixed step instead.
@@ -723,7 +723,7 @@ svg.icon {
    halves still whole steps, and it puts more space above a section's heading than below
    its content, which is the rhythm this page already wanted. */
 .issue .section { padding: var(--space-4) 0 var(--space-3); }
-.section-heading { width: 100%; max-width: none; margin-bottom: 32px; }
+.section-heading { width: 100%; max-width: none; margin-bottom: var(--space-4); }
 .section h2 { margin: 0; font-family: var(--display); font-size: var(--type-section-title); font-weight: 500; letter-spacing: -.03em; line-height: 1; }
 
 /* Twelve shared tracks, fluid: `track = (shell - 11 gutters) / 12`. A card spans four of
@@ -731,7 +731,7 @@ svg.icon {
    shell down rather than holding a fixed width. Three columns was the same arrangement
    expressed as a result instead of as a grid, which is why controls declared 180px
    literals and stopped matching the cards the moment the shell shrank. */
-.grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 16px; }
+.grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--space-2) 16px; }
 .grid > * { grid-column: span 4; }
 
 /* Cards in a row line up by sharing the row's tracks, not by guessing heights.
@@ -746,7 +746,7 @@ svg.icon {
     display: grid;
     grid-row: span 3;
     grid-template-rows: subgrid;
-    row-gap: 16px;
+    row-gap: var(--space-2);
   }
 
   .grid > .app-card:not(.reading-card) .app-summary,
@@ -806,7 +806,7 @@ svg.icon {
     display: grid;
     grid-row: span 3;
     grid-template-rows: subgrid;
-    row-gap: 8px;
+    row-gap: var(--space-1);
   }
 
   .grid > .reading-card h3,
@@ -876,7 +876,6 @@ svg.icon {
 .hero-pick-card .app-icon-frame {
   width: 56px;
   height: 56px;
-  border-radius: 14px;
 }
 /* Carries `.app-card` so it beats the base `.app-card h3`, which sits later in the file
    and had been rendering the pick at the ordinary card title's 23px. */
@@ -1038,7 +1037,7 @@ svg.icon {
 }
 
 .editor-note-label {
-  margin-bottom: 8px;
+  margin-bottom: var(--space-1);
   color: var(--accent);
   font-size: var(--type-label);
   line-height: var(--leading-label);
@@ -1047,12 +1046,12 @@ svg.icon {
   text-transform: uppercase;
 }
 .card,
-.archive-card { border: 0; border-radius: var(--radius); background: var(--surface); box-shadow: inset 0 0 0 1px transparent, var(--shadow); }
+.archive-card { --card-inset: var(--space-3); border: 0; border-radius: var(--card-inset); background: var(--surface); box-shadow: inset 0 0 0 1px transparent, var(--shadow); }
 
-.app-card { position: relative; display: flex; min-height: 288px; flex-direction: column; padding: 24px; }
+.app-card { position: relative; display: flex; min-height: 288px; flex-direction: column; padding: var(--card-inset); }
 .app-card-link { position: absolute; z-index: 2; inset: 0; border-radius: var(--radius); }
 .app-card a:not(.app-card-link) { position: relative; z-index: 3; }
-.app-card h3 { margin: 0 0 8px; font-family: var(--display); font-size: var(--type-card-title); font-weight: 600; line-height: 1.2174; }
+.app-card h3 { margin: 0 0 var(--space-1); font-family: var(--display); font-size: var(--type-card-title); font-weight: 600; line-height: 1.2174; }
 .app-card h3 a { color: var(--text); text-decoration: none; transition: color 180ms ease; }
 .app-card h3 a:hover,
 .app-card h3 a:focus-visible { color: var(--accent); }
@@ -1085,7 +1084,7 @@ svg.icon {
   border: 0;
   /* Derived, not chosen: 25% of the frame's side, which is what keeps a rendered
      mark reading as a macOS icon rather than a rounded box. It follows the size. */
-  border-radius: 12px;
+  border-radius: 25%;
   background: transparent;
 }
 .app-icon {
@@ -1096,7 +1095,7 @@ svg.icon {
 }
 .app-icon-backed .app-icon-frame {
   background: #fff;
-  padding: 8px;
+  padding: var(--space-1) 8px;
 }
 .app-icon-backed .app-icon,
 .app-icon-contain .app-icon {
@@ -1138,22 +1137,22 @@ svg.icon {
    happened to produce. */
 .editors-pick-icon { --icon-size: var(--icon-md); }
 .app-card p { margin: 0; color: var(--muted); }
-.app-summary.has-app-icon .app-description { margin-top: 16px; }
-.app-summary { min-height: 136px; margin-bottom: 16px; }
+.app-summary.has-app-icon .app-description { margin-top: var(--space-2); }
+.app-summary { min-height: 136px; margin-bottom: var(--space-2); }
 .best-for { min-height: 96px; font-size: 1rem; }
 .best-for strong,
 .reading-source strong { color: var(--text); }
 
-.tag-list { display: flex; min-height: 88px; flex-wrap: wrap; align-content: flex-start; gap: 8px; padding-top: 16px; }
-.tag { display: inline-flex; width: fit-content; align-items: center; margin: 0; padding: 8px 8px; border: 0; border-radius: 999px; background: var(--chip); color: var(--muted); font-size: var(--type-label); font-weight: 700; line-height: var(--leading-label); text-decoration: none; text-transform: lowercase; transition: color 180ms ease, background-color 180ms ease; }
+.tag-list { display: flex; min-height: 88px; flex-wrap: wrap; align-content: flex-start; gap: var(--space-1) 8px; padding-top: var(--space-2); }
+.tag { display: inline-flex; width: fit-content; align-items: center; margin: 0; padding: var(--space-1) 8px; border: 0; border-radius: 999px; background: var(--chip); color: var(--muted); font-size: var(--type-label); font-weight: 700; line-height: var(--leading-label); text-decoration: none; text-transform: lowercase; transition: color 180ms ease, background-color 180ms ease; }
 .tag:hover,
 .tag:focus-visible { background: color-mix(in srgb, var(--chip) 82%, var(--accent)); color: var(--accent-hover); }
 .reading-card h3 { min-height: 112px; }
 .reading-card .reading-source { min-height: 32px; }
 .reading-card .reading-description { min-height: 112px; }
 
-.feature-card { padding: 32px; }
-.feature-card p { max-width: var(--measure); margin: 0 0 16px; color: var(--muted); }
+.feature-card { padding: var(--card-inset); }
+.feature-card p { max-width: var(--measure); margin: 0 0 var(--space-2); color: var(--muted); }
 /* A standalone link on its own line is a target, not prose, so it carries the
    minimum. The inline RSS link in the subscribe copy is left alone: WCAG exempts a
    target sitting inside a sentence, and padding one out would break the line. */
@@ -1167,6 +1166,7 @@ svg.icon {
   min-height: 24px;
   color: var(--accent);
   font-weight: 700;
+  text-decoration: none;
   transition: color 180ms ease;
 }
 .feature-card a:hover,
@@ -1177,7 +1177,7 @@ svg.icon {
   border-radius: var(--radius-sm);
 }
 
-.app-detail-page { padding: var(--page-start-space) 0 32px; }
+.app-detail-page { padding: var(--page-start-space) 0 var(--space-4); }
 /* The detail page reads: what is this, is it for me, go and get it. The masthead
    carries that path. Everything that files the app rather than describes it sits
    in the rail, which also puts the right half of the fold to work. The rail is
@@ -1204,19 +1204,18 @@ svg.icon {
 .app-detail-app-icon {
   width: clamp(56px, 6vw, 80px);
   height: clamp(56px, 6vw, 80px);
-  border-radius: var(--radius-md);
 }
 .app-detail-identity h1 { margin: 0; }
 
-/* The One Page Title Rule's 15px gap, measured from the lockup rather than the
+/* The One Page Title Rule's 16px gap, measured from the lockup rather than the
    title alone, then a generous step before Best For so the two do not run together. */
-.app-detail-masthead > .dek { margin-top: 16px; }
-.app-detail-masthead > .app-detail-best-for { margin-top: 24px; }
+.app-detail-masthead > .dek { margin-top: var(--space-2); }
+.app-detail-masthead > .app-detail-best-for { margin-top: var(--space-3); }
 
 /* One rhythm for the whole rail, on the documented spacing scale: xl between
    groups, md from an eyebrow to the content it names. Every group is built the
    same way, so the space before each eyebrow is the same space. */
-.app-detail-rail { display: grid; gap: 24px; min-width: 0; }
+.app-detail-rail { display: grid; gap: var(--space-3) 24px; min-width: 0; }
 .app-detail-rail-group { display: grid; gap: var(--eyebrow-gap); min-width: 0; }
 .app-detail-rail-group .eyebrow { margin: 0; }
 
@@ -1235,7 +1234,7 @@ svg.icon {
      the rail sits on one centre axis and every label starts at the same x. */
   grid-template-columns: 32px minmax(0, 1fr);
   align-items: center;
-  gap: 16px;
+  gap: var(--space-2) 16px;
   min-height: 32px;
   color: var(--muted);
   font-size: var(--type-meta);
@@ -1264,7 +1263,7 @@ svg.icon {
   display: grid;
   grid-template-columns: 32px minmax(0, 1fr);
   align-items: center;
-  gap: 16px;
+  gap: var(--space-2) 16px;
   min-height: 48px;
   color: var(--text);
   font-size: var(--type-meta);
@@ -1296,8 +1295,8 @@ svg.icon {
 .collection-badge-icon svg { --icon-size: var(--icon-sm); }
 .app-detail-best-for { max-width: var(--measure); }
 .app-detail-best-for p:not(.eyebrow) { margin: 0; color: var(--muted); font-size: 1rem; line-height: 1.5; }
-.app-detail-actions { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 24px; }
-.app-detail-actions .button { gap: 8px; }
+.app-detail-actions { display: flex; flex-wrap: wrap; gap: var(--space-2) 16px; margin-top: var(--space-3); }
+.app-detail-actions .button { gap: var(--space-1) 8px; }
 .app-detail-actions .button svg { --icon-size: var(--icon-sm); }
 .app-detail-tags { min-height: 0; padding-top: 0; }
 .app-detail-section { width: 100%; padding-right: 0; padding-left: 0; }
@@ -1345,7 +1344,7 @@ svg.icon {
   12% { opacity: .7; transform: scale(1); }
   100% { opacity: 0; transform: scale(2.1); }
 }
-.video-section { border-top: 0; padding-top: 24px; }
+.video-section { border-top: 0; padding-top: var(--space-3); }
 
 /* The 88px bottom padding that lived here never applied: `.issue .section` carries a
    padding shorthand at higher specificity and reset it. Rather than revive a value no
@@ -1354,7 +1353,7 @@ svg.icon {
 
 .archive-page {
   min-height: calc(100vh - 128px);
-  padding: var(--page-start-space) 0 32px;
+  padding: var(--page-start-space) 0 var(--space-4);
   border: 0;
   border-radius: 0;
   background: transparent;
@@ -1375,7 +1374,7 @@ svg.icon {
   border-top: 0;
 }
 .archive-page .section:last-child,
-.app-detail-page .section:last-child { padding-bottom: 16px; }
+.app-detail-page .section:last-child { padding-bottom: var(--space-2); }
 .explore-discovery-section + .explore-section,
 .explore-rss-section + .explore-section { border-top: 0; }
 .explore-discovery-section {
@@ -1385,17 +1384,17 @@ svg.icon {
 .explore-utility-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+  gap: var(--space-2) 16px;
 }
-.explore-utility-card { padding: 24px; }
+.explore-utility-card { padding: var(--space-3) 24px; }
 .explore-utility-combined-card { padding: 0; }
 .explore-utility-combined-card .explore-utility-grid { gap: 0; }
-.explore-utility-combined-card .explore-utility-grid > section { padding: 24px; }
+.explore-utility-combined-card .explore-utility-grid > section { padding: var(--space-3) 24px; }
 /* Each taxonomy explains itself in normal flow. The copy stays attached to the heading
    it qualifies and never covers the first result row on hover, focus or touch. */
 .explore-panel-heading {
   display: grid;
-  gap: 8px;
+  gap: var(--space-1) 8px;
 }
 .taxonomy-help-copy {
   max-width: var(--measure);
@@ -1416,7 +1415,7 @@ svg.icon {
 }
 .explore-discovery-categories,
 .explore-discovery-lower-grid > section {
-  padding: 24px;
+  padding: var(--space-3) 24px;
 }
 .explore-category-list {
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1431,17 +1430,17 @@ svg.icon {
 .explore-utility-tags-panel {
   border-left: 1px solid var(--line);
 }
-.explore-utility-card .section-heading { margin-bottom: 16px; }
+.explore-utility-card .section-heading { margin-bottom: var(--space-2); }
 .explore-utility-card .section-heading h2 { font-size: var(--type-subhead); }
-.explore-collection-list { display: grid; gap: 16px; }
-.explore-category-list { gap: 16px 24px; }
+.explore-collection-list { display: grid; gap: var(--space-2) 16px; }
+.explore-category-list { gap: var(--space-2) 24px; }
 .explore-discovery-link {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
-  gap: 16px;
+  gap: var(--space-2) 16px;
   align-items: start;
   min-height: 96px;
-  padding: 8px 0;
+  padding: var(--space-1) 0;
   color: var(--text);
   text-decoration: none;
 }
@@ -1512,7 +1511,7 @@ svg.icon {
    silently dead. */
 .explore-discovery-link small.explore-category-description-mobile { display: none; }
 .explore-popular-tags { min-height: 0; padding-top: 4px; }
-.explore-popular-tags .tag { gap: 8px; }
+.explore-popular-tags .tag { gap: var(--space-1) 8px; }
 /* A real colour, not an opacity. Dimmed with `opacity: .72` the count blended to 3.47:1
    in light theme and failed AA at this size; --muted holds about 6.6:1 on the chip. The
    category and collection counts in the discovery card are set the same way. */
@@ -1523,9 +1522,9 @@ svg.icon {
 }
 .explore-subscribe-card {
   display: grid;
-  gap: 16px;
+  gap: var(--space-2) 16px;
   /* 24px, the padding every other card on the page uses. */
-  padding: 24px;
+  padding: var(--space-3) 24px;
   border-color: var(--line);
   background: var(--surface);
   box-shadow: var(--shadow);
@@ -1533,7 +1532,7 @@ svg.icon {
 .explore-subscribe-heading {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: var(--space-2) 16px;
   min-width: 0;
 }
 .explore-subscribe-icon {
@@ -1556,7 +1555,7 @@ svg.icon {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   align-items: start;
-  gap: 8px;
+  gap: var(--space-1) 8px;
   max-width: 704px;
   margin-left: 64px;
 }
@@ -1619,7 +1618,7 @@ svg.icon {
 .explore-subscribe-url {
   width: 100%;
   max-width: 640px;
-  margin: 8px 0 0;
+  margin: var(--space-1) 0 0;
   align-self: start;
 }
 .explore-subscribe-url .rss-copy-button {
@@ -1772,7 +1771,7 @@ svg.icon {
    the page to press, not another line to read. The selector matches the sibling rule's
    specificity deliberately, because `.about-page p:not(.dek) + p` outscores a plain class
    here and the paragraph rhythm won, leaving the button at 18px. */
-.about-page p:not(.dek) + p.about-cta { margin-top: 24px; }
+.about-page p:not(.dek) + p.about-cta { margin-top: var(--space-3); }
 /* The archive route. A hairline runs the length of the page and every issue is a
    stop on it, marked by the buoy's own beacon: an open ring, filled on the newest
    issue because "this is the current one" is a state, which is what blue is for.
@@ -1783,14 +1782,14 @@ svg.icon {
 .archive-masthead {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: var(--space-2) 16px;
   align-items: center;
 }
 .archive-masthead h1 { margin-right: auto; }
 .archive-filter-bar {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px 16px;
+  gap: var(--space-2) 16px;
   align-items: center;
   justify-content: space-between;
   margin-top: var(--section-space);
@@ -1809,7 +1808,7 @@ svg.icon {
 .archive-route { margin-top: var(--section-space); }
 .archive-year + .archive-year { margin-top: var(--section-space); }
 .archive-year-heading {
-  margin: 0 0 16px;
+  margin: 0 0 var(--space-2);
   color: var(--muted);
   font-family: var(--sans);
   font-size: var(--type-meta);
@@ -1821,7 +1820,7 @@ svg.icon {
 .archive-stops {
   position: relative;
   display: grid;
-  gap: 16px;
+  gap: var(--space-2) 16px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -1834,7 +1833,7 @@ svg.icon {
    rather than opting out of both. It carried `box-shadow: none` until 2026-09-05,
    which was right while a border drew its edge and left it with nothing once the
    border went. */
-.archive-card { display: grid; gap: 8px; padding: 24px; text-decoration: none; }
+.archive-card { display: grid; gap: var(--space-1) 8px; padding: var(--card-inset); text-decoration: none; }
 .archive-card span { color: var(--muted); }
 .archive-card strong { font-family: var(--display); font-size: var(--type-card-title); line-height: 1.2174; color: var(--text); }
 .archive-card-dek {
@@ -1860,7 +1859,7 @@ svg.icon {
   font-variant-numeric: tabular-nums;
 }
 
-.archive-more { margin-top: 16px; }
+.archive-more { margin-top: var(--space-2); }
 .archive-empty {
   max-width: var(--measure);
   margin: var(--section-space) 0 0;
@@ -1876,7 +1875,7 @@ svg.icon {
 .archive-origin--empty::before { content: none; }
 .archive-origin {
   display: grid;
-  margin-top: 16px;
+  margin-top: var(--space-2);
 }
 /* The terminus is the one arrival this page has, so it is a card and it is lit,
    under The Struck Light Rule. The light is the site accent rather than an app's
@@ -1884,7 +1883,7 @@ svg.icon {
 .archive-origin-body {
   position: relative;
   max-width: none;
-  padding: 24px;
+  padding: var(--space-3) 24px;
   border: 0;
   /* The accent rim is drawn from `--pick-radius`, which tracks `--radius`. At 16px
      this card's own corner sat inside a 25.5px rim and the two arcs diverged. */
@@ -1904,7 +1903,7 @@ svg.icon {
   line-height: 1.2174;
   letter-spacing: -.02em;
 }
-.archive-origin p { margin: 8px 0 0; color: var(--muted); }
+.archive-origin p { margin: var(--space-1) 0 0; color: var(--muted); }
 .archive-origin--empty { margin-top: var(--section-space); }
 /* The archive closes on the subscribe card, and space marks that boundary rather than a
    rule, the same as issues and About. 40px of margin plus the section's own 32px of top
@@ -1922,7 +1921,7 @@ svg.icon {
 .category-directory-card {
   grid-template-columns: auto minmax(0, 1fr);
   column-gap: 16px;
-  row-gap: 8px;
+  row-gap: var(--space-1);
   align-items: start;
   /* Its resting accent is an inset ring, matching the way cards carry every other
      edge now that they have no border. The One Hover Rule replaces this layer with
@@ -1955,7 +1954,7 @@ svg.icon {
      one card at every width the multi-column layout applies to. */
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: 16px;
+  gap: var(--space-2) 16px;
   /* Stretch, not center: the controls size themselves from this, and centring the row
      left the Filter trigger at its 20px content height inside a 48px shell. Only the
      heading opts out, below. */
@@ -2008,8 +2007,8 @@ svg.icon {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px 16px;
-  margin-top: 16px;
+  gap: var(--space-1) 16px;
+  margin-top: var(--space-2);
 }
 .directory-actives {
   display: flex;
@@ -2022,7 +2021,7 @@ svg.icon {
      the end of the row, under Filter and Sort, so they read as belonging to the controls
      that produced them; it has to live in the shorthand or this reset would drop it. */
   margin: 0 0 0 auto;
-  gap: 8px;
+  gap: var(--space-1) 8px;
   padding: 0;
   list-style: none;
 }
@@ -2038,7 +2037,7 @@ svg.icon {
   min-height: 32px;
   max-width: 100%;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-1) 8px;
   padding: 0 8px;
   border: 1px solid color-mix(in srgb, var(--accent) 38%, transparent);
   border-radius: 999px;
@@ -2085,8 +2084,8 @@ svg.icon {
   min-width: 0;
   min-height: 48px;
   align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
+  gap: var(--space-1) 8px;
+  padding: var(--space-1) 16px;
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
   background: var(--surface);
@@ -2230,7 +2229,7 @@ svg.icon {
   min-height: 100%;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: var(--space-2) 16px;
   padding: 0 16px;
   border: 0;
   border-radius: calc(var(--radius-md) - 1px);
@@ -2322,7 +2321,7 @@ svg.icon {
 .directory-filter-label {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-1) 8px;
 }
 .directory-filter-count {
   display: inline-flex;
@@ -2365,7 +2364,7 @@ svg.icon {
   max-height: min(280px, 42vh);
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 8px 0;
+  padding: var(--space-1) 0;
 }
 @media (max-width: 680px) {
   .filter-scroll { max-height: min(280px, 36vh); }
@@ -2374,12 +2373,12 @@ svg.icon {
    visible for it to apply. A `hidden` group is still a sibling to `+`, which left a rule
    drawn across the top of Tags whenever a filter narrowed Collections to nothing. */
 .filter-group:not([hidden]) + .filter-group {
-  margin-top: 8px;
+  margin-top: var(--space-1);
   border-top: 1px solid var(--line);
 }
 .filter-group-label {
   margin: 0;
-  padding: 8px 16px 8px;
+  padding: var(--space-1) 16px var(--space-1);
   color: var(--muted);
   font-size: var(--type-label);
   line-height: var(--leading-label);
@@ -2391,7 +2390,7 @@ svg.icon {
   display: flex;
   min-height: 32px;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-1) 8px;
   padding: 0 16px;
   color: var(--text);
   font-size: var(--type-label);
@@ -2423,7 +2422,7 @@ svg.icon {
 .filter-actions {
   display: flex;
   justify-content: flex-end;
-  padding: 8px 16px;
+  padding: var(--space-1) 16px;
   border-top: 1px solid var(--line);
 }
 .filter-reset {
@@ -2458,13 +2457,13 @@ svg.icon {
 .directory-more {
   display: flex;
   justify-content: center;
-  margin-top: 32px;
+  margin-top: var(--space-4);
 }
 
 .directory-empty {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: var(--space-2) 16px;
   flex-wrap: wrap;
   /* No margin of its own. The grid is still in the flow above it with every card hidden,
      so its own top margin already sets this off the results row; a second margin here
@@ -2498,7 +2497,7 @@ svg.icon {
   outline-offset: var(--focus-offset);
   border-radius: var(--radius-sm);
 }
-.directory-grid { margin-top: 16px; }
+.directory-grid { margin-top: var(--space-2); }
 
 @media (hover: hover) and (pointer: fine) {
   /* The One Hover Rule: rest at Ambient Card, cross to Hover Lift over 320ms on
@@ -2528,7 +2527,7 @@ svg.icon {
      focus order do not change when the columns collapse. */
   .app-detail-hero {
     grid-template-columns: minmax(0, 1fr);
-    gap: 32px;
+    gap: var(--space-4) 32px;
   }
   /* No rule here either. The 28px the collapse already opens up is the separation;
      a hairline would read as a seam between two halves of the same block. */
@@ -2544,8 +2543,8 @@ svg.icon {
     --sea-h: 84px;
     display: flex;
     flex-direction: column;
-    gap: 32px;
-    padding-block: 32px 48px;
+    gap: var(--space-4) 32px;
+    padding-block: var(--space-4) var(--space-6);
   }
 
   .home-hero-inner { display: contents; }
@@ -2570,7 +2569,7 @@ svg.icon {
     clip: auto;
     clip-path: none;
     white-space: normal;
-    margin: 0 0 24px;
+    margin: 0 0 var(--space-3);
     font-family: var(--display);
     font-size: var(--type-subhead);
     font-weight: 500;
@@ -2584,15 +2583,15 @@ svg.icon {
   .about-page .section { padding: var(--space-3) 0 var(--space-1); }
   .directory-filter-bar,
   .directory-filter-bar--no-filters {
-    gap: 16px;
+    gap: var(--space-2) 16px;
   }
   /* Opposite ends of a phone-width row reads as two things, which is the problem this
      regrouping exists to fix. Left, together, as one block. */
   .directory-actives { margin-left: 0; }
   /* One rhythm down the stacked column: the bar's own 12px carries through the results
      row to the grid, so nothing in the column sits on a different interval. */
-  .directory-results { margin-top: 16px; }
-  .directory-results + .directory-grid { margin-top: 16px; }
+  .directory-results { margin-top: var(--space-2); }
+  .directory-results + .directory-grid { margin-top: var(--space-2); }
   /* Stacked: the field takes the whole bar and the pair splits it, six tracks each, so
      the two triggers stay equal and keep their labels readable at a phone width. */
   .directory-filter-bar > .directory-heading { grid-column: 1 / span 12; }
@@ -2621,20 +2620,20 @@ svg.icon {
 
 @media (max-width: 680px) {
   :root { --content-inset: 24px; }
-  .site-header { position: sticky; top: 0; width: 100%; min-height: 72px; gap: 8px; margin: 0; padding: 0 16px; }
+  .site-header { position: sticky; top: 0; width: 100%; min-height: 72px; gap: var(--space-1) 8px; margin: 0; padding: 0 16px; }
   .issue > .section { width: min(var(--content-width), calc(100% - var(--content-inset))); }
   .brand-mark { width: 40px; height: 40px; }
-  .brand { gap: 8px; }
-  .site-header nav { gap: 8px; }
+  .brand { gap: var(--space-1) 8px; }
+  .site-header nav { gap: var(--space-1) 8px; }
   .theme-toggle { width: 48px; height: 48px; }
-  .home-hero { --sea-h: 72px; padding-block: 32px 48px; }
+  .home-hero { --sea-h: 72px; padding-block: var(--space-4) var(--space-6); }
   .content-divider { height: 64px; }
-  .video-section { padding-top: 16px; }
+  .video-section { padding-top: var(--space-2); }
   /* Was 28px, which is not a step. Mobile deliberately opens wider than desktop's 24,
      so it takes the next step up rather than flattening onto it. */
   :root { --page-start-space: var(--space-4); }
-  .archive-page { padding: var(--page-start-space) 0 32px; }
-  .app-detail-page { padding: var(--page-start-space) 0 32px; }
+  .archive-page { padding: var(--page-start-space) 0 var(--space-4); }
+  .app-detail-page { padding: var(--page-start-space) 0 var(--space-4); }
   .app-detail-hero { padding: 0; }
   .app-detail-page .section { padding: var(--space-3) 0; }
   .app-detail-actions { flex-direction: column; align-items: flex-start; }
@@ -2642,16 +2641,16 @@ svg.icon {
   .explore-utility-grid { grid-template-columns: 1fr; }
   .explore-utility-tags-panel { border-top: 1px solid var(--line); border-left: 0; }
   .explore-category-list { grid-template-columns: 1fr; }
-  .explore-category-list { row-gap: 16px; }
+  .explore-category-list { row-gap: var(--space-2); }
   .explore-category-link { min-height: 0; }
   .explore-discovery-link small.explore-category-description-desktop { display: none; }
   .explore-discovery-link small.explore-category-description-mobile { display: block; }
-  .explore-discovery-section { padding-top: 16px; padding-bottom: 0; }
+  .explore-discovery-section { padding-top: var(--space-2); padding-bottom: 0; }
   .explore-subscribe-heading { align-items: start; }
-  .explore-page .explore-section:has(+ .explore-rss-section) { padding-bottom: 24px; }
-  .explore-rss-section + .explore-section { padding-top: 24px; }
+  .explore-page .explore-section:has(+ .explore-rss-section) { padding-bottom: var(--space-3); }
+  .explore-rss-section + .explore-section { padding-top: var(--space-3); }
   .explore-subscribe-content {
-    gap: 16px;
+    gap: var(--space-2) 16px;
     max-width: none;
     margin-left: 64px;
   }
@@ -2664,7 +2663,7 @@ svg.icon {
   .directory-filter-bar {
     margin-top: 0;
   }
-  .directory-search { gap: 8px; padding: 8px 16px; }
+  .directory-search { gap: var(--space-1) 8px; padding: var(--space-1) 16px; }
   /* The magnifier is one size everywhere; this made it 24px on a phone. */
   .directory-query-input { font-size: 16px; }
   .directory-search,
@@ -2696,7 +2695,7 @@ svg.icon {
   }
   /* The area grows 7px past the visible chip on each side, so wrapped rows need 14px
      between them or two chips would claim the same tap. */
-  .directory-actives { gap: 16px 8px; }
+  .directory-actives { gap: var(--space-2) 8px; }
 }
 
 @media (max-width: 560px) {
@@ -2707,7 +2706,6 @@ svg.icon {
     left: 0;
     width: auto;
     border-top: 1px solid var(--line);
-    border-radius: var(--radius-sm);
   }
 }
 

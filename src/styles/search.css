@@ -120,7 +120,7 @@
   inset: 0;
   display: grid;
   place-items: start center;
-  padding: min(9vh, 96px) 16px 24px;
+  padding: min(9vh, calc(var(--base) * 12)) 16px var(--space-3);
   overflow: hidden;
 }
 
@@ -132,7 +132,7 @@
   inset: 0;
   display: grid;
   place-items: start end;
-  padding: 96px clamp(24px, 3.2vw, 40px) 24px;
+  padding: calc(var(--base) * 12) clamp(24px, 3.2vw, 40px) var(--space-3);
   overflow: hidden;
 }
 
@@ -148,7 +148,7 @@
   inset: 0;
   display: grid;
   place-items: center;
-  padding: min(10vh, 96px) 16px 24px;
+  padding: min(10vh, calc(var(--base) * 12)) 16px var(--space-3);
   overflow: hidden;
 }
 
@@ -180,12 +180,15 @@
 }
 
 .search-modal {
+  --search-border: 1px;
+  --search-inset: var(--space-1);
+  --search-radius: var(--radius-md);
   position: relative;
   z-index: 1;
   width: min(824px, 100%);
   overflow: hidden;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-md);
+  border: var(--search-border) solid var(--line);
+  border-radius: var(--search-radius);
   background: var(--surface);
   box-shadow: var(--shadow-modal);
 }
@@ -231,12 +234,12 @@
 /* 8px inset and 8px between rows. It ran on 4px here and 3px in the phone override —
    the two values the base unit exists to remove — while every other dimension in the
    menu was already on the scale, so the rows were correct and the space between them
-   was not. The inset is also what makes the corners concentric: the modal's 16px radius
-   less this 8px inset is the rows' own 8px. */
+   was not. The rows keep their small-radius treatment; unlike the search results, these
+   navigation rows are not specified as an exact concentric construction. */
 .mobile-nav-actions {
   display: grid;
-  gap: 8px;
-  padding: 8px;
+  gap: var(--space-1) 8px;
+  padding: var(--space-1) 8px;
   overflow-y: auto;
   overscroll-behavior: contain;
 }
@@ -248,7 +251,7 @@
   min-height: 40px;
   align-items: center;
   justify-content: flex-start;
-  gap: 16px;
+  gap: var(--space-2) 16px;
   padding: 0 16px;
   border: 0;
   border-radius: var(--radius-sm);
@@ -310,8 +313,8 @@
    both halves off the scale on their own. */
 .mobile-nav-utilities {
   display: grid;
-  gap: 8px;
-  padding: 0 8px 8px;
+  gap: var(--space-1) 8px;
+  padding: 0 8px var(--space-1);
 }
 
 @keyframes mobile-nav-backdrop-in {
@@ -347,8 +350,8 @@
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  gap: 16px;
-  padding: 16px 16px;
+  gap: var(--space-2) 16px;
+  padding: var(--space-2) 16px;
   border-bottom: 1px solid var(--line);
 }
 
@@ -402,7 +405,7 @@
 
 .search-count {
   margin: 0;
-  padding: 8px 16px 0;
+  padding: var(--space-1) 16px 0;
   color: var(--muted);
   font-size: var(--type-label);
   line-height: var(--leading-label);
@@ -416,14 +419,14 @@
   max-height: min(58vh, 560px);
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 8px;
+  padding: var(--search-inset);
 }
 
 .search-result {
   display: grid;
   align-items: center;
-  padding: 16px 16px;
-  border-radius: var(--radius-md);
+  padding: var(--space-2) 16px;
+  border-radius: max(0px, calc(var(--search-radius) - var(--search-border) - var(--search-inset)));
   color: var(--text);
   text-decoration: none;
   transition: background-color 120ms ease, color 120ms ease;
@@ -432,7 +435,10 @@
 .search-result:hover,
 .search-result:focus-visible {
   background: color-mix(in srgb, var(--surface-strong) 80%, var(--accent) 7%);
-  outline: 0;
+}
+.search-result:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: -2px;
 }
 
 .search-result-copy {
@@ -462,7 +468,7 @@
 
 .search-empty {
   margin: 0;
-  padding: 24px 16px 32px;
+  padding: var(--space-3) 16px var(--space-4);
   color: var(--muted);
   font-size: .95rem;
 }
@@ -471,8 +477,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  padding: 16px 16px 0;
+  gap: var(--space-2) 16px;
+  padding: var(--space-2) 16px 0;
 }
 
 .rss-kicker {
@@ -515,7 +521,7 @@
 }
 
 .rss-modal h2 {
-  margin: 16px 16px 0;
+  margin: var(--space-2) 16px 0;
   color: var(--text);
   font-family: var(--display);
   font-size: clamp(2rem, 4vw, 2.85rem);
@@ -524,7 +530,7 @@
 }
 
 .rss-description {
-  margin: 16px 16px 0;
+  margin: var(--space-2) 16px 0;
   color: var(--muted);
   font-size: 1rem;
   line-height: 1.5;
@@ -534,10 +540,10 @@
 .rss-url-card {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  gap: 16px;
+  gap: var(--space-2) 16px;
   align-items: center;
-  margin: 16px 16px 24px;
-  padding: 16px 16px;
+  margin: var(--space-2) 16px var(--space-3);
+  padding: var(--space-2) 16px;
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
   background: var(--surface-strong);
@@ -625,7 +631,7 @@
   .mobile-nav-overlay {
     height: 100dvh;
     place-items: start center;
-    padding: calc(72px + max(16px, env(safe-area-inset-top))) 16px 24px;
+    padding: calc(72px + max(16px, env(safe-area-inset-top))) 16px var(--space-3);
   }
   .mobile-nav-modal {
     width: 100%;
@@ -648,19 +654,19 @@
     height: 100dvh;
     padding:max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
   }
-  .search-modal { border-radius: var(--radius-md); }
+  .search-modal { border-radius: var(--search-radius); }
   .rss-modal { border-radius: var(--radius-md); }
-  .search-input-wrap { gap: 8px; padding: 16px; }
+  .search-input-wrap { gap: var(--space-1) 8px; padding: var(--space-2) 16px; }
   .search-close { width: 48px; height: 48px; }
   .search-input { font-size: 16px; }
-  .search-count { padding: 16px 16px 16px; }
+  .search-count { padding: var(--space-2) 16px var(--space-2); }
   .search-results {
     max-height: calc(100dvh - 168px);
-    padding: 0 8px 8px;
+    padding: 0 var(--search-inset) var(--search-inset);
   }
   .search-result {
     align-items: start;
-    padding: 16px 16px;
+    padding: var(--space-2) 16px;
   }
   /* 17.28px in the same 24px box the desktop row uses: the ratio is re-derived from
      the new size rather than left at 1.2712, which was putting it in a 21.97px box and
@@ -673,16 +679,16 @@
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
   }
-  .rss-modal-topline { padding: 16px 16px 0; }
-  .rss-modal h2 { margin: 16px 16px 0; font-size: clamp(1.75rem, 10vw, 2.4rem); }
+  .rss-modal-topline { padding: var(--space-2) 16px 0; }
+  .rss-modal h2 { margin: var(--space-2) 16px 0; font-size: clamp(1.75rem, 10vw, 2.4rem); }
   /* 15.36px in a 24px box, the size this prose has on every other surface. It kept
      the 1.5 body ratio after the size dropped, which gave 23.04px. */
-  .rss-description { margin: 16px 16px 0; font-size: .96rem; line-height: 1.5625; }
+  .rss-description { margin: var(--space-2) 16px 0; font-size: .96rem; line-height: 1.5625; }
   .rss-url-card {
     grid-template-columns: minmax(0, 1fr) auto;
-    gap: 8px;
-    margin: 16px 16px 16px;
-    padding: 16px 16px;
+    gap: var(--space-1) 8px;
+    margin: var(--space-2) 16px var(--space-2);
+    padding: var(--space-2) 16px;
   }
   .rss-url-card.explore-subscribe-url {
     width: 100%;

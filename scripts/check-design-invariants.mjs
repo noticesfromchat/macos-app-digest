@@ -126,8 +126,30 @@ for (const [file, src] of allCss) {
     const outline = body.match(/outline:\s*([^;]+)/);
     if (!outline) continue;
     const value = outline[1].trim();
-    if (value === '0' || value === 'none' || /var\(--focus-ring\)/.test(value)) continue;
+    if (value === '0' || value === 'none') {
+      const selectors = selector.replace(/\/\*[\s\S]*?\*\//g, '').trim().split(',').map(s => s.trim());
+      if (selectors.every(s => /^\.mobile-nav-modal:focus(?:-visible)?$/.test(s))) continue;
+      fail('focus-ring', `${file}: "${selectors.join(', ')}" suppresses keyboard focus`);
+      continue;
+    }
+    if (/var\(--focus-ring\)/.test(value)) continue;
     fail('focus-ring', `${file}: "${selector.trim().split('\n').pop().trim()}" declares its own ring (${value}) instead of var(--focus-ring)`);
+  }
+}
+
+/* Whole-step vertical spacing must consume the scale, not merely equal it today.
+   Parse shorthand axes without splitting spaces inside calc()/var(). Horizontal
+   field gutters are independent. Optical values <=4px are deliberately excluded. */
+const words = value => value.match(/(?:[^\s()]|\((?:[^()]|\([^()]*\))*\))+/g) || [];
+for (const [file, source] of allCss) {
+  const css = source.replace(/\/\*[\s\S]*?\*\//g, '');
+  for (const m of css.matchAll(/(?<![\w-])((?:margin|padding)(?:-(?:top|bottom|block(?:-start|-end)?))?|row-gap|gap):\s*([^;{}]+);/g)) {
+    const parts = words(m[2]);
+    const vertical = /^(margin|padding)$/.test(m[1]) ? [parts[0], parts[2]]
+      : m[1] === 'gap' ? [parts[0]] : parts;
+    if (vertical.some(v => /^(8|16|24|32|40|48|56|64|72)px$/.test(v || ''))) {
+      fail('spacing-consumer', `${file}: ${m[1]}: ${m[2]} repeats a structural step instead of consuming --space-*`);
+    }
   }
 }
 

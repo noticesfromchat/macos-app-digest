@@ -280,7 +280,8 @@ vertical base; that is the two-grid model, not a violation of it.
 `--eyebrow-gap` is `var(--space-1)`. Until 2026-09-07 every step repeated its own pixel
 literal, so the values agreed with the base by coincidence and changing `--base` changed
 nothing at all. They are now a dependency: setting the base to 10px moves the whole scale,
-which is the only test that tells you a token system is real.
+and consumers must use the tokens too. Shared styles and scoped page styles now take
+vertical spacing from this scale; horizontal field gutters remain independent.
 
 Before that the scale existed only in this file, as prose, while every value was typed
 literally at its use site. The stylesheet carried 11, 13, 14, 18, 20, 22, 27, 30, 34 and
@@ -302,7 +303,10 @@ interpolation.
 Fluid values that remain are horizontal and are exceptions by the two-grid model rather
 than by oversight: the shell's own gutter, the column gaps in the homepage hero and the
 app-detail rail, and the icon frame that scales with its page. Fluid *display type* is also
-kept, under The Line Box Rule.
+kept, under The Line Box Rule. Overlay placement is a separate viewport-fitting
+exception: search opens at min(9vh, 12 base units), RSS at min(10vh, 12 base units),
+and mobile overlays respect safe-area insets. These offsets position dialogs in the
+viewport; they do not set the vertical rhythm of page content.
 
 Four things sit outside the base deliberately. Hairlines and optical nudges of 4px and
 under keep their own values, because a 1px border is not a spacing decision. Line boxes
@@ -337,22 +341,29 @@ line box inside it is the wrong thing to measure.
 
 **The Radius Scale.** Three steps on the base, `--radius-sm` 8px, `--radius-md` 16px and
 `--radius-lg` 24px, with `--radius` aliasing the large one, plus the pill and the circle. A
-component's radius matches its own inset, so a card inset 24px takes a 24px corner.
+component's radius matches its own inset: ordinary and video cards use one
+`--card-inset: var(--space-3)` for both padding and radius (24px). The Editor's Pick
+uses `--pick-inset: var(--space-4)` for its 32px padding, corner and accent rim.
+The radius scale itself derives from the spacing tokens.
 
 **Concentric corners.** An element nested N px inside another takes the parent's radius
 minus N, so the two curves stay parallel rather than showing a second arc where they
 diverge. Three places had drifted out of this by 2026-09-05 and all three were visible.
 The Editor's Pick accent rim computed 13.5px around a 24px card, because `--pick-radius`
 had been written against the old 12px corner and never followed it; it now takes
-`var(--radius)` as a parameter. The Filter trigger sat at 8px one pixel inside a 16px
+`--pick-inset` through `--pick-radius`, with the ordinary radius as a fallback. The Filter trigger sat at 8px one pixel inside a 16px
 wrapper, and now takes `calc(var(--radius-md) - 1px)`. Its dropdown sat at 8px beneath a
-16px control, and now takes the full `--radius-md` so trigger and panel read as one object.
+16px control, and now takes the full `--radius-md` at every width so trigger and panel read as one object.
+The mobile panel spans the page shell, not the viewport, and keeps that same 16px corner.
+Search result rows use `max(0px, parent radius - border - list inset)`: with a 16px
+modal corner, 1px border and 8px inset, the inner corner is 7px. This derived radius
+is deliberately not rounded to an 8px step.
 
 **The Eyebrow Binding Rule.** An eyebrow names the block beneath it, so the gap that binds the two is one value for the whole site: `--eyebrow-gap`, 8px, one base unit. Every eyebrow on every surface uses it, whether it comes from the `.eyebrow` margin in normal flow or from a grid `gap` where the group is laid out as a grid. A surface that sets its own number drifts out of the pair, and that is exactly how the app-detail rail ended up with 14px inside its groups while the rest of the site sat at the shared value, and 40px before one eyebrow against 22px before the next.
 
 The rhythm is two values, not one. **8px binds an eyebrow to its content; 24px separates one labelled group from the next.** That contrast is what makes a rail read as three groups rather than one list, and it is why the separation never needs a rule drawn between the groups. The gap was 11px until 2026-09-05, a value that sat between two steps of the old scale. This file used to note it was worth revisiting only as a deliberate site-wide pass; the base-unit adoption was that pass, and it moved to 8px, exactly one unit.
 
-**The One Measure Rule.** All prose runs to `--measure` (52ch) and nothing else. Because `ch` scales with the element's own font size, the same token holds roughly seventy characters at the dek's 17.9px, at body's 16px, and at the footnote's 13.4px — a pixel column cannot do that, it just widens as the type shrinks. Every prose surface is on it: deks, footnotes, best-for, panel copy, feature-card copy, and category descriptions. A fixed-pixel `max-width` on running text is a bug everywhere except the one place it is the point.
+**The One Measure Rule.** Prose uses `--measure` (52ch), except for About's named reading-column exception below. The `ch` unit follows the element's font and size, so the current 19px dek and 16px body derive their own widths from the same token; it does not guarantee an exact character count. Deks, footnotes, best-for, panel copy, feature-card copy and category descriptions use this shared measure. Metadata is currently 14px and is a separate role, not a prose-width reference.
 
 **About is that exception, and it is named.** Its column is `--about-measure`, 624px, and the title, the dek, the section headings and the prose all take it. On this page the column and the reading measure are the same number: a page with no grid to fill has nothing to span, so the rules and headings must sit with the text rather than reaching past it, and at 624px the line runs about 73 characters — inside the 65-75 the craft floor asks for, and slightly wider than the 62 that 52ch was giving. It is a width rather than a character count because the *column* is what is being set here, and the measure follows from it.
 
@@ -428,7 +439,7 @@ long anyway.
 
 The issue page has one wider boundary by design: an 80px `content-divider` sits between the
 launches and video sections, so that gap measures 136px rather than 56. Both are whole steps at every
-width, which the old pair was not — `--section-space` is a fluid clamp, so doubling it landed
+width, which the old pair was not — `--section-space` was a fluid clamp, so doubling it landed
 on the base only at the clamp's endpoints and gave 76px at a 1000px viewport.
 
 Explore, the archive and app detail pages were the last three surfaces still drawing section
@@ -456,14 +467,14 @@ Depth is soft and ambient rather than structural. Surfaces stay flat at rest, th
 
 ## Shapes
 
-The shape language is rounded but disciplined, and since 2026-09-05 it runs on three steps of the base unit rather than seven scattered values. App icon frames are the one radius that is derived rather than picked from the scale: 25%
+The shape language is rounded but disciplined, and since 2026-09-05 it runs on three steps of the base unit rather than seven scattered values. App icon frames use one proportional `border-radius: 25%`, rather than a fixed radius: 25%
 of the frame's side, which is what keeps a rendered mark reading as a macOS icon rather than
 a rounded box. A 48px directory frame takes 12px and the 56px pick frame takes 14px, the
 same proportion the old 44/11 and 52/13 pairs carried. The base-unit pass briefly put both
 frames on `--radius-md` at 16px, which is 33% of a 48px side and visibly rounder; a
 proportion is not a value to snap.
 
- Cards take `--radius-lg` at 24px, matching their own 24px inset. Controls, menus, overlays and icon frames take `--radius-md` at 16px, and the small inner elements `--radius-sm` at 8px. Buttons and tag chips go all the way to pills, while the logo and footer mark stay circular. The result is friendly without becoming bubbly.
+Ordinary and video cards derive 24px padding and corners from `--card-inset`; the Editor's Pick derives 32px from `--pick-inset`. Controls, menus and overlays use `--radius-md` at 16px. Nested elements derive corners from the parent geometry; other small elements use `--radius-sm` at 8px. App artwork frames stay at 25% across card, hero and detail sizes. Buttons and tag chips go all the way to pills, while the logo and footer mark stay circular. The result is friendly without becoming bubbly.
 
 The system prefers clipped rectangles, thin borders, and deliberate rounding over ornate silhouettes. Geometry stays stable so the content can carry the personality.
 
@@ -685,7 +696,8 @@ breakpoint, a state selector that does not match the markup, and a hover lift no
 under reduced motion. Each check tests a *relationship between* declarations rather than
 restating a literal — asserting that `--space-3` is 24px tells you nothing that reading the
 line does not, and passes happily while the thing that value was meant to produce is broken.
-Every one was verified by reintroducing the defect and watching it fail.
+Source checks also reject untokenized whole-step vertical spacing and suppressed non-caret focus rings, except the explicitly named dialog-container exception.
+The read-only browser check in `scripts/check-rendered-design.mjs` verifies card inset/corner/rim, icon proportions, search nesting, directory edges and fixed-role leading against the actual DOM. Run it on the relevant pages, open panels and both sides of the responsive breakpoints; source checks alone cannot verify layout.
 
 **The Editor's Pick variant owns its differences.** The pick is the one app an issue argues
 for, so its card outranks the ones beside it: the title takes Subhead rather than Card Title,
@@ -719,7 +731,7 @@ a convention, because a convention is what the site had — nine different treat
 six stylesheets on 2026-09-06, spanning four accent alphas, five offsets and two mechanisms,
 each written by whoever added the control. Three of them drew the ring with `box-shadow`
 behind `outline: 0`, which meant the ring did not follow the control's radius and vanished
-in forced-colours mode. The one legitimate variation is the offset: menu rows inside a panel
+in forced-colours mode. The one legitimate variation is the offset: menu and search-result rows inside a panel
 take `-2px` so the ring sits inside the row rather than crossing its neighbours, and they
 override only that. Colour is never the indicator on its own — a control that answers a
 pointer with colour still owes a keyboard reader a ring. Adopted 2026-09-06.
@@ -1010,7 +1022,7 @@ Search is a centered overlay over a frosted backdrop, with a bright, controlled 
 
 ### App Detail Page
 The detail page answers three questions in order: what is this, is it for me, and where do I get it. The masthead carries that path and the rail carries everything that files the app rather than describes it.
-- **Masthead:** the app's own icon and the page title form one lockup, the icon scaling from 56px to 76px against the title's cap height at the documented `md` radius. Then the dek, then Best For, then the single Homepage button. An app with no icon takes a category mark on the documented missing-icon colour, stable from the app ID so a card and its detail page always agree. Which category is the app's first by default, or whichever `iconCategory` names when the editor has directed otherwise.
+- **Masthead:** the app's own icon and the page title form one lockup, the icon scaling from 56px to 80px against the title's cap height, with a corner of 25% of its own side. Then the dek, then Best For, then the single Homepage button. An app with no icon takes a category mark on the documented missing-icon colour, stable from the app ID so a card and its detail page always agree. Which category is the app's first by default, or whichever `iconCategory` names when the editor has directed otherwise.
 - **Rail:** a 400px column holding three labelled groups, Collections then Categories then Tags, each built the same way: an eyebrow, `--eyebrow-gap` beneath it, then its items at 2px. 24px separates the groups. Nothing is divided by a rule. It occupies what used to be empty space beside a 900px masthead on a 1160px page. The width is set by the tag chips: measured across all 102 apps a tag set needs 311px at the median and 399px at the 95th percentile, so 400px keeps 95% of the catalogue on a single line. The longest set needs 473px, and buying that last 2% would cost 60px of the prose column.
 - **Taxonomy rank:** categories are the most generic fact an app carries and read at Metadata scale in muted ink, as 32px rows with their marks. They were 22.4px serif inside 80px bordered cards, which made the least meaningful metadata the largest thing on the page after the title. Tags stay chips at Label scale. Nothing here outranks the app's own name, dek or Best For.
 - **One axis:** every mark in the rail shares a centre and every label starts at the same x, because the badge and the category rows use the same 32px icon column and 16px gap. Their glyphs are both 19px.
@@ -1052,8 +1064,8 @@ supporting links, then subscribe if the cadence is useful.
 The card renders as a standalone section with its own `h2`, rather than as a subordinate
 block inside another closer. It keeps the layout, copy, copy-to-clipboard control and
 interaction states the card has always had, so there is one maintained subscription pattern
-across the site. The issue placement only adds extra bottom padding so the final card has a
-deliberate landing before the footer. The component and its `explore-subscribe-card` class
+across the site. The closing interval belongs to the shared issue section padding and footer spacing.
+The old extra subscribe padding never won the cascade and was removed. The component and its `explore-subscribe-card` class
 still carry the name of the page the markup started on; the name is history, not a location.
 
 The Source Notes section remains retired from the public page. `sourceNotes` still belongs

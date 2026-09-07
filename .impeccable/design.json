@@ -345,7 +345,7 @@
     ],
     "spacingMeta": {
       "rule": "Structural vertical spacing is a whole multiple of --base (8px). The horizontal field grid is a separate system and does not divide by it.",
-      "derived": "--space-1..9 are calc(var(--base) * n); --eyebrow-gap is var(--space-1). Changing --base moves the whole scale.",
+      "derived": "--space-1..9 are calc(var(--base) * n); --eyebrow-gap is var(--space-1). Changing --base moves the whole scale. Structural vertical margin, padding and row-gap consumers use these tokens; horizontal field gutters remain independent.",
       "stepped": {
         "breakpoints": "921px and 1100px",
         "--section-space": "24 / 32 / 40",
@@ -355,7 +355,8 @@
         "--page-start-space": "24 desktop, 32 at 680px and below"
       },
       "fluidExceptions": "Horizontal only: the shell gutter, the homepage hero and app-detail rail column gaps, and the app icon frame that scales with its page. Fluid display type is exempt under The Line Box Rule.",
-      "recorded": "2026-09-07"
+      "recorded": "2026-09-07",
+      "overlayException": "Viewport-fitting search/RSS top offsets use min(9vh/10vh, 12 base units); mobile overlays respect safe-area insets. Page structural spacing remains stepped."
     },
     "gridMeta": {
       "tracks": 12,
@@ -415,6 +416,40 @@
         "why": "A page with no grid to fill has nothing to span, so rules and headings sit with the text. At 624px the line runs ~73 characters."
       },
       "recorded": "2026-09-07"
+    },
+    "geometryMeta": {
+      "card": {
+        "token": "--card-inset",
+        "value": "var(--space-3)",
+        "consumers": [
+          "padding",
+          "border-radius"
+        ],
+        "surfaces": [
+          "ordinary app cards",
+          "reading cards",
+          "archive cards",
+          "video feature card"
+        ]
+      },
+      "pick": "--pick-inset: var(--space-4); padding and radius share it, rim adds --pick-rim",
+      "iconFrame": "border-radius: 25%; shared by card (48px), hero (56px) and fluid detail (56-80px)",
+      "searchResult": "max(0px, --search-radius - --search-border - --search-inset); 16 - 1 - 8 = 7px",
+      "filterPanel": "--radius-md at all widths; mobile spans the page shell, not the viewport",
+      "recorded": "2026-09-07"
+    },
+    "focusMeta": {
+      "token": "--focus-ring",
+      "offset": "--focus-offset; -2px for menu/search rows",
+      "exceptions": [
+        "caret-bearing text fields",
+        "programmatically focused mobile navigation dialog container"
+      ],
+      "standaloneAction": "Accent at rest, accent-hover on interaction, no underline; shared focus ring"
+    },
+    "componentExampleMeta": {
+      "status": "historical illustrations",
+      "authority": "Current Astro components and styles govern implementation; the extension contracts above describe current relationships. Embedded ds-* gallery examples predate the September audit and must not be copied as production CSS."
     }
   },
   "components": [
@@ -482,7 +517,7 @@
       "White paper on a cool fog-grey field, with navy ink.",
       "Beacon blue reserved for actions and current states.",
       "Serif headlines, system-sans utility.",
-      "Soft 10-18px radii and ambient shadows.",
+      "Corners derived from component insets and nested geometry, with proportional app icon frames.",
       "Dense content organized through cards, chips, and careful spacing."
     ],
     "rules": [
@@ -497,18 +532,18 @@
         "section": "colors"
       },
       {
-        "name": "The Even Rule Rule",
-        "body": "A horizontal rule carries the same space above it as below it: --section-space, clamp(26px, 3.8vw, 40px), one value for the whole site. That space belongs to the blocks on either side, so a page opening closes on it before the first divider. Only blocks following a drawn divider rather than a rule sit tighter.",
+        "name": "The No Content Divider Rule",
+        "body": "Content is separated by spacing, not rules. Structural vertical spacing derives from --base through --space-1..9; named section/hero/footer tokens step at the responsive breakpoints. Control boundaries are not content dividers.",
         "section": "layout"
       },
       {
         "name": "The One Measure Rule",
-        "body": "All prose runs to --measure (52ch). Because ch scales with the element font size, one token holds roughly seventy characters at every size in the ramp. A fixed-pixel max-width on running text is a bug.",
+        "body": "Prose uses --measure (52ch), following its own font and size. About is the named exception: --about-measure (624px) applies to title, dek, headings and prose.",
         "section": "typography"
       },
       {
         "name": "The One Page Title Rule",
-        "body": "Every page opens with its title in Headline at --type-page-title, hard against --page-start-space with no margin of its own, and the dek 15px beneath at --type-dek. App detail pages are not an exception; presence comes from composition, never from a private type scale.",
+        "body": "Every page opens with its title in Headline at --type-page-title, hard against --page-start-space with no margin of its own, and the dek 16px beneath at --type-dek. App detail pages are not an exception; presence comes from composition, never from a private type scale.",
         "section": "typography"
       },
       {
@@ -543,7 +578,7 @@
       },
       {
         "name": "The Eyebrow Binding Rule",
-        "body": "An eyebrow names the block beneath it, so the gap binding the two is one value for the whole site: --eyebrow-gap, 11px, used whether it comes from the .eyebrow margin in normal flow or from a grid gap. The rhythm is two values, not one: 11px binds an eyebrow to its content, 24px separates one labelled group from the next. That contrast is what lets a rail read as three groups without a rule drawn between them. A surface that sets its own number drifts out of the pair. 11px sits between the sm and md spacing steps; it is the established value across every surface, held in a token rather than repeated.",
+        "body": "--eyebrow-gap derives from --space-1 (8px) and binds each label to its content. --space-3 (24px) separates labelled groups.",
         "section": "layout"
       },
       {
