@@ -387,7 +387,35 @@
     "sanctionedDecorativeAccent": [
       "subscribe mark (accent fill and ping)",
       "archive terminus (second use of The Struck Light Rule)"
-    ]
+    ],
+    "variantMeta": {
+      "rule": "A component variant carries its base class as well as its own, so it outranks the base by specificity rather than by source order.",
+      "editorsPick": {
+        "title": "Subhead, not Card Title",
+        "inset": "32px (--space-4)",
+        "radius": "32px — matches its own inset",
+        "contentOrder": "identity, description, why it was chosen, Best For, tags",
+        "layout": "single column in document order; flex, not grid"
+      },
+      "wasBroken": "Until 2026-09-07 the base .app-card sat later in the file and won every shared property: declared grid rendered flex, declared fluid padding rendered 24px, declared Subhead rendered Card Title.",
+      "recorded": "2026-09-07"
+    },
+    "measureMeta": {
+      "default": "--measure, 52ch — all prose",
+      "namedException": {
+        "page": "About",
+        "token": "--about-measure",
+        "value": "624px",
+        "appliesTo": [
+          "title",
+          "dek",
+          "section headings",
+          "prose"
+        ],
+        "why": "A page with no grid to fill has nothing to span, so rules and headings sit with the text. At 624px the line runs ~73 characters."
+      },
+      "recorded": "2026-09-07"
+    }
   },
   "components": [
     {

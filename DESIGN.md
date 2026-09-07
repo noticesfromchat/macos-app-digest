@@ -352,7 +352,11 @@ wrapper, and now takes `calc(var(--radius-md) - 1px)`. Its dropdown sat at 8px b
 
 The rhythm is two values, not one. **8px binds an eyebrow to its content; 24px separates one labelled group from the next.** That contrast is what makes a rail read as three groups rather than one list, and it is why the separation never needs a rule drawn between the groups. The gap was 11px until 2026-09-05, a value that sat between two steps of the old scale. This file used to note it was worth revisiting only as a deliberate site-wide pass; the base-unit adoption was that pass, and it moved to 8px, exactly one unit.
 
-**The One Measure Rule.** All prose runs to `--measure` (52ch) and nothing else. Because `ch` scales with the element's own font size, the same token holds roughly seventy characters at the dek's 17.9px, at body's 16px, and at the footnote's 13.4px — a pixel column cannot do that, it just widens as the type shrinks. Every prose surface is on it: deks, About, footnotes, best-for, panel copy, feature-card copy, and category descriptions. A fixed-pixel `max-width` on running text is a bug.
+**The One Measure Rule.** All prose runs to `--measure` (52ch) and nothing else. Because `ch` scales with the element's own font size, the same token holds roughly seventy characters at the dek's 17.9px, at body's 16px, and at the footnote's 13.4px — a pixel column cannot do that, it just widens as the type shrinks. Every prose surface is on it: deks, footnotes, best-for, panel copy, feature-card copy, and category descriptions. A fixed-pixel `max-width` on running text is a bug everywhere except the one place it is the point.
+
+**About is that exception, and it is named.** Its column is `--about-measure`, 624px, and the title, the dek, the section headings and the prose all take it. On this page the column and the reading measure are the same number: a page with no grid to fill has nothing to span, so the rules and headings must sit with the text rather than reaching past it, and at 624px the line runs about 73 characters — inside the 65-75 the craft floor asks for, and slightly wider than the 62 that 52ch was giving. It is a width rather than a character count because the *column* is what is being set here, and the measure follows from it.
+
+This file used to claim About was on `--measure` like everything else. It never was, and the title was not even on the column: About carries `.archive-page` as well as `.about-page`, so `.archive-page h1`'s 920px cap outranked `.about-page > *` and the heading ran 296px past the text beneath it until 2026-09-07. The width is now defined once and every element on the page stops at the same edge.
 
 **The One Page Title Rule.** Every page opens the same way: the breadcrumb trail at the shell's `--page-start-space`, the title in Headline at `--type-page-title` 8px beneath it, and the dek 16px beneath that at `--type-dek`. The title carries no margin of its own; the trail owns the gap, at `--eyebrow-gap`, because it names the page under it exactly as an eyebrow does. Until 2026-09-02 the title itself sat hard against `--page-start-space` and nothing preceded it. That changed when the trail arrived, and it changed on every page at once rather than on the deep ones only, so the opening stayed one shape. App detail pages are not an exception — the app name is a page title, not a bigger thing. A page that wants more presence gets it from its composition below the fold, never from a private type scale.
 
@@ -682,6 +686,25 @@ under reduced motion. Each check tests a *relationship between* declarations rat
 restating a literal — asserting that `--space-3` is 24px tells you nothing that reading the
 line does not, and passes happily while the thing that value was meant to produce is broken.
 Every one was verified by reintroducing the defect and watching it fail.
+
+**The Editor's Pick variant owns its differences.** The pick is the one app an issue argues
+for, so its card outranks the ones beside it: the title takes Subhead rather than Card Title,
+and the card takes a 32px inset with the 32px corner that inset implies. Every selector in
+the variant carries `.app-card` as well as its own class, so it beats the base by specificity
+rather than by hoping to be read last.
+
+It did not, until 2026-09-07. `.editors-pick-card` and `.app-card` are each one class and the
+base sits later in the file, so the base won every property they shared: the variant declared
+`display: grid` and rendered flex, declared a fluid padding and rendered 24px, declared a
+Subhead title and rendered Card Title. The code described a composition the browser had never
+drawn, which is the most expensive kind of wrong — it reads as intent to anyone maintaining it.
+
+The `grid-template-areas` that sat in that block were deleted rather than revived. They
+ordered the card summary / best-for / note / tags while the markup emits summary / note /
+best-for / tags, because the hero states its reason before its audience. Reviving them would
+have reordered the card to match markup that no longer exists. The layout is a single column
+in document order, which flex already does; what the variant needed was its inset, its corner
+and its title, not a grid.
 
 **The One Focus Ring.** Every control that takes keyboard focus draws the same ring:
 `--focus-ring` (2px solid, the accent at 38%) at `--focus-offset` (3px). It is a token, not
