@@ -200,10 +200,25 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
   @media (max-width: 1100px) {
     .explore-lanes-categories { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   }
+  /* The band where three collection tiles share a shrinking shell: 332px each at 1100
+     and 277px at 921. A count sitting beside the title takes width the name needs, and
+     "Community Favorites" was breaking mid-word — "Commu / nity" — to fit what was left.
+     The count moves under the title here so the name has the tile's full measure. Above
+     1100 the tile is 376px and does not need it; below 921 the row is one column and has
+     the whole shell. */
+  @media (min-width: 921px) and (max-width: 1100px) {
+    .explore-lane-collection { grid-template-columns: auto minmax(0, 1fr); }
+    .explore-lane-collection .explore-lane-count { grid-column: 2; }
+  }
+  /* Collections collapse with the app grid rather than 240px later. They held three
+     columns down to 680 while the cards beneath had already gone to one, which is what
+     made the row read as broken rather than merely tight. */
+  @media (max-width: 920px) {
+    .explore-lanes-collections { grid-template-columns: 1fr; }
+  }
   @media (max-width: 680px) {
     .explore-taxonomy { padding-top: var(--space-3); }
     .explore-lanes-categories { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .explore-lanes-collections { grid-template-columns: 1fr; }
   }
   @media (max-width: 360px) {
     .explore-lanes-categories { grid-template-columns: 1fr; }

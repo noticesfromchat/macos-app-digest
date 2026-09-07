@@ -66,7 +66,7 @@
   --radius: var(--radius-lg);
   --content-width: 1160px;
   --content-inset: 40px;
-  /* Reduced 25% from 36px on 2026-09-04. The trail keeps its 11px bind to the title
+  /* Reduced 25% from 36px on 2026-09-04. The trail keeps its 8px bind to the title
      under The One Page Title Rule; what was reading as the trail having fallen down a gap
      was the space above it, between the header and the trail, not the space below. */
   --page-start-space: 24px;
@@ -122,7 +122,7 @@
    waypoint idea is in the marking of the current position, which is the one thing a
    chart does that a list of links does not.
 
-   It sits at the top of the page shell and the title follows 11px beneath it, which is
+   It sits at the top of the page shell and the title follows 8px beneath it, which is
    `--eyebrow-gap`: the trail names the page under it exactly as an eyebrow does, so it
    takes the eyebrow's number rather than inventing one. */
 .breadcrumb {
@@ -511,6 +511,10 @@ svg.icon {
 .button.secondary:hover,
 .button.secondary:focus-visible {
   border-color: color-mix(in srgb, var(--accent) 52%, var(--line));
+  /* Explicitly cleared. `.button:hover` sets an accent-tinted fill and this rule
+     overrode only border and colour, so the surface the comment above says it does
+     not have was arriving anyway. */
+  background: transparent;
   color: var(--accent);
 }
 
@@ -1240,7 +1244,10 @@ svg.icon {
 }
 .video-section { border-top: 0; padding-top: 24px; }
 
-.issue-subscribe { padding-bottom: 88px; }
+/* The 88px bottom padding that lived here never applied: `.issue .section` carries a
+   padding shorthand at higher specificity and reset it. Rather than revive a value no
+   page has ever rendered, the closing interval stays owned by `.issue .section`, which
+   is the one rule that sets it. Removed 2026-09-07. */
 
 .archive-page {
   min-height: calc(100vh - 128px);
@@ -2385,7 +2392,9 @@ svg.icon {
   .home-hero-copy { order: 1; }
   .home-hero-sea { position: static; order: 2; width: 100%; height: var(--sea-h); }
   .home-hero-pick { order: 3; }
-  .home-hero + .section { border-top: 1px solid var(--line); }
+  /* No rule here either. This override outlived the site-wide removal of content
+     dividers on 2026-09-05 and put a hairline back under the hero on phones only,
+     so one boundary was space on desktop and space plus a line on mobile. */
   .home-hero-pick-title {
     position: static;
     width: auto;
@@ -2422,8 +2431,9 @@ svg.icon {
   .directory-filter-bar > .directory-sort,
   .directory-filter-bar--no-filters > .directory-sort { flex: 1 1 0; }
   /* Same correction on the stacked row, where the triggers are flex: 1 1 0 and the pair
-     spans the whole bar: 12px gap + 4px of border. */
-  .directory-filter-panel { width: calc(200% + 16px); }
+     spans the whole bar: 16px gap + 4px of border. It carried 12px + 4px after the gutter
+     moved to 16, which left the panel ending 4px short of Sort's right edge at 800px. */
+  .directory-filter-panel { width: calc(200% + 20px); }
   .editors-pick-card {
     display: flex;
     min-height: auto;

@@ -99,6 +99,7 @@ let stopIndex = 0;
       {issues.length > 0 && (
         <div class="directory-search archive-search">
           <svg
+            class="icon"
             aria-hidden="true"
             viewBox="0 0 24 24"
             fill="none"
@@ -122,6 +123,18 @@ let stopIndex = 0;
             disabled
             data-archive-query
           />
+          <button
+            type="button"
+            class="field-clear"
+            aria-label="Clear search"
+            hidden
+            data-archive-query-clear
+          >
+            <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M18 6 6 18"></path>
+              <path d="m6 6 12 12"></path>
+            </svg>
+          </button>
         </div>
       )}
     </div>
@@ -220,6 +233,7 @@ let stopIndex = 0;
      replaceState the Explore directory already uses. */
   const route = document.querySelector<HTMLElement>('[data-archive-route]');
   const input = document.querySelector<HTMLInputElement>('[data-archive-query]');
+  const queryClear = document.querySelector<HTMLButtonElement>('[data-archive-query-clear]');
   const countEl = document.querySelector<HTMLElement>('[data-archive-count]');
   const emptyEl = document.querySelector<HTMLElement>('[data-archive-empty]');
   const moreButton = document.querySelector<HTMLButtonElement>('[data-archive-more]');
@@ -264,6 +278,9 @@ let stopIndex = 0;
       route.hidden = !found;
       if (originEl) originEl.hidden = !found;
       if (moreButton) moreButton.hidden = expanded || query !== '';
+      /* Tracks the raw value, not the normalised one: a field holding only spaces
+         still has something to clear. */
+      if (queryClear) queryClear.hidden = !input.value;
     };
 
     const syncUrl = () => {
@@ -285,6 +302,16 @@ let stopIndex = 0;
     input.addEventListener('input', () => {
       render();
       syncUrl();
+    });
+
+    /* Clearing hands focus back to the field: the button is about to be hidden, so
+       leaving focus on it would drop the reader to the top of the document. */
+    queryClear?.addEventListener('click', () => {
+      input.value = '';
+      expanded = false;
+      render();
+      syncUrl();
+      input.focus();
     });
 
     input.addEventListener('keydown', (event) => {
