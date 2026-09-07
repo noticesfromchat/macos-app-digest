@@ -366,27 +366,33 @@ The rhythm is two values, not one. **8px binds an eyebrow to its content; 24px s
 
 The site uses a shared centered shell with a maximum width of 1160px and responsive gutters that resolve to 20px on desktop and 12px on mobile. The same shell is used across app detail, tag, collection, archive, and about pages so the directory feels like one system instead of separate templates.
 
-**The Field Grid.** 1160px is not a round number picked for looks, and the card grid is not
-three columns that happen to fit it. The shell is **six fields of 180px on 16px gutters**:
-`180x6 + 16x5 = 1160`. An app card spans two of those fields plus the gutter between them,
-`180 + 16 + 180 = 376`, which is why three cards and their two gutters come back to 1160
-exactly. The card grid and the field grid are the same grid; the cards were simply never
-described in its terms.
+**The Field Grid.** The shell is **twelve tracks on 16px gutters**, each track derived from
+the width actually available: `track = (shell - 11 x 16) / 12`. At the 1160px maximum that
+is 82px. Spans are what components ask for: a category tile takes 2 tracks (180px), an app
+card and a collection tile take 4 (376px), and Filter and Sort take 2 each so the pair
+covers 4 — one card — with the gutter between them.
 
-That is what makes the arithmetic worth writing down rather than leaving implied. Anything
-laid on the field edges lines up with the cards beneath it without being measured against
-them, so a taxonomy row, a control strip and the catalogue all share one set of vertical
-edges down the page.
+It ran on six fixed 180px fields until 2026-09-07. The arithmetic was right at the maximum
+width and only there: 180 x 6 + 16 x 5 = 1160, and a card was two fields plus a gutter. But
+the fields were literals, so they stopped being fields the moment the shell shrank. At a
+1000px viewport the cards measured 309.33px while Filter and Sort still measured 180 each
+and their pair still measured 376, and the toolbar and the catalogue no longer shared an
+edge. Twelve fluid tracks render the 1160px composition identically — every measured
+position and width is unchanged — and hold it at every width below.
 
-**Six fields is the current division, not the durable one.** Six holds six categories at one
-field each and three collections at two each. A fourth collection has no span: 1.5 fields
-does not exist, so the row breaks the day one ships. Twelve fields of 82px on the same 16px
-gutters also make 1160, and twelve contains six — two fields plus a gutter is 180, four
-fields plus three gutters is 376, and three fields plus two gutters is 278, which takes four
-collections across. Twelve renders today's layout identically and survives the growth six
-cannot. The division should follow what the content will need rather than what the current
-composition minimally requires; that choice is recorded here and not yet made in the code,
-which still runs on six.
+Twelve rather than six for growth as well as fluidity. Six held six categories at one field
+and three collections at two, and had no span for a fourth collection, because 1.5 fields
+does not exist. Twelve contains six, so nothing today moves, and it takes four collections
+across at 3 tracks each when one ships. That is a future option requiring a label-fit test,
+not automatic behaviour.
+
+**What is on the grid, and what is not.** Field-aligned: the taxonomy rows, the directory
+toolbar including its search field and Filter panel, and the card grid. Deliberate editorial
+exceptions, within the same shell: the homepage hero, whose two columns are a .95/1.05 split
+because the pick card and the copy are not a card grid; the app-detail rail at a fixed 400px,
+sized from the tag sets it holds; and About's reading column, which is a measure decision
+rather than a grid one. Those three are exceptions because a page composed for reading is
+not a catalogue, not because the grid failed to reach them.
 
 About is the one page that narrows its column. Its shell is the usual 1160px, so the page starts on the same left edge as every other page, but the blocks inside it cap at 620px, so its headings sit with its prose instead of spanning the full shell (its section rules did too, while it had any). Narrowing the shell itself would have centred the column and made About the one page whose content begins somewhere else. Everywhere else the shell is 1160px because a three-column card grid fills it, and a full-width rule there divides full-width content. About has nothing to fill it: its rules were running 1032px to head a 524px column, leaving a 508px dead field and a divider promising content to its right that was never coming. Prose still takes `--measure` inside that column, so the reading measure is unchanged at roughly seventy characters; what changed is that the dividers now match the thing they divide. This page previously followed the shell like every other, and that is recorded here because the uniformity was deliberate rather than accidental: the rule was written for pages the shell fits, and this is the one it does not. Issues and About draw no section rules. The grid separates their content, and a hairline
 between two blocks already a full section apart was a second statement of the same boundary.

@@ -713,7 +713,13 @@ svg.icon {
 .section-heading { width: 100%; max-width: none; margin-bottom: 32px; }
 .section h2 { margin: 0; font-family: var(--display); font-size: var(--type-section-title); font-weight: 500; letter-spacing: -.03em; line-height: 1; }
 
-.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+/* Twelve shared tracks, fluid: `track = (shell - 11 gutters) / 12`. A card spans four of
+   them plus the three gutters between, which is 376px at the 1160px shell and follows the
+   shell down rather than holding a fixed width. Three columns was the same arrangement
+   expressed as a result instead of as a grid, which is why controls declared 180px
+   literals and stopped matching the cards the moment the shell shrank. */
+.grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 16px; }
+.grid > * { grid-column: span 4; }
 
 /* Cards in a row line up by sharing the row's tracks, not by guessing heights.
    Each card spans three rows of the parent grid and adopts them as a subgrid, so
@@ -1867,11 +1873,13 @@ svg.icon {
    a fourth control arrives and then reads as a puzzle. */
 .directory-filter-bar {
   position: relative;
-  display: flex;
-  flex-wrap: wrap;
-  /* The count used to sit here and push the controls over with an auto right margin. It
-     now lives with the chips above the grid, so the row aligns its own contents. */
-  justify-content: flex-end;
+  /* The toolbar sits on the catalogue's own twelve tracks. It was a flex row whose two
+     triggers declared `flex: 0 0 180px`, which matched a card span at the 1160px shell and
+     nothing below it: at a 1000px viewport the cards were 309.33px and the Filter and Sort
+     pair still measured 376. On tracks the pair is four tracks and three gutters, which is
+     one card at every width the multi-column layout applies to. */
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
   gap: 16px;
   /* Stretch, not center: the controls size themselves from this, and centring the row
      left the Filter trigger at its 20px content height inside a 48px shell. Only the
@@ -1879,14 +1887,20 @@ svg.icon {
   align-items: stretch;
   margin-top: 0;
 }
-.directory-filter-bar > .directory-filter,
-.directory-filter-bar > .directory-sort { flex: 0 0 180px; }
+/* Tracks 6-8 for the field, 9-10 and 11-12 for the pair, so Sort's right edge lands on
+   the grid's and the heading takes whatever is left. The field is three tracks: 278px at
+   the full shell against the 280px literal it replaces. */
+.directory-filter-bar > .directory-search { grid-column: 6 / span 3; }
+.directory-filter-bar > .directory-filter { grid-column: 9 / span 2; }
+.directory-filter-bar > .directory-sort { grid-column: 11 / span 2; }
 /* Takes the auto right margin the count used to carry, so the controls sit at the end
    of a row that now has something at its start. Scoped to the bar because `.section h2`
    sets `margin: 0` and is the more specific selector, which swallowed the auto. It is
    the one item that centres itself; the row stays on stretch for the controls. */
-.directory-filter-bar > .directory-heading { margin: 0 auto 0 0; align-self: center; }
-.directory-filter-bar--no-filters > .directory-sort { flex: 0 0 180px; }
+/* The heading takes the tracks the controls do not. It no longer needs an auto margin to
+   push them over: the grid places them. */
+.directory-filter-bar > .directory-heading { grid-column: 1 / span 5; margin: 0; align-self: center; }
+.directory-filter-bar--no-filters > .directory-sort { grid-column: 11 / span 2; }
 /* On a lane page the directory follows the dek directly, and the bar's own zero margin
    left no interval at all: the controls sat closer to the dek than the dek sits to the
    h1, so the masthead and the toolbar read as one group. The separation is the same one
@@ -1992,7 +2006,6 @@ svg.icon {
    offered, one tap later. */
 .directory-search {
   display: grid;
-  flex: 0 1 280px;
   grid-template-columns: auto minmax(0, 1fr);
   min-width: 0;
   min-height: 48px;
@@ -2474,7 +2487,7 @@ svg.icon {
     text-wrap: balance;
   }
   
-  .grid { grid-template-columns: 1fr; }
+  .grid > * { grid-column: span 12; }
   .issue .section { padding: var(--space-3) 0; }
   .about-page .section { padding: var(--space-3) 0 var(--space-1); }
   .directory-filter-bar,
@@ -2488,10 +2501,13 @@ svg.icon {
      row to the grid, so nothing in the column sits on a different interval. */
   .directory-results { margin-top: 16px; }
   .directory-results + .directory-grid { margin-top: 16px; }
-  .directory-search { flex: 1 1 100%; }
-  .directory-filter-bar > .directory-filter,
+  /* Stacked: the field takes the whole bar and the pair splits it, six tracks each, so
+     the two triggers stay equal and keep their labels readable at a phone width. */
+  .directory-filter-bar > .directory-heading { grid-column: 1 / span 12; }
+  .directory-filter-bar > .directory-search { grid-column: 1 / span 12; }
+  .directory-filter-bar > .directory-filter { grid-column: 1 / span 6; }
   .directory-filter-bar > .directory-sort,
-  .directory-filter-bar--no-filters > .directory-sort { flex: 1 1 0; }
+  .directory-filter-bar--no-filters > .directory-sort { grid-column: 7 / span 6; }
   /* Same correction on the stacked row, where the triggers are flex: 1 1 0 and the pair
      spans the whole bar: 16px gap + 4px of border. It carried 12px + 4px after the gutter
      moved to 16, which left the panel ending 4px short of Sort's right edge at 800px. */

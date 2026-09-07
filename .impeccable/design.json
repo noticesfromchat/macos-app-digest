@@ -347,6 +347,33 @@
       },
       "fluidExceptions": "Horizontal only: the shell gutter, the homepage hero and app-detail rail column gaps, and the app icon frame that scales with its page. Fluid display type is exempt under The Line Box Rule.",
       "recorded": "2026-09-07"
+    },
+    "gridMeta": {
+      "tracks": 12,
+      "gutter": "16px",
+      "shellMax": "1160px",
+      "trackWidth": "(shell - 11 * 16px) / 12 — fluid; 82px at the maximum shell",
+      "spans": {
+        "categoryTile": "2 tracks = 180px",
+        "appCard": "4 tracks = 376px",
+        "collectionTile": "4 tracks = 376px",
+        "filter": "2 tracks",
+        "sort": "2 tracks",
+        "searchField": "3 tracks",
+        "filterAndSortPair": "4 tracks = one card span at every multi-column width"
+      },
+      "fieldAligned": [
+        "taxonomy rows",
+        "directory toolbar incl. search field and Filter panel",
+        "card grid"
+      ],
+      "editorialExceptions": [
+        "homepage hero (.95/1.05 columns)",
+        "app-detail rail (400px)",
+        "About reading column (measure decision)"
+      ],
+      "wasSixFixedFields": "Until 2026-09-07. Correct at the 1160px maximum only; controls held 180px literals and stopped matching cards below it.",
+      "recorded": "2026-09-07"
     }
   },
   "components": [
