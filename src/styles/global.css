@@ -830,10 +830,13 @@ svg.icon {
    document order, which is what flex already does correctly; what the variant actually
    needs is its inset, its corner and its title. */
 .app-card.editors-pick-card {
+  /* One number for the card's inset, its corner and the rim that traces it. Three things
+     reading the same variable is what keeps the arcs concentric; three things repeating
+     the same literal is how they drift apart. */
+  --pick-inset: var(--space-4);
   min-height: 0;
-  /* On the step, and the corner follows it: an element's radius matches its own inset. */
-  padding: var(--space-4);
-  border-radius: var(--space-4);
+  padding: var(--pick-inset);
+  border-radius: var(--pick-inset);
 }
 .app-card.editors-pick-card .app-summary { min-height: 0; margin-bottom: 0; }
 .app-card.editors-pick-card .best-for { min-height: 0; }
@@ -939,8 +942,10 @@ svg.icon {
      property stops the drift resolving at all. A layer avoids both. */
   isolation: isolate;
   /* The gleam traces the card's own corner, so the radius is a parameter rather
-     than a constant repeated in the ring. */
-  --pick-radius: var(--radius);
+     than a constant repeated in the ring. It follows the variant's inset where one is
+     set: tracking `--radius` directly left the rim at 24px when the pick card moved to
+     a 32px corner on 2026-09-07, and the two arcs visibly diverged. */
+  --pick-radius: var(--pick-inset, var(--radius));
 }
 /* The one card in the fold the issue is arguing for; it rests proud of the rest. */
 .hero-pick-card.has-pick-accent { box-shadow: var(--shadow-hover); }

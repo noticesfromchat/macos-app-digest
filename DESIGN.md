@@ -693,6 +693,13 @@ and the card takes a 32px inset with the 32px corner that inset implies. Every s
 the variant carries `.app-card` as well as its own class, so it beats the base by specificity
 rather than by hoping to be read last.
 
+The rim that traces it reads the same variable. `--pick-inset` is the card's inset, its
+corner and the radius the accent rim is drawn from, so the three cannot diverge. They did,
+briefly, on the day the inset moved: the rim tracked `--radius` directly and stayed at 24px
+while the card went to 32, and the two arcs separated visibly at the corner. Three things
+reading one variable is what keeps them concentric; three things repeating one literal is
+how they come apart.
+
 It did not, until 2026-09-07. `.editors-pick-card` and `.app-card` are each one class and the
 base sits later in the file, so the base won every property they shared: the variant declared
 `display: grid` and rendered flex, declared a fluid padding and rendered 24px, declared a
