@@ -718,6 +718,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  /* The copy control lifts 1px on hover; the transition going away left the jump. */
+  .rss-copy-button:hover,
+  .rss-copy-button:focus-visible { transform: none; }
   .desktop-search-button,
   .nav-menu-toggle,
   .mobile-nav-rss,

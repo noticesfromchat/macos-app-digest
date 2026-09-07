@@ -1033,6 +1033,13 @@ svg.icon {
 .app-card h3 a { color: var(--text); text-decoration: none; transition: color 180ms ease; }
 .app-card h3 a:hover,
 .app-card h3 a:focus-visible { color: var(--accent); }
+/* The house ring rather than the browser's. Colour is the hover; a keyboard reader is
+   owed the same indicator every other control on the site gives them. */
+.app-card h3 a:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+  border-radius: var(--radius-sm);
+}
 .app-summary-heading {
   display: block;
 }
@@ -1127,12 +1134,24 @@ svg.icon {
 /* A standalone link on its own line is a target, not prose, so it carries the
    minimum. The inline RSS link in the subscribe copy is left alone: WCAG exempts a
    target sitting inside a sentence, and padding one out would break the line. */
+/* The standalone-action role: a link on its own line, doing the job of a button without
+   being one. Accent and bold at rest, which is why it needs a hover that is not simply
+   "turn accent" — it deepens instead, the same move the primary button makes. It had no
+   hover rule at all until 2026-09-07. */
 .feature-card a {
   display: inline-flex;
   align-items: center;
   min-height: 24px;
   color: var(--accent);
   font-weight: 700;
+  transition: color 180ms ease;
+}
+.feature-card a:hover,
+.feature-card a:focus-visible { color: var(--accent-hover); }
+.feature-card a:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+  border-radius: var(--radius-sm);
 }
 
 .app-detail-page { padding: var(--page-start-space) 0 32px; }
@@ -1529,12 +1548,41 @@ svg.icon {
    break the line it sits in. The hit area is expanded with a pseudo-element instead: the
    link's own box stays 19px so the sentence is untouched, while what a finger can reach
    is 24px. */
+/* The prose-link role: a link inside running text. It carries the accent and no underline,
+   in any state. The site draws no underlines, so a link in prose is marked the way every
+   other link on the site is marked — by taking the blue — and deepens on hover rather than
+   arriving at a decoration. About's prose and the RSS dialog were on the browser's default
+   with no hover at all until 2026-09-07.
+
+   Distinct from the standalone-action role below, which is a link on its own line acting
+   as a control, and from navigation and card titles, which have their own jobs. */
+.about-page p a,
+.about-page li a,
+.rss-description a,
 .explore-subscribe-body a {
-  position: relative;
-  color: inherit;
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 180ms ease;
 }
+.about-page p a:hover,
+.about-page li a:hover,
+.rss-description a:hover,
+.explore-subscribe-body a:hover,
+.about-page p a:focus-visible,
+.about-page li a:focus-visible,
+.rss-description a:focus-visible,
+.explore-subscribe-body a:focus-visible { color: var(--accent-hover); }
+.about-page p a:focus-visible,
+.about-page li a:focus-visible,
+.rss-description a:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+  border-radius: var(--radius-sm);
+}
+/* The subscribe card's link keeps its 24px hit target on top of the shared role: it sits
+   alone in a tight card where a finger needs more than the 19px line gives it. In flowing
+   prose that overlay would cross adjacent lines, so it stays scoped here. */
+.explore-subscribe-body a { position: relative; }
 .explore-subscribe-body a::after {
   content: "";
   position: absolute;
@@ -1544,8 +1592,7 @@ svg.icon {
   height: 24px;
   transform: translateY(-50%);
 }
-.explore-subscribe-body a:hover,
-.explore-subscribe-body a:focus-visible { color: var(--accent); }
+
 .explore-subscribe-url {
   width: 100%;
   max-width: 640px;
@@ -2224,11 +2271,21 @@ svg.icon {
   text-align: left;
   cursor: pointer;
 }
+/* Selection is the fill; focus is the ring. These were the same declaration, so a
+   keyboard reader tabbing the menu could not tell the row they were on from the row
+   already chosen. An option that is both shows both. */
+/* `aria-checked`, not `aria-selected`. The menu is `role="menuitemradio"`, which is the
+   attribute the markup and the script have always set, so the selected option had never
+   taken this fill — the rule matched nothing. Found on 2026-09-07 by reading the rendered
+   state rather than the stylesheet. */
 .directory-select-options button:hover,
-.directory-select-options button:focus-visible,
-.directory-select-options button[aria-selected="true"] {
+.directory-select-options button[aria-checked="true"] {
   background: color-mix(in srgb, var(--accent) 12%, transparent);
-  outline: 0;
+}
+.directory-select-options button:focus-visible {
+  outline: var(--focus-ring);
+  /* Inset, so the ring sits inside the panel rather than crossing its neighbours. */
+  outline-offset: -2px;
 }
 .directory-select-trigger:focus-visible {
   outline: var(--focus-ring);
@@ -2405,6 +2462,13 @@ svg.icon {
 .directory-empty-action:hover,
 .directory-empty-action:focus-visible {
   color: var(--accent);
+}
+/* `all: unset` above strips the ring with everything else, so it is put back explicitly
+   rather than left to colour alone. */
+.directory-empty-action:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+  border-radius: var(--radius-sm);
 }
 .directory-grid { margin-top: 16px; }
 
@@ -2641,9 +2705,16 @@ svg.icon {
   .tag,
   .button,
   .theme-toggle { transition: none; }
+  /* Nothing moves. Removing a transition stops the animation but leaves the destination,
+     so a card still jumped to its lifted position — the difference between a slow move and
+     no move at all. `.button` and the copy control were never covered here; the three card
+     selectors lost their `transform: none` on 2026-09-06, when the line they shared with
+     the theme toggle's rotate was deleted along with it. */
   .app-card:hover,
   .feature-card:hover,
   .archive-card:hover,
+  .button:hover,
+  .button:focus-visible { transform: none; }
   .content-divider.is-lit .brand-mark-ping { animation: none; }
   .has-pick-accent::before,
   .has-pick-accent::after { animation: none; }
