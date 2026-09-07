@@ -10,6 +10,12 @@
   --line: rgba(9, 35, 66, 0.2);
   --accent: #0862d8;
   --accent-hover: #004caf;
+  /* The one semantic colour that is not the accent. Failure is state, not emphasis, so it
+     does not touch the Beacon Rule's claim on blue. Both values clear AA on the card they
+     appear on: 5.24:1 on white and 5.68:1 on the dark surface. Named 2026-09-07; the two
+     hexes had been literals repeated across four rules with no way to tell a sanctioned
+     exception from a stray colour. */
+  --error: #9c2f2a;
   /* An eyebrow names the block beneath it, so the gap that binds the two is one
      value for the whole site. Any surface that sets its own drifts out of the pair. */
   /* Base unit. Every spacing value in the system is a whole multiple of it.
@@ -131,6 +137,7 @@
   --line: rgba(217, 229, 240, 0.2);
   --accent: #57a2ff;
   --accent-hover: #81b8ff;
+  --error: #ff8f86;
   --header-bg: rgba(4, 20, 38, 0.96);
   --scrim: rgba(2, 11, 24, 0.52);
   --shadow: 0 20px 60px rgba(0, 0, 0, 0.24);

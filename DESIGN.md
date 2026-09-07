@@ -661,6 +661,28 @@ all four. **An app icon frame's corner is also outside this system and outside t
 scale**: it takes 25% of its own side — 12px on a 48px frame, 14px on the 56px pick frame —
 which is what makes a rendered mark read as a macOS icon rather than a rounded box.
 
+**The Beacon Rule has one semantic exception, and it is named.** Blue is the site's only
+accent and marks action. **Failure is state, not emphasis**, so it takes `--error` —
+`#9c2f2a` by day and `#ff8f86` by night, both clearing AA on the surface they appear on at
+5.24:1 and 5.68:1. It was two hex literals repeated across four rules until 2026-09-07,
+which left no way to tell a sanctioned exception from a stray colour.
+
+Two decorative uses of the accent are also sanctioned and recorded here so the same question
+does not have to be re-answered: the **subscribe mark**, which carries an accent fill and a
+ping, and the **archive terminus**, which is the second use of The Struck Light Rule and is
+argued for above. Anything else reaching for a colour outside the palette is drift.
+
+**Design invariants are checked, not remembered.** `scripts/check-design-invariants.mjs`
+runs in `npm run validate` and guards eight relationships that each broke silently in
+practice: an SVG missing the glyph contract and rendering at 0×0, a fixed text role
+inheriting its line box, structural spacing declared fluid, the spacing scale not deriving
+from `--base`, a control declaring its own focus ring, a content divider returning through a
+breakpoint, a state selector that does not match the markup, and a hover lift not reset
+under reduced motion. Each check tests a *relationship between* declarations rather than
+restating a literal — asserting that `--space-3` is 24px tells you nothing that reading the
+line does not, and passes happily while the thing that value was meant to produce is broken.
+Every one was verified by reintroducing the defect and watching it fail.
+
 **The One Focus Ring.** Every control that takes keyboard focus draws the same ring:
 `--focus-ring` (2px solid, the accent at 38%) at `--focus-offset` (3px). It is a token, not
 a convention, because a convention is what the site had — nine different treatments across

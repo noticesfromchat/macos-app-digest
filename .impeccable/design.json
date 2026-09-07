@@ -153,6 +153,15 @@
           "oklch(91% 0.067 253)",
           "oklch(96% 0.042 253)"
         ]
+      },
+      "error": {
+        "role": "semantic",
+        "displayName": "Error",
+        "light": "#9c2f2a",
+        "dark": "#ff8f86",
+        "purpose": "Failure state. Not emphasis, so it does not touch the Beacon Rule's claim on blue.",
+        "contrast": "5.24:1 on white, 5.68:1 on the dark surface",
+        "recorded": "2026-09-07"
       }
     },
     "typographyMeta": {
@@ -374,7 +383,11 @@
       ],
       "wasSixFixedFields": "Until 2026-09-07. Correct at the 1160px maximum only; controls held 180px literals and stopped matching cards below it.",
       "recorded": "2026-09-07"
-    }
+    },
+    "sanctionedDecorativeAccent": [
+      "subscribe mark (accent fill and ping)",
+      "archive terminus (second use of The Struck Light Rule)"
+    ]
   },
   "components": [
     {
