@@ -24,3 +24,7 @@ __pycache__/
 
 # Impeccable per-session hook cache written beside the skill's scripts.
 **/skills/impeccable/scripts/.impeccable/
+
+# Generated image output. Assets the site actually ships live under src/ or public/;
+# anything left here is a scratch render from an imagegen run.
+output/
