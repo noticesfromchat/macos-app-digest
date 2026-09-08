@@ -116,22 +116,23 @@ spacing:
   s9: "72px"
 components:
   button-primary:
-    backgroundColor: "{colors.beacon-blue}"
-    textColor: "#ffffff"
+    backgroundColor: "transparent"
+    textColor: "{colors.beacon-blue}"
     rounded: "{rounded.pill}"
-    padding: "0 23px"
-    minHeight: "44px"
+    padding: "0 24px"
+    minHeight: "48px"
   button-secondary:
     backgroundColor: "transparent"
     textColor: "{colors.deep-sea}"
     rounded: "{rounded.pill}"
-    padding: "0 23px"
+    padding: "0 24px"
+    minHeight: "48px"
   collection-badge:
     backgroundColor: "transparent"
     textColor: "{colors.deep-sea}"
-    rounded: "{rounded.pill}"
-    padding: "0 14px"
-    minHeight: "38px"
+    rounded: "0"
+    padding: "0"
+    minHeight: "48px"
   tag-chip:
     backgroundColor: "{colors.shell-quiet}"
     textColor: "{colors.tide-slate}"
@@ -157,6 +158,10 @@ components:
 # Design System: App Waypoint
 
 ## Overview
+
+**Implementation references:** use [the current component reference](docs/COMPONENT_REFERENCE.md)
+for production markup, styles and review routes. The handwritten component gallery was
+retired on 2026-09-07; the active sidecar retains tokens and rules, with no copied previews.
 
 **Creative North Star: "Quiet harbor editorial"**
 
@@ -311,7 +316,7 @@ viewport; they do not set the vertical rhythm of page content.
 Four things sit outside the base deliberately. Hairlines and optical nudges of 4px and
 under keep their own values, because a 1px border is not a spacing decision. Line boxes
 step on 4px, half the base, for the reason given below. Touch targets round up and never
-down, so nothing falls under the 44px minimum. And one derived width stays odd: the filter
+down for coarse-pointer controls; the role-specific heights below define their targets. And one derived width stays odd: the filter
 panel's `calc(200% + 20px)` is what makes its right edge land exactly on the Sort control's,
 and snapping that 20 to 16 would break the alignment by 4px.
 
@@ -577,27 +582,38 @@ outline, because for those colour alone is not a focus indicator.
 - **Secondary:** transparent fill, ink text, and a borderless or low-border utility presence.
 - **Icon Buttons:** the header search and theme controls are 48px circles on desktop, mobile and coarse-pointer devices.
 
-**The Target Floor Rule.** Anything a reader taps carries a minimum target: 24px, and the 48px the control system already gives every pill on a coarse pointer. This is not only for pills. Footer navigation, the explore section links and the feature card's outbound link were each the height of their own text, 16 to 21px, because a bare link has no box unless it is given one.
+**The Target Floor Rule.** Standalone small targets have a 24px floor; links inside
+sentences remain inline. Larger controls use the component-specific heights in Control
+heights follow the grid below. Coarse-pointer adjustments grow small controls or their
+hit areas without treating every pill as the same role.
 
 An icon link too small to grow gets its hit area expanded around it instead of being padded out, so the line it sits in is undisturbed. The Editor's Pick mark beside an app name works that way, and stops at 24px rather than 48px because a larger area would start taking taps meant for the title. A link inside a sentence is exempt and stays inline; the RSS link in the subscribe copy is the one that qualifies.
 
-**Control heights follow the grid.** Every pill control is built the same way — inline-flex,
-a `min-height`, horizontal padding, no vertical padding — and stands at a whole multiple of
-the 8px base unit. In practice that is **48px** for a primary action and **40px** for a
-secondary one, rising to 48px on coarse pointers, with **32px** for the chip class: tags,
-active-filter chips, category rows and collection badges, eleven cases that were never
-violations of a two-height rule so much as evidence it was written too narrowly. **24px**
-is the floor, for inline links inside running text that carry a target but not a control's
-weight. This was documented as *The Two Control Heights* until 2026-09-06, and five heights
-were in use the whole time; the base unit is the rule, and the pair was only ever the two
-most common answers to it. Both were 44 and 38 until the base-unit pass; targets round up, never down, so neither can fall under the 44px minimum. Rank comes from the height and from whether the border and label carry the accent or the neutral line, never from a fill and never from a different construction. Nothing on the site is a filled control. A control that sets vertical padding instead of a min-height will drift out of the pair the moment its type changes.
+**Control heights follow the grid.** Control dimensions use whole multiples of the 8px
+base, with roles defined by the actual component. Both `.button` and `.button.secondary`
+have a 48px minimum height with horizontal padding of 24px and no vertical padding. Header controls,
+directory toolbar controls and collection badge rows are also 48px. Sort menu options
+are 40px, rising to 48px on coarse pointers. Tags, active-filter chips, category rows,
+filter options and reset controls use 32px; filter options and reset controls rise to
+48px on coarse pointers. Mobile directory search and sort controls use 56px. Active-filter
+chips retain their visible height and expand their hit area through a pseudo-element.
+Standalone small targets have a 24px floor; links inside sentences remain inline.
+
+Primary buttons use an accent border and label; secondary buttons use neutral ones.
+Both are transparent at rest. On hover or keyboard focus, the primary gains a 10% accent
+tint and both inherit a 1px lift; the secondary stays transparent. Reduced motion removes
+the lift. These are existing button exceptions to the general colour-only hover rule.
+
+**Historical:** this was called *The Two Control Heights* until 2026-09-06 and described
+44px primary / 38px secondary controls. That pair is superseded by the component roles
+above; it is not a recipe for new controls.
 
 ### Collection Badges
 The collection badge on an app detail page is a link to a curated collection, and it is the rarest fact on that page: six of a hundred apps carry one. It is an honour marker, not a chip. It was a 38px outlined pill sitting above the primary button, where it read as a second, weaker control; it now opens the detail rail.
 - **Style:** the collection's mark beside its name in ink at Metadata weight 700. Built exactly like a category row: no container, no ring, no fill, and the glyph simply inherits the row's colour and turns blue with it on hover. A ring around the mark made the mark the loud thing rather than the honour.
 - **Rank:** first item in the rail, above Categories and Tags. Rank comes from position, from the label sitting in ink at weight 700 where a category label sits muted at 600, and from a 48px row against the category rows' 32px. Never from a colour of its own.
 - **Named, like its neighbours.** The group carries a `Collections` eyebrow and 18px of clear space beneath it. It was the only unlabelled group in the rail, which is why it read as orphaned: every other group on the site is named by an eyebrow, and this one had opted out of the house's own strongest device. Setting the names in the display serif at Title was tried for the same reason and rejected; the rail keeps one voice.
-- **Marks:** 19px, the same as a category mark. Lucide scales its stroke with the glyph, so an icon set larger here would render a heavier stroke and put one icon family at two weights in a single column.
+- **Marks:** 16px (`--icon-sm`), the same as a category mark. The shared glyph rule compensates for rendered size so both hold a 1.5px line; increasing glyph size does not increase line weight.
 - **Separation:** space alone divides it from the taxonomy below. A rule there reads as a container seam and competes with the thing it is meant to set apart.
 - **State:** hover tints the label blue and the mark follows it. Focus adds the accent outline, because colour alone is not a focus indicator.
 
@@ -736,16 +752,16 @@ take `-2px` so the ring sits inside the row rather than crossing its neighbours,
 override only that. Colour is never the indicator on its own — a control that answers a
 pointer with colour still owes a keyboard reader a ring. Adopted 2026-09-06.
 
-**Colour is the hover language.** A control answers a pointer by changing colour and nothing
-else. Two things are allowed to do more, and both earn it: a **card** lifts, under The One
+**Colour is the hover language.** The default control response is a colour change. Cards and panel rows have their own responses: a **card** lifts, under The One
 Hover Rule below, because the whole surface is the target; a **list row** inside a panel —
 menu options, search results, filter rows — fills, because the row is the target and colour
-alone would not show which of a stack of rows is live. Everything else is colour. This was
+alone would not show which of a stack of rows is live. Buttons retain the tint/lift exception specified under Control heights follow the grid. Other controls use colour. This was
 already true of seventeen rules before it was written down, which is exactly why it kept
 being broken: the dropdown triggers filled their shells and the secondary button invented a
 surface it does not have at rest, both of them local decisions that nothing contradicted.
-A filled control shifting its fill on hover is not an exception to this — the primary
-`.button` is filled at rest, so that is a shift rather than an arrival.
+The primary `.button` is transparent at rest; its interaction tint arrives on hover or
+keyboard focus. Describing it as filled at rest was an obsolete instruction, corrected
+on 2026-09-07 without changing the treatment.
 
 An **open** control stays lit. A dropdown trigger holds the accent, in its label and its
 chevron, for as long as its panel is showing, so the trigger and the menu it opened read as
@@ -929,11 +945,11 @@ The header is sticky, translucent, and restrained. The brand is the buoy mark al
   theme toggle used to fill a circle behind their glyph on hover, so two of the five things
   in the row replied with a disc while the other three replied with colour. The discs went
   on 2026-09-06. Focus keeps a ring, because colour alone is not an adequate focus
-  indicator: it is the links' own ring, an outline at 4px offset rather than a box-shadow,
-  so it follows each control's radius. The theme toggle additionally rotates 12°, which is
-  the one hover in the header that is not purely colour.
+  indicator: the shared `--focus-ring` uses `--focus-offset` (3px), following each control's
+  radius. Historical: the theme toggle rotated 12° until 2026-09-06; it now changes colour
+  only, with no hover rotation.
 - **One glyph size, one weight.** Every icon in the header is 24px in a 48px control at
-  stroke-width 1.8, the menu toggle's lines included, and the search modal's input icon
+  a rendered 1.5px stroke, the menu toggle's lines included, and the search modal's input icon
   joins them: it is the same magnifier at the same size as the header button, so a reader
   who opens search sees the mark they clicked. The search mark was 16px against the theme
   toggle's 24px until 2026-09-06 — the two were declared in different stylesheets,
@@ -943,11 +959,12 @@ The header is sticky, translucent, and restrained. The brand is the buoy mark al
   block went with the fix rather than being left to describe a rendering that no longer
   happened. The modal's input icon had no stroke-width at all and fell through to Lucide's
   own `stroke-width="2"`, which made the heaviest glyph on the site one nobody had chosen.
-- **Two weights, by size.** The 24px glyphs in the chrome are 1.8; the 16px glyphs inside
-  modals — the close marks and the RSS copy control — are 2, so a smaller mark holds its
-  colour at the size it is actually drawn. Both close buttons rendered at 2 already, but
-  only because that is Lucide's attribute default; they now declare it, which is the whole
-  difference between a value and a coincidence.
+- **One rendered stroke at every size.** `--icon-stroke: 1.5` defines the line that lands
+  on screen. For the shared 24-unit SVG viewBox, authored stroke-width is
+  `calc(var(--icon-stroke) * 24 / var(--icon-size, var(--icon-md)))`: 1.5 at 24px and
+  2.25 at 16px. Close marks and the RSS copy glyph follow this same rule. Filled brand
+  marks are outside this outline-glyph contract. Historical: the former 1.8/2 authored
+  weights were superseded by this size compensation; do not restore them.
 - **The directory's search field carries the site's own clear ×.** Both search inputs are
   `type="search"`, so WebKit drew a native cancel button in them, and it behaved differently
   per engine — Chrome reveals it on hover or focus, Safari whenever the field has text — so

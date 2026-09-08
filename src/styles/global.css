@@ -568,8 +568,8 @@ svg.icon {
 .button.secondary { border-color: var(--line); background: transparent; color: var(--text); }
 /* The secondary button is transparent at rest, so a fill on hover was inventing a surface
    the control does not otherwise have. Its edge and its label carry the response instead.
-   The primary `.button` keeps its fill change: it is filled at rest, so that is a shift
-   rather than an arrival. */
+   The primary `.button` is also transparent at rest, but retains its 10% accent tint
+   on interaction. Both button variants retain the inherited 1px lift, except with reduced motion. */
 .button.secondary:hover,
 .button.secondary:focus-visible {
   border-color: color-mix(in srgb, var(--accent) 52%, var(--line));
@@ -1258,7 +1258,7 @@ svg.icon {
 /* Named by its own eyebrow like every other group in the rail, and given more air
    than they get. It stays in the rail's utility voice: rank comes from the label
    sitting in ink at weight 700 where a category label sits muted at 600, from the
-   44px row against their 34px, and from leading the rail. */
+   48px row against their 32px, and from leading the rail. */
 .collection-badge {
   display: grid;
   grid-template-columns: 32px minmax(0, 1fr);
@@ -1289,9 +1289,8 @@ svg.icon {
   justify-content: center;
 }
 .category-directory-icon svg { --icon-size: var(--icon-sm); }
-/* Same size as a category mark, so the two render the same 1.58px stroke: lucide
-   scales its stroke with the glyph, and any size difference here would put one
-   icon family at two weights in a single column. */
+/* Same 16px size as a category mark. The shared glyph rule compensates for
+   rendered size so the line remains 1.5px at every glyph size. */
 .collection-badge-icon svg { --icon-size: var(--icon-sm); }
 .app-detail-best-for { max-width: var(--measure); }
 .app-detail-best-for p:not(.eyebrow) { margin: 0; color: var(--muted); font-size: 1rem; line-height: 1.5; }
@@ -1986,14 +1985,14 @@ svg.icon {
 /* Applied filters, one pill each, between the toolbar and the grid. The row is absent
    rather than empty when nothing is applied, so it never leaves a gap above the cards.
 
-   A pill is a secondary control under The Two Control Heights: inline-flex, a
-   `min-height`, horizontal padding and no vertical padding, at 38px and rising to 44px
-   on a coarse pointer. It takes the accent because an applied filter is an active state,
+   An applied filter uses the 32px chip role: inline-flex, a `min-height`,
+   horizontal padding and no vertical padding. On coarse pointers its hit area
+   expands through the pseudo-element below. It takes the accent because an applied filter is an active state,
    which is what The Beacon Rule gives blue. It descends from `.tag` for radius and label
    type but not for `text-transform`: tags are lowercase, collection labels are not.
 
    The whole pill removes. Putting a separate target around the cross would be two
-   controls inside 38px, and The Target Floor Rule wants the area grown around a glyph
+   controls inside one chip, and The Target Floor Rule wants the area grown around a glyph
    rather than the glyph made into its own button. */
 /* How many, and why that many, on one line against the grid they describe.
 
@@ -2028,12 +2027,9 @@ svg.icon {
 .directory-active {
   display: inline-flex;
   position: relative;
-  /* A chip, not a pill control. It carries `.tag`'s type role exactly — 12.48px at 700 —
-     and sits directly above a grid of `.tag` chips, so it belongs to that family and not
-     to The Two Control Heights, which governs buttons. At 38px it wrapped 14.35px of
-     line-height in a 2.65 box-to-type ratio, the airiest box in the directory around its
-     smallest type, against 1.98 for the chip it sits above. 30px puts it one step above
-     `.tag`, which is what its being interactive earns, and no more. */
+  /* The active-filter chip shares the tag role and a 32px minimum height.
+     Historical: it was first reduced from 38px to 30px to tighten its proportions;
+     the base-unit pass superseded both sizes with 32px. */
   min-height: 32px;
   max-width: 100%;
   align-items: center;
@@ -2682,19 +2678,19 @@ svg.icon {
   .filter-reset { min-height: 48px; }
   /* The Target Floor Rule grows the area around a target that is too small rather than
      padding the target out, which is how the Editor's Pick mark already works. The chip
-     stays 30px in both pointer worlds and reaches 44 through this layer, so the row reads
+     stays 32px in both pointer worlds and expands through this layer, so the row reads
      the same on a phone as on a desktop. Only the vertical is grown: every chip is
-     already wider than 44px, and growing sideways would run neighbours together. */
+     kept at its existing width, and growing sideways would run neighbours together. */
   .directory-active::after {
     content: '';
     position: absolute;
     /* Offset from the padding box, not the border box: `box-sizing: border-box` puts the
-       1px borders inside the 30px, so the pseudo-element starts from 28px and -7px
-       reached only 41. -8px is what actually lands on 44. */
+       1px borders inside the 32px, so the pseudo-element starts from the
+       30px padding box; -8px gives it a 46px hit area. */
     inset: -8px 0;
   }
-  /* The area grows 7px past the visible chip on each side, so wrapped rows need 14px
-     between them or two chips would claim the same tap. */
+  /* The area grows 7px past the visible chip on each side; the 16px
+     row gap keeps neighbouring hit areas apart. */
   .directory-actives { gap: var(--space-2) 8px; }
 }
 
