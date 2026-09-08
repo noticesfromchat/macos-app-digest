@@ -1,3 +1,17 @@
+.search-overlay,
+.mobile-nav-overlay,
+.rss-overlay {
+  /* Overlay typography has its own documented scale. Naming these values keeps the
+     detector and the implementation aligned without snapping dialogs to page roles. */
+  --type-mobile-nav-action: 1.05rem;
+  --type-search-input: clamp(1.1rem, 2vw, 1.45rem);
+  --type-search-result-title: 1.18rem;
+  --type-search-result-meta: .9rem;
+  --type-rss-title: clamp(2rem, 4vw, 2.85rem);
+  --type-search-result-title-mobile: 1.08rem;
+  --type-rss-title-mobile: clamp(1.75rem, 10vw, 2.4rem);
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
@@ -180,7 +194,7 @@
 
 .search-modal {
   --search-border: 1px;
-  --search-inset: var(--space-1);
+  --search-inset: 16px;
   --search-radius: var(--radius-md);
   position: relative;
   z-index: 1;
@@ -257,7 +271,7 @@
   background: transparent;
   color: var(--text);
   font: inherit;
-  font-size: 1.05rem;
+  font-size: var(--type-mobile-nav-action);
   font-weight: 600;
   text-decoration: none;
   transition: color 180ms ease, background-color 180ms ease;
@@ -366,7 +380,7 @@
   background: transparent;
   color: var(--text);
   font: inherit;
-  font-size: clamp(1.1rem, 2vw, 1.45rem);
+  font-size: var(--type-search-input);
   font-weight: 600;
   outline: 0;
 }
@@ -402,9 +416,16 @@
   color: var(--accent);
 }
 
+/* The label sits in a band of its own: 16px from the input's rule above it and 16px to the
+   first result. It paid 8px above and borrowed the 16px below from the list's top inset, so
+   the one line between the field and the results sat closer to the rule than to the thing it
+   counts — and the borrowed half scrolled away the moment the list moved, because a scroll
+   container's top padding travels with its content. The label owns both halves now and the
+   list carries no top inset, so the band holds at every scroll position. Everything else in
+   this modal is on the same 16px step. */
 .search-count {
   margin: 0;
-  padding: var(--space-1) 16px 0;
+  padding: var(--space-2) 16px;
   color: var(--muted);
   font-size: var(--type-label);
   line-height: var(--leading-label);
@@ -418,14 +439,14 @@
   max-height: min(58vh, 560px);
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: var(--search-inset);
+  padding: 0 var(--search-inset) var(--search-inset);
 }
 
 .search-result {
   display: grid;
   align-items: center;
   padding: var(--space-2) 16px;
-  border-radius: max(0px, calc(var(--search-radius) - var(--search-border) - var(--search-inset)));
+  border-radius: var(--radius-sm);
   color: var(--text);
   text-decoration: none;
   transition: background-color 120ms ease, color 120ms ease;
@@ -449,7 +470,7 @@
 .search-result-copy strong {
   overflow: hidden;
   font-family: var(--display);
-  font-size: 1.18rem;
+  font-size: var(--type-search-result-title);
   font-weight: 600;
   line-height: 1.2712;
   text-overflow: ellipsis;
@@ -458,8 +479,8 @@
 
 .search-result-copy span {
   overflow: hidden;
-  color: var(--muted);
-  font-size: .9rem;
+  color: var(--body-text);
+  font-size: var(--type-search-result-meta);
   line-height: 1.3889;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -468,7 +489,7 @@
 .search-empty {
   margin: 0;
   padding: var(--space-3) 16px var(--space-4);
-  color: var(--muted);
+  color: var(--body-text);
   font-size: .95rem;
 }
 
@@ -523,14 +544,14 @@
   margin: var(--space-2) 16px 0;
   color: var(--text);
   font-family: var(--display);
-  font-size: clamp(2rem, 4vw, 2.85rem);
+  font-size: var(--type-rss-title);
   font-weight: 400;
   line-height: .98;
 }
 
 .rss-description {
   margin: var(--space-2) 16px 0;
-  color: var(--muted);
+  color: var(--body-text);
   font-size: 1rem;
   line-height: 1.5;
   max-width: 60ch;
@@ -658,11 +679,7 @@
   .search-input-wrap { gap: var(--space-1) 8px; padding: var(--space-2) 16px; }
   .search-close { width: 48px; height: 48px; }
   .search-input { font-size: 16px; }
-  .search-count { padding: var(--space-2) 16px var(--space-2); }
-  .search-results {
-    max-height: calc(100dvh - 168px);
-    padding: 0 var(--search-inset) var(--search-inset);
-  }
+  .search-results { max-height: calc(100dvh - 168px); }
   .search-result {
     align-items: start;
     padding: var(--space-2) 16px;
@@ -670,7 +687,7 @@
   /* 17.28px in the same 24px box the desktop row uses: the ratio is re-derived from
      the new size rather than left at 1.2712, which was putting it in a 21.97px box and
      taking the result rows off the rhythm on a phone only. */
-  .search-result-copy strong { font-size: 1.08rem; line-height: 1.3889; }
+  .search-result-copy strong { font-size: var(--type-search-result-title-mobile); line-height: 1.3889; }
   .search-result-copy span {
     display: -webkit-box;
     overflow: hidden;
@@ -679,7 +696,7 @@
     -webkit-line-clamp: 2;
   }
   .rss-modal-topline { padding: var(--space-2) 16px 0; }
-  .rss-modal h2 { margin: var(--space-2) 16px 0; font-size: clamp(1.75rem, 10vw, 2.4rem); }
+  .rss-modal h2 { margin: var(--space-2) 16px 0; font-size: var(--type-rss-title-mobile); }
   /* 15.36px in a 24px box, the size this prose has on every other surface. It kept
      the 1.5 body ratio after the size dropped, which gave 23.04px. */
   .rss-description { margin: var(--space-2) 16px 0; font-size: .96rem; line-height: 1.5625; }

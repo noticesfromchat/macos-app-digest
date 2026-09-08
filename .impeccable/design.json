@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-31T23:31:32Z",
+  "generatedAt": "2026-09-08T17:00:00Z",
   "title": "Design System: App Waypoint",
   "extensions": {
     "colorMeta": {
@@ -79,6 +79,18 @@
           "oklch(96% 0.018 255)"
         ]
       },
+      "harbor-body": {
+        "role": "foreground",
+        "displayName": "Harbor Body",
+        "canonical": "#40546a",
+        "purpose": "Light-theme descriptions, explanations and editorial prose."
+      },
+      "harbor-chip-ink": {
+        "role": "foreground",
+        "displayName": "Harbor Chip Ink",
+        "canonical": "#384d63",
+        "purpose": "Light-theme text carried by Shell Quiet chips."
+      },
       "beacon-blue": {
         "role": "primary",
         "displayName": "Beacon Blue",
@@ -138,6 +150,24 @@
           "oklch(92% 0.011 83)",
           "oklch(97% 0.010 83)"
         ]
+      },
+      "current-mist": {
+        "role": "foreground",
+        "displayName": "Current Mist",
+        "canonical": "#aebdca",
+        "purpose": "Dark-theme metadata and utility text on navy surfaces."
+      },
+      "moon-current": {
+        "role": "foreground",
+        "displayName": "Moon Current",
+        "canonical": "#9fb4ca",
+        "purpose": "Dark-theme descriptions, explanations and editorial prose."
+      },
+      "moon-chip-ink": {
+        "role": "foreground",
+        "displayName": "Moon Chip Ink",
+        "canonical": "#b0c0d2",
+        "purpose": "Dark-theme text carried by Midnight Surface Strong chips."
       },
       "buoy-blue": {
         "role": "primary",
@@ -356,7 +386,8 @@
       },
       "fluidExceptions": "Horizontal only: the shell gutter, the homepage hero and app-detail rail column gaps, and the app icon frame that scales with its page. Fluid display type is exempt under The Line Box Rule.",
       "recorded": "2026-09-07",
-      "overlayException": "Viewport-fitting search/RSS top offsets use min(9vh/10vh, 12 base units); mobile overlays respect safe-area insets. Page structural spacing remains stepped."
+      "overlayException": "Viewport-fitting search/RSS top offsets use min(9vh/10vh, 12 base units); mobile overlays respect safe-area insets. Page structural spacing remains stepped.",
+      "searchResultInset": "16px horizontal field gutter; aligns hover/focus fills with the result-count inset"
     },
     "gridMeta": {
       "tracks": 12,
@@ -434,7 +465,7 @@
       },
       "pick": "--pick-inset: var(--space-4); padding and radius share it, rim adds --pick-rim",
       "iconFrame": "border-radius: 25%; shared by card (48px), hero (56px) and fluid detail (56-80px)",
-      "searchResult": "max(0px, --search-radius - --search-border - --search-inset); 16 - 1 - 8 = 7px",
+      "searchResult": "--radius-sm; the shared 8px small-element corner",
       "filterPanel": "--radius-md at all widths; mobile spans the page shell, not the viewport",
       "recorded": "2026-09-07"
     },
@@ -495,6 +526,11 @@
       {
         "name": "The Beacon Rule",
         "body": "Blue is reserved for actions, links, focus, and active states. It should not become page chrome or decorative noise.",
+        "section": "colors"
+      },
+      {
+        "name": "The Surface Ink Rule",
+        "body": "Primary reading copy, chip text and metadata are separate semantic roles: --body-text, --chip-text and --muted. Each theme maps them onto the surface's blue axis. Descriptions and editorial prose use --body-text; tag labels use --chip-text; dates, counts, breadcrumbs, sources and operational hints use --muted. Every mapping clears AA on its supported surfaces.",
         "section": "colors"
       },
       {
@@ -600,6 +636,7 @@
     ],
     "dos": [
       "Do keep the fog-grey field, white paper, deep-sea text, and blue accent in a tight relationship.",
+      "Do assign prose, chip labels and metadata through --body-text, --chip-text and --muted by meaning rather than by page.",
       "Do reuse the shared page shell so archive, tag, collection, about, and app pages line up.",
       "Do keep shadows soft and ambient.",
       "Do let serif headlines carry the editorial voice while system sans handles utility.",
@@ -610,7 +647,7 @@
       "Don't introduce loud secondary colors just to add energy.",
       "Don't reintroduce warm sand or cream into the light theme; the day palette is white and Deep-Sea-tinted grey.",
       "Don't replace the soft shadow system with hard offsets or heavy glow.",
-      "Don't use tinted text as neutral gray on colored surfaces.",
+      "Don't use neutral gray on colored surfaces; derive secondary ink from the surface hue and give each reading role one semantic token.",
       "Don't make chips, filters, or buttons feel like separate UI worlds.",
       "Don't let the brand wordmark typography spread into body copy.",
       "Don't use em dashes or en dashes in public editorial copy.",

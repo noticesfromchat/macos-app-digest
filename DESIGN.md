@@ -9,6 +9,8 @@ colors:
   shell-quiet: "#f0f3f7"
   deep-sea: "#092443"
   tide-slate: "#4d5762"
+  harbor-body: "#40546a"
+  harbor-chip-ink: "#384d63"
   line-water: "rgba(9, 35, 66, 0.2)"
   beacon-blue: "#0862d8"
   beacon-blue-hover: "#004caf"
@@ -18,7 +20,9 @@ colors:
   midnight-surface: "#0b1c30"
   midnight-surface-strong: "#10253b"
   moon-ink: "#f3ecdf"
-  fog-mist: "#afb6bf"
+  current-mist: "#aebdca"
+  moon-current: "#9fb4ca"
+  moon-chip-ink: "#b0c0d2"
   night-line: "rgba(217, 229, 240, 0.2)"
   buoy-blue: "#57a2ff"
   buoy-blue-hover: "#81b8ff"
@@ -135,7 +139,7 @@ components:
     minHeight: "48px"
   tag-chip:
     backgroundColor: "{colors.shell-quiet}"
-    textColor: "{colors.tide-slate}"
+    textColor: "{colors.harbor-chip-ink}"
     rounded: "{rounded.pill}"
     padding: "7px 10px"
   card:
@@ -191,7 +195,9 @@ The palette is a two-mode harbor system: white paper on fog grey with navy ink b
 - **Shell Strong** (#e3e8ee): the control fill — hover and focus feedback on icon buttons, nav items, search rows, and the filter count badge.
 - **Shell Quiet** (#f0f3f7): the chip fill, one step quieter than the control fill. Tag chips are metadata that should recede on a card, not controls asking to be pressed, so they sit at roughly half Shell Strong's distance from the card surface — the same step the night theme already gives them.
 - **Deep Sea** (#092443): the primary light-theme ink.
-- **Tide Slate** (#4d5762): secondary text and metadata.
+- **Tide Slate** (#4d5762): light-theme metadata and utility text.
+- **Harbor Body** (#40546a): light-theme reading copy below primary Deep Sea ink.
+- **Harbor Chip Ink** (#384d63): light-theme text carried by Shell Quiet chips.
 - **Line Water** (rgba(9, 35, 66, 0.2)): borders and separators.
 - **Header Fog** (rgba(244, 246, 249, 0.96)): the light sticky header.
 
@@ -201,7 +207,9 @@ The palette is a two-mode harbor system: white paper on fog grey with navy ink b
 - **Midnight Surface** (#0b1c30): the primary dark surface.
 - **Midnight Surface Strong** (#10253b): the dark surface contrast tone, and the value Shell Quiet resolves to at night — the night chip was already sitting at the quiet step, which is why only the day chip had to move.
 - **Moon Ink** (#f3ecdf): the main dark-theme foreground.
-- **Fog Mist** (#afb6bf): muted dark-theme copy.
+- **Current Mist** (#aebdca): dark-theme metadata and utility text.
+- **Moon Current** (#9fb4ca): dark-theme reading copy, derived from the navy surface hue.
+- **Moon Chip Ink** (#b0c0d2): dark-theme text carried by Midnight Surface Strong chips.
 - **Night Line** (rgba(217, 229, 240, 0.2)): borders and separators in dark mode.
 - **Buoy Blue Hover** (#81b8ff): the brighter dark-theme hover state.
 - **Night Header Fog** (rgba(4, 20, 38, 0.96)): the dark sticky header.
@@ -214,6 +222,14 @@ These are drawn, not printed: they exist only inside the homepage hero's canvas 
 **The Fog Rule.** Every light-mode neutral sits on Deep Sea's hue — OKLCH hue 253–258, the ink's own axis — at a chroma of 0.010 or less: Surf Foam 0.000, Drift Mist 0.005, Harbor Fog 0.008, Shell Strong 0.010, Shell Quiet 0.006. That is what keeps the field reading as harbor weather rather than default UI grey. A neutral off that axis, or any warm tone reintroduced into the light theme, breaks the day palette. The ink, the hairline, and the blue are shared with the old warm scheme and did not move.
 
 **The Beacon Rule.** Blue is reserved for actions, links, focus, and active states. It should not become page chrome or decorative noise. The palette carries no warm accent: a light wash behind the hero was tried and removed for drawing attention to itself rather than to the pick it sat behind.
+
+**The Surface Ink Rule.** Primary reading copy, chip text and metadata are separate semantic
+roles: `--body-text`, `--chip-text` and `--muted`. Each theme maps those roles onto the
+surface's own blue axis instead of dropping a neutral grey over a chromatic ground. Primary
+descriptions, explanations and editorial prose use `--body-text`; tag labels use
+`--chip-text`; dates, counts, breadcrumbs, sources and operational hints use `--muted`.
+Beacon Blue remains reserved for actions, focus, active states and the established eyebrow
+labels. Every mapping clears AA on each surface where it appears.
 
 ## Typography
 
@@ -360,9 +376,11 @@ had been written against the old 12px corner and never followed it; it now takes
 wrapper, and now takes `calc(var(--radius-md) - 1px)`. Its dropdown sat at 8px beneath a
 16px control, and now takes the full `--radius-md` at every width so trigger and panel read as one object.
 The mobile panel spans the page shell, not the viewport, and keeps that same 16px corner.
-Search result rows use `max(0px, parent radius - border - list inset)`: with a 16px
-modal corner, 1px border and 8px inset, the inner corner is 7px. This derived radius
-is deliberately not rounded to an 8px step.
+Search result rows use the sitewide `--radius-sm` at 8px. Their one-pixel difference from
+the mathematically concentric 7px inner corner is less visible than a fourth radius value
+appearing in the interface, so consistency with other small nested elements wins here.
+Their hover and focus fills sit 16px inside the search panel, matching the horizontal field
+gutter used by the result count; the row's own 16px padding remains inside that boundary.
 
 **The Eyebrow Binding Rule.** An eyebrow names the block beneath it, so the gap that binds the two is one value for the whole site: `--eyebrow-gap`, 8px, one base unit. Every eyebrow on every surface uses it, whether it comes from the `.eyebrow` margin in normal flow or from a grid `gap` where the group is laid out as a grid. A surface that sets its own number drifts out of the pair, and that is exactly how the app-detail rail ended up with 14px inside its groups while the rest of the site sat at the shared value, and 40px before one eyebrow against 22px before the next.
 
@@ -1033,6 +1051,7 @@ view in place and never compete with the Cmd+K search modal's navigation job.
 Search is a centered overlay over a frosted backdrop, with a bright, controlled surface.
 - **Shape:** `--radius-md`, 16px, at every size.
 - **Structure:** input row, result count, then a scrollable result list.
+- **The count owns its band.** The result count sits 16px below the input's rule and 16px above the first result, and it carries both halves as its own padding. The lower half used to be the list's `padding-top`, which travels with the content of a scroll container and so collapsed as soon as the list moved. The list keeps its 16px side and bottom inset and takes none at the top.
 - **Behavior:** the backdrop blurs, the modal remains narrow enough to feel deliberate, the app index loads on demand, and results behave like normal focusable links rather than a custom combobox.
 
 **The One Scrim Rule.** Search, the navigation menu and the subscribe dialog share one backdrop, `--scrim`, and it follows the theme. All three were a near-black navy in both themes, which is right over a dark page and turns a light one grey; light now takes Harbor Fog at 62%, so the page stays bright and the blur does the obscuring. The blur is the same in all three at `blur(12px) saturate(110%)`; the nav menu had drifted to 10px for no reason anyone recorded. A panel separates from the scrim on its own shadow, not on the scrim being dark.
@@ -1093,7 +1112,8 @@ in issue frontmatter as the editorial audit trail, but nothing renders it.
 Every route that does not exist renders `src/pages/404.astro` on the same page shell as the
 rest of the site: the `Page Not Found` eyebrow, page title, dek, then one bordered recovery
 panel spanning the full page shell. The panel reuses the Explore mega card's container,
-spacing, two-column discovery grid, typography and Lucide icon tiles. Its four destinations
+spacing, two-column discovery grid and Lucide icon tiles. Its four recovery titles use the
+23px/28px Card Title role rather than the Explore taxonomy name's private treatment. Its four destinations
 are Search, Explore, Archive, then About. The tile itself does not get a row hover wash; only
 the title and icon respond, exactly like the Explore discovery links.
 
@@ -1105,11 +1125,11 @@ A dead link now stays inside the publication.
 
 ### Search Surface Type
 
-The search modal, the mobile nav search and the RSS dialog run on their own type sizes
-rather than the page scale: the nav search at 1.05rem, the search input at
-`clamp(1.1rem, 2vw, 1.45rem)`, the two search-result treatments at 1.18rem and .9rem, and
-the RSS dialog heading at its own clamp on each of two breakpoints. Seven values in
-`src/styles/search.css`, all deliberate.
+The search modal, the mobile nav search and the RSS dialog run on their own named type tokens
+rather than the page scale: `--type-mobile-nav-action`, `--type-search-input`,
+`--type-search-result-title`, `--type-search-result-meta`, `--type-rss-title`, and mobile
+overrides for the result and RSS titles. Their seven values live together at the top of
+`src/styles/search.css` and retain the reviewed sizes exactly.
 
 They are deliberate because that surface is not the page. It opens over everything, it is
 read at arm's length in a hurry, and its input is the reference the directory filter bar
@@ -1118,8 +1138,9 @@ and the dialog look in order to satisfy a detector advisory, which is the wrong 
 The mobile search input's explicit 16px is load-bearing for a different reason: anything
 smaller makes iOS Safari zoom the page when the field takes focus.
 
-The mechanical detector reports these seven as `design-system-font-size` advisories on
-every run. That is expected. Treat a change in the count as the signal, not the count.
+The tokens exist so the mechanical detector can distinguish this documented overlay system
+from accidental literals. A new `design-system-font-size` advisory in `search.css` is now a
+real signal rather than part of a standing count.
 
 ### Social Cards
 
@@ -1176,6 +1197,7 @@ is a standfirst and reads whole either way; a title is the editorial line itself
 
 ### Do:
 - **Do** keep the fog-grey field, white paper, deep-sea text, and blue accent in a tight relationship.
+- **Do** assign prose, chip labels and metadata through `--body-text`, `--chip-text` and `--muted` by meaning rather than by page.
 - **Do** reuse the shared page shell so archive, tag, collection, about, and app pages line up.
 - **Do** keep shadows soft and ambient.
 - **Do** let serif headlines carry the editorial voice while system sans handles utility.
@@ -1186,7 +1208,7 @@ is a standfirst and reads whole either way; a title is the editorial line itself
 - **Don't** introduce loud secondary colors just to add energy.
 - **Don't** reintroduce warm sand or cream into the light theme; the day palette is white and Deep-Sea-tinted grey.
 - **Don't** replace the soft shadow system with hard offsets or heavy glow.
-- **Don't** use tinted text as neutral gray on colored surfaces.
+- **Don't** use neutral gray on colored surfaces; derive secondary ink from the surface hue and give each reading role one semantic token.
 - **Don't** make chips, filters, or buttons feel like separate UI worlds.
 - **Don't** let the brand wordmark typography spread into body copy.
 - **Don't** add a font to this repository without its licence file. See The Borrowed Type Rule.

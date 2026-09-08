@@ -7,6 +7,11 @@
   --chip: #f0f3f7;
   --text: #092443;
   --muted: #4d5762;
+  /* Reading copy, chip labels and metadata are three different foreground jobs.
+     Keeping them separate prevents a single muted grey from flattening prose and
+     utility text into one level, especially when the surface is chromatic. */
+  --body-text: #40546a;
+  --chip-text: #384d63;
   --line: rgba(9, 35, 66, 0.2);
   --accent: #0862d8;
   --accent-hover: #004caf;
@@ -139,7 +144,11 @@
   --surface-strong: #10253b;
   --chip: #10253b;
   --text: #f3ecdf;
-  --muted: #afb6bf;
+  /* All three secondary inks stay on the navy surface's hue rather than falling
+     back to neutral grey. Each clears AA on page, card, chip and footer surfaces. */
+  --muted: #aebdca;
+  --body-text: #9fb4ca;
+  --chip-text: #b0c0d2;
   --line: rgba(217, 229, 240, 0.2);
   --accent: #57a2ff;
   --accent-hover: #81b8ff;
@@ -525,7 +534,7 @@ svg.icon {
 .dek {
   max-width: var(--measure);
   margin: var(--space-2) 0 0;
-  color: var(--muted);
+  color: var(--body-text);
   font-size: var(--type-dek);
   line-height: 1.6842;
 }
@@ -672,6 +681,15 @@ svg.icon {
   line-height: 1.1;
 }
 
+/* On the homepage the issue number is supporting copy; on archived issues this same
+   element is the page's semantic H1 and must outrank the section headings beneath it. */
+h1.home-hero-number {
+  font-size: var(--type-page-title);
+  font-weight: 500;
+  letter-spacing: -.035em;
+  line-height: .96;
+}
+
 .home-hero-date {
   margin: var(--space-1) 0 0;
   color: var(--muted);
@@ -683,9 +701,9 @@ svg.icon {
 
 .home-hero-dek {
   margin: var(--space-2) 0 0;
-  color: var(--muted);
-  font-size: .98rem;
-  line-height: 1.5306;
+  color: var(--body-text);
+  font-size: 1rem;
+  line-height: var(--leading-body);
 }
 
 .section { padding: var(--section-space) 0; border-top: 1px solid var(--line); }
@@ -890,10 +908,11 @@ svg.icon {
    flanked it become one interval with one owner, at the same 40px they summed to. */
 .app-card.hero-pick-card .best-for {
   margin-top: var(--space-5);
-  font-size: .97rem;
+  font-size: 1rem;
+  line-height: var(--leading-body);
 }
 
-.app-card.hero-pick-card .best-for p { margin: 0; color: var(--muted); }
+.app-card.hero-pick-card .best-for p:not(.editor-note-label) { margin: 0; color: var(--body-text); }
 .app-card.hero-pick-card .tag-list { margin-top: auto; padding-top: var(--space-3); }
 /* Struck Light. The Editor's Pick is the one app the issue argues for, so in the
    hero it is lit by its own colour: a bounded halo behind the icon and a slow
@@ -1136,7 +1155,11 @@ svg.icon {
    the glyph inside it sits on the scale rather than resolving to whatever 21px the em
    happened to produce. */
 .editors-pick-icon { --icon-size: var(--icon-md); }
-.app-card p { margin: 0; color: var(--muted); }
+.app-card p { margin: 0; color: var(--body-text); }
+.app-card .reading-source { color: var(--muted); }
+/* This follows the generic paragraph rule deliberately: the Editor's Pick labels
+   belong to the site's accent eyebrow role, not to card prose. */
+.app-card .editor-note-label { color: var(--accent); }
 .app-summary.has-app-icon .app-description { margin-top: var(--space-2); }
 .app-summary { min-height: 136px; margin-bottom: var(--space-2); }
 .best-for { min-height: 96px; font-size: 1rem; }
@@ -1144,7 +1167,7 @@ svg.icon {
 .reading-source strong { color: var(--text); }
 
 .tag-list { display: flex; min-height: 88px; flex-wrap: wrap; align-content: flex-start; gap: var(--space-1) 8px; padding-top: var(--space-2); }
-.tag { display: inline-flex; width: fit-content; align-items: center; margin: 0; padding: var(--space-1) 8px; border: 0; border-radius: 999px; background: var(--chip); color: var(--muted); font-size: var(--type-label); font-weight: 700; line-height: var(--leading-label); text-decoration: none; text-transform: lowercase; transition: color 180ms ease, background-color 180ms ease; }
+.tag { display: inline-flex; width: fit-content; align-items: center; margin: 0; padding: var(--space-1) 8px; border: 0; border-radius: 999px; background: var(--chip); color: var(--chip-text); font-size: var(--type-label); font-weight: 700; line-height: var(--leading-label); text-decoration: none; text-transform: lowercase; transition: color 180ms ease, background-color 180ms ease; }
 .tag:hover,
 .tag:focus-visible { background: color-mix(in srgb, var(--chip) 82%, var(--accent)); color: var(--accent-hover); }
 .reading-card h3 { min-height: 112px; }
@@ -1152,7 +1175,7 @@ svg.icon {
 .reading-card .reading-description { min-height: 112px; }
 
 .feature-card { padding: var(--card-inset); }
-.feature-card p { max-width: var(--measure); margin: 0 0 var(--space-2); color: var(--muted); }
+.feature-card p { max-width: var(--measure); margin: 0 0 var(--space-2); color: var(--body-text); }
 /* A standalone link on its own line is a target, not prose, so it carries the
    minimum. The inline RSS link in the subscribe copy is left alone: WCAG exempts a
    target sitting inside a sentence, and padding one out would break the line. */
@@ -1293,7 +1316,7 @@ svg.icon {
    rendered size so the line remains 1.5px at every glyph size. */
 .collection-badge-icon svg { --icon-size: var(--icon-sm); }
 .app-detail-best-for { max-width: var(--measure); }
-.app-detail-best-for p:not(.eyebrow) { margin: 0; color: var(--muted); font-size: 1rem; line-height: 1.5; }
+.app-detail-best-for p:not(.eyebrow) { margin: 0; color: var(--body-text); font-size: 1rem; line-height: 1.5; }
 .app-detail-actions { display: flex; flex-wrap: wrap; gap: var(--space-2) 16px; margin-top: var(--space-3); }
 .app-detail-actions .button { gap: var(--space-1) 8px; }
 .app-detail-actions .button svg { --icon-size: var(--icon-sm); }
@@ -1473,6 +1496,12 @@ svg.icon {
   line-height: 1.2;
   transition: color 180ms ease;
 }
+/* Recovery routes are full-width card actions. Use the documented card-title role
+   instead of the old 20px size that sat between tile and card titles. */
+.not-found-page .explore-discovery-link strong {
+  font-size: var(--type-card-title);
+  line-height: 1.2174;
+}
 /* A real colour, not an opacity. The tag chip counts are dimmed with opacity .72, which
    computes to 3.47:1 in light theme and fails AA; --muted holds 7.35:1 on this ground. */
 /* The count belongs to the name, so it inherits the name's face, size and weight and
@@ -1497,7 +1526,7 @@ svg.icon {
 .explore-discovery-link small {
   display: block;
   margin-top: 4px;
-  color: var(--muted);
+  color: var(--body-text);
   font-size: 1rem;
   line-height: 1.5;
 }
@@ -1515,7 +1544,7 @@ svg.icon {
    in light theme and failed AA at this size; --muted holds about 6.6:1 on the chip. The
    category and collection counts in the discovery card are set the same way. */
 .explore-popular-tags .tag span {
-  color: var(--muted);
+  color: var(--chip-text);
   font-size: var(--type-label);
   font-variant-numeric: tabular-nums;
 }
@@ -1561,7 +1590,7 @@ svg.icon {
 .explore-subscribe-body {
   max-width: var(--measure);
   margin: 0;
-  color: var(--muted);
+  color: var(--body-text);
   font-size: 1rem;
   line-height: 1.5;
 }
@@ -1730,8 +1759,8 @@ svg.icon {
    8px here plus the first section's 16px top makes the same 24px every section pair
    carries. It used to close on `--section-space`, a fluid clamp, which made this one
    boundary 56px while the rest were 24. */
-.about-content { margin-top: var(--space-4); padding-bottom: var(--space-1); color: var(--muted); font-size: 1rem; }
-.about-page p:not(.dek) { margin: 0; color: var(--muted); }
+.about-content { margin-top: var(--space-4); padding-bottom: var(--space-1); color: var(--body-text); font-size: 1rem; }
+.about-page p:not(.dek) { margin: 0; color: var(--body-text); }
 .about-page p:not(.dek) + p { margin-top: var(--space-2); }
 /* The selection criteria are the one list on the page. They take the same measure and
    muted ink the prose does, so the block reads as part of the writing rather than as a
@@ -1745,7 +1774,7 @@ svg.icon {
      items bind at 8, so the block reads as one thing. */
   margin: var(--space-2) 0;
   padding: 0;
-  color: var(--muted);
+  color: var(--body-text);
   list-style: none;
 }
 .about-page .about-criteria li { position: relative; padding-left: 16px; }
@@ -1838,7 +1867,7 @@ svg.icon {
 .archive-card-dek {
   max-width: var(--measure);
   margin: 0;
-  color: var(--muted);
+  color: var(--body-text);
 }
 /* The information scent: what a reader chooses on. Quiet enough to stay metadata,
    with the app name itself carrying the ink. */
@@ -1862,7 +1891,7 @@ svg.icon {
 .archive-empty {
   max-width: var(--measure);
   margin: var(--section-space) 0 0;
-  color: var(--muted);
+  color: var(--body-text);
 }
 
 /* The end of the route. Issue 01 used to fall straight into the footer; the
@@ -1902,7 +1931,7 @@ svg.icon {
   line-height: 1.2174;
   letter-spacing: -.02em;
 }
-.archive-origin p { margin: var(--space-1) 0 0; color: var(--muted); }
+.archive-origin p { margin: var(--space-1) 0 0; color: var(--body-text); }
 .archive-origin--empty { margin-top: var(--section-space); }
 /* The archive closes on the subscribe card, and space marks that boundary rather than a
    rule, the same as issues and About. 40px of margin plus the section's own 32px of top
@@ -2472,7 +2501,7 @@ svg.icon {
      or the cards it replaces. Set on the page field it reads as what it is. The same
      move the count already made when it stopped looking like a third control. */
   padding: 2px 0;
-  color: var(--muted);
+  color: var(--body-text);
   font-size: 1rem;
 }
 .directory-empty-action {
