@@ -249,11 +249,25 @@ it. See Issue Subscribe Card in `DESIGN.md` for the structure and the reasoning.
   navigation.
 - Detail pages use the existing app Markdown fields; do not duplicate app copy in
   issue files or hand-authored page markup.
-- Detail pages may show related apps based on shared tags and compact links to related
-  tag landing pages.
+- Detail pages may show related apps based on weighted shared tags, collections and
+  categories, with compact links to related tag landing pages.
+- Related apps must prefer functional similarity over broad taxonomy overlap. The
+  ranking lives in `src/data/related-apps.ts`: exact shared tags carry the most weight,
+  rare tags carry more than common tags, shared collections break close ties, and broad
+  tags such as `productivity`, `utility`, `ai`, `local` and `open-source` are weak
+  modifiers rather than primary evidence. Categories are derived from tags and serve as
+  fallback context, not the main recommendation signal.
+- Do not randomize related-app cards across a broad pool. Render the strongest scored
+  recommendations directly so refreshing an app detail page does not swap in weaker
+  matches. Use `npm run audit:related-apps -- <app-id>` to inspect the scores and shared
+  reasons for a page before changing the rule or tuning tags.
+- The related-app section uses a tighter 40px gap from its heading to the cards: 24px
+  from the app-detail heading margin plus the shared directory grid's 16px top margin.
 - The page is a masthead and a rail. The masthead carries the app's icon and name as one
   lockup, then the dek, Best For and the Homepage button. The rail carries the collection
   badge, categories and tags. At 920px the rail stacks under the masthead.
+- The breadcrumb-to-lockup gap is 16px, matching the lockup-to-dek gap. Keep this
+  scoped to app detail pages; text-only page titles use the shared breadcrumb rhythm.
 - The app's icon appears beside the page title. An app with no icon uses its first
   category's mark on the missing-icon colour, exactly as its cards do.
 - Metadata never outranks identity. Categories read at Metadata scale as compact rows,

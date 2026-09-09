@@ -1184,6 +1184,7 @@ h1.home-hero-number {
 }
 
 .app-detail-page { padding: var(--page-start-space) 0 var(--space-4); }
+.app-detail-page > .breadcrumb { margin-bottom: var(--space-2); }
 /* The detail page reads: what is this, is it for me, go and get it. The masthead
    carries that path. Everything that files the app rather than describes it sits
    in the rail, which also puts the right half of the fold to work. The rail is
@@ -1304,7 +1305,7 @@ h1.home-hero-number {
 .app-detail-actions .button svg { --icon-size: var(--icon-sm); }
 .app-detail-tags { min-height: 0; padding-top: 0; }
 .app-detail-section { width: 100%; padding-right: 0; padding-left: 0; }
-.app-detail-related-grid .app-card:nth-child(n + 7) { display: none; }
+.app-detail-section .section-heading { margin-bottom: var(--space-3); }
 
 /* The hero's waterline again, quieter and narrower, with the mark riding it —
    the issue turns from apps to watching and reading at a marked passage. */
