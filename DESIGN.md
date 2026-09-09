@@ -631,7 +631,7 @@ The collection badge on an app detail page is a link to a curated collection, an
 - **Style:** the collection's mark beside its name in ink at Metadata weight 700. Built exactly like a category row: no container, no ring, no fill, and the glyph simply inherits the row's colour and turns blue with it on hover. A ring around the mark made the mark the loud thing rather than the honour.
 - **Rank:** first item in the rail, above Categories and Tags. Rank comes from position, from the label sitting in ink at weight 700 where a category label sits muted at 600, and from a 48px row against the category rows' 32px. Never from a colour of its own.
 - **Named, like its neighbours.** The group carries a `Collections` eyebrow and 18px of clear space beneath it. It was the only unlabelled group in the rail, which is why it read as orphaned: every other group on the site is named by an eyebrow, and this one had opted out of the house's own strongest device. Setting the names in the display serif at Title was tried for the same reason and rejected; the rail keeps one voice.
-- **Marks:** 16px (`--icon-sm`), the same as a category mark. The shared glyph rule compensates for rendered size so both hold a 1.5px line; increasing glyph size does not increase line weight.
+- **Marks:** 24px (`--icon-md`) in the same 32px icon column as category marks. The shared glyph rule compensates for rendered size where stroked icons are used; Phosphor collection marks render as filled paths at the same glyph size.
 - **Separation:** space alone divides it from the taxonomy below. A rule there reads as a container seam and competes with the thing it is meant to set apart.
 - **State:** hover tints the label blue and the mark follows it. Focus adds the accent outline, because colour alone is not a focus indicator.
 
@@ -685,24 +685,30 @@ This replaced a set of fixed `min-height` budgets on each region. Those were gue
 
 **Reading cards are the exception, and align on their own terms.** They carry `.app-card` too, but hold three parts inside a wrapper rather than three children, so the card and the wrapper both subgrid onto the shared rows. They take no floors: a reading card should be as tall as the longest of the three and no taller. Their own `min-height` budgets were doing the same job far worse, reserving three lines of title space for a one-line headline and leaving the card half again as tall as it needed to be.
 
-**One Glyph Contract.** Every stroked icon on the site is drawn by one rule, matched on
-Lucide's own class plus an explicit `.icon` opt-in for the handful that are hand-written.
-It carries the four presentation properties — `fill`, `stroke`, `stroke-linecap`,
-`stroke-linejoin` — and derives both size and weight from a single custom property, so a
-caller sets `--icon-size` and nothing else. Six rules used to restate those four properties
-and then choose their own size and weight, which is the mechanism behind every icon drift
-found in the week to 2026-09-06: a 16px search mark standing beside a 24px theme toggle, a
-modal icon silently inheriting Lucide's authored stroke because no rule had claimed it.
+**One Glyph Contract.** Interface and taxonomy icons use Phosphor. Every stroked icon on
+the site is drawn by one rule, matched on the explicit `.icon` opt-in used by Phosphor and
+the handful that are hand-written. It carries the four presentation properties — `fill`,
+`stroke`, `stroke-linecap`, `stroke-linejoin` — and derives both size and weight from a
+single custom property, so a caller sets `--icon-size` and nothing else. Six rules used to
+restate those four properties and then choose their own size and weight, which is the
+mechanism behind every icon drift found in the week to 2026-09-06: a 16px search mark
+standing beside a 24px theme toggle, a modal icon silently inheriting its authored stroke
+because no rule had claimed it. Phosphor regular icons are filled paths, so
+`.phosphor-icon` opts back into `fill: currentColor` and `stroke: none` while preserving the
+shared sizing contract.
 
 **Two sizes, one line.** `--icon-sm` is 16 and `--icon-md` is 24, both on the base unit;
-14, 21 and 27 were in use until 2026-09-06, each set locally to fit one spot. `--icon-stroke`
-is **1.5px as it lands on screen**, which is the number that had never been controlled. A
-Lucide glyph is authored on a 24-unit viewBox, so its stroke scales with the glyph: an
-authored width of 2 draws at 1.33px inside a 16px box and at 2px inside a 24px one, and
-`getComputedStyle` reports `2px` for both. Dividing the authored width back out by the
-rendered size — `calc(var(--icon-stroke) * 24 / var(--icon-size))` — holds the line steady
-at every size. This is why the directory chevrons read heavier than the field's glyphs while
-every declared number matched.
+14, 21 and 27 were in use until 2026-09-06, each set locally to fit one spot. The default
+glyph size is 24px. The smaller 16px token remains for compact controls such as directory
+field marks and chevrons, while mobile menu rows, RSS close and copy controls, app detail
+category rows and app detail collection badges now use the 24px token. `--icon-stroke` is
+**1.5px as it lands on screen**, which is the number that had never been controlled. A
+24-unit SVG viewBox scales authored strokes with the glyph: an authored width of 2 draws at
+1.33px inside a 16px box and at 2px inside a 24px one, and `getComputedStyle` reports `2px`
+for both. Dividing the authored width back out by the rendered size —
+`calc(var(--icon-stroke) * 24 / var(--icon-size))` — holds the line steady at every size.
+This is why the directory chevrons read heavier than the field's glyphs while every declared
+number matched.
 
 The rule is scoped, never applied to bare `svg`. The buoy mark, the hero wordmark and the
 footer's social marks are filled rather than stroked, and a blanket `fill: none` would erase
@@ -956,7 +962,7 @@ badges or decorative clutter, and a September critique scored Visibility of Syst
 The header is sticky, translucent, and restrained. The brand is the buoy mark alone; the icon controls stay compact and monochrome until hover or focus gives them blue.
 
 **The wordmark left the header on 2026-09-06.** It set "App Waypoint" in the editorial serif beside the mark, and on the homepage it was hidden until the reader scrolled past the hero's own large wordmark, then faded in over 520ms — a hand-off, so the name was never stated twice at once. The mark carries the brand on its own and the link keeps `aria-label="App Waypoint home"`, so nothing is lost to a screen reader. Removing it took the `is-homepage-brand` gate, the `is-brand-visible` state, the scroll listener that maintained it and the `--type-brand-nav` token with it: the whole apparatus existed to manage a conflict that no longer occurs. The hero wordmark on the homepage is untouched.
-- **Desktop:** brand on the left, then Explore Apps, Archive, About, an icon-only Lucide Search control and the icon-only theme toggle on the right.
+- **Desktop:** brand on the left, then Explore Apps, Archive, About, an icon-only Phosphor Search control and the icon-only theme toggle on the right.
 - **Mobile:** the header keeps the brand and theme toggle visible, then moves Search, Explore Apps, Archive, About and Subscribe into the navigation dialog.
 - **Hover / Active:** everything in the header answers a pointer the same way — the label
   or glyph shifts to the accent, and nothing else moves. The search button, menu toggle and
@@ -975,14 +981,15 @@ The header is sticky, translucent, and restrained. The brand is the buoy mark al
   drifted with nothing to catch it. The size and weight they must agree on are now stated
   once, in a rule that names them together, and `global.css`'s shadowed `.theme-toggle svg`
   block went with the fix rather than being left to describe a rendering that no longer
-  happened. The modal's input icon had no stroke-width at all and fell through to Lucide's
-  own `stroke-width="2"`, which made the heaviest glyph on the site one nobody had chosen.
+  happened. The modal's input icon had no stroke-width at all and fell through to its own
+  authored `stroke-width="2"`, which made the heaviest glyph on the site one nobody had chosen.
 - **One rendered stroke at every size.** `--icon-stroke: 1.5` defines the line that lands
-  on screen. For the shared 24-unit SVG viewBox, authored stroke-width is
+  on screen for stroked marks. For the shared 24-unit SVG viewBox, authored stroke-width is
   `calc(var(--icon-stroke) * 24 / var(--icon-size, var(--icon-md)))`: 1.5 at 24px and
-  2.25 at 16px. Close marks and the RSS copy glyph follow this same rule. Filled brand
-  marks are outside this outline-glyph contract. Historical: the former 1.8/2 authored
-  weights were superseded by this size compensation; do not restore them.
+  2.25 at 16px. Phosphor's regular icons are filled paths, so they opt out of stroke while
+  keeping the same 16px and 24px size tokens. Filled brand marks are outside this
+  outline-glyph contract. Historical: the former 1.8/2 authored weights were superseded by
+  this size compensation; do not restore them.
 - **The directory's search field carries the site's own clear ×.** Both search inputs are
   `type="search"`, so WebKit drew a native cancel button in them, and it behaved differently
   per engine — Chrome reveals it on hover or focus, Safari whenever the field has text — so
@@ -1006,8 +1013,8 @@ The header is sticky, translucent, and restrained. The brand is the buoy mark al
   they kept is a focus ring, since the fill they had been relying on for focus is gone.
   Removed 2026-09-06 alongside the header's. The RSS copy button was already on colour plus
   a 1px lift and did not change.
-- **The navigation menu is on the base unit.** Its rows carried a 16px inset and a 16px icon
-  gap already, but the space *between* them ran on 3px, and the two groups paid 4px each into
+- **The navigation menu is on the base unit.** Its rows carry a 16px inset, a 16px gap and a
+  24px icon, but the space *between* them ran on 3px, and the two groups paid 4px each into
   their shared boundary — the two values the base unit exists to remove. Every step in it is
   now 8px or a multiple: rows are 40px, the gap between them is 8px, and the inset is 8px,
   which also makes the corners concentric, since the modal's 16px radius less that inset is
@@ -1061,7 +1068,7 @@ The detail page answers three questions in order: what is this, is it for me, an
 - **Masthead:** the app's own icon and the page title form one lockup, the icon scaling from 56px to 80px against the title's cap height, with a corner of 25% of its own side. Then the dek, then Best For, then the single Homepage button. An app with no icon takes a category mark on the documented missing-icon colour, stable from the app ID so a card and its detail page always agree. Which category is the app's first by default, or whichever `iconCategory` names when the editor has directed otherwise.
 - **Rail:** a 400px column holding three labelled groups, Collections then Categories then Tags, each built the same way: an eyebrow, `--eyebrow-gap` beneath it, then its items at 2px. 24px separates the groups. Nothing is divided by a rule. It occupies what used to be empty space beside a 900px masthead on a 1160px page. The width is set by the tag chips: measured across all 102 apps a tag set needs 311px at the median and 399px at the 95th percentile, so 400px keeps 95% of the catalogue on a single line. The longest set needs 473px, and buying that last 2% would cost 60px of the prose column.
 - **Taxonomy rank:** categories are the most generic fact an app carries and read at Metadata scale in muted ink, as 32px rows with their marks. They were 22.4px serif inside 80px bordered cards, which made the least meaningful metadata the largest thing on the page after the title. Tags stay chips at Label scale. Nothing here outranks the app's own name, dek or Best For.
-- **One axis:** every mark in the rail shares a centre and every label starts at the same x, because the badge and the category rows use the same 32px icon column and 16px gap. Their glyphs are both 19px.
+- **One axis:** every mark in the rail shares a centre and every label starts at the same x, because the badge and the category rows use the same 32px icon column and 16px gap. Their glyphs are both 24px.
 - **Collapse:** at 920px, where the whole site drops to one column, the rail stacks under the masthead and keeps its DOM order, so reading and focus order do not change. No rule divides them, and none divides the badge from the taxonomy: inside the rail the separation is space. The hero used to close against the related apps on a rule; since 2026-09-05 that boundary is 32px of the section's own top padding, and the page draws no rule at all.
 
 ### Homepage Hero
@@ -1112,7 +1119,7 @@ in issue frontmatter as the editorial audit trail, but nothing renders it.
 Every route that does not exist renders `src/pages/404.astro` on the same page shell as the
 rest of the site: the `Page Not Found` eyebrow, page title, dek, then one bordered recovery
 panel spanning the full page shell. The panel reuses the Explore mega card's container,
-spacing, two-column discovery grid and Lucide icon tiles. Its four recovery titles use the
+spacing, two-column discovery grid and Phosphor icon tiles. Its four recovery titles use the
 23px/28px Card Title role rather than the Explore taxonomy name's private treatment. Its four destinations
 are Search, Explore, Archive, then About. The tile itself does not get a row hover wash; only
 the title and icon respond, exactly like the Explore discovery links.
@@ -1186,8 +1193,8 @@ anchor and the Best For eyebrow already divides; a third device would be decorat
 card that has to read at thumbnail size. The mark is drawn at 112px rather than the ~160 the
 canvas would take, because app icons top out at 128px source and upscaling them would undo
 the payload work that put them there for a blurrier result. An icon-less app falls back to
-its first category's Lucide mark on the same stable colour its cards use, read out of the
-`lucide-astro` package at build time rather than copied into this repository.
+its first category's Phosphor mark on the same stable colour its cards use, read out of the
+`@phosphor-icons/core` package at build time rather than copied into this repository.
 
 **Titles are never truncated; the type gives way instead.** A longer title steps down the
 scale and takes a shorter dek with it. Deks may be trimmed at a word boundary, because a dek

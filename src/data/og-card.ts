@@ -15,7 +15,7 @@
 import { Resvg } from '@resvg/resvg-js';
 import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
-import { dirname, join } from 'node:path';
+import { join } from 'node:path';
 import satori from 'satori';
 
 import { MARK_BEACON, MARK_FRAME, MARK_WATERLINE, MARK_WAVE, MARK_WAVE_VIEWBOX } from './mark';
@@ -86,30 +86,23 @@ const waveUri = svgUri(
 
 /**
  * The category marks an icon-less app falls back to, read out of the same
- * `lucide-astro` files the site renders rather than copied into this repository.
+ * Phosphor files the site renders rather than copied into this repository.
  * Copying the paths would let a card and an app page drift the next time the
  * package updates, and would put someone else's artwork in our source tree.
  */
-const lucideMarks = new Map<string, string>();
+const phosphorMarks = new Map<string, string>();
 
-function lucideMark(name: string) {
-  const cached = lucideMarks.get(name);
+function phosphorMark(name: string) {
+  const cached = phosphorMarks.get(name);
   if (cached) return cached;
 
-  const pascal = name.split('-').map((part) => part[0].toUpperCase() + part.slice(1)).join('');
-  /* Located through the package's own entry point rather than a hardcoded
-     node_modules path. The subpath cannot be resolved directly: `lucide-astro`
-     maps `./*` to `./dist/*.astro`, and Node's resolver will not return a file
-     it has no loader for. */
-  const dist = dirname(resolveFrom.resolve('lucide-astro'));
-  const source = readFileSync(join(dist, `${pascal}.astro`), 'utf8');
-  const body = source.slice(source.indexOf('>', source.indexOf('<Layout')) + 1, source.lastIndexOf('</Layout>'));
-  /* Lucide's own defaults, from `lucide-astro/dist/.Layout.astro`. */
-  const svg =
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#ffffff"` +
-    ` stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${body}</svg>`;
+  const source = readFileSync(
+    join(process.cwd(), 'node_modules', '@phosphor-icons', 'core', 'assets', 'regular', `${name}.svg`),
+    'utf8'
+  );
+  const svg = source.replace('fill="currentColor"', 'fill="#ffffff"');
   const uri = `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`;
-  lucideMarks.set(name, uri);
+  phosphorMarks.set(name, uri);
   return uri;
 }
 
@@ -142,7 +135,7 @@ function iconPlate(icon: OgAppIcon) {
 
   if (icon.kind === 'fallback') {
     return h('div', { style: { ...frame, backgroundColor: icon.background } },
-      h('img', { src: lucideMark(icon.lucide), width: 56, height: 56 }));
+      h('img', { src: phosphorMark(icon.phosphor), width: 56, height: 56 }));
   }
 
   /* `backed` is transparent artwork that needs paper under it, `contain` is a

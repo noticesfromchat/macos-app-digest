@@ -50,9 +50,8 @@
   /* Glyph sizes, unitless so the stroke can be derived from them. Two sizes, both on the
      base unit; 14, 21 and 27 were in use until 2026-09-06, each set locally to fit one
      spot. `--icon-stroke` is the line as it lands on screen, which is the number that was
-     never being controlled: a Lucide glyph is authored on a 24-unit viewBox, so an
-     authored stroke of 2 draws at 1.33px inside a 16px box and 2px inside a 24px one.
-     Dividing the authored width back out by the rendered size holds the line steady. */
+     never being controlled by individual SVG imports. Dividing the authored width back
+     out by the rendered size holds the line steady. */
   --icon-sm: 16;
   --icon-md: 24;
   --icon-stroke: 1.5;
@@ -398,13 +397,12 @@ a { color: inherit; }
 /* One contract for every glyph on the site. Six rules used to restate these four
    presentation properties and then set their own size and weight, which is the mechanism
    behind every icon drift found this week — a 16px search mark beside a 24px toggle, a
-   modal icon silently inheriting Lucide's authored stroke because no rule claimed it.
+   modal icon silently inheriting its authored stroke because no rule claimed it.
    Callers now set `--icon-size` and nothing else.
 
-   Scoped to Lucide's own class plus an explicit opt-in, never to bare `svg`: the buoy
+   Scoped to an explicit opt-in, never to bare `svg`: the buoy
    mark, the hero wordmark and the footer's social marks are filled rather than stroked,
    and a blanket `fill: none` would erase all four. */
-svg[class~="lucide"],
 svg.icon {
   width: calc(var(--icon-size, var(--icon-md)) * 1px);
   height: calc(var(--icon-size, var(--icon-md)) * 1px);
@@ -414,6 +412,11 @@ svg.icon {
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-width: calc(var(--icon-stroke) * 24 / var(--icon-size, var(--icon-md)));
+}
+
+svg.phosphor-icon {
+  fill: currentColor;
+  stroke: none;
 }
 
 .brand-mark {
@@ -1001,8 +1004,6 @@ h1.home-hero-number {
     0 6px 18px color-mix(in srgb, var(--pick-accent) 22%, transparent);
 }
 
-.hero-pick-card.has-pick-accent .editors-pick-icon { color: var(--pick-accent); }
-
 /* The gleam. A conic sweep masked down to the card's own edge, so what travels is
    a highlight on the rim rather than a glowing box. Without mask compositing the
    ring cannot be cut out of the gradient, so the whole effect is withheld rather
@@ -1137,24 +1138,6 @@ h1.home-hero-number {
 .app-icon-color-blue { --missing-icon-bg: #2f75d6; }
 .app-icon-color-purple { --missing-icon-bg: #8b5cc7; }
 .app-icon-color-pink { --missing-icon-bg: #c24b7a; }
-.editors-pick-title {
-  display: flex;
-  align-items: center;
-  gap: .2em;
-}
-.editors-pick-icon-mark {
-  position: relative;
-  display: inline-flex;
-  flex: 0 0 auto;
-  width: .9em;
-  height: .9em;
-  color: var(--accent);
-}
-
-/* The mark's box still tracks the title at .9em, so the lockup holds at any title size;
-   the glyph inside it sits on the scale rather than resolving to whatever 21px the em
-   happened to produce. */
-.editors-pick-icon { --icon-size: var(--icon-md); }
 .app-card p { margin: 0; color: var(--body-text); }
 .app-card .reading-source { color: var(--muted); }
 /* This follows the generic paragraph rule deliberately: the Editor's Pick labels
@@ -1277,7 +1260,7 @@ h1.home-hero-number {
   border-radius: var(--radius-sm);
 }
 .app-detail-category-mark { display: inline-flex; align-items: center; justify-content: center; }
-.app-detail-category-mark svg { --icon-size: var(--icon-sm); }
+.app-detail-category-mark svg { --icon-size: var(--icon-md); }
 /* Named by its own eyebrow like every other group in the rail, and given more air
    than they get. It stays in the rail's utility voice: rank comes from the label
    sitting in ink at weight 700 where a category label sits muted at 600, from the
@@ -1312,9 +1295,8 @@ h1.home-hero-number {
   justify-content: center;
 }
 .category-directory-icon svg { --icon-size: var(--icon-sm); }
-/* Same 16px size as a category mark. The shared glyph rule compensates for
-   rendered size so the line remains 1.5px at every glyph size. */
-.collection-badge-icon svg { --icon-size: var(--icon-sm); }
+/* Collection badges get a larger mark than category rows during the Phosphor review. */
+.collection-badge-icon svg { --icon-size: var(--icon-md); }
 .app-detail-best-for { max-width: var(--measure); }
 .app-detail-best-for p:not(.eyebrow) { margin: 0; color: var(--body-text); font-size: 1rem; line-height: 1.5; }
 .app-detail-actions { display: flex; flex-wrap: wrap; gap: var(--space-2) 16px; margin-top: var(--space-3); }

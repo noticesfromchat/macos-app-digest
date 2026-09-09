@@ -291,10 +291,10 @@
    reads as one list rather than an action above a list. */
 .mobile-nav-search { cursor: pointer; }
 
-.mobile-nav-search svg { --icon-size: var(--icon-sm); }
+.mobile-nav-search svg { --icon-size: var(--icon-md); }
 
 .mobile-nav-actions a svg,
-.mobile-nav-rss svg { --icon-size: var(--icon-sm); }
+.mobile-nav-rss svg { --icon-size: var(--icon-md); }
 
 .mobile-nav-actions a:hover,
 .mobile-nav-search:hover,
@@ -370,7 +370,7 @@
 
 
 /* The same magnifier as the header button, at the same 24px, so it takes the same weight.
-   It carried no stroke-width at all and fell through to Lucide's own `stroke-width="2"`
+   It carried no stroke-width at all and fell through to its own `stroke-width="2"`
    attribute, which made the heaviest glyph on the site one that had never been decided. */
 .search-input-icon { --icon-size: var(--icon-md); color: var(--muted); }
 
@@ -525,7 +525,7 @@
   transition: color 180ms ease;
 }
 
-.rss-close svg { --icon-size: var(--icon-sm); }
+.rss-close svg { --icon-size: var(--icon-md); }
 
 /* Colour, like everything else that answers a pointer. It used to fill a disc and draw a
    ring around itself on hover, which made the one control in the modal that dismisses it
@@ -602,7 +602,7 @@
   transition: color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
 }
 
-.rss-copy-button svg { grid-area: 1 / 1; --icon-size: var(--icon-sm); }
+.rss-copy-button svg { grid-area: 1 / 1; --icon-size: var(--icon-md); }
 
 .rss-copy-button .rss-copy-icon {
   display: block;

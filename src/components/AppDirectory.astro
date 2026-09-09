@@ -508,7 +508,7 @@ const sortedApps = [...apps].sort((a, b) =>
     const svgIcon = (className: string, shapes: [string, Record<string, string>][]) => {
       const svg = document.createElementNS(SVG_NS, 'svg');
       /* `icon` opts these into the site's one glyph contract, which is what gives them a
-         size at all: built here rather than in markup, they carry no Lucide class, and
+         size at all: built here rather than in markup, they carry no Phosphor wrapper, and
          the contract is deliberately not applied to bare `svg`. */
       svg.setAttribute('class', `icon ${className}`);
       svg.setAttribute('aria-hidden', 'true');

@@ -44,10 +44,10 @@ const fail = (check, detail) => failures.push({ check, detail });
 
 /* ── 1 ─────────────────────────────────────────────────────────────────────────
    A hand-written SVG that is not opted into the glyph contract renders at 0x0. The
-   contract matches Lucide's own class or an explicit `icon`, and the per-icon rules
-   set only `--icon-size`, so an un-opted SVG has no width at all. This shipped three
-   times, once to production. Checked against the markup rather than the stylesheet,
-   because the markup is where the omission is. */
+   contract matches the explicit `icon` class, with a legacy allowance for old icon-pack
+   classes, and the per-icon rules set only `--icon-size`, so an un-opted SVG has no
+   width at all. This shipped three times, once to production. Checked against the markup
+   rather than the stylesheet, because the markup is where the omission is. */
 const FILLED_MARKS = new Set([
   'src/components/BrandMark.astro',   // the buoy, a filled mark on its own viewBox
   'src/components/WaveRule.astro',    // the drawn wave

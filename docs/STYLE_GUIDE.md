@@ -136,9 +136,8 @@ it. See Issue Subscribe Card in `DESIGN.md` for the structure and the reasoning.
 - The selected app must not also appear in a regular issue section.
 - When present, the module renders between Trending and Old Favorites.
 - It uses the standard section eyebrow and heading, followed by one full-width card.
-- The full-width card displays the Lucide `book-heart` icon beside the app title when
-  the app belongs to the `editors-picks` collection. The icon is an editorial marker,
-  not a separate link.
+- The full-width card uses the section eyebrow and issue-specific reason to mark the
+  app as an Editor's Pick. Do not add a glyph beside the app title.
 - In the homepage hero only, the pick card carries the Struck Light treatment: it is lit
   by the featured app's own colour, drawn from the app record's `iconAccent`. The colour
   belongs to that one card and never reaches a link, control or state. Everywhere else,
@@ -166,7 +165,7 @@ it. See Issue Subscribe Card in `DESIGN.md` for the structure and the reasoning.
   archive lists and navigation callouts may use its full width.
 - New standalone pages must adopt the shared shell so responsive gutters remain
   consistent across the publication.
-- The global header exposes Explore Apps, Archive, About, an icon-only Lucide Search
+- The global header exposes Explore Apps, Archive, About, an icon-only Phosphor Search
   control and the icon-only theme toggle on desktop. Mobile keeps those destinations in
   the navigation dialog.
 - Every page includes one keyboard skip link from the top of the document to the main

@@ -1,6 +1,6 @@
 ---
-import { Archive, Check, Compass, Copy, Info, Moon, Rss, Search, Sun, X } from 'lucide-astro';
 import BrandMark from '../components/BrandMark.astro';
+import PhosphorIcon from '../components/PhosphorIcon.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import { breadcrumbSchema, type Crumb } from '../data/breadcrumb';
 import { OG_SIZE, ogPath } from '../data/og';
@@ -153,11 +153,11 @@ gtag('config', ${JSON.stringify(googleAnalyticsId)}, {
           aria-controls="site-search-modal"
           data-search-open
         >
-          <Search aria-hidden="true" />
+          <PhosphorIcon name="magnifying-glass" aria-hidden="true" />
         </button>
         <button class="theme-toggle nav-theme-toggle" type="button" aria-label="Switch to dark theme" data-theme-toggle>
-          <Moon data-theme-moon aria-hidden="true" />
-          <Sun data-theme-sun aria-hidden="true" hidden />
+          <PhosphorIcon name="moon" data-theme-moon aria-hidden="true" />
+          <PhosphorIcon name="sun" data-theme-sun aria-hidden="true" hidden />
         </button>
         <button
           class="nav-menu-toggle"
@@ -188,19 +188,19 @@ gtag('config', ${JSON.stringify(googleAnalyticsId)}, {
       >
         <div class="mobile-nav-actions">
           <button class="mobile-nav-search" type="button" data-mobile-search-open>
-            <Search aria-hidden="true" />
+            <PhosphorIcon name="magnifying-glass" aria-hidden="true" />
             <span>Search</span>
           </button>
           <a href="/explore/" aria-current={current === 'explore' ? 'page' : undefined}>
-            <Compass aria-hidden="true" />
+            <PhosphorIcon name="sailboat" aria-hidden="true" />
             <span>Explore Apps</span>
           </a>
           <a href="/archive/" aria-current={current === 'archive' ? 'page' : undefined}>
-            <Archive aria-hidden="true" />
+            <PhosphorIcon name="archive" aria-hidden="true" />
             <span>Archive</span>
           </a>
           <a href="/about/" aria-current={current === 'about' ? 'page' : undefined}>
-            <Info aria-hidden="true" />
+            <PhosphorIcon name="lighthouse" aria-hidden="true" />
             <span>About</span>
           </a>
         </div>
@@ -215,7 +215,7 @@ gtag('config', ${JSON.stringify(googleAnalyticsId)}, {
             aria-controls="rss-feed-modal"
             data-rss-open
           >
-            <Rss aria-hidden="true" />
+            <PhosphorIcon name="rss-simple" aria-hidden="true" />
             <span>Subscribe</span>
           </button>
         </div>
@@ -231,7 +231,7 @@ gtag('config', ${JSON.stringify(googleAnalyticsId)}, {
         aria-labelledby="search-title"
       >
         <div class="search-input-wrap">
-          <Search class="search-input-icon" aria-hidden="true" />
+          <PhosphorIcon name="magnifying-glass" class="search-input-icon" aria-hidden="true" />
           <label class="sr-only" id="search-title" for="site-search-input">Search apps</label>
           <input
             id="site-search-input"
@@ -243,7 +243,7 @@ gtag('config', ${JSON.stringify(googleAnalyticsId)}, {
             data-search-input
           />
           <button class="search-close" type="button" aria-label="Close search" data-search-close>
-            <X aria-hidden="true" />
+            <PhosphorIcon name="x" aria-hidden="true" />
           </button>
         </div>
         <p class="search-count" aria-live="polite" data-search-count></p>
@@ -267,7 +267,7 @@ gtag('config', ${JSON.stringify(googleAnalyticsId)}, {
         <div class="rss-modal-topline">
           <p class="rss-kicker">Subscribe</p>
           <button class="rss-close" type="button" aria-label="Close RSS subscription dialog" data-rss-close>
-            <X aria-hidden="true" />
+            <PhosphorIcon name="x" aria-hidden="true" />
           </button>
         </div>
         <h2 id="rss-title">App Waypoint RSS feed</h2>
@@ -277,8 +277,8 @@ gtag('config', ${JSON.stringify(googleAnalyticsId)}, {
         <div class="rss-url-card">
           <code class="rss-url-value" data-rss-url>{rssUrl.href}</code>
           <button class="rss-copy-button" type="button" aria-label="Copy RSS feed URL" data-rss-copy>
-            <Copy class="rss-copy-icon" aria-hidden="true" data-rss-copy-icon />
-            <Check class="rss-copy-check" aria-hidden="true" hidden data-rss-copy-check />
+            <PhosphorIcon name="clipboard" class="rss-copy-icon" aria-hidden="true" data-rss-copy-icon />
+            <PhosphorIcon name="check" class="rss-copy-check" aria-hidden="true" hidden data-rss-copy-check />
             <span class="sr-only" data-rss-copy-label>Copy RSS feed URL</span>
           </button>
         </div>

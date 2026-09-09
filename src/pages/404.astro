@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { Archive, Compass, Info, Search } from 'lucide-astro';
+import PhosphorIcon from '../components/PhosphorIcon.astro';
 import { ogPath } from '../data/og';
 
 /* Keep dead links inside the publication shell, with search first for recovery. */
@@ -25,7 +25,7 @@ import { ogPath } from '../data/og';
           <div class="explore-collection-list explore-category-list not-found-route-grid">
             <button class="explore-discovery-link not-found-route" type="button" data-search-open>
               <span class="explore-discovery-icon" aria-hidden="true">
-                <Search />
+                <PhosphorIcon name="magnifying-glass" />
               </span>
               <span>
                 <strong>Search the Catalog</strong>
@@ -35,7 +35,7 @@ import { ogPath } from '../data/og';
 
             <a class="explore-discovery-link" href="/explore/">
               <span class="explore-discovery-icon" aria-hidden="true">
-                <Compass />
+                <PhosphorIcon name="sailboat" />
               </span>
               <span>
                 <strong>Explore Apps</strong>
@@ -45,7 +45,7 @@ import { ogPath } from '../data/og';
 
             <a class="explore-discovery-link" href="/archive/">
               <span class="explore-discovery-icon" aria-hidden="true">
-                <Archive />
+                <PhosphorIcon name="archive" />
               </span>
               <span>
                 <strong>View the Archive</strong>
@@ -55,7 +55,7 @@ import { ogPath } from '../data/og';
 
             <a class="explore-discovery-link" href="/about/">
               <span class="explore-discovery-icon" aria-hidden="true">
-                <Info />
+                <PhosphorIcon name="lighthouse" />
               </span>
               <span>
                 <strong>Learn About App Waypoint</strong>

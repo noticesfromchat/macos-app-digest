@@ -1,31 +1,30 @@
 ---
-import {
-  BookHeart,
-  Code2,
-  FolderSearch,
-  Gem,
-  Heart,
-  NotebookPen,
-  Route,
-  SlidersHorizontal,
-  Sparkles
-} from 'lucide-astro';
+import PhosphorIcon from './PhosphorIcon.astro';
 
 const { name } = Astro.props as { name: string };
 
 const icons = {
-  'book-heart': BookHeart,
-  'code-2': Code2,
-  'folder-search': FolderSearch,
-  gem: Gem,
-  heart: Heart,
-  'notebook-pen': NotebookPen,
-  route: Route,
-  'sliders-horizontal': SlidersHorizontal,
-  sparkles: Sparkles
+  archive: 'archive',
+  'book-heart': 'star',
+  'code-block': 'code-block',
+  'code-2': 'code-block',
+  files: 'files',
+  'folder-search': 'files',
+  gem: 'treasure-chest',
+  heart: 'heart',
+  'list-checks': 'list-checks',
+  notepad: 'notepad',
+  'notebook-pen': 'notepad',
+  robot: 'robot',
+  route: 'list-checks',
+  sliders: 'sliders',
+  'sliders-horizontal': 'sliders',
+  sparkles: 'robot',
+  star: 'star',
+  'treasure-chest': 'treasure-chest'
 } as const;
 
-const Icon = icons[name as keyof typeof icons] ?? Sparkles;
+const icon = icons[name as keyof typeof icons] ?? 'robot';
 ---
 
-<Icon />
+<PhosphorIcon name={icon} />

@@ -38,7 +38,7 @@ const appIcon = (app: { id: string; data: { icon?: string; iconStyle: string; ca
   const category = fallbackIconCategory(app.data);
   return {
     kind: 'fallback',
-    lucide: category?.icon ?? 'sparkles',
+    phosphor: category?.icon ?? 'robot',
     background: missingIconBackground[fallbackIconColor(app.id)]
   };
 };
