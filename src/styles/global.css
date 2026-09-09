@@ -1262,16 +1262,15 @@ h1.home-hero-number {
 }
 .app-detail-category-mark { display: inline-flex; align-items: center; justify-content: center; }
 .app-detail-category-mark svg { --icon-size: var(--icon-md); }
-/* Named by its own eyebrow like every other group in the rail, and given more air
-   than they get. It stays in the rail's utility voice: rank comes from the label
-   sitting in ink at weight 700 where a category label sits muted at 600, from the
-   48px row against their 32px, and from leading the rail. */
+/* Named by its own eyebrow like every other group in the rail. It stays in the rail's
+   utility voice: rank comes from position and the label sitting in ink at weight 700
+   where a category label sits muted at 600, while the row rhythm matches categories. */
 .collection-badge {
   display: grid;
   grid-template-columns: 32px minmax(0, 1fr);
   align-items: center;
   gap: var(--space-1) 8px;
-  min-height: 48px;
+  min-height: 32px;
   color: var(--text);
   font-size: var(--type-meta);
   font-weight: 700;
