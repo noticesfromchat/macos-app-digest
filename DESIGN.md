@@ -451,6 +451,36 @@ boundary** between the dek and the body, the intro and the first section, and on
 the next. The section padding is 24 above and 8 below, which sums to that 32 while putting
 three times as much space above a heading as beneath it.
 
+**The Section Header Gap.** A section header — the uppercase eyebrow and the section title
+under it — sits **24px above the content it names**, `--space-3`, on every surface that
+draws one: the homepage, issue pages and app detail. It is one value in one place,
+`.section-heading`, and no surface overrides it.
+
+The header is a lockup that names the block beneath it, so the gap that binds it to that
+block has to read as shorter than the gap that separates one section from the next. On an
+issue that separation is 56px, so at 32px the header was sitting closer to half way between
+its own cards and the section above than to the cards it introduces, and a run of five card
+sections read as one long list with labels floating in it rather than as five groups. 24px
+against 56 states the hierarchy the page actually has. The value went from 32 to 24 on
+2026-09-09.
+
+App detail pages ran a private `--space-3` here from the start and reached the site value
+from the other direction — the same eyebrow, the same section title and the same cards were
+briefly on two rhythms while the base was 32. That override is gone; the page inherits.
+
+**Card grids collapse into this gap, they do not add to it.** `.directory-grid` carries a
+16px top margin for the directory surfaces, where it follows a filter toolbar rather than a
+header. Where it follows a header the two are adjacent siblings, so the margins collapse to
+24 and not 40. This file recorded the app detail gap as 40px and a 48px default until
+2026-09-09; neither number was ever on the page, because both were written as a sum of two
+margins that collapse. Any future change here is a change to one margin, not to a sum.
+
+**About is the exception, and it is the ladder's own value rather than this one.** Its
+headers sit at 8px because they head prose, where a heading and its first line are one
+block, and because its sections run on the 32px ladder above rather than the 56px issue
+interval. That the two numbers are now both drawn from the low end of the scale is not a
+reason to merge them: they answer to different intervals above them.
+
 Before this the page had one value doing nine jobs: 16px separated the title from the dek,
 the dek from the body, paragraph from paragraph, a heading from its content, a list from its
 lead-in, and one list item from the next, while sections sat at 24 — eight pixels more than a
@@ -1072,7 +1102,7 @@ The detail page answers three questions in order: what is this, is it for me, an
 - **Rail:** a 400px column holding three labelled groups, Collections then Categories then Tags, each built the same way: an eyebrow, `--eyebrow-gap` beneath it, then its items at 2px. 24px separates the groups. Nothing is divided by a rule. It occupies what used to be empty space beside a 900px masthead on a 1160px page. The width is set by the tag chips: measured across all 102 apps a tag set needs 311px at the median and 399px at the 95th percentile, so 400px keeps 95% of the catalogue on a single line. The longest set needs 473px, and buying that last 2% would cost 60px of the prose column.
 - **Taxonomy rank:** categories are the most generic fact an app carries and read at Metadata scale in muted ink, as 32px rows with their marks. They were 22.4px serif inside 80px bordered cards, which made the least meaningful metadata the largest thing on the page after the title. Tags stay chips at Label scale. Nothing here outranks the app's own name, dek or Best For.
 - **One axis:** every mark in the rail shares a centre and every label starts at the same x, because the badge and the category rows use the same 32px icon column and 8px gap. Their glyphs are both 24px.
-- **Related-app rhythm:** the gap from the related-app heading to the card grid is 40px: 24px from the app-detail section heading and 16px from the shared directory grid margin. This section is tighter than the default 48px section-heading-to-grid rhythm because the cards are the direct continuation of the app detail page, not a separate directory surface.
+- **Related-app rhythm:** the gap from the related-app heading to the card grid is 24px, `--space-3`, the site value for a section header — see The Section Header Gap. The page carries no override of its own. `.section-heading`'s bottom margin and `.directory-grid`'s 16px top margin are adjacent siblings, so they collapse to the larger of the two rather than summing.
 - **Collapse:** at 920px, where the whole site drops to one column, the rail stacks under the masthead and keeps its DOM order, so reading and focus order do not change. No rule divides them, and none divides the badge from the taxonomy: inside the rail the separation is space. The hero used to close against the related apps on a rule; since 2026-09-05 that boundary is 32px of the section's own top padding, and the page draws no rule at all.
 
 ### Homepage Hero

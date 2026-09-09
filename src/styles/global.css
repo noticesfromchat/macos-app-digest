@@ -732,8 +732,10 @@ h1.home-hero-number {
 }
 /* At a 24px interval the section heading has to bind tighter to its own content than the
    gap above it, or it reads as the tail of the section before. 32px below a heading was
-   right against a 72px gap and wrong against a 24px one; 16px keeps the pair the right
-   way round. Scoped to About because the issue page still runs the wider pair. */
+   right against a 72px gap and wrong against a 24px one, and About's interval is the
+   narrow one. It stays scoped even now that the site value is also 24: About heads prose,
+   where the heading and its first line are one block, and the card sections head a grid
+   that is already bounded by its own cards. */
 .about-page .section-heading { margin-bottom: var(--space-1); }
 /* An issue is a run of card sections, each already bounded by its own cards, so it reads
    tighter than About's prose, which has only its headings to separate it.
@@ -744,7 +746,12 @@ h1.home-hero-number {
    halves still whole steps, and it puts more space above a section's heading than below
    its content, which is the rhythm this page already wanted. */
 .issue .section { padding: var(--space-4) 0 var(--space-3); }
-.section-heading { width: 100%; max-width: none; margin-bottom: var(--space-4); }
+/* One step below every section header on the site, cards or prose alike: the eyebrow and
+   title are a lockup that names the block under it, so the gap that binds them to it is
+   shorter than the gap that separates one section from the next. Card grids carry a 16px
+   top margin of their own on the directory surfaces; it is an adjacent sibling of this
+   margin, so the two collapse to 24 rather than summing to 40. */
+.section-heading { width: 100%; max-width: none; margin-bottom: var(--space-3); }
 .section h2 { margin: 0; font-family: var(--display); font-size: var(--type-section-title); font-weight: 500; letter-spacing: -.03em; line-height: 1; }
 
 /* Twelve shared tracks, fluid: `track = (shell - 11 gutters) / 12`. A card spans four of
@@ -1304,7 +1311,6 @@ h1.home-hero-number {
 .app-detail-actions .button svg { --icon-size: var(--icon-sm); }
 .app-detail-tags { min-height: 0; padding-top: 0; }
 .app-detail-section { width: 100%; padding-right: 0; padding-left: 0; }
-.app-detail-section .section-heading { margin-bottom: var(--space-3); }
 
 /* The hero's waterline again, quieter and narrower, with the mark riding it —
    the issue turns from apps to watching and reading at a marked passage. */
