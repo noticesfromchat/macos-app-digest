@@ -1825,15 +1825,25 @@ h1.home-hero-number {
    issue because "this is the current one" is a state, which is what blue is for.
    See The Beacon Rule in DESIGN.md. The line is drawn on the list rather than per
    card so it reads as one continuous route rather than eight segments. */
-/* The title leads and the search sits at the end of the same row, the way the Explore
-   directory's heading and controls do. The h1 takes the auto right margin. */
+/* The title leads and the search stands at the end of the block, the way the Explore
+   directory's heading and controls do.
+
+   Two columns rather than one flex row, because the search is taller than the title's
+   line and a flex row is as tall as its tallest item. Centred in that row the title was
+   pushed down by half the difference and the dek away by the other half, so the archive
+   opened 20.8px under its trail against Explore's and About's 16, and 29.6px at the
+   widths where controls are 56px — and once the row wrapped, the search landed between
+   the title and the dek and opened that gap to 88px. The title and the dek own the rows
+   here, and the search spans both and centres against the pair, so it can be taller than
+   either without moving them. The One Page Title Rule holds on this page as written. */
 .archive-masthead {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2) 16px;
-  align-items: center;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 16px;
 }
-.archive-masthead h1 { margin-right: auto; }
+.archive-masthead h1 { grid-column: 1; grid-row: 1; }
+.archive-masthead .dek { grid-column: 1; grid-row: 2; }
+.archive-search { grid-column: 2; grid-row: 1 / span 2; align-self: center; }
 .archive-filter-bar {
   display: flex;
   flex-wrap: wrap;
@@ -1851,7 +1861,7 @@ h1.home-hero-number {
   letter-spacing: .04em;
   text-transform: uppercase;
 }
-.archive-search { flex: 1 1 260px; max-width: 336px; }
+.archive-search { width: min(336px, 30vw); }
 
 .archive-route { margin-top: var(--section-space); }
 .archive-year + .archive-year { margin-top: var(--section-space); }
@@ -2678,6 +2688,12 @@ h1.home-hero-number {
   .brand { gap: var(--space-1) 8px; }
   .site-header nav { gap: var(--space-1) 8px; }
   .theme-toggle { width: 48px; height: 48px; }
+  /* Too narrow for a column beside the title, so the search takes its own row under the
+     dek rather than squeezing the opening. It is still not a control floating on an empty
+     row: it sits directly above the list it filters, and the opening above it keeps the
+     shape it has on Explore and About. */
+  .archive-masthead { grid-template-columns: minmax(0, 1fr); }
+  .archive-search { grid-column: 1; grid-row: 3; width: auto; margin-top: var(--space-3); }
   .home-hero { --sea-h: 72px; padding-block: var(--space-4) var(--space-6); }
   .content-divider { height: 64px; }
   .video-section { padding-top: var(--space-2); }

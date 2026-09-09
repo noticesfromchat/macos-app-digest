@@ -93,9 +93,16 @@ let stopIndex = 0;
     <Breadcrumb trail={trail} />
     {/* The search sits with the title rather than on a row of its own. The row it used to
         share with the live count lost its other half when the count went visually quiet,
-        which would have left one control floating against an empty field. */}
+        which would have left one control floating against an empty field.
+
+        The dek sits inside this block rather than after it, because the search stands
+        beside the whole opening rather than on the title's line. On the title's line it
+        made that line as tall as the control, which pushed the title down the page and
+        pushed the dek away from it, so the archive opened on different steps from Explore
+        and About. */}
     <div class="archive-masthead">
       <h1>Archive</h1>
+      <p class="dek">Every issue published so far, newest first, back to where it started.</p>
       {issues.length > 0 && (
         <div class="directory-search archive-search">
           <svg
@@ -138,7 +145,6 @@ let stopIndex = 0;
         </div>
       )}
     </div>
-    <p class="dek">Every issue published so far, newest first, back to where it started.</p>
 
     {issues.length > 0 ? (
       <>
