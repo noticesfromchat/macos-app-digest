@@ -645,6 +645,8 @@ Cards are the primary container language for apps, readings, and archive entries
 - **Corner Style:** `--radius` at 24px, the same as the card's inset.
 - **Background:** the surface color — white by day — with a soft shadow and no border.
 - **Internal Padding:** 24px, which is also the card's corner radius.
+- **Summary Rhythm:** when an app icon is present, the description starts 24px below the
+  icon-title row. The icon and title stay 16px apart inside that row.
 
 An archive row is an app card in every respect that matters, and takes the same rest state
 and the same hover contract. It set `box-shadow: none` until 2026-09-05, which was correct
@@ -1068,7 +1070,7 @@ The detail page answers three questions in order: what is this, is it for me, an
 - **Masthead:** the app's own icon and the page title form one lockup, the icon scaling from 56px to 80px against the title's cap height, with a corner of 25% of its own side. Then the dek, then Best For, then the single Homepage button. An app with no icon takes a category mark on the documented missing-icon colour, stable from the app ID so a card and its detail page always agree. Which category is the app's first by default, or whichever `iconCategory` names when the editor has directed otherwise.
 - **Rail:** a 400px column holding three labelled groups, Collections then Categories then Tags, each built the same way: an eyebrow, `--eyebrow-gap` beneath it, then its items at 2px. 24px separates the groups. Nothing is divided by a rule. It occupies what used to be empty space beside a 900px masthead on a 1160px page. The width is set by the tag chips: measured across all 102 apps a tag set needs 311px at the median and 399px at the 95th percentile, so 400px keeps 95% of the catalogue on a single line. The longest set needs 473px, and buying that last 2% would cost 60px of the prose column.
 - **Taxonomy rank:** categories are the most generic fact an app carries and read at Metadata scale in muted ink, as 32px rows with their marks. They were 22.4px serif inside 80px bordered cards, which made the least meaningful metadata the largest thing on the page after the title. Tags stay chips at Label scale. Nothing here outranks the app's own name, dek or Best For.
-- **One axis:** every mark in the rail shares a centre and every label starts at the same x, because the badge and the category rows use the same 32px icon column and 16px gap. Their glyphs are both 24px.
+- **One axis:** every mark in the rail shares a centre and every label starts at the same x, because the badge and the category rows use the same 32px icon column and 8px gap. Their glyphs are both 24px.
 - **Collapse:** at 920px, where the whole site drops to one column, the rail stacks under the masthead and keeps its DOM order, so reading and focus order do not change. No rule divides them, and none divides the badge from the taxonomy: inside the rail the separation is space. The hero used to close against the related apps on a rule; since 2026-09-05 that boundary is 32px of the section's own top padding, and the page draws no rule at all.
 
 ### Homepage Hero

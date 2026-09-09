@@ -1143,7 +1143,7 @@ h1.home-hero-number {
 /* This follows the generic paragraph rule deliberately: the Editor's Pick labels
    belong to the site's accent eyebrow role, not to card prose. */
 .app-card .editor-note-label { color: var(--accent); }
-.app-summary.has-app-icon .app-description { margin-top: var(--space-2); }
+.app-summary.has-app-icon .app-description { margin-top: var(--space-3); }
 .app-summary { min-height: 136px; margin-bottom: var(--space-2); }
 .best-for { min-height: 96px; font-size: 1rem; }
 .best-for strong,
@@ -1240,7 +1240,7 @@ h1.home-hero-number {
      the rail sits on one centre axis and every label starts at the same x. */
   grid-template-columns: 32px minmax(0, 1fr);
   align-items: center;
-  gap: var(--space-2) 16px;
+  gap: var(--space-1) 8px;
   min-height: 32px;
   color: var(--muted);
   font-size: var(--type-meta);
@@ -1269,7 +1269,7 @@ h1.home-hero-number {
   display: grid;
   grid-template-columns: 32px minmax(0, 1fr);
   align-items: center;
-  gap: var(--space-2) 16px;
+  gap: var(--space-1) 8px;
   min-height: 48px;
   color: var(--text);
   font-size: var(--type-meta);
@@ -2642,7 +2642,7 @@ h1.home-hero-number {
   .archive-page { padding: var(--page-start-space) 0 var(--space-4); }
   .app-detail-page { padding: var(--page-start-space) 0 var(--space-4); }
   .app-detail-hero { padding: 0; }
-  .app-detail-page .section { padding: var(--space-3) 0; }
+  .app-detail-page .section { padding: var(--space-4) 0; }
   .app-detail-actions { flex-direction: column; align-items: flex-start; }
   .explore-subscribe-card { grid-template-columns: 1fr; }
   .explore-utility-grid { grid-template-columns: 1fr; }
