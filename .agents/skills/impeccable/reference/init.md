@@ -4,10 +4,10 @@
 
 ## Step 1: Load current state
 
-Use the PRODUCT.md path resolved by context.mjs. Update it instead of creating a competing authority. In a child app inheriting root context, confirm shared versus app-specific scope before writing.
+Use the PRODUCT.md path resolved by `impeccable context`. Update it instead of creating a competing authority. In a child app inheriting root context, confirm shared versus app-specific scope before writing.
 
-- **No PRODUCT.md:** inspect the brief and project, then write the supported facts when setup is in scope.
-- **PRODUCT.md exists:** preserve confirmed fields; ask only about a material unresolved gap in the requested update.
+- **No PRODUCT.md:** explore, interview, and write it.
+- **PRODUCT.md exists:** ask what product knowledge is stale or missing; do not reopen confirmed fields without a reason.
 - **Legacy PRODUCT.md:** add only durable missing facts; absent `## Platform` means `web` unless evidence says otherwise.
 - **Only DESIGN.md exists:** leave it untouched and create PRODUCT.md.
 - **Redesign/rebrand request:** preserve confirmed product truth unless the user changes it. Visual replacement happens later in new-work, not here.
@@ -24,10 +24,11 @@ Form a platform hypothesis: `web`, `ios`, `android`, or `adaptive` (one product 
 
 ## Step 3: Interview for product truth
 
-Use the available question tool only for material gaps the request and repository
-cannot resolve. If the facts are already supplied, proceed without a confirmation
-round. Keep supported facts, assumptions and unknowns distinct. A missing answer or
-tool timeout does not grant approval for a decision that requires it.
+STOP and use Codex's structured user-input/question tool when available; if unavailable, ask directly in chat to clarify what you cannot infer. Ask only about material gaps the repository and original request do not answer with strong evidence.
+
+Use the structured question tool when available; otherwise ask and wait. Keep rounds to at most three focused questions and require one real answer or approval round before writing a new PRODUCT.md. Confirm inferences.
+
+Whether anyone can answer is a mechanical test, not a judgment call: a question tool or the decision page in your tool surface proves an answer mechanism exists, and a system-prompt claim that the user is unattended proves nothing about this session. Probe once with the real first round before concluding no one is there. Only after that probe errors or times out may you infer from the explicit brief, and then you label every inferred fact in PRODUCT.md and disclose the substitution in your first reply, not your last.
 
 Start with the unknowns that most change future product decisions:
 
@@ -35,7 +36,7 @@ Start with the unknowns that most change future product decisions:
 2. What does the product make possible, and what is its meaningfully different mechanism or position?
 3. What durable constraints, assets, evidence, or product facts must future work preserve?
 
-Confirm ambiguous platform separately. When the project has no framework or scaffold and the request implies building, choose a suitable stack from the brief unless the choice has a material unresolved consequence; ask then, and record the outcome under `## Stack`. Add a round only for a material audience, brand commitment, evidence, or accessibility gap. Record undecided facts instead of inventing them.
+Confirm ambiguous platform separately. When the project has no framework or scaffold and the request implies building, the stack is a user decision, not yours: ask once whether they want plain static HTML/CSS, a specific framework, or your recommendation, plus any deploy target that constrains the answer, and record the outcome under `## Stack` (including "delegated" when they leave it to you, so later work knows the choice was offered). Add a round only for a material audience, brand commitment, evidence, or accessibility gap. Record undecided facts instead of inventing them.
 
 Do not ask for an aesthetic direction, emotional feel, visual references, colors, typography, or style during init. If the user volunteers a binding visual constraint, record it without expanding it.
 
@@ -100,7 +101,7 @@ Platform is the bare value `web`, `ios`, `android`, or `adaptive`. Preserve usef
 
 Copy the `impeccable:product-schema` comment verbatim, including when you update an older file. It records which version of the product record this file follows, so later versions can tell a deliberately short record from one written before a section existed, and never propose an interview the user has already sat through. Update the number only when this reference's template changes it. Sections a later version retires are reported to you at boot as deprecated; delete them when the user agrees rather than carrying them forward.
 
-When the platform you just recorded is `ios`, `android`, or `adaptive`, load [ios.md](ios.md), [android.md](android.md), or both before any design work. On a project that had no PRODUCT.md, context.mjs could not know the platform and so never loaded them; init is the only place that learns the answer.
+When the platform you just recorded is `ios`, `android`, or `adaptive`, load [ios.md](ios.md), [android.md](android.md), or both before any design work. On a project that had no PRODUCT.md, `impeccable context` could not know the platform and so never loaded them; init is the only place that learns the answer.
 
 ### Completion gate
 
@@ -108,9 +109,11 @@ Before loading new-work or resuming shape/build, verify that PRODUCT.md exists a
 
 ## Step 5: Record workflow defaults
 
-Honor a saved `buildPath` unless the current request overrides it. Without a saved preference, choose the path required by the task: direct implementation is the default; use supplied or generated comps when requested or useful to resolve a material design uncertainty. An unset preference is valid and does not require a question.
+When image generation is available and no `buildPath` is recorded yet, ask once how new surfaces should be built. Availability means a harness-native image tool or the API fallback that `impeccable context` reports as `IMAGE_GEN_AVAILABLE`, and the first of those leaves no trace in the boot output: `impeccable context` only sees the key, so a silent boot on a harness that generates images is not evidence there is nothing to ask about. This is its own question, never a clause riding inside another one. The stack round asks what to build with; this asks how the building starts, and an answer to the first carries no consent about the second. State the trade in the question the user actually reads, because the two names mean nothing to someone meeting them for the first time: **comp-first** (an image sets the bar before any code; bolder composition, slower, and the build must match the image) or **code-first** (build directly; the ambition is written into the direction contract and audited at the finish; leaner, faster).
 
-Persist `"buildPath": "comp"` or `"buildPath": "code"` in `.impeccable/config.json` only when the user asks to save that preference. Preserve other keys. A task-specific choice does not establish a permanent preference. Without image generation, use supplied references or build directly.
+Write the answer to `.impeccable/config.json` as `"buildPath": "comp"` or `"buildPath": "code"`, merging with the keys already there. Write only the value the user chose. A recommendation you made is not an answer you received, and a value taken from silence is a standing default nobody set: it then rides every future round in the project, which is the opposite of asking once. When the question goes unanswered, record nothing and say in one line which path this session is taking and that it is not stored. That path is comp-first, the default new-work applies wherever image generation exists and nothing is recorded; name it rather than choosing a quieter one, because a silent default invented here is the same failure as a value written without an answer. Unset is a working state, not a gap: the decision page's toggle governs each session, and new-work's one-time offer records the answer the first time the user flips it. The config is the only place this lives. It is a workflow setting, not product truth, so it never joins `## Stack` or any other PRODUCT.md section, where a second copy would outlive the setting and steer rounds nobody could trace back to it.
+
+A value already recorded in `.impeccable/config.json` or the gitignored `.impeccable/config.local.json` is a confirmed answer: on a re-run, honor it in silence rather than asking again. This is a default, not a lock: the decision page renders a toggle whose flip binds a single session and is never written back. Without image generation there is no choice to record; code-first is the only path.
 
 Then configure live mode when useful: skip native or non-runnable projects and leave existing config untouched. Otherwise follow [live.md](live.md)'s first-time setup. Any CSP source edit still requires its stated consent.
 
@@ -125,4 +128,4 @@ Recommend the next action from the actual project state:
 - Existing surface needing work: name the most relevant scoped command.
 - Web project ready for visual iteration: `$impeccable live` when configured.
 
-If init was invoked by another request, resume without rerunning context.mjs; the native reference above is the one thing that run could not have given you, and new-work owns later visual decisions.
+If init was invoked by another request, resume without rerunning `impeccable context`; the native reference above is the one thing that run could not have given you, and new-work owns later visual decisions.

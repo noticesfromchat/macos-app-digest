@@ -28,3 +28,7 @@ __pycache__/
 # Generated image output. Assets the site actually ships live under src/ or public/;
 # anything left here is a scratch render from an imagegen run.
 output/
+
+# Impeccable engine binaries. Platform-specific and ~12MB each; the launcher
+# fetches a checksum-verified copy into ~/.impeccable on demand.
+**/skills/impeccable/scripts/bin/
