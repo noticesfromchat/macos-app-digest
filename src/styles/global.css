@@ -76,10 +76,13 @@
   --radius: var(--radius-lg);
   --content-width: 1160px;
   --content-inset: 40px;
-  /* Reduced 25% from 36px on 2026-09-04. The trail keeps its 8px bind to the title
-     under The One Page Title Rule; what was reading as the trail having fallen down a gap
-     was the space above it, between the header and the trail, not the space below. */
-  --page-start-space: var(--space-3);
+  /* The space the page opens on, and on every page but the homepage and 404 that means
+     the space above the breadcrumb trail. It is 16px, the same value the trail carries
+     beneath it, so the trail sits in an even band between the header and the page rather
+     than nearer one than the other. It was 36px until 2026-09-04, 24px until 2026-09-09,
+     and it stepped up to 32px below 680px until the same day; a trail that reads as one
+     band has to hold that band at every width, so it no longer steps. */
+  --page-start-space: var(--space-2);
   /* Stepped, not interpolated. As `clamp(24px, 3.8vw, 40px)` this resolved to whatever
      the viewport made it — 38px at 1000px — so the one value the whole site uses for a
      section boundary was off the base at most widths between the endpoints. The steps
@@ -169,11 +172,18 @@
    waypoint idea is in the marking of the current position, which is the one thing a
    chart does that a list of links does not.
 
-   It sits at the top of the page shell and the title follows 8px beneath it, which is
-   `--eyebrow-gap`: the trail names the page under it exactly as an eyebrow does, so it
-   takes the eyebrow's number rather than inventing one. */
+   It sits in a 16px band at the top of the page shell: `--page-start-space` above it and
+   the same 16px below, so the trail is held evenly between the header and the page it
+   names rather than pushed against either. It took `--eyebrow-gap` beneath it until
+   2026-09-09, on the reading that the trail names the page under it exactly as an eyebrow
+   names its block. That is true of what the trail says and not of where it sits: an
+   eyebrow is set inside its own block and shares that block's ground, while the trail
+   spans the gap between the header and the page and belongs to neither. App detail pages
+   had already been carrying 16px here for the taller icon lockup, which was the same
+   reading arrived at one page at a time. The gap is even on every page now, and the
+   token stays `--eyebrow-gap` for the eyebrows themselves. */
 .breadcrumb {
-  margin: 0 0 var(--eyebrow-gap);
+  margin: 0 0 var(--space-2);
   color: var(--muted);
   font-size: var(--type-meta);
   font-weight: 500;
@@ -1214,7 +1224,6 @@ h1.home-hero-number {
 }
 
 .app-detail-page { padding: var(--page-start-space) 0 var(--space-4); }
-.app-detail-page > .breadcrumb { margin-bottom: var(--space-2); }
 /* The detail page reads: what is this, is it for me, go and get it. The masthead
    carries that path. Everything that files the app rather than describes it sits
    in the rail, which also puts the right half of the fold to work. The rail is
@@ -2579,7 +2588,12 @@ h1.home-hero-number {
     --sea-h: 84px;
     display: flex;
     flex-direction: column;
-    gap: var(--space-4) 32px;
+    /* No row gap. Stacked, the hero holds a trail as its first child, and a uniform gap
+       adds its own 32px to the 16px band the trail carries on every other page, opening
+       the trail to 48px on phones and nowhere else. Flex gaps do not collapse into
+       margins, so the two boundaries that actually want 32px ask for it below and the
+       trail keeps its band. */
+    gap: 0 32px;
     padding-block: var(--space-4) var(--space-6);
   }
 
@@ -2594,6 +2608,8 @@ h1.home-hero-number {
   .home-hero-copy { order: 1; }
   .home-hero-sea { position: static; order: 2; width: 100%; height: var(--sea-h); }
   .home-hero-pick { order: 3; }
+  .home-hero-sea,
+  .home-hero-pick { margin-top: var(--space-4); }
   /* No rule here either. This override outlived the site-wide removal of content
      dividers on 2026-09-05 and put a hairline back under the hero on phones only,
      so one boundary was space on desktop and space plus a line on mobile. */
@@ -2665,11 +2681,6 @@ h1.home-hero-number {
   .home-hero { --sea-h: 72px; padding-block: var(--space-4) var(--space-6); }
   .content-divider { height: 64px; }
   .video-section { padding-top: var(--space-2); }
-  /* Was 28px, which is not a step. Mobile deliberately opens wider than desktop's 24,
-     so it takes the next step up rather than flattening onto it. */
-  :root { --page-start-space: var(--space-4); }
-  .archive-page { padding: var(--page-start-space) 0 var(--space-4); }
-  .app-detail-page { padding: var(--page-start-space) 0 var(--space-4); }
   .app-detail-hero { padding: 0; }
   .app-detail-page .section { padding: var(--space-4) 0; }
   .app-detail-actions { flex-direction: column; align-items: flex-start; }
