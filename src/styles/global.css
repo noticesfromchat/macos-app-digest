@@ -136,6 +136,10 @@
   --about-measure: 624px;
   --sea-ink: 9 35 66;
   --sea-alpha: .30;
+  --hero-fade-1: #e9edf2;
+  --hero-fade-2: #edf1f5;
+  --hero-fade-3: #f1f4f7;
+  --hero-fade-4: #f3f6f8;
 }
 
 :root[data-theme='dark'] {
@@ -162,6 +166,10 @@
   --shadow-modal: 0 30px 90px rgba(0, 0, 0, 0.44);
   --sea-ink: 226 236 250;
   --sea-alpha: .22;
+  --hero-fade-1: #081320;
+  --hero-fade-2: #06111e;
+  --hero-fade-3: #040e1b;
+  --hero-fade-4: #030c19;
 }
 
 * { box-sizing: border-box; }
@@ -635,8 +643,18 @@ svg.phosphor-icon {
      closest-spaced steps in the middle of the fade where there is texture to hide them
      rather than against the edge where the field is flat. The fade is longer than the
      38px it ran until 2026-09-09 for the same reason: the extra distance buys back the
-     steepness the easing adds in the middle. */
+     steepness the easing adds in the middle. The first gradient is the themed
+     fallback for browsers that drop the OKLab colour mixing declaration wholesale. */
   --hero-fade: calc(var(--sea-h) + 96px);
+  background: linear-gradient(
+    to top,
+    var(--page) 0,
+    var(--hero-fade-1) calc(var(--hero-fade) * .18),
+    var(--hero-fade-2) calc(var(--hero-fade) * .4),
+    var(--hero-fade-3) calc(var(--hero-fade) * .6),
+    var(--hero-fade-4) calc(var(--hero-fade) * .82),
+    var(--bg) var(--hero-fade)
+  );
   background: linear-gradient(
     to top,
     var(--page) 0,
@@ -646,6 +664,10 @@ svg.phosphor-icon {
     color-mix(in oklab, var(--bg) 96%, var(--page)) calc(var(--hero-fade) * .82),
     var(--bg) var(--hero-fade)
   );
+}
+
+.home-hero::after {
+  content: none;
 }
 
 /* The band runs full-bleed; its content sits on the shared page shell so the
@@ -2604,7 +2626,19 @@ h1.home-hero-number {
        margins, so the two boundaries that actually want 32px ask for it below and the
        trail keeps its band. */
     gap: 0 32px;
-    padding-block: var(--space-4) var(--space-6);
+    padding-block: var(--space-4) var(--space-8);
+  }
+
+  .home-hero::after {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: var(--space-8);
+    background: linear-gradient(to bottom, transparent, var(--page) 88%);
+    pointer-events: none;
   }
 
   .home-hero-inner { display: contents; }
@@ -2694,7 +2728,7 @@ h1.home-hero-number {
      shape it has on Explore and About. */
   .archive-masthead { grid-template-columns: minmax(0, 1fr); }
   .archive-search { grid-column: 1; grid-row: 3; width: auto; margin-top: var(--space-3); }
-  .home-hero { --sea-h: 72px; padding-block: var(--space-4) var(--space-6); }
+  .home-hero { --sea-h: 72px; padding-block: var(--space-4) var(--space-8); }
   .content-divider { height: 64px; }
   .video-section { padding-top: var(--space-2); }
   .app-detail-hero { padding: 0; }
