@@ -610,9 +610,32 @@ svg.phosphor-icon {
      sits the same 24px below the header that it does on every other page. Without this it
      inherited the hero's larger opening and sat 24px lower than the rest of the site. */
   &:has(.issue-breadcrumb-shell) { padding-block-start: var(--page-start-space); }
-  /* The band settles onto the page ground across the sea, so the hero ends
-     on the colour the section below starts with and leaves no seam. */
-  background: linear-gradient(to top, var(--page) 0, var(--bg) calc(var(--sea-h) + 38px));
+  /* The band settles onto the page ground across the sea, so the hero ends on the colour
+     the section below starts with.
+
+     Ending on the right colour is not enough to end without a seam. A linear ramp meeting
+     a flat field matches it in value and not in slope, and the eye reads that corner as a
+     line even though no colour step exists at it — the hero's last row and the page's
+     first row are both --page and a hairline still showed under the water in light mode.
+     The stops below are a smoothstep, so the ramp leaves --page and arrives at --bg with
+     its slope going to zero at each end and no corner at either.
+
+     The same easing carries the banding. Light mode spends twelve levels of ink across
+     this whole distance, few enough to step visibly in 8-bit, and an eased ramp puts its
+     closest-spaced steps in the middle of the fade where there is texture to hide them
+     rather than against the edge where the field is flat. The fade is longer than the
+     38px it ran until 2026-09-09 for the same reason: the extra distance buys back the
+     steepness the easing adds in the middle. */
+  --hero-fade: calc(var(--sea-h) + 96px);
+  background: linear-gradient(
+    to top,
+    var(--page) 0,
+    color-mix(in oklab, var(--bg) 4%, var(--page)) calc(var(--hero-fade) * .18),
+    color-mix(in oklab, var(--bg) 32%, var(--page)) calc(var(--hero-fade) * .4),
+    color-mix(in oklab, var(--bg) 68%, var(--page)) calc(var(--hero-fade) * .6),
+    color-mix(in oklab, var(--bg) 96%, var(--page)) calc(var(--hero-fade) * .82),
+    var(--bg) var(--hero-fade)
+  );
 }
 
 /* The band runs full-bleed; its content sits on the shared page shell so the
