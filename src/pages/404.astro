@@ -7,14 +7,17 @@ import { ogPath } from '../data/og';
 ---
 <BaseLayout
   title="Page Not Found — App Waypoint"
-  description="Oops, you've lost your way. Let's get you back on track with Explore, Archive, About or search."
+  description="That page is not here. Search the catalog, or use the links to Explore, Archive and About."
   socialImage={ogPath('not-found')}
   socialImageAlt="Page not found on App Waypoint."
 >
   <section class="page-shell archive-page not-found-page">
-    <p class="eyebrow">Page Not Found</p>
-    <h1>Oops... you've lost your way</h1>
-    <p class="dek">Let's get you back on track.</p>
+    {/* The diagnosis is the page title, under The One Page Title Rule: a page opens on its
+        title and its dek and nothing above them. The fact used to sit in a 12px eyebrow
+        above a 40px joke, with the dek restating the joke a third time, so the smallest
+        type on the page carried the only thing a lost reader came to learn. */}
+    <h1>Page not found</h1>
+    <p class="dek">Try searching the catalog or use one of the links below.</p>
 
     <article
       class="not-found-routes card explore-utility-card explore-utility-combined-card explore-discovery-card"

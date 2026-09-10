@@ -53,6 +53,12 @@ The site should feel like a small, premium editorial publication for experienced
   Never format the number by hand: use `issueLabel` or `issueName` from
   `src/data/issue.ts`, which every surface reads from. See The Two Digit Issue Rule in
   `DESIGN.md`.
+- Write `catalog`, not `catalogue`, everywhere a reader sees the word. Capitalization
+  follows context rather than the word: `Search the Catalog` is a control label and takes
+  title case, `searching the catalog` is sentence text and does not. Identifiers, slugs
+  and URLs are out of scope and are never renamed to match. Code comments are not copy and
+  may keep either spelling. Adopted 2026-09-09, when the 404 page's own buttons read
+  `Catalog` and the social card that same page generates read `catalogue`.
 - Do not use em dashes or en dashes in App Waypoint editorial copy. Restructure to a
   period, a comma, a colon or parentheses. Date and number ranges take a plain hyphen:
   `August 5-19, 2026`, not `August 5-19, 2026` with an en dash.

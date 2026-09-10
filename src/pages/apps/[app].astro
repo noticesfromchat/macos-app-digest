@@ -173,8 +173,7 @@ const trail = appTrail(app.data.name);
     {relatedApps.length > 0 && (
       <section class="section app-detail-section">
         <div class="section-heading">
-          <p class="eyebrow">You May Also Like</p>
-          <h2>More apps like this</h2>
+          <h2 class="section-title">More apps like this</h2>
         </div>
         <div class="grid directory-grid app-detail-related-grid" data-related-apps-grid>
           {relatedApps.map((entry) => <AppCard app={entry.data} appId={entry.id} />)}

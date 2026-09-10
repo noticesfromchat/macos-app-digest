@@ -459,10 +459,11 @@ boundary** between the dek and the body, the intro and the first section, and on
 the next. The section padding is 24 above and 8 below, which sums to that 32 while putting
 three times as much space above a heading as beneath it.
 
-**The Section Header Gap.** A section header — the uppercase eyebrow and the section title
-under it — sits **24px above the content it names**, `--space-3`, on every surface that
-draws one: the homepage, issue pages and app detail. It is one value in one place,
-`.section-heading`, and no surface overrides it.
+**The Section Header Gap.** A section header — a section title, alone or under an uppercase
+eyebrow — sits **24px above the content it names**, `--space-3`, on every surface that
+draws one: the homepage, issue pages, Explore, About and app detail. It is one value in one
+place, `.section-heading`, and no surface overrides it. That container holds either form;
+see The Two Level Rule for which one a given section gets.
 
 The header is a lockup that names the block beneath it, so the gap that binds it to that
 block has to read as shorter than the gap that separates one section from the next. On an
@@ -475,6 +476,49 @@ against 56 states the hierarchy the page actually has. The value went from 32 to
 App detail pages ran a private `--space-3` here from the start and reached the site value
 from the other direction — the same eyebrow, the same section title and the same cards were
 briefly on two rhythms while the base was 32. That override is gone; the page inherits.
+
+**The Two Level Rule.** An eyebrow and a heading belong together only when **each level
+contributes information the other cannot**. A fixed rubric above an issue-specific
+editorial angle earns both: across 37 sections in nine issues there are five eyebrows and
+37 titles that never repeat, so the eyebrow is the index a returning reader navigates by
+and the title is what this week's three apps have in common. Current or archived issue over
+the issue number earns both the same way, status over identity. The app detail rail's four
+labels are a single level by construction: nothing sits beneath them but the block they
+name.
+
+Whether a string lives in a template or in a content record decides nothing. That test was
+proposed and rejected on 2026-09-09: it would disqualify the rail labels, which are fixed
+strings doing necessary work, while admitting any filler an editor happened to type. What
+disqualifies a second level is saying nothing the first did not. Three failed that test and
+are gone: `One app worth a closer look` under This Week's Editor's Pick, `Three reads for
+Mac context` under Weekend Reading, and `You May Also Like` over `More apps like this`,
+where the eyebrow went rather than the heading because it spoke in a recommendation
+engine's register on the page whose whole claim is that a person chose these one at a time.
+
+**A single heading is a supported form, not half a lockup.** It takes `.section-heading`
+like any other section header, and its heading takes the explicit `.section-title` hook.
+The hook exists because `.section h2` only reaches headings inside a `.section`, and
+Explore's taxonomy sections are not one; lacking a way to say "Section Title" out loud,
+they borrowed `.eyebrow` for its type ramp, which is how two of the page's three sibling
+h2s came to render at 12px beside a third at 33px, on the rail's 8px binding rather than
+this 24px gap.
+
+**Which role a heading takes, and why it is not the heading level.** A heading that **opens
+a standalone section** takes Section Title. A heading that **labels one featured card
+inside the hero** may take the compact Label role, because there the app's own name is the
+block's primary visual identity and a section-scale line above it would outrank the thing
+it introduces. That is the whole of the exception: it explains the Editor's Pick heading
+and it does not reach Explore's standalone sections. **Heading semantics stay independent
+of visual size.** The level states document structure and is chosen for the outline; the
+role states rank and is chosen for the eye. An h2 at Label scale is not a demoted heading,
+and an h2 at Section Title scale on one page is not a promise about h2 on another.
+
+**The label a reader sees and the heading assistive technology announces are one element.**
+The Editor's Pick carried an eyebrow paragraph and a separate clipped h2 until 2026-09-09,
+so above 920px sighted readers saw `This Week's Editor's Pick` while heading navigation
+announced `One app worth a closer look`, and below 920px the filler heading appeared at
+subhead scale and tied the app's own name at the same size. Two audiences, two different
+words, one block. One heading now carries both jobs, and it is visible at every width.
 
 **Card grids collapse into this gap, they do not add to it.** `.directory-grid` carries a
 16px top margin for the directory surfaces, where it follows a filter toolbar rather than a
@@ -1252,7 +1296,7 @@ is a standfirst and reads whole either way; a title is the editorial line itself
 - **Do** keep shadows soft and ambient.
 - **Do** let serif headlines carry the editorial voice while system sans handles utility.
 - **Do** keep the defining tag or collection locked when it is the page’s own context.
-- **Do** keep the uppercase eyebrow above section and card headings. General design guidance treats a kicker above a heading as filler; here it is load-bearing house style — it names the issue section, the pick, and the current-issue block, and it is the documented Label role. This is a deliberate, standing exception.
+- **Do** keep the uppercase eyebrow where each level carries what the other cannot: the issue section's rubric over its title, current or archived over the issue number, and the app detail rail's labels. General design guidance treats a kicker above a heading as filler; on those it is load-bearing house style and a deliberate, standing exception. **Do** drop the second level where it only restates the first, and give a single heading `.section-heading` and `.section-title` rather than half a lockup. See The Two Level Rule.
 
 ### Don't:
 - **Don't** introduce loud secondary colors just to add energy.

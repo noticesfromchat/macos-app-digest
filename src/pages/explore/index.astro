@@ -69,7 +69,9 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
 
     <div class="explore-taxonomy">
       <section aria-labelledby="explore-categories-heading">
-        <h2 class="eyebrow" id="explore-categories-heading">Categories</h2>
+        <div class="section-heading">
+          <h2 class="section-title" id="explore-categories-heading">Categories</h2>
+        </div>
         <div class="explore-lanes explore-lanes-categories">
           {sortedCategories.map((category) => (
             <a class="explore-lane explore-lane-category" href={`/categories/${category.slug}/`}>
@@ -77,7 +79,7 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
               <strong>{category.title}</strong>
               <span class="explore-lane-count">
                 <span>{categoryCounts.get(category.slug)}</span>
-                <span class="eyebrow">{categoryCounts.get(category.slug) === 1 ? 'app' : 'apps'}</span>
+                <span class="explore-lane-count-unit">{categoryCounts.get(category.slug) === 1 ? 'app' : 'apps'}</span>
               </span>
             </a>
           ))}
@@ -85,7 +87,9 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
       </section>
 
       <section aria-labelledby="explore-collections-heading">
-        <h2 class="eyebrow" id="explore-collections-heading">Collections</h2>
+        <div class="section-heading">
+          <h2 class="section-title" id="explore-collections-heading">Collections</h2>
+        </div>
         <div class="explore-lanes explore-lanes-collections" style={`--collection-count: ${collections.length}`}>
           {collections.map((collection) => (
             <a class="explore-lane explore-lane-collection" href={`/collections/${collection.slug}/`}>
@@ -93,7 +97,7 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
               <strong>{collectionLabels[collection.slug]}</strong>
               <span class="explore-lane-count">
                 <span>{collectionCounts.get(collection.slug)}</span>
-                <span class="eyebrow">{collectionCounts.get(collection.slug) === 1 ? 'app' : 'apps'}</span>
+                <span class="explore-lane-count-unit">{collectionCounts.get(collection.slug) === 1 ? 'app' : 'apps'}</span>
               </span>
             </a>
           ))}
@@ -168,7 +172,21 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
     line-height: var(--leading-tile-title);
     font-variant-numeric: tabular-nums;
   }
-  .explore-lane-count .eyebrow { margin: 0; font-family: var(--sans); color: var(--muted); }
+  /* The count's unit noun. It borrowed `.eyebrow` for its type ramp and then had to
+     override the two properties that make an eyebrow one, the accent colour and the
+     family, because `.explore-lane-count` above it sets the display serif. An eyebrow
+     names the block beneath it; this names nothing and has nothing beneath it, so it is
+     the Label role stated in full rather than a borrowed class minus its identity. */
+  .explore-lane-count-unit {
+    margin: 0;
+    font-family: var(--sans);
+    color: var(--muted);
+    font-size: var(--type-label);
+    line-height: var(--leading-label);
+    font-weight: 800;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
   .explore-lane-collection {
     grid-template-columns: auto minmax(0, 1fr) auto;
     align-items: center;

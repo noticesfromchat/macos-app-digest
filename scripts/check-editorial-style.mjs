@@ -30,6 +30,12 @@ const editorialDashPattern = /[—–]/;
    before it was written down, so it is checked here rather than trusted. `src/data/issue.ts`
    is the one place allowed to produce the label. */
 const issueNumberPattern = /\bIssue\s+\d{3}\b/;
+/* The Catalog Spelling Rule. Public copy writes "catalog". The site carried both spellings
+   on 2026-09-09: the 404 page's own controls read "Catalog" while the social card that
+   page generates read "catalogue", and the two only met because a single change edited
+   both. Comments are stripped before a line is tested, so the reasoning written in code
+   comments is untouched; the rule reaches only what a reader sees. */
+const catalogueSpellingPattern = /\bcatalogues?\b/i;
 const titleExemptionPattern = /(?:^|[\s{[(])title\s*[:=]/i;
 const errors = [];
 
@@ -115,6 +121,10 @@ async function walk(directory) {
         errors.push(
           `${relative}:${index + 1}: write an issue number two digits wide; use issueLabel or issueName from src/data/issue.ts`
         );
+      }
+
+      if (catalogueSpellingPattern.test(copy)) {
+        errors.push(`${relative}:${index + 1}: write "catalog" in public copy, not "catalogue"`);
       }
 
       if (editorialDashPattern.test(copy) && !titleExemptionPattern.test(copy)) {

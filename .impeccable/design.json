@@ -584,6 +584,11 @@
         "section": "layout"
       },
       {
+        "name": "The Two Level Rule",
+        "body": "An eyebrow and a heading belong together only when each level carries information the other cannot: a fixed rubric over an issue-specific title (5 eyebrows against 37 non-repeating titles across 9 issues), current or archived over the issue number, and the app detail rail's labels, which are a single level by construction. Whether a string lives in a template or a content record decides nothing; that test was proposed and rejected on 2026-09-09 because it disqualifies the rail labels while admitting filler. A single heading is a supported form, not half a lockup: it takes .section-heading and the explicit .section-title hook, which exists because .section h2 does not reach headings outside a .section. A heading opening a standalone section takes Section Title; a heading labelling one featured card inside the hero may take the compact Label role, because there the app's name is the primary visual identity. Heading semantics stay independent of visual size: the level states document structure, the role states rank. The visible label and the heading announced to assistive technology must be one element.",
+        "section": "layout"
+      },
+      {
         "name": "The One Card Height Rule",
         "body": "Every app card on a page is the same height and their regions line up across the whole grid, not just within a row. The grid defines three repeating tracks and each card spans them as a subgrid. Floors are what the tallest record actually needs, measured across all 102: 230/149/122 at the narrowest three-column width, 205/99/88 above 1100px. The first and last include the card's 24px padding, since a subgrid item's padding comes out of the tracks it spans. minmax rather than fixed, so a longer future record makes its own band taller instead of clipping. This replaced per-region min-height budgets, which any card that overflowed one, usually a second line of tags, pushed out of step with its row. Reading cards are the exception and align on their own terms: they carry .app-card but hold three parts inside a wrapper, so card and wrapper both subgrid onto the shared rows, and they take no floors so a card is as tall as the longest of the three and no taller. The floors apply only where the grid is multi-column: below 921px each card is its own height, because a single column has no neighbour to agree with and the budgets, sized for a 270px card, added a median 159px per card and 17,000px of scrolling on a phone.",
         "section": "components"
@@ -641,7 +646,7 @@
       "Do keep shadows soft and ambient.",
       "Do let serif headlines carry the editorial voice while system sans handles utility.",
       "Do keep the defining tag or collection locked when it is the page’s own context.",
-      "Do keep the uppercase eyebrow above section and card headings. General design guidance treats a kicker above a heading as filler; here it is load-bearing house style, it names the issue section, the pick and the current-issue block, and it is the documented Label role. This is a deliberate, standing exception."
+      "Do keep the uppercase eyebrow where each level carries what the other cannot: the issue section's rubric over its title, current or archived over the issue number, and the app detail rail's labels. General design guidance treats a kicker above a heading as filler; on those it is load-bearing house style and a deliberate, standing exception. Do drop the second level where it only restates the first, and give a single heading .section-heading and .section-title rather than half a lockup. See The Two Level Rule."
     ],
     "donts": [
       "Don't introduce loud secondary colors just to add energy.",

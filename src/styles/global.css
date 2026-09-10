@@ -801,13 +801,24 @@ h1.home-hero-number {
    halves still whole steps, and it puts more space above a section's heading than below
    its content, which is the rhythm this page already wanted. */
 .issue .section { padding: var(--space-4) 0 var(--space-3); }
-/* One step below every section header on the site, cards or prose alike: the eyebrow and
-   title are a lockup that names the block under it, so the gap that binds them to it is
-   shorter than the gap that separates one section from the next. Card grids carry a 16px
-   top margin of their own on the directory surfaces; it is an adjacent sibling of this
-   margin, so the two collapse to 24 rather than summing to 40. */
+/* One step below every section header on the site, cards or prose alike. The container
+   holds either a single heading or an eyebrow and the heading it names, and the gap that
+   binds it to its block is shorter than the gap separating one section from the next.
+   Card grids carry a 16px top margin of their own on the directory surfaces; it is an
+   adjacent sibling of this margin, so the two collapse to 24 rather than summing to 40.
+
+   A single heading is a supported form, not a half-built lockup. A second level is
+   earned only when each level contributes distinct information, which on this site means
+   a fixed rubric above an issue-specific editorial angle. Whether a string lives in a
+   template or a content record decides nothing. See The Two Level Rule in DESIGN.md. */
 .section-heading { width: 100%; max-width: none; margin-bottom: var(--space-3); }
-.section h2 { margin: 0; font-family: var(--display); font-size: var(--type-section-title); font-weight: 500; letter-spacing: -.03em; line-height: 1; }
+/* The Section Title role, reachable two ways. `.section h2` covers every heading inside a
+   `.section`; `.section-title` is the explicit hook for headings that open a standalone
+   section without one, which is how Explore's taxonomy headings ended up borrowing
+   `.eyebrow` for its type ramp instead. Heading semantics are independent of visual size:
+   the level states document structure, this role states rank. */
+.section h2,
+.section-title { margin: 0; font-family: var(--display); font-size: var(--type-section-title); font-weight: 500; letter-spacing: -.03em; line-height: 1; }
 
 /* Twelve shared tracks, fluid: `track = (shell - 11 gutters) / 12`. A card spans four of
    them plus the three gutters between, which is 376px at the 1160px shell and follows the
@@ -930,19 +941,23 @@ h1.home-hero-number {
 
 .home-hero-pick { display: flex; flex-direction: column; }
 
-/* Hidden from sight above 920px, where the eyebrow and the card carry the meaning, but
-   never hidden from the outline. `display: none` here took the h2 out of the document
-   entirely, so the desktop homepage ran h1 straight to the app card's h3 and broke the
-   heading sequence on exactly the widths most readers use. The clip pattern keeps the
-   level in place for assistive technology at every width. */
+/* One visible heading at every width, carrying the label a reader actually needs. It was
+   an eyebrow paragraph plus a clipped h2 reading "One app worth a closer look": above
+   920px sighted readers saw only the eyebrow while heading navigation announced only the
+   clipped h2, so the two audiences were given different words for the same block, and
+   below 920px the filler heading appeared at subhead scale and tied the app's own name.
+   The heading now carries the Label role directly, which The Two Level Rule allows here
+   because this heading labels one featured card inside the hero and the app's name is the
+   block's primary visual identity. A heading that opens a standalone section takes
+   Section Title instead. */
 .home-hero-pick-title {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  clip-path: inset(50%);
-  white-space: nowrap;
+  margin: 0 0 var(--eyebrow-gap);
+  color: var(--accent);
+  font-size: var(--type-label);
+  line-height: var(--leading-label);
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
 }
 .home-hero-pick .hero-pick-card { flex: 1; }
 
@@ -1220,6 +1235,18 @@ h1.home-hero-number {
 .reading-card .reading-description { min-height: 112px; }
 
 .feature-card { padding: var(--card-inset); }
+/* The Card Title role, same family, size and weight the app and archive cards use. The
+   video's supplied title reads here instead of heading the section, so a third-party
+   headline is attributed and ranked as the card's own subject rather than as the
+   publication's editorial line. */
+.feature-card-title {
+  margin: 0 0 var(--space-2);
+  font-family: var(--display);
+  font-size: var(--type-card-title);
+  font-weight: 600;
+  line-height: 1.2174;
+  color: var(--text);
+}
 .feature-card p { max-width: var(--measure); margin: 0 0 var(--space-2); color: var(--body-text); }
 /* A standalone link on its own line is a target, not prose, so it carries the
    minimum. The inline RSS link in the subscribe copy is left alone: WCAG exempts a
@@ -2657,22 +2684,6 @@ h1.home-hero-number {
   /* No rule here either. This override outlived the site-wide removal of content
      dividers on 2026-09-05 and put a hairline back under the hero on phones only,
      so one boundary was space on desktop and space plus a line on mobile. */
-  .home-hero-pick-title {
-    position: static;
-    width: auto;
-    height: auto;
-    overflow: visible;
-    clip: auto;
-    clip-path: none;
-    white-space: normal;
-    margin: 0 0 var(--space-3);
-    font-family: var(--display);
-    font-size: var(--type-subhead);
-    font-weight: 500;
-    letter-spacing: -.03em;
-    line-height: 1;
-    text-wrap: balance;
-  }
   
   .grid > * { grid-column: span 12; }
   .issue .section { padding: var(--space-3) 0; }

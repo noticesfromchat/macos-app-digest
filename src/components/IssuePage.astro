@@ -68,8 +68,7 @@ const IssueHeading = homepage ? 'p' : 'h1';
 
     {editorsPick && (
       <div class="home-hero-pick" id="editors-pick">
-        <p class="eyebrow">{homepage ? 'This Week’s Editor’s Pick' : 'Editor’s Pick'}</p>
-        <h2 class="home-hero-pick-title">One app worth a closer look</h2>
+        <h2 class="home-hero-pick-title">{homepage ? 'This Week’s Editor’s Pick' : 'Editor’s Pick'}</h2>
         <AppCard
           app={editorsPick.data}
           appId={editorsPick.id}
@@ -106,10 +105,16 @@ const IssueHeading = homepage ? 'p' : 'h1';
 
   <section class="section video-section">
     <div class="section-heading">
-      <p class="eyebrow">Video of the Week</p>
-      <h2>{issue.video.title}</h2>
+      <h2 class="section-title">Video of the Week</h2>
     </div>
+    {/* The supplied title sits inside the card at Card Title rank rather than heading the
+        section. It is the one heading on an issue page App Waypoint did not write, and at
+        Section Title scale a promotional listicle headline read at the same rank, and in
+        the same editorial serif, as the publication's own section titles. Card Title is
+        still serif; what changes is rank and placement, so the title stays attributed and
+        stays a heading. */}
     <article class="card feature-card">
+      <h3 class="feature-card-title">{issue.video.title}</h3>
       <p><strong>Creator:</strong> {issue.video.creator}</p>
       <p>{issue.video.description}</p>
       <a href={issue.video.url} target="_blank" rel="noreferrer">Watch on YouTube</a>
@@ -118,8 +123,7 @@ const IssueHeading = homepage ? 'p' : 'h1';
 
   <section class="section">
     <div class="section-heading">
-      <p class="eyebrow">Weekend Reading</p>
-      <h2>Three reads for Mac context</h2>
+      <h2 class="section-title">Weekend Reading</h2>
     </div>
     <div class="grid">
       {issue.readings.map((reading) => <ReadingCard reading={reading} />)}
