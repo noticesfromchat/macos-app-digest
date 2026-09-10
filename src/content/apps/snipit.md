@@ -5,6 +5,6 @@ bestFor: People who need text from screenshots, scans or PDFs and want to paste 
 tagline: screen OCR tool
 tags: [capture, productivity, utility]
 categories: [files-research-documents, productivity-workflow, mac-utilities-customization]
-source: Product Hunt listing and Snipit homepage
-homepage: https://getsnipit.com/
+source: Product Hunt listing
+homepage: https://www.producthunt.com/products/snipit-ultimate-ocr-app-for-mac
 ---
