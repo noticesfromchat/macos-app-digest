@@ -26,8 +26,8 @@ export const categories: Category[] = [
   {
     slug: 'ai-agents',
     title: 'AI & Agents',
-    description: 'Local models, agent tools and AI-powered search that make Mac workflows more capable without losing focus.',
-    mobileDescription: 'AI tools, local models and agents that extend focused workflows.',
+    description: "Assistants and coding agents, plus the growing pile of tools for watching what they're up to. Some run on your Mac, some call out to a server.",
+    mobileDescription: 'Assistants and coding agents, plus tools to watch them.',
     tags: ['ai', 'agents', 'search'],
     icon: 'robot',
     accent: 'color-mix(in srgb, var(--accent) 12%, var(--surface-strong))'
@@ -35,8 +35,8 @@ export const categories: Category[] = [
   {
     slug: 'developer-tools',
     title: 'Developer Tools',
-    description: 'Terminal utilities, databases, CLIs and coding helpers built for people shipping software on the Mac.',
-    mobileDescription: 'Coding, terminal and database tools for building software.',
+    description: 'The terminal you actually want, and the tools that sit around the code rather than in it. Editors, inspectors, clients, whatever else is on the bench.',
+    mobileDescription: 'Terminals and the tools that sit around the code.',
     tags: ['developer', 'terminal', 'database', 'cli'],
     icon: 'code-block',
     accent: 'color-mix(in srgb, var(--accent) 10%, var(--surface-strong))'
@@ -44,8 +44,8 @@ export const categories: Category[] = [
   {
     slug: 'files-research-documents',
     title: 'Files, Research & Documents',
-    description: 'Tools for finding, capturing, annotating, exporting and organizing the documents and files that keep work moving.',
-    mobileDescription: 'Find, capture and organize files and documents for everyday work.',
+    description: "Finding what's on your disk, and turning up the thing you saved six months ago. Plus the capturing and filing that got it there in the first place.",
+    mobileDescription: 'Finding files, and finding them again later.',
     tags: ['files', 'finder', 'documents', 'research', 'pdf', 'ebooks', 'backup', 'downloads', 'capture', 'airdrop', 'quicklook'],
     icon: 'files',
     accent: 'color-mix(in srgb, var(--accent) 8%, var(--surface-strong))'
@@ -53,8 +53,8 @@ export const categories: Category[] = [
   {
     slug: 'mac-utilities-customization',
     title: 'Mac Utilities & Customization',
-    description: 'Menu bar tools, window managers, launchers and system tweaks that make the Mac feel more responsive and personal.',
-    mobileDescription: 'Utilities, launchers and system tweaks that make the Mac work your way.',
+    description: "Menu bar extras, window managers, launchers and the small tweaks that make a Mac feel like yours instead of Apple's. Mostly small, mostly single-purpose.",
+    mobileDescription: 'Menu bar extras and window managers that make a Mac yours.',
     tags: ['utility', 'menubar', 'customization', 'privacy', 'launcher', 'windows', 'keyboard', 'accessibility', 'audio', 'network', 'monitoring', 'maintenance', 'battery', 'dashboard', 'remote', 'ios'],
     icon: 'sliders',
     accent: 'color-mix(in srgb, var(--accent) 9%, var(--surface-strong))'
@@ -62,8 +62,8 @@ export const categories: Category[] = [
   {
     slug: 'productivity-workflow',
     title: 'Productivity & Workflow',
-    description: 'Task managers, reminders, automation and scheduling tools that help Mac users reduce friction in repeat work.',
-    mobileDescription: 'Plan tasks, automate routines and keep recurring work moving.',
+    description: 'Automation and task managers for the work you do over and over and would rather stop thinking about. Set it up once, then let the Mac remember it.',
+    mobileDescription: 'Automation for the work you do over and over.',
     tags: ['productivity', 'tasks', 'reminders', 'automation', 'calendar', 'shortcuts'],
     icon: 'list-checks',
     accent: 'color-mix(in srgb, var(--accent) 11%, var(--surface-strong))'
@@ -71,8 +71,8 @@ export const categories: Category[] = [
   {
     slug: 'writing-notes-reading',
     title: 'Writing, Notes & Reading',
-    description: 'Writing environments, note tools, dictation and reading apps for people who spend their days moving through text.',
-    mobileDescription: 'Write, capture, dictate and read with less friction.',
+    description: "For anyone whose day is mostly text: somewhere to draft it, catch it before it's gone, dictate it or read it back somewhere quieter later on.",
+    mobileDescription: 'Somewhere to write it down, and somewhere to read it later.',
     tags: ['writing', 'notes', 'markdown', 'dictation', 'clipboard', 'messages', 'reading', 'rss'],
     icon: 'notepad',
     accent: 'color-mix(in srgb, var(--accent) 7%, var(--surface-strong))'

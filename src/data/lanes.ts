@@ -107,10 +107,68 @@ const collectionTaglines: Record<string, string> = {
 
 export const collectionTagline = (slug: string) => collectionTaglines[slug];
 
+const tagDescriptions: Record<string, string> = {
+  "accessibility": "Tools that make the Mac easier to see and control, whatever you need from it.",
+  "agents": "Assistants that do multi-step work, and the tools for watching them do it.",
+  "ai": "Assistants and transcription that do more than chat. Some run locally, some don't.",
+  "airdrop": "Getting a file from one device to another without emailing it to yourself.",
+  "audio": "Send sound where you want it and hear what's actually playing.",
+  "automation": "Set the boring thing up once, then let the Mac do it without you from then on.",
+  "backup": "Scheduled copies of the disk, so there's a second version of everything.",
+  "battery": "See what's draining it, and what that's doing to your runtime.",
+  "calendar": "Check what's next without opening a whole calendar app to do it.",
+  "capture": "Screenshots and screen recordings, plus the marking up you do right after.",
+  "cli": "A command line onto things that normally only give you a window.",
+  "clipboard": "Everything you've copied lately, still there when you need it back.",
+  "customization": "Change how the Mac looks and behaves until it stops getting in your way.",
+  "dashboard": "One screen with the numbers you'd otherwise open five apps to check.",
+  "database": "A real window onto your data instead of a terminal prompt.",
+  "developer": "The bench that sits around the code: editors, inspectors, clients, diff tools.",
+  "dictation": "Turning speech into text, and the tools for delivering it out loud.",
+  "documents": "Reading and editing the files people email you.",
+  "downloads": "Queues and scheduling, for when the browser's own downloads aren't enough.",
+  "ebooks": "A library of your own files rather than one you're renting from a store.",
+  "files": "Finding, moving, renaming and clearing out what's on your disk.",
+  "finance": "Money and markets on your desktop instead of your phone.",
+  "finder": "Fixes for the app you use more than any other and think about least.",
+  "health": "Nudges to stand up and stop working for a minute.",
+  "ios": "Mac apps that talk to your iPhone or iPad, or bring something across from it.",
+  "keyboard": "Remap the keys and stop reaching for the mouse.",
+  "launcher": "Hit a key, type a few letters and you're there.",
+  "local": "Processing that happens on your own machine rather than on someone's server.",
+  "maintenance": "Clearing out the junk that piles up without anyone deciding it should.",
+  "maps": "A map that lives on your Mac and works offline.",
+  "markdown": "Writing in plain text and watching it come out looking right.",
+  "menubar": "Small tools that sit up top and stay one click away all day.",
+  "messages": "Searching and exporting the conversations already on your Mac.",
+  "monitoring": "What your Mac is doing right now: CPU, memory, disk, temperature, all of it.",
+  "network": "See how fast it is, and what's quietly phoning home.",
+  "notes": "Somewhere to put a thought before it's gone.",
+  "open-source": "Source you can read, from projects built in the open.",
+  "pdf": "Reading, marking up, merging and getting text back out of PDFs.",
+  "privacy": "Apps that work without shipping your data somewhere else.",
+  "productivity": "Getting more done, or at least spending less time on the parts that don't count.",
+  "quicklook": "Press space on a file and actually see what's inside it.",
+  "reading": "Everything you've been meaning to get to, finally in one place.",
+  "reminders": "Being told the thing at the moment you can actually do something about it.",
+  "remote": "Your Mac on another screen, or another device's apps on yours.",
+  "research": "Collecting sources and remembering where they came from.",
+  "rss": "Readers and feed tools. The open web, still working the way it used to.",
+  "search": "Find the file, or the sentence inside it, without remembering where you put it.",
+  "shortcuts": "Extra actions and better tooling for Apple's Shortcuts app.",
+  "tasks": "Lists that hold up once the list gets long.",
+  "terminal": "Shells and emulators, and everything that makes the command line nicer to live in.",
+  "utility": "Small apps that do one job and then stay out of the way.",
+  "video": "Players and screen recorders, plus a way to subtitle what you're watching.",
+  "windows": "Put windows where you want them and get back to the one you need.",
+  "writing": "Drafting and editing, with less between you and the page."
+};
+
 export const tagDek = (tag: string) =>
-  tag === 'rss'
-    ? 'RSS readers and tools to help with RSS feeds.'
-    : `Mac apps selected for their relevance to ${tagTitle(tag).toLowerCase()} workflows.`;
+  tagDescriptions[tag] ?? `Mac apps selected for their relevance to ${tagTitle(tag).toLowerCase()} workflows.`;
+
+export const tagMetaDescription = (tag: string) =>
+  `${tagDek(tag)} Each one comes with a short note on what it does and a link to its developer.`;
 
 const collectionDescriptions: Record<string, string> = {
   'editors-picks':

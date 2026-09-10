@@ -4,7 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import { laneTrail, itemListSchema } from '../../data/breadcrumb';
 import AppDirectory from '../../components/AppDirectory.astro';
-import { tagDek, tagTagline, tagTitle } from '../../data/lanes';
+import { tagDek, tagMetaDescription, tagTagline, tagTitle } from '../../data/lanes';
 import { OG_SIZE, ogPath, tagOgSlug } from '../../data/og';
 
 export async function getStaticPaths() {
@@ -35,7 +35,7 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
   socialImage={ogPath(tagOgSlug(tag))}
   socialImageSize={OG_SIZE}
   socialImageAlt={`${title} Mac apps on App Waypoint. ${dek}`}
-  description={`Explore thoughtfully selected Mac apps for ${title} workflows, with concise recommendations, practical use cases and links to official developer websites.`}
+  description={tagMetaDescription(tag)}
 >
   <section class="page-shell archive-page tag-page">
     <Breadcrumb trail={trail} />
