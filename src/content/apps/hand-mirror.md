@@ -1,7 +1,7 @@
 ---
 name: Hand Mirror
-description: A tiny camera-check button lets you preview your look before joining a video call.
-bestFor: People who join a lot of calls and want one quick look before the camera turns on.
+description: Check the camera before a call with one click from the menu bar, so you find the bad angle before everyone else does.
+bestFor: Anyone who joins a lot of calls and wants one last look before the camera actually turns on.
 tagline: camera check
 tags: [menubar, utility, productivity]
 categories: [mac-utilities-customization, productivity-workflow]

@@ -1,7 +1,7 @@
 ---
 name: BoltAI
-description: Bring your own model keys, organize chats into projects and keep the work in local storage from a native Mac client.
-bestFor: Power users who already know their model stack and want a Mac app for prompts, agents, screenshots and local models.
+description: Bring your own model keys and keep the chats, prompts and screenshots in local storage rather than in someone else's account.
+bestFor: Power users who already know their model stack and just need a native Mac client to drive it.
 tagline: AI chat client
 tags: [ai, automation, local, productivity]
 categories: [ai-agents, productivity-workflow]

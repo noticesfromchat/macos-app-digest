@@ -1,7 +1,7 @@
 ---
 name: MindMac
-description: Hosted and local models live in one Mac app, including OpenAI, Gemini, Anthropic, Mistral, Perplexity, OpenRouter and local LLMs.
-bestFor: Mac users who switch between models and want inline help without making one hosted assistant the center of every task.
+description: Run hosted and local models side by side in one Mac app, with OpenAI, Anthropic, Gemini, Mistral and OpenRouter among the options.
+bestFor: Mac users who switch between models often and would rather not build the day around one hosted assistant.
 tagline: multi-model chat
 tags: [ai, local, productivity, automation]
 categories: [ai-agents, productivity-workflow]

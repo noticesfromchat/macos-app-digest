@@ -1,7 +1,7 @@
 ---
 name: Pandan
-description: A small active-time counter lives in the menu bar, then nudges you if your session has gone longer than you meant it to.
-bestFor: People who want to notice long Mac sessions without turning the day into a time-tracking project.
+description: Count active Mac time from the menu bar and get a nudge when a session runs longer than you meant it to.
+bestFor: Anyone who loses an afternoon to the screen and would rather be told about it than keep a time log.
 tagline: active-time timer
 tags: [menubar, productivity, utility, health]
 categories: [mac-utilities-customization, productivity-workflow]

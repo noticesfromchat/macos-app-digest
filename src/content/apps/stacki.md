@@ -1,7 +1,7 @@
 ---
 name: Stacki
-description: Existing or new Astro projects get a visual editor without losing the files, writing changes back to source you keep in Git.
-bestFor: Astro users who want to tune pages and styles visually without giving up source files, local tools or Git history.
+description: Edit an Astro site visually and have every change written back to the real source files, so your Git history stays yours.
+bestFor: Astro users who like editing visually but refuse to give up the source files and Git history underneath.
 tagline: visual Astro editor
 tags: [developer, productivity, local, open-source]
 categories: [developer-tools, productivity-workflow]

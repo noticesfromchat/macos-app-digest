@@ -1,7 +1,7 @@
 ---
 name: DockDoor
-description: Add live window previews, Option-Tab switching and keyboard controls to the Dock that already ships with macOS.
-bestFor: People with too many open windows who want better switching without replacing the Dock or sending workspace data anywhere.
+description: Add live window previews and Option-Tab switching to the Dock that already ships with macOS, without replacing it.
+bestFor: Anyone with too many windows open who needs better switching but likes the Dock they already have.
 tagline: Dock window previews
 tags: [windows, productivity, utility, open-source]
 categories: [mac-utilities-customization, productivity-workflow]

@@ -1,7 +1,7 @@
 ---
 name: Orion Browser
-description: Built on WebKit with zero telemetry, built-in blocking and support for Safari, Chrome and Firefox extensions.
-bestFor: Mac users who want a private daily browser without rebuilding every extension habit from scratch.
+description: Browse on WebKit with no telemetry and blocking built in, then bring over the extensions you already use in Safari, Chrome or Firefox.
+bestFor: Mac users switching to a private daily browser who do not fancy rebuilding every extension habit.
 tagline: private browser
 tags: [privacy, productivity, utility]
 categories: [mac-utilities-customization, productivity-workflow]
