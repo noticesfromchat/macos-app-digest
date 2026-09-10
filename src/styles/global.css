@@ -1846,6 +1846,14 @@ h1.home-hero-number {
   color: var(--body-text);
   list-style: none;
 }
+/* The section's own padding owns the boundary to the next section, so nothing that ends a
+   section adds to it. The criteria list carries a symmetric 16px for the case above, which
+   is right between two paragraphs and wrong as the last thing in a block: 8px of section
+   padding plus 24px of the next section's put the group boundary at 32, and the list's own
+   margin pushed the gap under "What earns a spot" to 48 while every prose section closed at
+   32. Written against the last child rather than against the list, because the next block
+   to end a section would have arrived at the same 48. See The About ladder. */
+.about-page .section > *:last-child { margin-bottom: 0; }
 .about-page .about-criteria li { position: relative; padding-left: 16px; }
 .about-page .about-criteria li + li { margin-top: var(--space-1); }
 .about-page .about-criteria li::before {

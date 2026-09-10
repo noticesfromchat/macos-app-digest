@@ -459,6 +459,13 @@ boundary** between the dek and the body, the intro and the first section, and on
 the next. The section padding is 24 above and 8 below, which sums to that 32 while putting
 three times as much space above a heading as beneath it.
 
+**The section's padding owns that boundary, so nothing that ends a section adds to it.**
+`.about-page .section > *:last-child` carries no bottom margin. The criteria list sets a
+symmetric 16px, which is correct between two paragraphs and wrong as the last block in a
+section: it made the gap under *What earns a spot* 48px where every prose section closed at
+32. The rule is written against the last child rather than against the list, because the
+next block to end a section would have reached the same 48. Fixed 2026-09-09.
+
 **The Section Header Gap.** A section header — a section title, alone or under an uppercase
 eyebrow — sits **24px above the content it names**, `--space-3`, on every surface that
 draws one: the homepage, issue pages, Explore and app detail. It is one value in one place,
