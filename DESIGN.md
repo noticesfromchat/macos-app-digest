@@ -461,9 +461,17 @@ three times as much space above a heading as beneath it.
 
 **The Section Header Gap.** A section header — a section title, alone or under an uppercase
 eyebrow — sits **24px above the content it names**, `--space-3`, on every surface that
-draws one: the homepage, issue pages, Explore, About and app detail. It is one value in one
-place, `.section-heading`, and no surface overrides it. That container holds either form;
-see The Two Level Rule for which one a given section gets.
+draws one: the homepage, issue pages, Explore and app detail. It is one value in one place,
+`.section-heading`, and one surface overrides it. That container holds either form; see The
+Two Level Rule for which one a given section gets.
+
+**About is the exception, and it is 8px.** `.about-page .section-heading` binds its heading
+to the prose beneath at `--space-1`, not `--space-3`. A card section heads a grid that its
+own cards already bound, so 24px reads as binding; About heads running prose, where the
+heading and its first line are one block and 24px would read as the tail of the section
+above. It is the same reasoning as The About ladder, where 8px is what binds a heading to
+what it introduces, and it is why the override stayed scoped even after the site value came
+down from 32 to 24. Preserved unchanged on 2026-09-09 when About moved onto `.section-title`.
 
 The header is a lockup that names the block beneath it, so the gap that binds it to that
 block has to read as shorter than the gap that separates one section from the next. On an
@@ -1167,13 +1175,18 @@ A full-bleed band whose content sits on the shared page shell, so the wordmark a
 - **The waterline.** The band's ground fades to the page colour across the wave band and the strokes taper to nothing, so the hero ends on the colour the next section begins with. A single `--sea-h` drives the canvas height, the bottom padding, and the fade distance.
 - **The fade is eased at both ends, not just aimed at the right colour.** Landing on the page colour is what keeps the hero from ending on a step; easing out of it is what keeps the hero from ending on a *line*. A linear ramp meeting a flat field agrees with it in value and disagrees in slope, and the eye reads that corner as an edge — light mode showed a hairline under the water on phones while the hero's last row and the page's first row were both `--page`, which is why it survived a check that only compared the two colours. The ramp is a smoothstep, so its slope reaches zero at each end. Light mode also has only twelve levels of ink to spend across the fade, few enough to band in 8-bit; the easing puts the closest-spaced steps mid-fade where the water gives them texture to hide in, and the fade runs `--sea-h` plus 96px rather than 38px to buy back the steepness the easing adds there. Fixed 2026-09-09.
 - **Motion:** the star field is painted once and never moves, and there is no load-in entrance. The waterline swells under The Swell Rule, quietly enough that it reads as atmosphere rather than as animation. The Editor's Pick card is the one thing in the fold that moves for attention, under The Struck Light Rule, and it earns that by being the app the issue is arguing for.
-- **The pick title is clipped, never removed.** Above 920px the eyebrow and the card carry
-  the meaning, so `One app worth a closer look` is not shown, but it is hidden with the
-  `sr-only` clip rather than `display: none`. Removing it took the h2 out of the document
-  and ran the desktop homepage straight from h1 to the app card's h3, a heading-sequence
-  break that existed only at the widths most readers use and disappeared on mobile, which is
-  why review kept missing it. A heading that orders the outline stays in the outline at every
-  width.
+- **The pick carries one visible heading at every width.** `.home-hero-pick-title` is an
+  `h2` set in the accent Label role, reading *This Week's Editor's Pick* on the homepage and
+  *Editor's Pick* on an archived issue, with `--eyebrow-gap` beneath it to the card. It
+  takes the Label role rather than Section Title because it names one featured card inside
+  the hero and the app's own name is that block's identity; see The Two Level Rule.
+  Until 2026-09-09 this was an eyebrow paragraph above a *clipped* h2 reading `One app worth
+  a closer look`. That clip was the right answer to the wrong question: removing the h2 had
+  run the desktop homepage from h1 to the app card's h3, so the clip kept the level in the
+  outline, but it also left sighted readers and heading navigation with two different labels
+  for one block above 920px, and below 920px the filler heading appeared at subhead scale and
+  tied the app's own name. **A heading that orders the outline stays in the outline at every
+  width, and the words it announces are the words on the screen.**
 
 ### Issue Subscribe Card
 
@@ -1204,8 +1217,13 @@ in issue frontmatter as the editorial audit trail, but nothing renders it.
 ### Not Found
 
 Every route that does not exist renders `src/pages/404.astro` on the same page shell as the
-rest of the site: the `Page Not Found` eyebrow, page title, dek, then one bordered recovery
-panel spanning the full page shell. The panel reuses the Explore mega card's container,
+rest of the site: the page title `Page not found`, its dek, then one bordered recovery panel
+spanning the full page shell. It carries no eyebrow. The diagnosis is the title, under The
+One Page Title Rule, because until 2026-09-09 the fact sat in a 12px eyebrow above a 40px
+line of voice and a dek that restated the voice a third time, leaving the smallest type on
+the page carrying the only thing a lost reader came for. The generated social card states
+the same fact under a `404` eyebrow, since a card seen away from the site cannot say "the
+links below". The panel reuses the Explore mega card's container,
 spacing, two-column discovery grid and Phosphor icon tiles. Its four recovery titles use the
 23px/28px Card Title role rather than the Explore taxonomy name's private treatment. Its four destinations
 are Search, Explore, Archive, then About. The tile itself does not get a row hover wash; only

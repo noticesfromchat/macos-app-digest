@@ -108,11 +108,12 @@ const IssueHeading = homepage ? 'p' : 'h1';
       <h2 class="section-title">Video of the Week</h2>
     </div>
     {/* The supplied title sits inside the card at Card Title rank rather than heading the
-        section. It is the one heading on an issue page App Waypoint did not write, and at
-        Section Title scale a promotional listicle headline read at the same rank, and in
-        the same editorial serif, as the publication's own section titles. Card Title is
-        still serif; what changes is rank and placement, so the title stays attributed and
-        stays a heading. */}
+        section. At Section Title scale a promotional listicle headline read at the same
+        rank, and in the same editorial serif, as the publication's own section titles.
+        Card Title is still serif; what changes is rank and placement, so the title stays
+        attributed and stays a heading. Third-party titles are not barred from being
+        headings: ReadingCard renders each Weekend Reading title as its own h3 the same
+        way. What is barred is one of them opening a section in the publication's voice. */}
     <article class="card feature-card">
       <h3 class="feature-card-title">{issue.video.title}</h3>
       <p><strong>Creator:</strong> {issue.video.creator}</p>

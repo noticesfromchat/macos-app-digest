@@ -580,7 +580,7 @@
       },
       {
         "name": "The Eyebrow Binding Rule",
-        "body": "--eyebrow-gap derives from --space-1 (8px) and binds each label to its content. --space-3 (24px) separates labelled groups.",
+        "body": "--eyebrow-gap derives from --space-1 (8px) and binds each label to its content. --space-3 (24px) separates a section header from the block it names, on every surface that draws one except About, which binds its headings to running prose at 8px through .about-page .section-heading. A card section heads a grid its own cards already bound, so 24px reads as binding there; About heads prose, where the heading and its first line are one block. See The About ladder.",
         "section": "layout"
       },
       {
