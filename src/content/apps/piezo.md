@@ -8,4 +8,7 @@ categories: [mac-utilities-customization, files-research-documents]
 collections: [editors-picks]
 source: Editor's Picks note and Rogue Amoeba homepage
 homepage: https://rogueamoeba.com/piezo/
+icon: /app-icons/piezo.png
+iconStyle: plain
+iconAccent: "#cd632e"
 ---

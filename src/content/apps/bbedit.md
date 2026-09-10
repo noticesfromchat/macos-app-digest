@@ -8,4 +8,6 @@ categories: [developer-tools, writing-notes-reading]
 collections: [community-favorites]
 source: Bare Bones BBEdit product page
 homepage: https://www.barebones.com/products/bbedit/
+icon: /app-icons/bbedit.png
+iconStyle: plain
 ---

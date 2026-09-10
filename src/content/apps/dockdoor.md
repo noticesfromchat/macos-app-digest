@@ -7,4 +7,6 @@ tags: [windows, productivity, utility, open-source]
 categories: [mac-utilities-customization, productivity-workflow]
 source: DockDoor homepage and GitHub repository
 homepage: https://dockdoor.net/
+icon: /app-icons/dockdoor.png
+iconStyle: plain
 ---

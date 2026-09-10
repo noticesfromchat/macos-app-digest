@@ -7,4 +7,6 @@ tags: [privacy, productivity, utility]
 categories: [mac-utilities-customization, productivity-workflow]
 source: Kagi Orion official homepage
 homepage: https://orionbrowser.com/
+icon: /app-icons/orion-browser.png
+iconStyle: plain
 ---

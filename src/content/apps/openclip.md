@@ -7,4 +7,6 @@ tags: [clipboard, automation, productivity, open-source]
 categories: [writing-notes-reading, productivity-workflow]
 source: Editor direct instruction and OpenClip GitHub repository
 homepage: https://github.com/ganeshmshetty/openclip
+icon: /app-icons/openclip.png
+iconStyle: plain
 ---

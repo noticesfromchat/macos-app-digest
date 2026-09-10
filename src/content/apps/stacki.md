@@ -7,4 +7,6 @@ tags: [developer, productivity, local, open-source]
 categories: [developer-tools, productivity-workflow]
 source: App Selections note, Stacki homepage and GitHub repository
 homepage: https://stacki.build/
+icon: /app-icons/stacki.png
+iconStyle: plain
 ---

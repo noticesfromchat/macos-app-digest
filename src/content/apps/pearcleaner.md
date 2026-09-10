@@ -7,4 +7,6 @@ tags: [maintenance, files, utility, open-source]
 categories: [mac-utilities-customization, files-research-documents]
 source: Pearcleaner GitHub repository
 homepage: https://github.com/aurochseth/pearcleaner
+icon: /app-icons/pearcleaner.png
+iconStyle: plain
 ---

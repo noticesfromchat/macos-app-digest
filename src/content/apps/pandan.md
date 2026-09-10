@@ -7,4 +7,6 @@ tags: [menubar, productivity, utility]
 categories: [mac-utilities-customization, productivity-workflow]
 source: App Selections note, official homepage and Mac App Store
 homepage: https://sindresorhus.com/pandan
+icon: /app-icons/pandan.png
+iconStyle: plain
 ---

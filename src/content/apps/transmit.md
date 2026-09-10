@@ -8,4 +8,6 @@ categories: [files-research-documents, developer-tools, mac-utilities-customizat
 collections: [community-favorites]
 source: Panic Transmit product page
 homepage: https://panic.com/transmit/
+icon: /app-icons/transmit.png
+iconStyle: plain
 ---
