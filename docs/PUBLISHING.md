@@ -30,6 +30,47 @@ deployment. It combines candidate research, app metadata review, tag maintenance
 Editor's Pick collection, release-candidate coordination, validation and Deploy
 Preview review.
 
+### Overnight draft and Thursday approval gates
+
+The selection task starts Thursday at 12:00 a.m. Pacific, preparing the upcoming
+Friday issue for the editor's Thursday morning review. It reads GitHub sources and
+uses a cloud execution environment when needed, without depending on the editor's
+computer. Read the current `main` documentation plus any explicitly selected
+release-branch process updates, reporting conflicts rather than silently combining
+different versions.
+
+Create or update that issue's review page under the Notion
+[Issues page](https://app.notion.com/p/Issues-3c9d6482d47f808f8806f6eeb0d21a7e?source=copy_link).
+Check for an existing page before creating one and preserve the editor's changes.
+Organize it as Editorial Proof (all issue-facing text and links in website order),
+Review Decisions (checkbox options and free-text alternatives) and Production Notes
+(sources, source counts, icon status, PR selection and check results). Propose two
+eligible apps from the App Selections note; if fewer are eligible, explain the
+shortfall instead of filling the quota with unsuitable apps. The two-per-source cap
+includes the Editor's Pick. Credit discovery separately from official verification;
+checking an official homepage does not change an app's discovery source.
+
+Finish the complete Notion draft before stopping for editor review. Put unresolved
+choices in Review Decisions rather than interrupting overnight research. Do not
+stage issue or app-record changes on the release branch before the editor approves
+the edited Notion proof and required decisions.
+
+After that approval, apply the approved proof and decisions to the explicitly
+selected PR branch. Preserve prior branch selection; do not infer selection from
+recency. Validate, build, verify RSS and push the updated preview for review. This
+preview push precedes final preview approval. Report missing or poor-quality icons
+by app, with the specific problem and options for an official replacement or the
+standard category fallback. Apply supplied icons or agreed fallback decisions,
+refresh relevant checks and preview review, then request final candidate approval.
+If approved text cannot satisfy a hard limit, return that specific conflict to the
+editor instead of silently changing the approved wording.
+
+The selection task ends with the Notion page, decisions, selected PR and commit,
+validation/build/RSS results, preview status, icon decisions, remaining approvals
+and the social-drafting handoff described below. Report checks not yet run as such.
+It never merges or publishes production; publication requires the editor's separate
+instruction.
+
 1. Research candidate apps, links and sources for the upcoming Friday issue.
    Include app selections from the editor's
    [App Selections note](https://app.notion.com/p/App-selections-3d1d6482d47f8069b146c4dfec0c0c43?source=copy_link)
@@ -129,11 +170,38 @@ An idle preview may remain open without creating another build. Minimize Netlify
 credit use by validating locally, batching related changes and pushing only at a
 meaningful review or release milestone.
 
+## Thursday social drafting dependency
+
+Social copy is drafted from the selected release-candidate PR after the editor's
+Notion changes have been applied and its updated Deploy Preview is ready for review.
+Follow the editor's current guidance on post count, voice and format. Record the
+issue date, PR URL and source commit in the weekly Notion social calendar.
+
+Thursday at 3 p.m. Pacific is the planned drafting start, not a readiness deadline.
+If the updated issue is not ready, record social drafting as waiting on the issue
+and report the specific dependency. Do not draft from stale content or substitute
+another issue. When the updated preview is ready, the task preparing it must include
+resuming the pending social draft in its handoff. Resume that week's existing task
+and calendar rather than waiting until the next weekly run or creating a duplicate.
+
+After any later editorial change, compare the social drafts with the updated issue
+and app records. Revise affected posts, verify their claims, links and character
+counts, record the new source commit and return changed copy for editor review.
+Preserve unrelated editor changes. If affected posts have already been scheduled,
+tell the editor exactly which posts need updating and provide the revised copy.
+
+The editor reviews and schedules social posts. Agents prepare drafts only; they do
+not schedule or publish them. Social approval is separate from release approval.
+
 ## Friday production deployment
 
 Friday should be a narrow production step. The issue, app records, validation, build,
 RSS verification, pull request checks and Deploy Preview review should already be
 complete from Thursday.
+
+Publication timing is manual and controlled by the editor. Do not configure a timed
+merge or publication automation. Approval of a preview establishes the candidate;
+the editor's instruction to publish determines when to merge it.
 
 Use the following order of operations:
 
