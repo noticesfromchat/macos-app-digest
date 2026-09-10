@@ -8,4 +8,6 @@ categories: [mac-utilities-customization]
 collections: [community-favorites]
 source: Objective Development Little Snitch product page
 homepage: https://www.obdev.at/products/littlesnitch/index.html
+icon: /app-icons/little-snitch.png
+iconStyle: plain
 ---

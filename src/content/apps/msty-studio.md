@@ -7,4 +7,6 @@ tags: [ai, local, developer, productivity]
 categories: [ai-agents, developer-tools, productivity-workflow]
 source: Msty Studio documentation
 homepage: https://msty.ai/
+icon: /app-icons/msty-studio.png
+iconStyle: plain
 ---

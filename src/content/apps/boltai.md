@@ -7,4 +7,6 @@ tags: [ai, automation, local, productivity]
 categories: [ai-agents, productivity-workflow]
 source: BoltAI homepage
 homepage: https://boltai.com/
+icon: /app-icons/boltai.png
+iconStyle: plain
 ---

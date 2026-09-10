@@ -7,4 +7,6 @@ tags: [launcher, shortcuts, productivity, utility]
 categories: [mac-utilities-customization, productivity-workflow]
 source: Editor direct instruction and TinyStart homepage
 homepage: https://tinystart.app/
+icon: /app-icons/tinystart.png
+iconStyle: plain
 ---

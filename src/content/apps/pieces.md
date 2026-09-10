@@ -7,4 +7,6 @@ tags: [ai, research, local, productivity]
 categories: [ai-agents, files-research-documents, productivity-workflow]
 source: Pieces official homepage
 homepage: https://pieces.app/
+icon: /app-icons/pieces.png
+iconStyle: backed
 ---

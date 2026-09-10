@@ -7,4 +7,6 @@ tags: [ai, local, productivity, automation]
 categories: [ai-agents, productivity-workflow]
 source: MindMac homepage and documentation
 homepage: https://mindmac.app/
+icon: /app-icons/mindmac.png
+iconStyle: plain
 ---
