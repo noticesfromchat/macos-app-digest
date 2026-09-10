@@ -387,11 +387,10 @@ a { color: inherit; }
   display: flex;
   width: 100%;
   min-height: 80px;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-4) 32px;
+  align-items: stretch;
+  justify-content: center;
   margin: 0;
-  padding: 0 clamp(24px, 3.2vw, 40px);
+  padding: 0;
   border: 1px solid var(--line);
   border-top: 0;
   border-right: 0;
@@ -402,6 +401,15 @@ a { color: inherit; }
 }
 
 .mobile-nav-open .site-header { z-index: 95; }
+
+.site-header-inner {
+  display: flex;
+  width: min(var(--content-width), calc(100% - var(--content-inset)));
+  min-height: inherit;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4) 32px;
+}
 
 .brand,
 .site-header nav { display: inline-flex; align-items: center; }
@@ -2735,7 +2743,8 @@ h1.home-hero-number {
 
 @media (max-width: 680px) {
   :root { --content-inset: 24px; }
-  .site-header { position: sticky; top: 0; width: 100%; min-height: 72px; gap: var(--space-1) 8px; margin: 0; padding: 0 16px; }
+  .site-header { position: sticky; top: 0; width: 100%; min-height: 72px; margin: 0; padding: 0; }
+  .site-header-inner { gap: var(--space-1) 8px; }
   .issue > .section { width: min(var(--content-width), calc(100% - var(--content-inset))); }
   .brand-mark { width: 40px; height: 40px; }
   .brand { gap: var(--space-1) 8px; }
