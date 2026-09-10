@@ -27,6 +27,11 @@ const {
 const appsById = new Map(appEntries.map((entry) => [entry.id, entry]));
 const label = issueLabel(issue.number);
 const editorsPick = issue.editorsPick ? appsById.get(issue.editorsPick.app) : undefined;
+const videoCta = issue.video.url.includes('developer.apple.com/videos')
+  ? 'Watch on Apple Developer'
+  : issue.video.url.includes('youtube.com') || issue.video.url.includes('youtu.be')
+    ? 'Watch on YouTube'
+    : 'Watch video';
 const Wordmark = homepage ? 'h1' : 'p';
 const IssueHeading = homepage ? 'p' : 'h1';
 ---
@@ -118,7 +123,7 @@ const IssueHeading = homepage ? 'p' : 'h1';
       <h3 class="feature-card-title">{issue.video.title}</h3>
       <p><strong>Creator:</strong> {issue.video.creator}</p>
       <p>{issue.video.description}</p>
-      <a href={issue.video.url} target="_blank" rel="noreferrer">Watch on YouTube</a>
+      <a href={issue.video.url} target="_blank" rel="noreferrer">{videoCta}</a>
     </article>
   </section>
 
