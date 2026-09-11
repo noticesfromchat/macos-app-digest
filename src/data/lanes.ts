@@ -109,23 +109,6 @@ const collectionTaglines: Record<string, string> = {
 
 export const collectionTagline = (slug: string) => collectionTaglines[slug];
 
-/**
- * The one line under a collection's name in the Explore menu. Separate from
- * `collectionDescriptions` below, which is page copy written for a collection's own
- * header and its search result. This says what membership means rather than what the
- * collection holds: the three collections are three different kinds of endorsement,
- * and a reader who cannot tell which is which reads them as three volume levels of
- * "good". No trailing full stop, because these render as list items.
- */
-const collectionMenuDeks: Record<string, string> = {
-  'editors-picks': 'Apps chosen by the editor',
-  'community-favorites': 'What the Mac community keeps recommending',
-  'hidden-gems': 'Small tools nobody is marketing at you'
-};
-
-export const collectionMenuDek = (slug: string) => collectionMenuDeks[slug];
-
-
 const tagDescriptions: Record<string, string> = {
   "accessibility": "Tools that make the Mac easier to see and control, whatever you need from it.",
   "agents": "Assistants that do multi-step work, and the tools for watching them do it.",
