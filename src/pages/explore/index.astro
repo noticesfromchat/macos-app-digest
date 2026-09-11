@@ -193,6 +193,16 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
   }
+  /* Flush left on a phone. The 24px inset is the app card's, and it earns its keep while
+     the rows sit beside cards in a multi column grid: it puts a lane's mark on the same
+     vertical as the icon of the card below it. On one column there is no card beside a
+     row to agree with, and the inset reads as an unexplained indent against the page
+     title and the dek, which start at the edge. The count stays in the last track, so
+     it lands on the opposite edge. */
+  @media (max-width: 680px) {
+    .explore-lane,
+    .explore-taxonomy .eyebrow { padding-inline: 0; }
+  }
   /* Collapse where the cards collapse. `.grid > *` goes from span 4 to span 12 at 920
      with no two-column step in between, so a two-column taxonomy over a three-column
      card grid would be misaligned by construction at exactly the widths this is meant
