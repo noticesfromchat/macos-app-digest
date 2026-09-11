@@ -183,7 +183,11 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
   }
   .explore-lane-count {
     padding-left: var(--space-1);
-    color: var(--muted);
+    /* Inherited, not restated. The row already resolves to muted, so this reads the same
+       at rest and comes with the row's hover and focus for free: the count was the one
+       part of a link that stayed grey while the rest of it went blue, which made the
+       number look like it belonged to the page rather than to the row you were on. */
+    color: inherit;
     font-size: var(--type-meta);
     line-height: var(--leading-meta);
     font-weight: 600;
