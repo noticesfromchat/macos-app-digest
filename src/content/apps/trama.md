@@ -4,7 +4,7 @@ description: Describe the tedious thing in plain language and let it work throug
 bestFor: Operations people with office work too specific for a template and too dull to rebuild every morning.
 tagline: AI task automation
 tags: [automation, ai, shortcuts]
-categories: [productivity-workflow, ai-agents]
+categories: [automation-shortcuts, ai-agents]
 source: Issue 11 selection list and official homepage
 homepage: https://usetrama.com/
 icon: /app-icons/trama.png

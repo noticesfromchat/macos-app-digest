@@ -4,7 +4,7 @@ description: Adds GPT, Claude and OpenAI-compatible model actions to Apple Short
 bestFor: Shortcuts builders who want model calls inside automations without hand-rolling API steps.
 tagline: adds AI to Shortcuts
 tags: [ai, automation, productivity, utility]
-categories: [ai-agents, productivity-workflow, mac-utilities-customization]
+categories: [ai-agents, automation-shortcuts, productivity-workflow, mac-utilities-customization]
 source: Official AI Actions product information
 homepage: https://sindresorhus.com/ai-actions
 icon: /app-icons/ai-actions.png

@@ -4,7 +4,7 @@ description: A macOS voice layer that turns Claude Code, Codex and Cursor activi
 bestFor: Developers supervising parallel coding agents while working away from their terminal windows.
 tagline: spoken agent updates
 tags: [ai, developer, audio, automation]
-categories: [ai-agents, developer-tools, mac-utilities-customization, productivity-workflow]
+categories: [ai-agents, developer-tools, media-capture, automation-shortcuts]
 source: Product Hunt launch, community discussion and official homepage
 homepage: https://heard.dev/
 icon: /app-icons/heard.png

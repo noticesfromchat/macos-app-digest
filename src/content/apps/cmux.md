@@ -4,7 +4,7 @@ description: A native Ghostty-powered terminal with vertical workspaces, split p
 bestFor: Developers coordinating multiple repositories, shells and coding agents from one keyboard-driven workspace.
 tagline: terminal with workspaces
 tags: [terminal, developer, automation, open-source]
-categories: [developer-tools, productivity-workflow]
+categories: [developer-tools, automation-shortcuts]
 collections: [hidden-gems]
 source: AppStories, community discussion and official homepage
 homepage: https://cmux.com/

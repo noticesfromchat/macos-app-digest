@@ -4,7 +4,7 @@ description: A desktop agent that works across Mac apps, files and system contro
 bestFor: Automation-minded Mac users evaluating how far a general desktop agent can carry work across otherwise disconnected applications.
 tagline: multi-step desktop agent
 tags: [ai, automation, productivity, agents]
-categories: [ai-agents, productivity-workflow]
+categories: [ai-agents, automation-shortcuts, productivity-workflow]
 source: Product Hunt Mac recent launches and official homepage
 homepage: https://sidekick-os.online/
 icon: /app-icons/sidekick.png

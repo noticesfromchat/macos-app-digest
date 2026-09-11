@@ -4,7 +4,7 @@ description: Collects project dashboards, links, files, web apps and commands in
 bestFor: Context-switchers who want repeatable project workspaces without building a full custom dashboard.
 tagline: project workspaces
 tags: [productivity, launcher, automation, utility]
-categories: [productivity-workflow, mac-utilities-customization]
+categories: [productivity-workflow, mac-utilities-customization, automation-shortcuts]
 source: Official Freeter product information
 homepage: https://freeter.io/
 icon: /app-icons/freeter.png

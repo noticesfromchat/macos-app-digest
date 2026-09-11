@@ -4,7 +4,7 @@ description: Run hosted and local models side by side in one Mac app, with OpenA
 bestFor: Mac users who switch between models often and would rather not build the day around one hosted assistant.
 tagline: multi-model chat
 tags: [ai, local, productivity, automation]
-categories: [ai-agents, productivity-workflow]
+categories: [ai-agents, productivity-workflow, automation-shortcuts]
 source: MindMac homepage and documentation
 homepage: https://mindmac.app/
 icon: /app-icons/mindmac.png

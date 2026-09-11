@@ -4,7 +4,7 @@ description: Records polished product videos and screen demos with layout contro
 bestFor: Makers and educators who need clean app demos without opening a full video suite.
 tagline: screen recorder
 tags: [capture, audio, productivity, utility]
-categories: [files-research-documents, mac-utilities-customization, productivity-workflow]
+categories: [media-capture, productivity-workflow, mac-utilities-customization]
 source: Product Hunt launch listing and official Screenify Studio homepage
 homepage: https://www.screenify.studio/
 icon: /app-icons/screenify-studio.png

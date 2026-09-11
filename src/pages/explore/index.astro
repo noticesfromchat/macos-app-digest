@@ -125,7 +125,12 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
     display: grid;
     gap: var(--space-2);
   }
-  .explore-lane-category { grid-column: span 2; }
+  /* Eight categories, four across. The span is a divisor of the category count, not a
+     taste call: at span 2 the row holds six and the eighth tile starts a second row four
+     tracks short. Every step of the ladder below divides eight evenly for the same
+     reason, so the block is always a filled rectangle. Collections stay at span 4
+     because three of them still fill a row exactly. */
+  .explore-lane-category { grid-column: span 3; }
   .explore-lane-collection { grid-column: span 4; }
   .explore-lane {
     display: grid;
@@ -219,7 +224,7 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
   .explore-lane:focus-visible strong,
   .explore-lane:focus-visible .explore-lane-icon { color: var(--accent); }
   @media (max-width: 1100px) {
-    .explore-lane-category { grid-column: span 4; }
+    .explore-lane-category { grid-column: span 6; }
   }
   /* The band where three collection tiles share a shrinking shell: 332px each at 1100
      and 277px at 921. A count sitting beside the title takes width the name needs, and
@@ -239,10 +244,9 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
   }
   @media (max-width: 680px) {
     .explore-taxonomy { padding-top: var(--space-3); }
-    .explore-lane-category { grid-column: span 6; }
+    .explore-lane-category { grid-column: span 12; }
   }
   @media (max-width: 360px) {
-    .explore-lane-category { grid-column: span 12; }
     .explore-lane-collection { grid-template-columns: auto minmax(0, 1fr); }
     .explore-lane-collection .explore-lane-count { grid-column: 2; }
   }

@@ -4,7 +4,7 @@ description: Turns informal natural-language thoughts into scheduled tasks with 
 bestFor: People who capture commitments faster than they can complete traditional task forms.
 tagline: natural-language tasks
 tags: [tasks, menubar, automation, productivity]
-categories: [productivity-workflow, mac-utilities-customization]
+categories: [productivity-workflow, mac-utilities-customization, automation-shortcuts]
 collections: [hidden-gems]
 source: Product Hunt launch and official homepage
 homepage: https://poptask.bar/
