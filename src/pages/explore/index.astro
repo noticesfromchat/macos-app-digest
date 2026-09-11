@@ -128,10 +128,9 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
        it keeps the tightest step at every width. That is a deliberate exception to the
        section ladder and the reason it is written down here.
 
-       No horizontal padding, and the lanes take none either. The rows sit on the card
-       grid's own columns, measured against the full shell width, so a row starts where
-       the card below it starts. That gives the page one left margin: the title, the
-       dek, this menu, the directory heading and the cards all begin on it. */
+       No horizontal padding. The lanes below sit on the card grid's own columns,
+       measured against the full shell width, so insetting this box would shift every
+       column off the cards it is meant to line up with. */
     padding: var(--space-3) 0;
   }
   .explore-taxonomy .eyebrow { margin: 0 0 var(--space-1); }
@@ -155,6 +154,11 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
   .explore-lanes li { min-width: 0; }
   .explore-lane {
     grid-template-columns: 32px minmax(0, 1fr) auto;
+    /* The app card's own inset, so a row's mark sits on the same vertical as the icon
+       of the card below it. The eyebrow above deliberately does not take it: a group
+       label hangs at the page margin and its items indent under it, which is what says
+       the label owns the rows rather than standing as one of them. */
+    padding-inline: var(--space-3);
     min-height: 32px;
     height: 100%;
     column-gap: var(--space-1);
@@ -185,6 +189,15 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
     font-weight: 600;
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
+  }
+  /* Flush left on a phone. The inset pays for itself while the rows sit above a multi
+     column grid, lining a mark up with the icon of the card below it. On one column
+     there is no card beside a row to agree with, and the indent reads as unexplained
+     against the title and the dek. The eyebrow is already at the margin, so only the
+     lane has anything to give up; the count stays in the last track and lands on the
+     opposite edge. */
+  @media (max-width: 680px) {
+    .explore-lane { padding-inline: 0; }
   }
   /* Collapse where the cards collapse. `.grid > *` goes from span 4 to span 12 at 920
      with no two-column step in between, so a two-column taxonomy over a three-column
