@@ -1358,19 +1358,22 @@ h1.home-hero-number {
 }
 .app-detail-category-mark { display: inline-flex; align-items: center; justify-content: center; }
 .app-detail-category-mark svg { --icon-size: var(--icon-md); }
-/* Named by its own eyebrow like every other group in the rail. It stays in the rail's
-   utility voice: rank comes from position and the label sitting in ink at weight 700
-   where a category label sits muted at 600, while the row rhythm matches categories. */
+/* Named by its own eyebrow like every other group in the rail, and set exactly like a
+   category row. It carried ink at weight 700 against a category's muted 600 until
+   2026-09-11, to give the honour rank. Two surfaces now show both groups as one list,
+   the rail and the Explore menu, and in a list the contrast stopped reading as rank and
+   started reading as two different kinds of row. Rank comes from the eyebrow and the
+   position, which is what names every other group here. */
 .collection-badge {
   display: grid;
   grid-template-columns: 32px minmax(0, 1fr);
   align-items: center;
   gap: var(--space-1) 8px;
   min-height: 32px;
-  color: var(--text);
+  color: var(--muted);
   font-size: var(--type-meta);
-  font-weight: 700;
-  line-height: 1.1429;
+  font-weight: 600;
+  line-height: var(--leading-meta);
   text-decoration: none;
   transition: color 180ms ease;
 }
