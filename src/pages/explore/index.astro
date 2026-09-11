@@ -109,7 +109,11 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
 </BaseLayout>
 
 <style>
-  /* A single grouped menu, using the detail rail's labels and Phosphor marks. */
+  /* A single grouped menu, using the detail rail's labels and Phosphor marks. It takes
+     no surface of its own. An index is page structure rather than an object placed on
+     the page, and a card around it made it read as the first item in the directory
+     below rather than the way into it. The spacing does the separating, which is the
+     same argument that took the hairlines off every other section here. */
   .explore-taxonomy {
     display: grid;
     gap: var(--space-2);
@@ -119,8 +123,6 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
        every column off the cards it is meant to line up with. The breathing room comes
        from the lane padding instead, which is the card's own inset. */
     padding: var(--space-4) 0;
-    border-radius: var(--radius);
-    background: var(--surface);
   }
   /* The eyebrow starts where a lane's mark starts, not at the panel edge. */
   .explore-taxonomy .eyebrow {
