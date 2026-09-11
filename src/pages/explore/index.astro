@@ -11,6 +11,7 @@ import {
   collectionLabels,
   collections
 } from '../../data/categories';
+import { collectionMenuDek } from '../../data/lanes';
 
 /* Two things, in this order: the taxonomy, then the catalogue itself.
    The page used to run to eight screens by sampling three apps from each of eight
@@ -90,7 +91,10 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
           {collections.map((collection) => (
             <li><a class="collection-badge explore-lane" href={`/collections/${collection.slug}/`}>
               <span class="app-detail-category-mark" aria-hidden="true"><MetaIcon name={collection.icon} /></span>
-              <span class="collection-badge-label">{collectionLabels[collection.slug]}</span>
+              <span class="collection-badge-label">
+                {collectionLabels[collection.slug]}
+                <span class="explore-lane-dek">{collectionMenuDek(collection.slug)}</span>
+              </span>
               <span class="explore-lane-count">
                 <span>{collectionCounts.get(collection.slug)}</span>
                 <span class="sr-only">{collectionCounts.get(collection.slug) === 1 ? 'app' : 'apps'}</span>
@@ -172,6 +176,21 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
   @media (pointer: coarse) {
     .explore-lane { min-height: 48px; }
   }
+  /* Only collections carry a line. A category's name states its own contents, where a
+     collection states an editorial judgment whose rule is not guessable from the name:
+     Community Favorites and Hidden Gems are both "good apps" until something says who
+     decided and on what grounds. The name keeps text ink at 700 and the line sits muted
+     at the same size, so weight and colour separate them without a second type size. */
+  .explore-lane-dek {
+    display: block;
+    color: var(--muted);
+    font-weight: 400;
+  }
+  /* The collection row grows to hold two lines, so its mark and count align to the
+     name rather than floating to the centre of a box the name does not fill. */
+  .explore-lanes-collections .explore-lane { align-items: start; }
+  .explore-lanes-collections .app-detail-category-mark,
+  .explore-lanes-collections .explore-lane-count { min-height: var(--space-4); }
   .explore-lane-count {
     padding-left: var(--space-1);
     color: var(--muted);
