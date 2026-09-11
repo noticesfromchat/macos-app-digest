@@ -117,19 +117,22 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
   .explore-taxonomy {
     display: grid;
     gap: var(--space-2);
-    /* One boundary, top and bottom, on the site's own section token. It was a 32px
-       margin plus 32px of padding, which the card justified: the margin held the card
-       off the hero and the padding inset the rows inside it. With no card there is no
-       inside, so the two stacked into 64px above the eyebrow against 32px below the
-       last row. `--section-space` also steps 24/32/40 at the site's breakpoints, where
-       the two hand-rolled values did not, which is what the mobile override existed to
-       patch.
+    /* One boundary, 24px top and bottom. It was a 32px margin plus 32px of padding,
+       which the card justified: the margin held the card off the hero and the padding
+       inset the rows inside it. With no card there is no inside, so the two stacked
+       into 64px above the eyebrow against 32px below the last row.
+
+       Held at 24 rather than `--section-space`, which steps 24/32/40 and would open
+       this boundary to 40 on a wide screen. The menu is an index the reader passes
+       through on the way to the directory, not a section arguing for its own space, so
+       it keeps the tightest step at every width. That is a deliberate exception to the
+       section ladder and the reason it is written down here.
 
        No horizontal padding. The lanes below track the card grid's own columns, which
        are measured against the full shell width, so insetting this box would shift
        every column off the cards it is meant to line up with. The breathing room comes
        from the lane padding instead, which is the card's own inset. */
-    padding: var(--section-space) 0;
+    padding: var(--space-3) 0;
   }
   /* The eyebrow starts where a lane's mark starts, not at the panel edge. */
   .explore-taxonomy .eyebrow {
