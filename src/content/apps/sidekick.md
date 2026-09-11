@@ -2,6 +2,7 @@
 name: Sidekick
 description: A desktop agent that works across Mac apps, files and system controls to complete multi-step requests through a conversational interface.
 bestFor: Automation-minded Mac users evaluating how far a general desktop agent can carry work across otherwise disconnected applications.
+tagline: multi-step desktop agent
 tags: [ai, automation, productivity, agents]
 categories: [ai-agents, productivity-workflow]
 source: Product Hunt Mac recent launches and official homepage

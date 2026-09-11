@@ -1,8 +1,9 @@
 ---
 name: audit
-description: "Run technical quality checks across accessibility, performance, theming, responsive design, and anti-patterns. Generates a scored report with P0-P3 severity ratings and actionable plan. Use when the user wants an accessibility check, performance audit, or technical quality review."
-argument-hint: "[area (feature, page, component...)]"
-user-invocable: true
+description: "Audit frontend accessibility, performance and responsive behavior."
+metadata:
+  argument-hint: "[area (feature, page, component...)]"
+  user-invocable: true
 ---
 
 <!-- impeccable-pinned-skill -->

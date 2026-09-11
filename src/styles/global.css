@@ -7,12 +7,54 @@
   --chip: #f0f3f7;
   --text: #092443;
   --muted: #4d5762;
+  /* Reading copy, chip labels and metadata are three different foreground jobs.
+     Keeping them separate prevents a single muted grey from flattening prose and
+     utility text into one level, especially when the surface is chromatic. */
+  --body-text: #40546a;
+  --chip-text: #384d63;
   --line: rgba(9, 35, 66, 0.2);
   --accent: #0862d8;
   --accent-hover: #004caf;
+  /* The one semantic colour that is not the accent. Failure is state, not emphasis, so it
+     does not touch the Beacon Rule's claim on blue. Both values clear AA on the card they
+     appear on: 5.24:1 on white and 5.68:1 on the dark surface. Named 2026-09-07; the two
+     hexes had been literals repeated across four rules with no way to tell a sanctioned
+     exception from a stray colour. */
+  --error: #9c2f2a;
   /* An eyebrow names the block beneath it, so the gap that binds the two is one
      value for the whole site. Any surface that sets its own drifts out of the pair. */
-  --eyebrow-gap: 11px;
+  /* Base unit. Every spacing value in the system is a whole multiple of it.
+     Adopted 2026-09-05, following Marvin Schwaibold's layered component grid:
+     one number declared up front so later components inherit the rhythm instead
+     of each being tuned by hand. The scale below is the mechanism; before this
+     the scale existed only as prose in DESIGN.md and every value was typed
+     literally at its use site. */
+  --base: 8px;
+  --space-1: var(--base);
+  --space-2: calc(var(--base) * 2);
+  --space-3: calc(var(--base) * 3);
+  --space-4: calc(var(--base) * 4);
+  --space-5: calc(var(--base) * 5);
+  --space-6: calc(var(--base) * 6);
+  --space-7: calc(var(--base) * 7);
+  --space-8: calc(var(--base) * 8);
+  --space-9: calc(var(--base) * 9);
+  --eyebrow-gap: var(--space-1);
+  /* One focus ring for the whole site. There were nine treatments across six
+     stylesheets on 2026-09-06 — four accent alphas, five offsets and two mechanisms —
+     because every control declared its own. Nothing here is new; this is the most
+     common of the nine, named so the next control inherits it instead of inventing a
+     tenth. Colour alone is never the indicator: a ring is what a keyboard reader gets. */
+  --focus-ring: 2px solid color-mix(in srgb, var(--accent) 38%, transparent);
+  --focus-offset: 3px;
+  /* Glyph sizes, unitless so the stroke can be derived from them. Two sizes, both on the
+     base unit; 14, 21 and 27 were in use until 2026-09-06, each set locally to fit one
+     spot. `--icon-stroke` is the line as it lands on screen, which is the number that was
+     never being controlled by individual SVG imports. Dividing the authored width back
+     out by the rendered size holds the line steady. */
+  --icon-sm: 16;
+  --icon-md: 24;
+  --icon-stroke: 1.5;
   --header-bg: rgba(244, 246, 249, 0.96);
   /* The scrim behind search, the nav menu and the subscribe dialog. It was a
      near-black navy in both themes, which is right on a dark page and turns a
@@ -25,25 +67,79 @@
      vocabulary had no token for it and the three overlays each invented their own
      black. Light keeps the same ink the other shadows use rather than pure black. */
   --shadow-modal: 0 30px 90px rgba(27, 35, 42, 0.18);
-  --radius: 16px;
+  /* Radius scale, on the base unit. A component's radius matches its own inset;
+     an element nested N px inside another takes the parent's radius minus N, so
+     the two curves stay concentric instead of showing a second arc at the corner. */
+  --radius-sm: var(--space-1);
+  --radius-md: var(--space-2);
+  --radius-lg: var(--space-3);
+  --radius: var(--radius-lg);
   --content-width: 1160px;
   --content-inset: 40px;
-  --page-start-space: 36px;
-  --section-space: clamp(26px, 3.8vw, 40px);
+  /* The space the page opens on, and on every page but the homepage and 404 that means
+     the space above the breadcrumb trail. It is 16px, the same value the trail carries
+     beneath it, so the trail sits in an even band between the header and the page rather
+     than nearer one than the other. It was 36px until 2026-09-04, 24px until 2026-09-09,
+     and it stepped up to 32px below 680px until the same day; a trail that reads as one
+     band has to hold that band at every width, so it no longer steps. */
+  --page-start-space: var(--space-2);
+  /* Stepped, not interpolated. As `clamp(24px, 3.8vw, 40px)` this resolved to whatever
+     the viewport made it — 38px at 1000px — so the one value the whole site uses for a
+     section boundary was off the base at most widths between the endpoints. The steps
+     below take the same three values the clamp reached at its ends and in its middle,
+     at the site's own breakpoints, so the boundary is a spacing decision again rather
+     than a function of window width. */
+  --section-space: var(--space-3);
+  --hero-space-top: var(--space-4);
+  --hero-space-bottom: var(--space-4);
+  --footer-space: var(--space-6);
   --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
   --display: "Iowan Old Style", "Baskerville", "Times New Roman", serif;
-  --type-brand-nav: clamp(1.15rem, 2.1vw, 1.55rem);
-  --type-label: .78rem;
-  --type-meta: .84rem;
-  --type-subhead: clamp(1.9rem, 2.4vw, 2.35rem);
-  --type-page-title: clamp(3.25rem, 5.1vw, 4.25rem);
-  --type-section-title: clamp(2.2rem, 4vw, 3.8rem);
-  --type-dek: clamp(1.12rem, 1.4vw, 1.25rem);
+  --type-label: .75rem;
+  --type-meta: .875rem;
+  --type-subhead: clamp(1.375rem, 2.2vw, 1.75rem);
+  --type-page-title: clamp(1.875rem, 3.1vw, 2.5rem);
+  --type-section-title: clamp(1.5rem, 2.6vw, 2.0625rem);
+  --type-dek: 1.1875rem;
+  /* Card and tile titles. The scale ran from --type-meta at 14px straight to
+     --type-dek at 19px, so every card title was a literal typed at its use site:
+     18px, 22.08px and 23px were all in the stylesheet for one role. Two roles is
+     what the content actually needs, because a 180px tile cannot carry a card's
+     title without wrapping to four lines. */
+  --type-card-title: 1.4375rem;
+  --type-tile-title: 1.125rem;
+  /* Leading belongs to the role, not to the use site. A role is a size and a line box
+     together, which is what stops a size being changed at a breakpoint while the old
+     ratio stays behind — the defect that left mobile search titles in a 21.97px box.
+
+     Both values were already in the stylesheet, correct, as literals: `.tag` carried
+     1.3333 and `.breadcrumb` 1.4286, while nine other uses of the same two roles
+     inherited body's 1.5 and landed on 18px and 21px. Naming them is the whole fix.
+
+     Unitless so they survive a reader's zoom, and chosen to put each role's box on the
+     4px step The Line Box Rule allows: 12 x 1.3333 = 16, 14 x 1.4286 = 20. */
+  --leading-label: 1.3333;
+  --leading-meta: 1.4286;
+  --leading-body: 1.5;
+  /* Numerically the same ratio as the label, semantically a different role: 18px into a
+     24px box rather than 12px into 16. Named separately so a change to the tile title's
+     size moves its own leading and not an eyebrow's. */
+  --leading-tile-title: 1.3333;
   /* One reading measure. Set in ch so it holds ~70 characters at any of the
      sizes below it, not a fixed pixel column that widens as type shrinks. */
   --measure: 52ch;
+  /* About's reading column, the site's one named exception to The One Measure Rule. It is
+     a width rather than a character count because on this page the column and the measure
+     are the same number: at 624px the line runs about 73 characters, inside the 65-75 the
+     craft floor asks for. 78 base units. Defined once here and used by the title, the dek,
+     the section headings and the prose, so they cannot drift apart the way the title did. */
+  --about-measure: 624px;
   --sea-ink: 9 35 66;
   --sea-alpha: .30;
+  --hero-fade-1: #e9edf2;
+  --hero-fade-2: #edf1f5;
+  --hero-fade-3: #f1f4f7;
+  --hero-fade-4: #f3f6f8;
 }
 
 :root[data-theme='dark'] {
@@ -54,10 +150,15 @@
   --surface-strong: #10253b;
   --chip: #10253b;
   --text: #f3ecdf;
-  --muted: #afb6bf;
+  /* All three secondary inks stay on the navy surface's hue rather than falling
+     back to neutral grey. Each clears AA on page, card, chip and footer surfaces. */
+  --muted: #aebdca;
+  --body-text: #9fb4ca;
+  --chip-text: #b0c0d2;
   --line: rgba(217, 229, 240, 0.2);
   --accent: #57a2ff;
   --accent-hover: #81b8ff;
+  --error: #ff8f86;
   --header-bg: rgba(4, 20, 38, 0.96);
   --scrim: rgba(2, 11, 24, 0.52);
   --shadow: 0 20px 60px rgba(0, 0, 0, 0.24);
@@ -65,6 +166,10 @@
   --shadow-modal: 0 30px 90px rgba(0, 0, 0, 0.44);
   --sea-ink: 226 236 250;
   --sea-alpha: .22;
+  --hero-fade-1: #081320;
+  --hero-fade-2: #06111e;
+  --hero-fade-3: #040e1b;
+  --hero-fade-4: #030c19;
 }
 
 * { box-sizing: border-box; }
@@ -75,15 +180,22 @@
    waypoint idea is in the marking of the current position, which is the one thing a
    chart does that a list of links does not.
 
-   It sits at the top of the page shell and the title follows 11px beneath it, which is
-   `--eyebrow-gap`: the trail names the page under it exactly as an eyebrow does, so it
-   takes the eyebrow's number rather than inventing one. */
+   It sits in a 16px band at the top of the page shell: `--page-start-space` above it and
+   the same 16px below, so the trail is held evenly between the header and the page it
+   names rather than pushed against either. It took `--eyebrow-gap` beneath it until
+   2026-09-09, on the reading that the trail names the page under it exactly as an eyebrow
+   names its block. That is true of what the trail says and not of where it sits: an
+   eyebrow is set inside its own block and shares that block's ground, while the trail
+   spans the gap between the header and the page and belongs to neither. App detail pages
+   had already been carrying 16px here for the taller icon lockup, which was the same
+   reading arrived at one page at a time. The gap is even on every page now, and the
+   token stays `--eyebrow-gap` for the eyebrows themselves. */
 .breadcrumb {
-  margin: 0 0 var(--eyebrow-gap);
+  margin: 0 0 var(--space-2);
   color: var(--muted);
   font-size: var(--type-meta);
   font-weight: 500;
-  line-height: 1.45;
+  line-height: var(--leading-meta);
 }
 .breadcrumb ol {
   display: flex;
@@ -99,7 +211,7 @@
 .breadcrumb li {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-1) 8px;
 }
 .breadcrumb a {
   /* The Target Floor Rule's 24px, reached with padding rather than a taller line, so the
@@ -116,26 +228,31 @@
 /* Recedes behind the crumbs without needing a token of its own, the same color-mix
    the focus ring uses. */
 .breadcrumb-sep { color: color-mix(in srgb, var(--muted) 55%, transparent); }
+/* The mark sits inside this crumb rather than between the two, so the space to its right
+   is set here while the space to its left is the list's own column gap. They have to be
+   the same number or the mark is off centre: at 7px against the list's 8 it sat a pixel
+   nearer its own label, which is small but visible on a 7px dot. The 7 looks as though it
+   was echoing the mark's size rather than answering the gap opposite it. */
 .breadcrumb-here {
   display: inline-flex;
   min-height: 24px;
   align-items: center;
-  gap: 7px;
+  gap: var(--space-1) 8px;
   color: var(--text);
 }
 /* The position marker: one filled dot, the size of the buoy's light. It is the only
    ornament here and it earns its place by saying which crumb is the page you are on. */
-/* An issue page opens on a full-bleed hero rather than a page shell, so its trail
-   borrows the shell to line up with the wordmark, and pays the page's own opening space
-   above itself since the hero's top padding sits below it. */
-.issue-breadcrumb-shell { padding-top: var(--page-start-space); }
+/* An issue page opens on a full-bleed hero rather than a page shell, so its trail sits
+   inside the hero and borrows the shell to line up with the wordmark beneath it. It needs
+   no ground of its own: the hero already paints one. */
+.issue-breadcrumb-shell { position: relative; z-index: 1; }
 
 .breadcrumb-mark {
   /* 7px against the separator glyph's ~4px. At 5px it read as another separator; past
      8px it starts reading as a bullet. This is the size where it is unmistakably a mark
      and still quiet. */
-  width: 7px;
-  height: 7px;
+  width: 8px;
+  height: 8px;
   flex: none;
   border-radius: 50%;
   background: var(--accent);
@@ -174,25 +291,74 @@ html {
   white-space: nowrap;
 }
 
+/* The footer sits at the bottom of the page, and on a page whose content does not fill
+   the window that means the bottom of the window rather than the bottom of the content.
+   Without this the column simply ended where `main` ended, which never showed while every
+   page ran long, and appears the moment one does not: a filtered directory with no
+   matches, a short tag page, a narrow window. `100dvh` rather than `100vh` so mobile
+   browser chrome collapsing does not leave a strip of page under the footer. The header is
+   sticky and every overlay is fixed, so neither is disturbed by the column. */
+/* The section boundary steps twice. These are the values the old clamp reached at its
+   floor, its middle and its cap; what changes is that a width between two breakpoints now
+   gets one of them rather than an interpolation. */
+@media (min-width: 921px) {
+  :root {
+    --section-space: var(--space-4);
+    --hero-space-top: var(--space-5);
+    --hero-space-bottom: var(--space-6);
+    --footer-space: var(--space-8);
+  }
+}
+@media (min-width: 1100px) {
+  :root {
+    --section-space: var(--space-5);
+    --hero-space-top: var(--space-6);
+    --hero-space-bottom: var(--space-7);
+    --footer-space: var(--space-9);
+  }
+}
+
 body {
+  display: flex;
+  flex-direction: column;
   min-width: 320px;
+  min-height: 100dvh;
   margin: 0;
   background: var(--page);
   color: var(--text);
   font-family: var(--sans);
-  line-height: 1.55;
+  line-height: var(--leading-body);
   -webkit-font-smoothing: antialiased;
 }
+
+/* Line boxes on the base. Body's 1.5 ratio gives 16px text a 24px line box, three
+   base units. Anything set smaller inherits that same ratio and lands off the grid
+   instead: 14px becomes 21 and 12px becomes 18. These restate the ratio each size
+   needs to keep its line box on a whole step, 14px -> 20 and 12px -> 16. */
+.skip-link,
+.directory-select,
+.directory-select-trigger,
+.directory-filter-label,
+.desktop-nav-links a,
+.site-footer-inner p { line-height: var(--leading-meta); }
+
+/* The footer's own nav links are left alone deliberately. Their line box is 21px, but
+   they are inline-flex with min-height 24px for WCAG 2.2 target size, so the rendered
+   box is 24px and already lands on the base. The line box is the wrong measure for a
+   flex item that carries its own height. */
+.directory-count { line-height: var(--leading-label); }
+/* Grows to fill what the header and footer do not, and never shrinks below its content. */
+main { flex: 1 0 auto; }
 
 a { color: inherit; }
 
 .skip-link {
   position: fixed;
   z-index: 120;
-  top: 12px;
-  left: 12px;
+  top: 16px;
+  left: 16px;
   display: inline-flex;
-  min-height: 44px;
+  min-height: 48px;
   align-items: center;
   padding: 0 16px;
   border: 1px solid var(--accent);
@@ -201,6 +367,7 @@ a { color: inherit; }
   box-shadow: var(--shadow-modal);
   color: var(--accent);
   font-size: var(--type-meta);
+  line-height: var(--leading-meta);
   font-weight: 800;
   text-decoration: none;
   transform: translateY(calc(-100% - 18px));
@@ -208,8 +375,8 @@ a { color: inherit; }
 }
 
 .skip-link:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--accent) 38%, transparent);
-  outline-offset: 3px;
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
   transform: translateY(0);
 }
 
@@ -219,12 +386,11 @@ a { color: inherit; }
   z-index: 10;
   display: flex;
   width: 100%;
-  min-height: 84px;
-  align-items: center;
-  justify-content: space-between;
-  gap: 28px;
+  min-height: 80px;
+  align-items: stretch;
+  justify-content: center;
   margin: 0;
-  padding: 0 clamp(24px, 3.2vw, 38px);
+  padding: 0;
   border: 1px solid var(--line);
   border-top: 0;
   border-right: 0;
@@ -236,57 +402,71 @@ a { color: inherit; }
 
 .mobile-nav-open .site-header { z-index: 95; }
 
+.site-header-inner {
+  display: flex;
+  width: min(var(--content-width), calc(100% - var(--content-inset)));
+  min-height: inherit;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4) 32px;
+}
+
 .brand,
 .site-header nav { display: inline-flex; align-items: center; }
 
+/* No gap: the mark is the only child since the wordmark left the header on 2026-09-06. */
 .brand {
   color: var(--text);
-  gap: 12px;
   text-decoration: none;
+}
+
+/* One contract for every glyph on the site. Six rules used to restate these four
+   presentation properties and then set their own size and weight, which is the mechanism
+   behind every icon drift found this week — a 16px search mark beside a 24px toggle, a
+   modal icon silently inheriting its authored stroke because no rule claimed it.
+   Callers now set `--icon-size` and nothing else.
+
+   Scoped to an explicit opt-in, never to bare `svg`: the buoy
+   mark, the hero wordmark and the footer's social marks are filled rather than stroked,
+   and a blanket `fill: none` would erase all four. */
+svg.icon {
+  width: calc(var(--icon-size, var(--icon-md)) * 1px);
+  height: calc(var(--icon-size, var(--icon-md)) * 1px);
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: calc(var(--icon-stroke) * 24 / var(--icon-size, var(--icon-md)));
+}
+
+svg.phosphor-icon {
+  fill: currentColor;
+  stroke: none;
 }
 
 .brand-mark {
   display: block;
-  width: 46px;
-  height: 46px;
+  width: 48px;
+  height: 48px;
   flex: 0 0 auto;
-}
-
-.brand-wordmark {
-  overflow: hidden;
-  max-width: 14ch;
-  margin-block: -.08em;
-  padding-block: .08em .14em;
-  color: var(--text);
-  font-family: var(--display);
-  font-size: var(--type-brand-nav);
-  font-weight: 500;
-  letter-spacing: 0;
-  line-height: 1.08;
-  opacity: 1;
-  transition: opacity 520ms cubic-bezier(.16, 1, .3, 1);
-  white-space: nowrap;
-}
-
-.site-header.is-homepage-brand:not(.is-brand-visible) .brand-wordmark {
-  opacity: 0;
 }
 
 .site-header nav {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-1) 8px;
 }
 
 .desktop-nav-links {
   display: inline-flex;
   align-items: center;
-  gap: 24px;
+  gap: var(--space-3) 24px;
 }
 
 .desktop-nav-links a {
   display: inline-flex;
-  min-height: 44px;
+  min-height: 48px;
   align-items: center;
   color: var(--text);
   font-size: var(--type-meta);
@@ -300,25 +480,21 @@ a { color: inherit; }
 .desktop-nav-links a[aria-current='page'] { color: var(--accent); }
 
 .desktop-nav-links a:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--accent) 38%, transparent);
-  outline-offset: 4px;
-  border-radius: 8px;
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+  border-radius: var(--radius-sm);
 }
 
-.theme-toggle svg {
-  width: 22px;
-  height: 22px;
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 1.7;
-}
+/* The theme toggle's glyph is sized and weighted with the rest of the header cluster, in
+   search.css, because it has to agree with the search button standing next to it. The rule
+   that lived here set every one of the same properties at stroke-width 1.7 and was shadowed
+   in full by that one, so it described a control that had not rendered this way since the
+   glyph sizes were unified on 2026-09-06. */
 
 .theme-toggle {
   display: grid;
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   padding: 0;
   place-items: center;
   border: 0;
@@ -326,12 +502,14 @@ a { color: inherit; }
   color: var(--text);
   cursor: pointer;
   font: inherit;
-  transition: color 180ms ease, transform 180ms ease;
+  transition: color 180ms ease;
 }
 
-
+/* Colour, like every other control in the header. It rotated 12° on hover until
+   2026-09-06, which made it the one thing in that row answering a pointer with movement
+   while the search button beside it answered with colour. */
 .theme-toggle:hover,
-.theme-toggle:focus-visible { color: var(--accent); transform: rotate(12deg); }
+.theme-toggle:focus-visible { color: var(--accent); }
 
 .issue { width: 100%; margin: 0; }
 .page-shell {
@@ -350,6 +528,7 @@ a { color: inherit; }
   margin: 0 0 var(--eyebrow-gap);
   color: var(--accent);
   font-size: var(--type-label);
+  line-height: var(--leading-label);
   font-weight: 800;
   letter-spacing: .1em;
   text-transform: uppercase;
@@ -366,9 +545,9 @@ a { color: inherit; }
 }
 
 .hero-rule {
-  width: 148px;
-  height: 33px;
-  margin: 10px 0 0;
+  width: 144px;
+  height: 32px;
+  margin: var(--space-1) 0 0;
   color: var(--accent);
 }
 
@@ -383,19 +562,19 @@ a { color: inherit; }
 
 .dek {
   max-width: var(--measure);
-  margin: 15px 0 0;
-  color: var(--muted);
+  margin: var(--space-2) 0 0;
+  color: var(--body-text);
   font-size: var(--type-dek);
-  line-height: 1.58;
+  line-height: 1.6842;
 }
 
 .button {
   display: inline-flex;
-  min-height: 44px;
+  min-height: 48px;
   align-items: center;
   justify-content: center;
-  gap: 20px;
-  padding: 0 23px;
+  gap: var(--space-2) 16px;
+  padding: 0 24px;
   border: 1px solid var(--accent);
   border-radius: 999px;
   /* Outlined, not filled. The dark theme's blue is tuned to be legible as ink on
@@ -411,6 +590,7 @@ a { color: inherit; }
      reason. */
   font-family: inherit;
   font-size: var(--type-meta);
+  line-height: var(--leading-meta);
   font-weight: 700;
   text-decoration: none;
   transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease, transform 180ms ease;
@@ -424,8 +604,19 @@ a { color: inherit; }
   transform: translateY(-1px);
 }
 .button.secondary { border-color: var(--line); background: transparent; color: var(--text); }
+/* The secondary button is transparent at rest, so a fill on hover was inventing a surface
+   the control does not otherwise have. Its edge and its label carry the response instead.
+   The primary `.button` is also transparent at rest, but retains its 10% accent tint
+   on interaction. Both button variants retain the inherited 1px lift, except with reduced motion. */
 .button.secondary:hover,
-.button.secondary:focus-visible { border-color: var(--text); background: color-mix(in srgb, var(--surface) 50%, transparent); }
+.button.secondary:focus-visible {
+  border-color: color-mix(in srgb, var(--accent) 52%, var(--line));
+  /* Explicitly cleared. `.button:hover` sets an accent-tinted fill and this rule
+     overrode only border and colour, so the surface the comment above says it does
+     not have was arriving anyway. */
+  background: transparent;
+  color: var(--accent);
+}
 
 /* ── Homepage hero ───────────────────────────────────────────────
    No artwork: the name and the promise carry the left rail, and this
@@ -437,11 +628,54 @@ a { color: inherit; }
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  padding-block: clamp(32px, 4.2vw, 52px)
-                 calc(clamp(36px, 4.4vw, 54px) + var(--sea-h));
-  /* The band settles onto the page ground across the sea, so the hero ends
-     on the colour the section below starts with and leaves no seam. */
-  background: linear-gradient(to top, var(--page) 0, var(--bg) calc(var(--sea-h) + 38px));
+  /* Stepped with the section boundary rather than interpolated: the hero's opening and
+     its close are structural intervals like any other, and at 1000px the old clamps put
+     them at 42px and 44px. The bottom carries the sea's height on top of its step. */
+  padding-block: var(--hero-space-top) calc(var(--hero-space-bottom) + var(--sea-h));
+  /* A hero carrying the trail opens on the page's own start space instead, so the trail
+     sits the same 24px below the header that it does on every other page. Without this it
+     inherited the hero's larger opening and sat 24px lower than the rest of the site. */
+  &:has(.issue-breadcrumb-shell) { padding-block-start: var(--page-start-space); }
+  /* The band settles onto the page ground across the sea, so the hero ends on the colour
+     the section below starts with.
+
+     Ending on the right colour is not enough to end without a seam. A linear ramp meeting
+     a flat field matches it in value and not in slope, and the eye reads that corner as a
+     line even though no colour step exists at it — the hero's last row and the page's
+     first row are both --page and a hairline still showed under the water in light mode.
+     The stops below are a smoothstep, so the ramp leaves --page and arrives at --bg with
+     its slope going to zero at each end and no corner at either.
+
+     The same easing carries the banding. Light mode spends twelve levels of ink across
+     this whole distance, few enough to step visibly in 8-bit, and an eased ramp puts its
+     closest-spaced steps in the middle of the fade where there is texture to hide them
+     rather than against the edge where the field is flat. The fade is longer than the
+     38px it ran until 2026-09-09 for the same reason: the extra distance buys back the
+     steepness the easing adds in the middle. The first gradient is the themed
+     fallback for browsers that drop the OKLab colour mixing declaration wholesale. */
+  --hero-fade: calc(var(--sea-h) + 96px);
+  background: linear-gradient(
+    to top,
+    var(--page) 0,
+    var(--hero-fade-1) calc(var(--hero-fade) * .18),
+    var(--hero-fade-2) calc(var(--hero-fade) * .4),
+    var(--hero-fade-3) calc(var(--hero-fade) * .6),
+    var(--hero-fade-4) calc(var(--hero-fade) * .82),
+    var(--bg) var(--hero-fade)
+  );
+  background: linear-gradient(
+    to top,
+    var(--page) 0,
+    color-mix(in oklab, var(--bg) 4%, var(--page)) calc(var(--hero-fade) * .18),
+    color-mix(in oklab, var(--bg) 32%, var(--page)) calc(var(--hero-fade) * .4),
+    color-mix(in oklab, var(--bg) 68%, var(--page)) calc(var(--hero-fade) * .6),
+    color-mix(in oklab, var(--bg) 96%, var(--page)) calc(var(--hero-fade) * .82),
+    var(--bg) var(--hero-fade)
+  );
+}
+
+.home-hero::after {
+  content: none;
 }
 
 /* The band runs full-bleed; its content sits on the shared page shell so the
@@ -452,7 +686,7 @@ a { color: inherit; }
   margin-inline: auto;
   grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
   align-items: stretch;
-  gap: clamp(22px, 2.8vw, 40px);
+  gap: clamp(24px, 2.8vw, 40px);
 }
 
 .home-hero-sky,
@@ -473,7 +707,7 @@ a { color: inherit; }
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: clamp(34px, 3vw, 38px);
+  gap: clamp(32px, 3vw, 40px);
 }
 .home-hero-intro { display: flex; flex-direction: column; }
 
@@ -487,22 +721,21 @@ a { color: inherit; }
   text-wrap: balance;
 }
 
-.home-hero .hero-rule { margin: 12px 0 0; }
+.home-hero .hero-rule { margin: var(--space-2) 0 0; }
 
 .home-hero-tagline {
   max-width: 34ch;
-  margin: 16px 0 0;
+  margin: var(--space-2) 0 0;
   color: var(--text);
   font-size: 1rem;
-  line-height: 1.55;
+  line-height: 1.5;
 }
 
 .home-hero-issue {
   max-width: 42ch;
-  /* One value owns the gap under the rule, matching the site's other
-     hairline-topped block, instead of a padding and a margin stacking. */
-  padding-top: clamp(30px, 2.4vw, 32px);
-  border-top: 1px solid var(--line);
+  /* No rule and no padding under it. The hero's copy column is `space-between`, so the
+     interval here is whatever the column's height leaves rather than a value of its own,
+     and the hairline was dividing space that was already dividing itself. */
 }
 
 .home-hero-number {
@@ -514,27 +747,94 @@ a { color: inherit; }
   line-height: 1.1;
 }
 
+/* On the homepage the issue number is supporting copy; on archived issues this same
+   element is the page's semantic H1 and must outrank the section headings beneath it. */
+h1.home-hero-number {
+  font-size: var(--type-page-title);
+  font-weight: 500;
+  letter-spacing: -.035em;
+  line-height: .96;
+}
+
 .home-hero-date {
-  margin: 6px 0 0;
+  margin: var(--space-1) 0 0;
   color: var(--muted);
   font-size: var(--type-meta);
+  line-height: var(--leading-meta);
   font-weight: 600;
   letter-spacing: .02em;
 }
 
 .home-hero-dek {
-  margin: 14px 0 0;
-  color: var(--muted);
-  font-size: .98rem;
-  line-height: 1.58;
+  margin: var(--space-2) 0 0;
+  color: var(--body-text);
+  font-size: 1rem;
+  line-height: var(--leading-body);
 }
 
 .section { padding: var(--section-space) 0; border-top: 1px solid var(--line); }
 .home-hero + .section { border-top: 0; }
-.section-heading { width: 100%; max-width: none; margin-bottom: 28px; }
-.section h2 { margin: 0; font-family: var(--display); font-size: var(--type-section-title); font-weight: 500; letter-spacing: -.03em; line-height: 1; }
+/* Issues and About separate their sections with space alone. The rule was doing the
+   work a grid now does, and a hairline between two blocks that already sit a full
+   section apart is a second statement of the same boundary. The space it was flanking
+   stays: `--section-space` above and below meant the rule landed centred between two
+   blocks, and without it that pair simply reads as one interval. */
+.issue .section,
+.about-page .section {
+  border-top: 0;
+  /* One interval, not two halves flanking a rule. `--section-space` was a fluid clamp,
+     so the doubled value only landed on the base at the clamp's own endpoints: 48px on
+     a phone and 80px past 1053px, but 76px at 1000px and every arbitrary value between.
+     With the rule gone the gap is the boundary, so it takes a fixed step instead.
 
-.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+     Asymmetric for the same reason the issue rule below is: the gap is one section's
+     bottom plus the next one's top, so a symmetric pair can only reach even multiples
+     of 16. 24 above and 8 below sums to 32, the group boundary, with both halves whole
+     and three times as much space above a heading as below it. */
+  padding: var(--space-3) 0 var(--space-1);
+}
+/* At a 24px interval the section heading has to bind tighter to its own content than the
+   gap above it, or it reads as the tail of the section before. 32px below a heading was
+   right against a 72px gap and wrong against a 24px one, and About's interval is the
+   narrow one. It stays scoped even now that the site value is also 24: About heads prose,
+   where the heading and its first line are one block, and the card sections head a grid
+   that is already bounded by its own cards. */
+.about-page .section-heading { margin-bottom: var(--space-1); }
+/* An issue is a run of card sections, each already bounded by its own cards, so it reads
+   tighter than About's prose, which has only its headings to separate it.
+
+   The padding is asymmetric so the interval can be 56px, seven base units. A symmetric
+   pair can only reach even multiples of 16 — 48, 64, 80 — because the gap is one
+   section's bottom plus the next one's top. 32 above and 24 below sums to 56 with both
+   halves still whole steps, and it puts more space above a section's heading than below
+   its content, which is the rhythm this page already wanted. */
+.issue .section { padding: var(--space-4) 0 var(--space-3); }
+/* One step below every section header on the site, cards or prose alike. The container
+   holds either a single heading or an eyebrow and the heading it names, and the gap that
+   binds it to its block is shorter than the gap separating one section from the next.
+   Card grids carry a 16px top margin of their own on the directory surfaces; it is an
+   adjacent sibling of this margin, so the two collapse to 24 rather than summing to 40.
+
+   A single heading is a supported form, not a half-built lockup. A second level is
+   earned only when each level contributes distinct information, which on this site means
+   a fixed rubric above an issue-specific editorial angle. Whether a string lives in a
+   template or a content record decides nothing. See The Two Level Rule in DESIGN.md. */
+.section-heading { width: 100%; max-width: none; margin-bottom: var(--space-3); }
+/* The Section Title role, reachable two ways. `.section h2` covers every heading inside a
+   `.section`; `.section-title` is the explicit hook for headings that open a standalone
+   section without one, which is how Explore's taxonomy headings ended up borrowing
+   `.eyebrow` for its type ramp instead. Heading semantics are independent of visual size:
+   the level states document structure, this role states rank. */
+.section h2,
+.section-title { margin: 0; font-family: var(--display); font-size: var(--type-section-title); font-weight: 500; letter-spacing: -.03em; line-height: 1; }
+
+/* Twelve shared tracks, fluid: `track = (shell - 11 gutters) / 12`. A card spans four of
+   them plus the three gutters between, which is 376px at the 1160px shell and follows the
+   shell down rather than holding a fixed width. Three columns was the same arrangement
+   expressed as a result instead of as a grid, which is why controls declared 180px
+   literals and stopped matching the cards the moment the shell shrank. */
+.grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--space-2) 16px; }
+.grid > * { grid-column: span 4; }
 
 /* Cards in a row line up by sharing the row's tracks, not by guessing heights.
    Each card spans three rows of the parent grid and adopts them as a subgrid, so
@@ -548,7 +848,7 @@ a { color: inherit; }
     display: grid;
     grid-row: span 3;
     grid-template-rows: subgrid;
-    row-gap: 16px;
+    row-gap: var(--space-2);
   }
 
   .grid > .app-card:not(.reading-card) .app-summary,
@@ -564,7 +864,12 @@ a { color: inherit; }
      below it as well as the one beside it.
 
      The floors are what the tallest record in the catalogue actually needs, measured
-     across all 102 of them. Note the first and last include the card's 24px padding:
+     across all of them. Re-measured on 2026-09-04 against 118 records and the revised
+     type scale, by releasing the floors and reading what the content asked for: every
+     track was carrying about 25px more than it needed, roughly 50px of dead air per
+     card on the wide band, which read as a gap between the description and Best For.
+     They are numbers taken from the content, so they want re-measuring whenever the
+     type scale or the card padding moves, not adjusting by eye. Note the first and last include the card's 24px padding:
      a subgrid item's padding comes out of the tracks it spans, so track one carries
      the summary plus the top padding and track three the tags plus the bottom.
 
@@ -582,14 +887,14 @@ a { color: inherit; }
      directory. Below 921px each card is its own height. */
   @media (min-width: 921px) {
     .grid:has(> .app-card:not(.reading-card)) {
-      grid-auto-rows: minmax(230px, auto) minmax(149px, auto) minmax(122px, auto);
+      grid-auto-rows: minmax(232px, auto) minmax(120px, auto) minmax(136px, auto);
     }
   }
 
   /* Above 1100px the content column has stopped growing, so the budget settles. */
   @media (min-width: 1100px) {
     .grid:has(> .app-card:not(.reading-card)) {
-      grid-auto-rows: minmax(205px, auto) minmax(99px, auto) minmax(88px, auto);
+      grid-auto-rows: minmax(184px, auto) minmax(96px, auto) minmax(96px, auto);
     }
   }
 
@@ -603,7 +908,7 @@ a { color: inherit; }
     display: grid;
     grid-row: span 3;
     grid-template-rows: subgrid;
-    row-gap: 10px;
+    row-gap: var(--space-1);
   }
 
   .grid > .reading-card h3,
@@ -611,73 +916,92 @@ a { color: inherit; }
   .grid > .reading-card .reading-description { min-height: 0; }
 }
 
-.editors-pick-card {
+/* The Editor's Pick variant, and it owns its differences.
+
+   It did not. `.editors-pick-card` and `.app-card` are both one class, and the base rule
+   sits later in the file, so the base won every property they shared: the card declared
+   `display: grid` and rendered flex, declared a fluid padding and rendered 24px. The code
+   described a composition the browser had never drawn. Every selector here now carries
+   `.app-card` as well, so the variant outranks the base by specificity rather than by
+   hoping to be read last.
+
+   The grid-template-areas that used to sit here are gone rather than revived. They ordered
+   the card summary / best-for / note / tags, while the markup emits summary / note /
+   best-for / tags — the hero states its reason before the audience. Applying them would
+   have reordered the card to match an older markup. The layout is a single column in
+   document order, which is what flex already does correctly; what the variant actually
+   needs is its inset, its corner and its title. */
+.app-card.editors-pick-card {
+  /* One number for the card's inset, its corner and the rim that traces it. Three things
+     reading the same variable is what keeps the arcs concentric; three things repeating
+     the same literal is how they drift apart. */
+  --pick-inset: var(--space-4);
   min-height: 0;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  grid-template-areas:
-    "summary"
-    "best"
-    "note"
-    "tags";
-  row-gap: 0;
-  padding: clamp(24px, 3vw, 34px);
+  padding: var(--pick-inset);
+  border-radius: var(--pick-inset);
 }
-.editors-pick-card .app-summary { grid-area: summary; min-height: 0; margin-bottom: 0; }
-.editors-pick-card .best-for { grid-area: best; min-height: 0; margin-top: 16px; }
-.editors-pick-card .editor-note {
-  grid-area: note;
-  align-self: start;
-  margin-top: 22px;
-  padding-top: 18px;
-  border-top: 1px solid var(--line);
-}
-.editors-pick-card .tag-list { grid-area: tags; min-height: 0; margin-top: 20px; padding-top: 0; }
+.app-card.editors-pick-card .app-summary { min-height: 0; margin-bottom: 0; }
+.app-card.editors-pick-card .best-for { min-height: 0; }
+.app-card.editors-pick-card .editor-note { align-self: start; margin-top: var(--space-3); }
+.app-card.editors-pick-card .tag-list { min-height: 0; margin-top: var(--space-2); padding-top: 0; }
 .editor-note { padding-left: 0; border-left: 0; }
 .editor-note p { margin: 0; }
 
 .home-hero-pick { display: flex; flex-direction: column; }
 
-/* Hidden from sight above 920px, where the eyebrow and the card carry the meaning, but
-   never hidden from the outline. `display: none` here took the h2 out of the document
-   entirely, so the desktop homepage ran h1 straight to the app card's h3 and broke the
-   heading sequence on exactly the widths most readers use. The clip pattern keeps the
-   level in place for assistive technology at every width. */
+/* One visible heading at every width, carrying the label a reader actually needs. It was
+   an eyebrow paragraph plus a clipped h2 reading "One app worth a closer look": above
+   920px sighted readers saw only the eyebrow while heading navigation announced only the
+   clipped h2, so the two audiences were given different words for the same block, and
+   below 920px the filler heading appeared at subhead scale and tied the app's own name.
+   The heading now carries the Label role directly, which The Two Level Rule allows here
+   because this heading labels one featured card inside the hero and the app's name is the
+   block's primary visual identity. A heading that opens a standalone section takes
+   Section Title instead. */
 .home-hero-pick-title {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  clip-path: inset(50%);
-  white-space: nowrap;
+  margin: 0 0 var(--eyebrow-gap);
+  color: var(--accent);
+  font-size: var(--type-label);
+  line-height: var(--leading-label);
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
 }
 .home-hero-pick .hero-pick-card { flex: 1; }
 
-.hero-pick-card .app-summary { margin-bottom: 0; }
+.app-card.hero-pick-card .app-summary { margin-bottom: 0; }
 .hero-pick-card .app-summary.has-app-icon .app-summary-heading {
-  grid-template-columns: 52px minmax(0, 1fr);
+  grid-template-columns: 56px minmax(0, 1fr);
   column-gap: 16px;
 }
+/* The pick card's icon is a step larger than a directory card's, because it is the
+   one app the issue is arguing for. The base-unit pass briefly flattened the two to
+   48 and lost that. Its 14px corner is not on the radius scale and should not be: an
+   app icon frame takes 25% of its own side, which is what makes a rendered mark read
+   as a macOS icon rather than as a rounded box. 56 × .25 = 14. */
 .hero-pick-card .app-icon-frame {
-  width: 52px;
-  height: 52px;
-  border-radius: 13px;
+  width: 56px;
+  height: 56px;
 }
-.hero-pick-card h3 { font-size: var(--type-subhead); letter-spacing: -.02em; line-height: 1.08; }
-.hero-pick-card .app-summary p { font-size: 1rem; }
+/* Carries `.app-card` so it beats the base `.app-card h3`, which sits later in the file
+   and had been rendering the pick at the ordinary card title's 23px. */
+.app-card.hero-pick-card h3 { font-size: var(--type-subhead); letter-spacing: -.02em; line-height: 1.08; }
+.app-card.hero-pick-card .app-summary p { font-size: 1rem; }
 
-.hero-pick-card .editor-note { margin-top: 22px; padding-top: 0; border-top: 0; }
+.app-card.hero-pick-card .editor-note { margin-top: var(--space-3); padding-top: 0; border-top: 0; }
 
-.hero-pick-card .best-for {
-  margin-top: 22px;
-  padding-top: 18px;
-  border-top: 1px solid var(--line);
-  font-size: .97rem;
+/* The last content divider on the site. It separated the editor's note from Best For
+   inside the pick card, which is content divided from content — the case the site
+   stopped drawing on 2026-09-05 everywhere else. The 24px margin and 16px padding that
+   flanked it become one interval with one owner, at the same 40px they summed to. */
+.app-card.hero-pick-card .best-for {
+  margin-top: var(--space-5);
+  font-size: 1rem;
+  line-height: var(--leading-body);
 }
 
-.hero-pick-card .best-for p { margin: 0; color: var(--muted); }
-.hero-pick-card .tag-list { margin-top: auto; padding-top: 22px; }
+.app-card.hero-pick-card .best-for p:not(.editor-note-label) { margin: 0; color: var(--body-text); }
+.app-card.hero-pick-card .tag-list { margin-top: auto; padding-top: var(--space-3); }
 /* Struck Light. The Editor's Pick is the one app the issue argues for, so in the
    hero it is lit by its own colour: a bounded halo behind the icon and a slow
    gleam travelling the card's edge, the way light moves across a struck plate.
@@ -724,8 +1048,10 @@ a { color: inherit; }
      property stops the drift resolving at all. A layer avoids both. */
   isolation: isolate;
   /* The gleam traces the card's own corner, so the radius is a parameter rather
-     than a constant repeated in the ring. */
-  --pick-radius: 12px;
+     than a constant repeated in the ring. It follows the variant's inset where one is
+     set: tracking `--radius` directly left the rim at 24px when the pick card moved to
+     a 32px corner on 2026-09-07, and the two arcs visibly diverged. */
+  --pick-radius: var(--pick-inset, var(--radius));
 }
 /* The one card in the fold the issue is arguing for; it rests proud of the rest. */
 .hero-pick-card.has-pick-accent { box-shadow: var(--shadow-hover); }
@@ -762,8 +1088,6 @@ a { color: inherit; }
     0 0 0 1px color-mix(in srgb, var(--pick-accent) 30%, transparent),
     0 6px 18px color-mix(in srgb, var(--pick-accent) 22%, transparent);
 }
-
-.hero-pick-card.has-pick-accent .editors-pick-icon { color: var(--pick-accent); }
 
 /* The gleam. A conic sweep masked down to the card's own edge, so what travels is
    a highlight on the rim rather than a glowing box. Without mask compositing the
@@ -818,42 +1142,54 @@ a { color: inherit; }
 }
 
 .editor-note-label {
-  margin-bottom: 8px;
+  margin-bottom: var(--space-1);
   color: var(--accent);
   font-size: var(--type-label);
+  line-height: var(--leading-label);
   font-weight: 800;
   letter-spacing: .1em;
   text-transform: uppercase;
 }
 .card,
-.archive-card { border: 1px solid var(--line); border-radius: 12px; background: var(--surface); box-shadow: var(--shadow); }
+.archive-card { --card-inset: var(--space-3); border: 0; border-radius: var(--card-inset); background: var(--surface); box-shadow: inset 0 0 0 1px transparent, var(--shadow); }
 
-.app-card { position: relative; display: flex; min-height: 286px; flex-direction: column; padding: 24px; }
-.app-card-link { position: absolute; z-index: 2; inset: 0; border-radius: inherit; }
+.app-card { position: relative; display: flex; min-height: 288px; flex-direction: column; padding: var(--card-inset); }
+.app-card-link { position: absolute; z-index: 2; inset: 0; border-radius: var(--radius); }
 .app-card a:not(.app-card-link) { position: relative; z-index: 3; }
-.app-card h3 { margin: 0 0 11px; font-family: var(--display); font-size: 1.4rem; font-weight: 600; line-height: 1.15; }
+.app-card h3 { margin: 0 0 var(--space-1); font-family: var(--display); font-size: var(--type-card-title); font-weight: 600; line-height: 1.2174; }
 .app-card h3 a { color: var(--text); text-decoration: none; transition: color 180ms ease; }
 .app-card h3 a:hover,
 .app-card h3 a:focus-visible { color: var(--accent); }
+/* The house ring rather than the browser's. Colour is the hover; a keyboard reader is
+   owed the same indicator every other control on the site gives them. */
+.app-card h3 a:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+  border-radius: var(--radius-sm);
+}
 .app-summary-heading {
   display: block;
 }
 .app-summary.has-app-icon .app-summary-heading {
   display: grid;
-  grid-template-columns: 44px minmax(0, 1fr);
-  column-gap: 14px;
+  /* The column is the frame. Sizes here move together or the icon stops sitting in
+     its own track. */
+  grid-template-columns: 48px minmax(0, 1fr);
+  column-gap: 16px;
   align-items: center;
 }
 .app-summary.has-app-icon h3 { margin-bottom: 0; }
 .app-icon-frame {
   display: flex;
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   border: 0;
-  border-radius: 11px;
+  /* Derived, not chosen: 25% of the frame's side, which is what keeps a rendered
+     mark reading as a macOS icon rather than a rounded box. It follows the size. */
+  border-radius: 25%;
   background: transparent;
 }
 .app-icon {
@@ -864,7 +1200,7 @@ a { color: inherit; }
 }
 .app-icon-backed .app-icon-frame {
   background: #fff;
-  padding: 5px;
+  padding: var(--space-1) 8px;
 }
 .app-icon-backed .app-icon,
 .app-icon-contain .app-icon {
@@ -874,63 +1210,77 @@ a { color: inherit; }
 .missing-app-icon-frame {
   background: var(--missing-icon-bg);
 }
+/* Was 56% of its frame, which resolved to 27px at a 2.1 stroke — a size and a weight
+   that existed only here. It takes the scale like every other glyph. */
 .missing-app-icon-frame svg,
 .missing-app-icon {
   display: block;
-  width: 56%;
-  height: 56%;
+  --icon-size: var(--icon-md);
   color: #fff;
-  stroke-width: 2.1;
 }
 .app-icon-color-green { --missing-icon-bg: #2f8f5b; }
 .app-icon-color-orange { --missing-icon-bg: #c66a22; }
 .app-icon-color-blue { --missing-icon-bg: #2f75d6; }
 .app-icon-color-purple { --missing-icon-bg: #8b5cc7; }
 .app-icon-color-pink { --missing-icon-bg: #c24b7a; }
-.editors-pick-title {
-  display: flex;
-  align-items: center;
-  gap: .2em;
-}
-.editors-pick-icon-mark {
-  position: relative;
-  display: inline-flex;
-  flex: 0 0 auto;
-  width: .9em;
-  height: .9em;
-  color: var(--accent);
-}
-
-.editors-pick-icon { width: 100%; height: 100%; }
-.app-card p { margin: 0; color: var(--muted); }
-.app-summary.has-app-icon .app-description { margin-top: 12px; }
-.app-summary { min-height: 136px; margin-bottom: 16px; }
+.app-card p { margin: 0; color: var(--body-text); }
+.app-card .reading-source { color: var(--muted); }
+/* This follows the generic paragraph rule deliberately: the Editor's Pick labels
+   belong to the site's accent eyebrow role, not to card prose. */
+.app-card .editor-note-label { color: var(--accent); }
+.app-summary.has-app-icon .app-description { margin-top: var(--space-3); }
+.app-summary { min-height: 136px; margin-bottom: var(--space-2); }
 .best-for { min-height: 96px; font-size: 1rem; }
 .best-for strong,
 .reading-source strong { color: var(--text); }
 
-.tag-list { display: flex; min-height: 86px; flex-wrap: wrap; align-content: flex-start; gap: 6px; padding-top: 12px; }
-.tag { display: inline-flex; width: fit-content; align-items: center; margin: 0; padding: 7px 10px; border: 0; border-radius: 999px; background: var(--chip); color: var(--muted); font-size: var(--type-label); font-weight: 700; line-height: 1.15; text-decoration: none; text-transform: lowercase; transition: color 180ms ease, background-color 180ms ease; }
+.tag-list { display: flex; min-height: 88px; flex-wrap: wrap; align-content: flex-start; gap: var(--space-1) 8px; padding-top: var(--space-2); }
+.tag { display: inline-flex; width: fit-content; align-items: center; margin: 0; padding: var(--space-1) 8px; border: 0; border-radius: 999px; background: var(--chip); color: var(--chip-text); font-size: var(--type-label); font-weight: 700; line-height: var(--leading-label); text-decoration: none; text-transform: lowercase; transition: color 180ms ease, background-color 180ms ease; }
 .tag:hover,
 .tag:focus-visible { background: color-mix(in srgb, var(--chip) 82%, var(--accent)); color: var(--accent-hover); }
-.reading-card h3 { min-height: 108px; }
-.reading-card .reading-source { min-height: 30px; }
-.reading-card .reading-description { min-height: 108px; }
+.reading-card h3 { min-height: 112px; }
+.reading-card .reading-source { min-height: 32px; }
+.reading-card .reading-description { min-height: 112px; }
 
-.feature-card { padding: 28px; }
-.feature-card p { max-width: var(--measure); margin: 0 0 14px; color: var(--muted); }
+.feature-card { padding: var(--card-inset); }
+/* The Card Title role, same family, size and weight the app and archive cards use. The
+   video's supplied title reads here instead of heading the section, so a third-party
+   headline is attributed and ranked as the card's own subject rather than as the
+   publication's editorial line. */
+.feature-card-title {
+  margin: 0 0 var(--space-2);
+  font-family: var(--display);
+  font-size: var(--type-card-title);
+  font-weight: 600;
+  line-height: 1.2174;
+  color: var(--text);
+}
+.feature-card p { max-width: var(--measure); margin: 0 0 var(--space-2); color: var(--body-text); }
 /* A standalone link on its own line is a target, not prose, so it carries the
    minimum. The inline RSS link in the subscribe copy is left alone: WCAG exempts a
    target sitting inside a sentence, and padding one out would break the line. */
+/* The standalone-action role: a link on its own line, doing the job of a button without
+   being one. Accent and bold at rest, which is why it needs a hover that is not simply
+   "turn accent" — it deepens instead, the same move the primary button makes. It had no
+   hover rule at all until 2026-09-07. */
 .feature-card a {
   display: inline-flex;
   align-items: center;
   min-height: 24px;
   color: var(--accent);
   font-weight: 700;
+  text-decoration: none;
+  transition: color 180ms ease;
+}
+.feature-card a:hover,
+.feature-card a:focus-visible { color: var(--accent-hover); }
+.feature-card a:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+  border-radius: var(--radius-sm);
 }
 
-.app-detail-page { padding: var(--page-start-space) 0 36px; }
+.app-detail-page { padding: var(--page-start-space) 0 var(--space-4); }
 /* The detail page reads: what is this, is it for me, go and get it. The masthead
    carries that path. Everything that files the app rather than describes it sits
    in the rail, which also puts the right half of the fold to work. The rail is
@@ -943,34 +1293,32 @@ a { color: inherit; }
   grid-template-columns: minmax(0, 1fr) 400px;
   align-items: start;
   gap: clamp(32px, 5vw, 72px);
-  padding: 0 0 var(--section-space);
-  border-bottom: 1px solid var(--line);
+  padding: 0;
 }
-.app-detail-masthead { min-width: 0; max-width: 900px; }
+.app-detail-masthead { min-width: 0; max-width: 896px; }
 
 .app-detail-identity {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
-  gap: clamp(16px, 1.8vw, 22px);
+  gap: clamp(16px, 1.8vw, 24px);
 }
 /* Sized against the page title's cap height so the two read as one lockup. */
 .app-detail-app-icon {
-  width: clamp(56px, 6vw, 76px);
-  height: clamp(56px, 6vw, 76px);
-  border-radius: 12px;
+  width: clamp(56px, 6vw, 80px);
+  height: clamp(56px, 6vw, 80px);
 }
 .app-detail-identity h1 { margin: 0; }
 
-/* The One Page Title Rule's 15px gap, measured from the lockup rather than the
+/* The One Page Title Rule's 16px gap, measured from the lockup rather than the
    title alone, then a generous step before Best For so the two do not run together. */
-.app-detail-masthead > .dek { margin-top: 15px; }
-.app-detail-masthead > .app-detail-best-for { margin-top: 26px; }
+.app-detail-masthead > .dek { margin-top: var(--space-2); }
+.app-detail-masthead > .app-detail-best-for { margin-top: var(--space-3); }
 
 /* One rhythm for the whole rail, on the documented spacing scale: xl between
    groups, md from an eyebrow to the content it names. Every group is built the
    same way, so the space before each eyebrow is the same space. */
-.app-detail-rail { display: grid; gap: 24px; min-width: 0; }
+.app-detail-rail { display: grid; gap: var(--space-3) 24px; min-width: 0; }
 .app-detail-rail-group { display: grid; gap: var(--eyebrow-gap); min-width: 0; }
 .app-detail-rail-group .eyebrow { margin: 0; }
 
@@ -987,14 +1335,14 @@ a { color: inherit; }
   display: grid;
   /* Same icon column and gap as the collection badge above it, so every mark in
      the rail sits on one centre axis and every label starts at the same x. */
-  grid-template-columns: 34px minmax(0, 1fr);
+  grid-template-columns: 32px minmax(0, 1fr);
   align-items: center;
-  gap: 12px;
-  min-height: 34px;
+  gap: var(--space-1) 8px;
+  min-height: 32px;
   color: var(--muted);
   font-size: var(--type-meta);
   font-weight: 600;
-  line-height: 1.3;
+  line-height: var(--leading-meta);
   text-decoration: none;
   transition: color 180ms ease;
 }
@@ -1004,26 +1352,25 @@ a { color: inherit; }
 .app-detail-category-row:focus-visible,
 .collection-badge:focus-visible {
   color: var(--accent);
-  outline: 2px solid color-mix(in srgb, var(--accent) 38%, transparent);
-  outline-offset: 3px;
-  border-radius: 8px;
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+  border-radius: var(--radius-sm);
 }
 .app-detail-category-mark { display: inline-flex; align-items: center; justify-content: center; }
-.app-detail-category-mark svg { width: 19px; height: 19px; }
-/* Named by its own eyebrow like every other group in the rail, and given more air
-   than they get. It stays in the rail's utility voice: rank comes from the label
-   sitting in ink at weight 700 where a category label sits muted at 600, from the
-   44px row against their 34px, and from leading the rail. */
+.app-detail-category-mark svg { --icon-size: var(--icon-md); }
+/* Named by its own eyebrow like every other group in the rail. It stays in the rail's
+   utility voice: rank comes from position and the label sitting in ink at weight 700
+   where a category label sits muted at 600, while the row rhythm matches categories. */
 .collection-badge {
   display: grid;
-  grid-template-columns: 34px minmax(0, 1fr);
+  grid-template-columns: 32px minmax(0, 1fr);
   align-items: center;
-  gap: 12px;
-  min-height: 44px;
+  gap: var(--space-1) 8px;
+  min-height: 32px;
   color: var(--text);
   font-size: var(--type-meta);
   font-weight: 700;
-  line-height: 1.2;
+  line-height: 1.1429;
   text-decoration: none;
   transition: color 180ms ease;
 }
@@ -1031,8 +1378,8 @@ a { color: inherit; }
    row's colour and turns blue with it on hover. A ring here made the mark itself
    the loud thing; the honour's rank comes from its label and its position. */
 .collection-badge-icon {
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   color: inherit;
 }
 .collection-badge-label { min-width: 0; }
@@ -1043,19 +1390,16 @@ a { color: inherit; }
   align-items: center;
   justify-content: center;
 }
-.category-directory-icon svg { width: 18px; height: 18px; }
-/* Same size as a category mark, so the two render the same 1.58px stroke: lucide
-   scales its stroke with the glyph, and any size difference here would put one
-   icon family at two weights in a single column. */
-.collection-badge-icon svg { width: 19px; height: 19px; }
+.category-directory-icon svg { --icon-size: var(--icon-sm); }
+/* Collection badges get a larger mark than category rows during the Phosphor review. */
+.collection-badge-icon svg { --icon-size: var(--icon-md); }
 .app-detail-best-for { max-width: var(--measure); }
-.app-detail-best-for p:not(.eyebrow) { margin: 0; color: var(--muted); font-size: 1rem; line-height: 1.55; }
-.app-detail-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 24px; }
-.app-detail-actions .button { gap: 8px; }
-.app-detail-actions .button svg { width: 1em; height: 1em; }
+.app-detail-best-for p:not(.eyebrow) { margin: 0; color: var(--body-text); font-size: 1rem; line-height: 1.5; }
+.app-detail-actions { display: flex; flex-wrap: wrap; gap: var(--space-2) 16px; margin-top: var(--space-3); }
+.app-detail-actions .button { gap: var(--space-1) 8px; }
+.app-detail-actions .button svg { --icon-size: var(--icon-sm); }
 .app-detail-tags { min-height: 0; padding-top: 0; }
 .app-detail-section { width: 100%; padding-right: 0; padding-left: 0; }
-.app-detail-related-grid .app-card:nth-child(n + 7) { display: none; }
 
 /* The hero's waterline again, quieter and narrower, with the mark riding it —
    the issue turns from apps to watching and reading at a marked passage. */
@@ -1063,7 +1407,7 @@ a { color: inherit; }
   position: relative;
   display: flex;
   width: min(var(--content-width), calc(100% - var(--content-inset)));
-  height: 84px;
+  height: 80px;
   align-items: center;
   justify-content: center;
   margin: 0 auto;
@@ -1078,7 +1422,7 @@ a { color: inherit; }
   pointer-events: none;
 }
 
-.content-divider-mark { position: relative; width: 34px; height: 34px; }
+.content-divider-mark { position: relative; width: 32px; height: 32px; }
 
 /* The light is drawn but unlit; it fires once when the divider is passed. */
 .brand-mark-ping {
@@ -1099,13 +1443,16 @@ a { color: inherit; }
   12% { opacity: .7; transform: scale(1); }
   100% { opacity: 0; transform: scale(2.1); }
 }
-.video-section { border-top: 0; padding-top: 26px; }
+.video-section { border-top: 0; padding-top: var(--space-3); }
 
-.issue-subscribe { padding-bottom: 88px; }
+/* The 88px bottom padding that lived here never applied: `.issue .section` carries a
+   padding shorthand at higher specificity and reset it. Rather than revive a value no
+   page has ever rendered, the closing interval stays owned by `.issue .section`, which
+   is the one rule that sets it. Removed 2026-09-07. */
 
 .archive-page {
-  min-height: calc(100vh - 130px);
-  padding: var(--page-start-space) 0 36px;
+  min-height: calc(100vh - 128px);
+  padding: var(--page-start-space) 0 var(--space-4);
   border: 0;
   border-radius: 0;
   background: transparent;
@@ -1114,30 +1461,39 @@ a { color: inherit; }
 .app-detail-page { min-height: 0; }
 .archive-page h1,
 .app-detail-hero h1 { max-width: 920px; overflow-wrap: anywhere; text-wrap: balance; }
-.explore-page .explore-hero { max-width: 780px; }
+.explore-page .explore-hero { max-width: 784px; }
 .explore-page .explore-section:first-of-type { border-top: 0; }
+/* No rule between the fold and what follows it, as on issues and About: the hero
+   drew one and `.section` drew another directly beneath it, so the seam was two
+   hairlines thick. The boundary is one interval of space now, and one element
+   owns it — the section — rather than the hero's padding and the section's
+   compounding into 80px. 32px is the same step the issue page uses. */
+.app-detail-page .section {
+  padding: var(--space-4) 0 var(--space-3);
+  border-top: 0;
+}
 .archive-page .section:last-child,
-.app-detail-page .section:last-child { padding-bottom: 12px; }
+.app-detail-page .section:last-child { padding-bottom: var(--space-2); }
 .explore-discovery-section + .explore-section,
 .explore-rss-section + .explore-section { border-top: 0; }
 .explore-discovery-section {
-  padding-top: clamp(24px, 3vw, 34px);
+  padding-top: clamp(24px, 3vw, 32px);
   padding-bottom: 0;
 }
 .explore-utility-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+  gap: var(--space-2) 16px;
 }
-.explore-utility-card { padding: 24px; }
+.explore-utility-card { padding: var(--space-3) 24px; }
 .explore-utility-combined-card { padding: 0; }
 .explore-utility-combined-card .explore-utility-grid { gap: 0; }
-.explore-utility-combined-card .explore-utility-grid > section { padding: 24px; }
+.explore-utility-combined-card .explore-utility-grid > section { padding: var(--space-3) 24px; }
 /* Each taxonomy explains itself in normal flow. The copy stays attached to the heading
    it qualifies and never covers the first result row on hover, focus or touch. */
 .explore-panel-heading {
   display: grid;
-  gap: 8px;
+  gap: var(--space-1) 8px;
 }
 .taxonomy-help-copy {
   max-width: var(--measure);
@@ -1145,7 +1501,7 @@ a { color: inherit; }
   color: var(--muted);
   font-size: var(--type-meta);
   font-weight: 500;
-  line-height: 1.45;
+  line-height: var(--leading-meta);
 }
 
 .explore-discovery-card {
@@ -1158,11 +1514,11 @@ a { color: inherit; }
 }
 .explore-discovery-categories,
 .explore-discovery-lower-grid > section {
-  padding: 24px;
+  padding: var(--space-3) 24px;
 }
 .explore-category-list {
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: 26px;
+  column-gap: 24px;
 }
 .explore-discovery-collections {
   align-content: start;
@@ -1173,29 +1529,29 @@ a { color: inherit; }
 .explore-utility-tags-panel {
   border-left: 1px solid var(--line);
 }
-.explore-utility-card .section-heading { margin-bottom: 18px; }
+.explore-utility-card .section-heading { margin-bottom: var(--space-2); }
 .explore-utility-card .section-heading h2 { font-size: var(--type-subhead); }
-.explore-collection-list { display: grid; gap: 14px; }
-.explore-category-list { gap: 18px 26px; }
+.explore-collection-list { display: grid; gap: var(--space-2) 16px; }
+.explore-category-list { gap: var(--space-2) 24px; }
 .explore-discovery-link {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
-  gap: 16px;
+  gap: var(--space-2) 16px;
   align-items: start;
-  min-height: 92px;
-  padding: 6px 0;
+  min-height: 96px;
+  padding: var(--space-1) 0;
   color: var(--text);
   text-decoration: none;
 }
 .explore-discovery-icon {
   display: inline-flex;
   flex: 0 0 44px;
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   align-items: center;
   justify-content: center;
   line-height: 0;
-  border-radius: 14px;
+  border-radius: var(--radius-md);
   background: var(--surface-strong);
   color: var(--text);
   opacity: .92;
@@ -1208,10 +1564,20 @@ a { color: inherit; }
 .explore-discovery-link strong {
   display: block;
   font-family: var(--display);
-  font-size: 1.4rem;
+  /* Sized against the group heading above it rather than on its own. That heading takes
+     --type-subhead at 500, and this sits at 600, so a heading only 1.27x larger read as
+     the smaller of the two: weight was contradicting what size was saying. 1.25rem puts
+     a clear 1.4x between them and lets the weight difference stop fighting it. */
+  font-size: 1.25rem;
   font-weight: 600;
   line-height: 1.2;
   transition: color 180ms ease;
+}
+/* Recovery routes are full-width card actions. Use the documented card-title role
+   instead of the old 20px size that sat between tile and card titles. */
+.not-found-page .explore-discovery-link strong {
+  font-size: var(--type-card-title);
+  line-height: 1.2174;
 }
 /* A real colour, not an opacity. The tag chip counts are dimmed with opacity .72, which
    computes to 3.47:1 in light theme and fails AA; --muted holds 7.35:1 on this ground. */
@@ -1237,9 +1603,9 @@ a { color: inherit; }
 .explore-discovery-link small {
   display: block;
   margin-top: 4px;
-  color: var(--muted);
+  color: var(--body-text);
   font-size: 1rem;
-  line-height: 1.45;
+  line-height: 1.5;
 }
 /* Both of these have to outrank `.explore-discovery-link small`, which owns `display`
    for every description in a discovery row (the collection rows use it too, so the
@@ -1250,20 +1616,20 @@ a { color: inherit; }
    silently dead. */
 .explore-discovery-link small.explore-category-description-mobile { display: none; }
 .explore-popular-tags { min-height: 0; padding-top: 4px; }
-.explore-popular-tags .tag { gap: 6px; }
+.explore-popular-tags .tag { gap: var(--space-1) 8px; }
 /* A real colour, not an opacity. Dimmed with `opacity: .72` the count blended to 3.47:1
    in light theme and failed AA at this size; --muted holds about 6.6:1 on the chip. The
    category and collection counts in the discovery card are set the same way. */
 .explore-popular-tags .tag span {
-  color: var(--muted);
+  color: var(--chip-text);
   font-size: var(--type-label);
   font-variant-numeric: tabular-nums;
 }
 .explore-subscribe-card {
   display: grid;
-  gap: 14px;
+  gap: var(--space-2) 16px;
   /* 24px, the padding every other card on the page uses. */
-  padding: 24px;
+  padding: var(--space-3) 24px;
   border-color: var(--line);
   background: var(--surface);
   box-shadow: var(--shadow);
@@ -1271,21 +1637,21 @@ a { color: inherit; }
 .explore-subscribe-heading {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: var(--space-2) 16px;
   min-width: 0;
 }
 .explore-subscribe-icon {
   display: inline-grid;
-  width: 44px;
-  min-width: 44px;
-  height: 44px;
+  width: 48px;
+  min-width: 48px;
+  height: 48px;
   flex: 0 0 44px;
   place-items: center;
-  border-radius: 14px;
+  border-radius: var(--radius-md);
   background: color-mix(in srgb, var(--accent) 18%, var(--surface-strong));
   color: color-mix(in srgb, var(--text) 72%, var(--accent));
 }
-.explore-subscribe-icon svg { width: 22px; height: 22px; }
+.explore-subscribe-icon svg { --icon-size: var(--icon-md); }
 .explore-subscribe-card h2 {
   margin: 0;
   text-wrap: balance;
@@ -1294,27 +1660,56 @@ a { color: inherit; }
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   align-items: start;
-  gap: 10px;
-  max-width: 700px;
-  margin-left: 60px;
+  gap: var(--space-1) 8px;
+  max-width: 704px;
+  margin-left: 64px;
 }
 .explore-subscribe-body {
   max-width: var(--measure);
   margin: 0;
-  color: var(--muted);
+  color: var(--body-text);
   font-size: 1rem;
-  line-height: 1.55;
+  line-height: 1.5;
 }
 /* An inline link in a sentence is exempt from WCAG 2.5.8, and padding one out would
    break the line it sits in. The hit area is expanded with a pseudo-element instead: the
    link's own box stays 19px so the sentence is untouched, while what a finger can reach
    is 24px. */
+/* The prose-link role: a link inside running text. It carries the accent and no underline,
+   in any state. The site draws no underlines, so a link in prose is marked the way every
+   other link on the site is marked — by taking the blue — and deepens on hover rather than
+   arriving at a decoration. About's prose and the RSS dialog were on the browser's default
+   with no hover at all until 2026-09-07.
+
+   Distinct from the standalone-action role below, which is a link on its own line acting
+   as a control, and from navigation and card titles, which have their own jobs. */
+.about-page p a,
+.about-page li a,
+.rss-description a,
 .explore-subscribe-body a {
-  position: relative;
-  color: inherit;
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 180ms ease;
 }
+.about-page p a:hover,
+.about-page li a:hover,
+.rss-description a:hover,
+.explore-subscribe-body a:hover,
+.about-page p a:focus-visible,
+.about-page li a:focus-visible,
+.rss-description a:focus-visible,
+.explore-subscribe-body a:focus-visible { color: var(--accent-hover); }
+.about-page p a:focus-visible,
+.about-page li a:focus-visible,
+.rss-description a:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+  border-radius: var(--radius-sm);
+}
+/* The subscribe card's link keeps its 24px hit target on top of the shared role: it sits
+   alone in a tight card where a finger needs more than the 19px line gives it. In flowing
+   prose that overlay would cross adjacent lines, so it stays scoped here. */
+.explore-subscribe-body a { position: relative; }
 .explore-subscribe-body a::after {
   content: "";
   position: absolute;
@@ -1324,20 +1719,19 @@ a { color: inherit; }
   height: 24px;
   transform: translateY(-50%);
 }
-.explore-subscribe-body a:hover,
-.explore-subscribe-body a:focus-visible { color: var(--accent); }
+
 .explore-subscribe-url {
   width: 100%;
   max-width: 640px;
-  margin: 10px 0 0;
+  margin: var(--space-1) 0 0;
   align-self: start;
 }
 .explore-subscribe-url .rss-copy-button {
-  width: 30px;
-  min-width: 30px;
-  height: 30px;
+  width: 32px;
+  min-width: 32px;
+  height: 32px;
   padding: 0;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   background: transparent;
 }
 .explore-subscribe-url .rss-copy-button.is-copied {
@@ -1365,7 +1759,7 @@ a { color: inherit; }
   content: '';
   position: absolute;
   inset: 0;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   border: 1.5px solid color-mix(in srgb, var(--accent) 55%, transparent);
   opacity: 0;
   pointer-events: none;
@@ -1399,23 +1793,126 @@ a { color: inherit; }
   border-top: 0;
 }
 @media (pointer: coarse) {
-  .feature-card a { min-height: 44px; }
+  .feature-card a { min-height: 48px; }
 }
 
 /* The measure belongs to the prose, not to the page: About's headings and
    section rules run the full shell like every other page. */
-.about-content { margin-top: 18px; padding-bottom: var(--section-space); color: var(--muted); font-size: 1rem; }
-.about-page p:not(.dek) { max-width: var(--measure); margin: 0; color: var(--muted); }
-.about-page p:not(.dek) + p { margin-top: 18px; }
+/* About runs in one narrow column, headings and rules included, where every other page
+   fills the 1160px shell.
+
+   The shell is that wide because Explore, the lanes and the issue pages put a
+   three-column card grid in it, so a full-width rule there divides full-width content.
+   About has nothing to fill it: the rules and h2s were spanning 1032px to head a 524px
+   column, leaving a 508px dead field and a divider that promised content to the right of
+   it that does not exist.
+
+   The shell itself is untouched, so the page keeps the same left edge as every other
+   page and the column is left aligned rather than centred: narrowing the shell would
+   have centred it and made About the one page whose content starts somewhere else. Only
+   the blocks inside are capped. 620px is set by the dek, which is 52ch at 17.9px and so
+   the widest line of type on the page, and the cap does nothing on a phone where the
+   shell is already narrower. */
+.about-page > * { max-width: var(--about-measure); }
+/* The title took `.archive-page h1`'s 920px cap and escaped its own column: About carries
+   both classes, and that rule is one class and one type against this one's single class,
+   so it won on specificity. Matching it selector for selector and sitting later settles
+   it. Everything on the page now stops at the same edge. */
+.about-page h1 { max-width: var(--about-measure); }
+/* Prose fills that column instead of taking `--measure` inside it. The measure exists to
+   hold a readable line, and at 620px this one runs about 73 characters, inside the 65 to
+   75 the craft floor asks for and slightly wider than the 62 that 52ch was giving. So the
+   column and the reading measure become one number here, which is what lets the rules sit
+   with the text rather than reaching past it. A wider column cannot: at 800px the line
+   would run about 94 characters, which is why the headings widened at 800 and the prose
+   correctly refused to follow.
+
+   Nothing overrides the cap. The dek needs no rule of its own, because `.about-page > *`
+   already reaches it and wins on order over the global `.dek`. Two earlier attempts got
+   this wrong in opposite directions: `none` released the dek to the full 1160, and `100%`
+   resolved against the 1160 shell rather than the 620 cap, which is the same bug wearing
+   a different value. */
+/* The intro is not a `.section`, so it supplies the bottom half of the boundary itself:
+   8px here plus the first section's 16px top makes the same 24px every section pair
+   carries. It used to close on `--section-space`, a fluid clamp, which made this one
+   boundary 56px while the rest were 24. */
+.about-content { margin-top: var(--space-4); padding-bottom: var(--space-1); color: var(--body-text); font-size: 1rem; }
+.about-page p:not(.dek) { margin: 0; color: var(--body-text); }
+.about-page p:not(.dek) + p { margin-top: var(--space-2); }
+/* The selection criteria are the one list on the page. They take the same measure and
+   muted ink the prose does, so the block reads as part of the writing rather than as a
+   panel: DESIGN.md is explicit that About is not a special case. The bold lead-in is
+   what makes each item scannable, and it is also the emphasis the critique found the
+   page had none of, every paragraph having carried the same muted weight. */
+.about-page .about-criteria {
+  /* Symmetric, because the paragraph rhythm is sibling-based: `p + p` carries 16px, and
+     a list between two paragraphs broke that chain, leaving the sentence after it sitting
+     flush against the final bullet. The list joins the paragraph rhythm at 16; its own
+     items bind at 8, so the block reads as one thing. */
+  margin: var(--space-2) 0;
+  padding: 0;
+  color: var(--body-text);
+  list-style: none;
+}
+/* The section's own padding owns the boundary to the next section, so nothing that ends a
+   section adds to it. The criteria list carries a symmetric 16px for the case above, which
+   is right between two paragraphs and wrong as the last thing in a block: 8px of section
+   padding plus 24px of the next section's put the group boundary at 32, and the list's own
+   margin pushed the gap under "What earns a spot" to 48 while every prose section closed at
+   32. Written against the last child rather than against the list, because the next block
+   to end a section would have arrived at the same 48. See The About ladder. */
+.about-page .section > *:last-child { margin-bottom: 0; }
+.about-page .about-criteria li { position: relative; padding-left: 16px; }
+.about-page .about-criteria li + li { margin-top: var(--space-1); }
+.about-page .about-criteria li::before {
+  content: '';
+  position: absolute;
+  top: .62em;
+  left: 2px;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--accent);
+}
+.about-page .about-criteria strong { color: var(--text); font-weight: 700; }
+/* Full-strength ink, where the rest of the prose is muted. Two lines take it: the
+   commitment that no app is here without the editor choosing it, and the thanks that
+   closes the page. Both are addressed to the reader rather than explaining something to
+   them, which is what separates them from the paragraphs around them. */
+.about-page p.about-emphasis { color: var(--text); }
+/* The action gets group separation rather than paragraph rhythm: it is the one thing on
+   the page to press, not another line to read. The selector matches the sibling rule's
+   specificity deliberately, because `.about-page p:not(.dek) + p` outscores a plain class
+   here and the paragraph rhythm won, leaving the button at 18px. */
+.about-page p:not(.dek) + p.about-cta { margin-top: var(--space-3); }
 /* The archive route. A hairline runs the length of the page and every issue is a
    stop on it, marked by the buoy's own beacon: an open ring, filled on the newest
    issue because "this is the current one" is a state, which is what blue is for.
    See The Beacon Rule in DESIGN.md. The line is drawn on the list rather than per
    card so it reads as one continuous route rather than eight segments. */
+/* The title leads and the search stands at the end of the block, the way the Explore
+   directory's heading and controls do.
+
+   Two columns rather than one flex row, because the search is taller than the title's
+   line and a flex row is as tall as its tallest item. Centred in that row the title was
+   pushed down by half the difference and the dek away by the other half, so the archive
+   opened 20.8px under its trail against Explore's and About's 16, and 29.6px at the
+   widths where controls are 56px — and once the row wrapped, the search landed between
+   the title and the dek and opened that gap to 88px. The title and the dek own the rows
+   here, and the search spans both and centres against the pair, so it can be taller than
+   either without moving them. The One Page Title Rule holds on this page as written. */
+.archive-masthead {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 16px;
+}
+.archive-masthead h1 { grid-column: 1; grid-row: 1; }
+.archive-masthead .dek { grid-column: 1; grid-row: 2; }
+.archive-search { grid-column: 2; grid-row: 1 / span 2; align-self: center; }
 .archive-filter-bar {
   display: flex;
   flex-wrap: wrap;
-  gap: 14px 20px;
+  gap: var(--space-2) 16px;
   align-items: center;
   justify-content: space-between;
   margin-top: var(--section-space);
@@ -1424,20 +1921,21 @@ a { color: inherit; }
   margin: 0;
   color: var(--muted);
   font-size: var(--type-meta);
+  line-height: var(--leading-meta);
   font-weight: 700;
   letter-spacing: .04em;
   text-transform: uppercase;
 }
-.archive-search { flex: 1 1 260px; max-width: 340px; }
+.archive-search { width: min(336px, 30vw); }
 
 .archive-route { margin-top: var(--section-space); }
 .archive-year + .archive-year { margin-top: var(--section-space); }
 .archive-year-heading {
-  margin: 0 0 14px;
-  padding-left: 40px;
+  margin: 0 0 var(--space-2);
   color: var(--muted);
   font-family: var(--sans);
   font-size: var(--type-meta);
+  line-height: var(--leading-meta);
   font-weight: 700;
   letter-spacing: .1em;
   text-transform: uppercase;
@@ -1445,132 +1943,50 @@ a { color: inherit; }
 .archive-stops {
   position: relative;
   display: grid;
-  gap: 14px;
+  gap: var(--space-2) 16px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
-/* The route itself. Script tightens it to the first and last beacon centres; the
-   static fallback runs the height of the list so a reader without JavaScript still
-   gets a continuous line rather than a dangling one. */
-.archive-stops::before {
-  content: "";
-  position: absolute;
-  top: var(--route-top, 0px);
-  bottom: var(--route-bottom, 0px);
-  left: 8px;
-  width: 1px;
-  background: var(--line);
-}
-.archive-stop {
-  position: relative;
-  display: grid;
-  grid-template-columns: 17px minmax(0, 1fr);
-  gap: 23px;
-  align-items: center;
-}
+.archive-stop { position: relative; }
 .archive-stop[hidden] { display: none; }
-.archive-stop-mark {
-  position: relative;
-  width: 17px;
-  height: 17px;
-  border: 1.5px solid var(--muted);
-  border-radius: 50%;
-  background: var(--page);
-  /* The route stops at each ring rather than running under it. Covering the line with
-     the ring's own fill left it showing in the ring's outer band, where the beacon's
-     translucent halo sits, so the reader saw a line crossing the stop. This clears the
-     line for the whole width of that halo and leaves the ring an object the route
-     arrives at. */
-  box-shadow: 0 0 0 4px var(--page);
-  transition: background-color 420ms cubic-bezier(.16, 1, .3, 1), border-color 420ms cubic-bezier(.16, 1, .3, 1);
-}
-/* The current issue is marked when nothing else is travelling: with no script, or
-   under reduced motion, this is the only cue for which issue is the latest. */
-.archive-stop.is-current .archive-stop-mark {
-  border-color: var(--accent);
-  background: var(--accent);
-  /* Mixed into the page rather than into transparency. The halo sits on the route,
-     so a translucent one let the line show straight through the ring it surrounds.
-     Over this ground the two mixes resolve to the same colour; only this one hides
-     the line. */
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 16%, var(--page));
-}
-/* Once the pilot is running it is the only lit thing on the route. The blue moves
-   on with the reader rather than leaving a filled stop behind it, so every ring the
-   pilot is not currently in reads the same. */
-.archive-route.is-piloted .archive-stop.is-current .archive-stop-mark {
-  border-color: var(--muted);
-  background: var(--page);
-  /* Drops the accent halo, not the one that keeps the route off the ring. */
-  box-shadow: 0 0 0 4px var(--page);
-}
-
-/* The pilot: the lit beacon that travels the route with the reader, named for the
-   boat that leads a vessel through a harbour. One object for the whole page, moved
-   by scroll position rather than by an animation of its own, so it holds at a stop
-   while the reader keeps scrolling and then catches up to the next. It is the same
-   17px as a stop mark, so docking reads as that stop lighting up. Hidden until the
-   script places it, and never shown under reduced motion. */
-.archive-pilot {
-  position: absolute;
-  top: 0;
-  /* Sized to the ring's interior, 17px less its 1.5px border on each side, and
-     inset to match. Docking then fills the ring and leaves its outline drawn,
-     rather than covering the stop or hiding beneath it. */
-  left: 1.5px;
-  width: 14px;
-  height: 14px;
-  margin-top: -7px;
-  /* The stops carry an opaque background and come later in the document, so
-     without this the pilot paints behind the ring it is meant to fill. */
-  z-index: 2;
-  border-radius: 50%;
-  background: var(--accent);
-  /* Translucent on purpose: the halo overlaps the ring it is docking into, and the
-     stop's outline has to stay drawn through it. The route line is kept out of this
-     annulus by the stop's own opaque halo, not by this one. */
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 16%, transparent);
-  pointer-events: none;
-  opacity: 0;
-  /* One bounded move per change of stop, on the house deceleration curve. A view
-     transition rather than a tracker: it rests until the current stop changes, and
-     the browser retargets it cleanly when a reader scrolls past several at once. */
-  transition: transform 420ms cubic-bezier(.16, 1, .3, 1), opacity 300ms ease;
-}
-.archive-pilot.is-live { opacity: 1; }
 .archive-route { position: relative; }
-.archive-card { display: grid; gap: 10px; padding: 25px; text-decoration: none; box-shadow: none; }
+/* No box-shadow of its own: an archive row is an app card in every respect that
+   matters, so it takes the shared card rest state and the shared hover contract
+   rather than opting out of both. It carried `box-shadow: none` until 2026-09-05,
+   which was right while a border drew its edge and left it with nothing once the
+   border went. */
+.archive-card { display: grid; gap: var(--space-1) 8px; padding: var(--card-inset); text-decoration: none; }
 .archive-card span { color: var(--muted); }
-.archive-card strong { font-family: var(--display); font-size: 1.38rem; color: var(--text); }
+.archive-card strong { font-family: var(--display); font-size: var(--type-card-title); line-height: 1.2174; color: var(--text); }
 .archive-card-dek {
   max-width: var(--measure);
   margin: 0;
-  color: var(--muted);
+  color: var(--body-text);
 }
 /* The information scent: what a reader chooses on. Quiet enough to stay metadata,
    with the app name itself carrying the ink. */
 .archive-card-scent {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 12px;
+  gap: 4px 16px;
   align-items: baseline;
   margin: 0;
   color: var(--muted);
   font-size: var(--type-meta);
+  line-height: var(--leading-meta);
 }
 .archive-card-scent b { color: var(--text); font-weight: 600; }
 .archive-card-total {
   color: var(--muted);
   font-variant-numeric: tabular-nums;
 }
-.archive-card-total::before { content: "· "; }
 
-.archive-more { margin-top: 18px; margin-left: 40px; }
+.archive-more { margin-top: var(--space-2); }
 .archive-empty {
   max-width: var(--measure);
-  margin: var(--section-space) 0 0 40px;
-  color: var(--muted);
+  margin: var(--section-space) 0 0;
+  color: var(--body-text);
 }
 
 /* The end of the route. Issue 01 used to fall straight into the footer; the
@@ -1579,61 +1995,10 @@ a { color: inherit; }
    the last stop down to the centre of this mark, so the line ends where the archive
    does. */
 .archive-origin { position: relative; }
-.archive-origin::before {
-  content: "";
-  position: absolute;
-  /* Bridges from the last stop's ring down to this one. Script measures the real
-     distance, because centring the marks on their cards puts the last ring halfway
-     up Issue 01 rather than at the foot of the list. The fallback covers the plain
-     margin for a reader without JavaScript, where the line runs to the list's edge. */
-  height: var(--origin-bridge, 27px);
-  /* Ends on the mark's centre. The mark now centres on the card rather than sitting
-     a fixed 4px down from the top, so that centre is measured rather than stated;
-     without the script it is the block's own middle, which is where a centred mark
-     lands anyway. */
-  top: calc(var(--origin-mark-centre, 50%) - var(--origin-bridge, 27px));
-  left: 8px;
-  width: 1px;
-  background: var(--line);
-}
 .archive-origin--empty::before { content: none; }
 .archive-origin {
   display: grid;
-  grid-template-columns: 17px minmax(0, 1fr);
-  /* The terminus is a card like every stop above it, so the mark sits at the same
-     23px from it and centres on it the way a stop's does. */
-  gap: 23px;
-  align-items: center;
-  margin-top: 14px;
-}
-.archive-origin-mark {
-  position: relative;
-  width: 17px;
-  height: 17px;
-  border: 1.5px solid var(--line);
-  border-radius: 50%;
-  background: var(--page);
-  /* Same cut as a stop: the bridge from the last issue ends at this ring's edge
-     rather than running down into it. */
-  box-shadow: 0 0 0 4px var(--page), inset 0 0 0 3px var(--page), inset 0 0 0 9px var(--muted);
-}
-/* Delight, at the one moment on this page that has earned it. A reader who reaches
-   the terminus has travelled the whole archive, so the origin answers the way the
-   RSS mark does: the same harbour beacon, on the same keyframes, acknowledging a
-   vessel that has come in. It fires on arrival rather than on load, because landing
-   is the completion; it is three pings rather than a loop, so it cannot become
-   friction on the way back down; and it re-arms only after the reader leaves. */
-.archive-origin-mark::after {
-  content: "";
-  position: absolute;
-  inset: -2px;
-  border-radius: 50%;
-  border: 1.5px solid color-mix(in srgb, var(--accent) 60%, transparent);
-  opacity: 0;
-  pointer-events: none;
-}
-.archive-origin.is-arrived .archive-origin-mark::after {
-  animation: beacon-ping 2400ms cubic-bezier(0.16, 1, 0.3, 1) 3;
+  margin-top: var(--space-2);
 }
 /* The terminus is the one arrival this page has, so it is a card and it is lit,
    under The Struck Light Rule. The light is the site accent rather than an app's
@@ -1641,27 +2006,37 @@ a { color: inherit; }
 .archive-origin-body {
   position: relative;
   max-width: none;
-  padding: 25px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
+  padding: var(--space-3) 24px;
+  border: 0;
+  /* The accent rim is drawn from `--pick-radius`, which tracks `--radius`. At 16px
+     this card's own corner sat inside a 25.5px rim and the two arcs diverged. */
+  border-radius: var(--radius);
   background: var(--surface);
-  box-shadow: var(--shadow);
+  /* Rests proud, as the Editor's Pick card does: it is the one block the page is
+     arguing for. */
+  box-shadow: var(--shadow-hover);
   --pick-accent: var(--accent);
 }
 .archive-origin-body > * { max-width: var(--measure); }
 .archive-origin h2 {
   margin: 0;
   font-family: var(--display);
-  font-size: 1.38rem;
+  font-size: var(--type-card-title);
   font-weight: 600;
+  line-height: 1.2174;
   letter-spacing: -.02em;
 }
-.archive-origin p { margin: 8px 0 0; color: var(--muted); }
+.archive-origin p { margin: var(--space-1) 0 0; color: var(--body-text); }
 .archive-origin--empty { margin-top: var(--section-space); }
-.archive-subscribe-section { margin-top: var(--section-space); }
+/* The archive closes on the subscribe card, and space marks that boundary rather than a
+   rule, the same as issues and About. 40px of margin plus the section's own 32px of top
+   padding makes 72px, nine steps, which is the wider interval this one boundary earns:
+   it is the page ending, not one section following another. */
+.archive-subscribe-section { margin-top: var(--section-space); border-top: 0; padding-top: var(--space-4); }
 .archive-card .archive-card-date {
   color: var(--muted);
   font-size: var(--type-meta);
+  line-height: var(--leading-meta);
   font-weight: 700;
   letter-spacing: .04em;
   text-transform: uppercase;
@@ -1669,21 +2044,25 @@ a { color: inherit; }
 .category-directory-card {
   grid-template-columns: auto minmax(0, 1fr);
   column-gap: 16px;
-  row-gap: 6px;
+  row-gap: var(--space-1);
   align-items: start;
-  border-color: color-mix(in srgb, var(--category-accent) 28%, var(--line));
+  /* Its resting accent is an inset ring, matching the way cards carry every other
+     edge now that they have no border. The One Hover Rule replaces this layer with
+     the hover accent, so the card still gives its category tint up on hover. */
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--category-accent) 28%, var(--line)), var(--shadow);
   background: var(--surface);
 }
 .category-directory-icon {
   grid-row: span 3;
-  width: 46px;
-  height: 46px;
-  border-radius: 14px;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
   background: color-mix(in srgb, var(--category-accent) 75%, var(--surface));
   color: color-mix(in srgb, var(--text) 80%, var(--accent));
 }
 .category-directory-card strong { font-size: 1.4rem; }
-.category-directory-card span { font-size: var(--type-meta); font-weight: 700; }
+.category-directory-card span { font-size: var(--type-meta);
+  line-height: var(--leading-meta); font-weight: 700; }
 .category-directory-card em { max-width: var(--measure); }
 /* A row, not a six-track grid. The count leads and the controls sit at the end, pushed
    there by the count's own auto margin. The grid version reserved six tracks for three
@@ -1691,15 +2070,34 @@ a { color: inherit; }
    a fourth control arrives and then reads as a puzzle. */
 .directory-filter-bar {
   position: relative;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
+  /* The toolbar sits on the catalogue's own twelve tracks. It was a flex row whose two
+     triggers declared `flex: 0 0 180px`, which matched a card span at the 1160px shell and
+     nothing below it: at a 1000px viewport the cards were 309.33px and the Filter and Sort
+     pair still measured 376. On tracks the pair is four tracks and three gutters, which is
+     one card at every width the multi-column layout applies to. */
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--space-2) 16px;
+  /* Stretch, not center: the controls size themselves from this, and centring the row
+     left the Filter trigger at its 20px content height inside a 48px shell. Only the
+     heading opts out, below. */
   align-items: stretch;
   margin-top: 0;
 }
-.directory-filter-bar > .directory-filter,
-.directory-filter-bar > .directory-sort { flex: 0 0 180px; }
-.directory-filter-bar--no-filters > .directory-sort { flex: 0 0 180px; }
+/* Tracks 6-8 for the field, 9-10 and 11-12 for the pair, so Sort's right edge lands on
+   the grid's and the heading takes whatever is left. The field is three tracks: 278px at
+   the full shell against the 280px literal it replaces. */
+.directory-filter-bar > .directory-search { grid-column: 6 / span 3; }
+.directory-filter-bar > .directory-filter { grid-column: 9 / span 2; }
+.directory-filter-bar > .directory-sort { grid-column: 11 / span 2; }
+/* Takes the auto right margin the count used to carry, so the controls sit at the end
+   of a row that now has something at its start. Scoped to the bar because `.section h2`
+   sets `margin: 0` and is the more specific selector, which swallowed the auto. It is
+   the one item that centres itself; the row stays on stretch for the controls. */
+/* The heading takes the tracks the controls do not. It no longer needs an auto margin to
+   push them over: the grid places them. */
+.directory-filter-bar > .directory-heading { grid-column: 1 / span 5; margin: 0; align-self: center; }
+.directory-filter-bar--no-filters > .directory-sort { grid-column: 11 / span 2; }
 /* On a lane page the directory follows the dek directly, and the bar's own zero margin
    left no interval at all: the controls sat closer to the dek than the dek sits to the
    h1, so the masthead and the toolbar read as one group. The separation is the same one
@@ -1707,24 +2105,112 @@ a { color: inherit; }
    Scoped to the dek's sibling because on Explore the directory follows a section heading
    that carries its own spacing. */
 .dek + .app-directory { display: block; margin-top: var(--section-space); }
+
+/* Applied filters, one pill each, between the toolbar and the grid. The row is absent
+   rather than empty when nothing is applied, so it never leaves a gap above the cards.
+
+   An applied filter uses the 32px chip role: inline-flex, a `min-height`,
+   horizontal padding and no vertical padding. On coarse pointers its hit area
+   expands through the pseudo-element below. It takes the accent because an applied filter is an active state,
+   which is what The Beacon Rule gives blue. It descends from `.tag` for radius and label
+   type but not for `text-transform`: tags are lowercase, collection labels are not.
+
+   The whole pill removes. Putting a separate target around the cross would be two
+   controls inside one chip, and The Target Floor Rule wants the area grown around a glyph
+   rather than the glyph made into its own button. */
+/* How many, and why that many, on one line against the grid they describe.
+
+   This row takes the same gap above and below, and that gap is the one the control stack
+   above it already uses — 16px on the wide bar, 12px once the bar stacks. An earlier pass
+   split it 24 above and 11 below, reading the row as a label naming the grid and giving
+   it the eyebrow binding gap. That was the wrong classification. Stacked on a phone the
+   row is the last item of the control stack, not a caption on the cards, and unequal gaps
+   around a full-width item in a stack read as a mistake rather than as a relationship. */
+.directory-results {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) 16px;
+  margin-top: var(--space-2);
+}
+.directory-actives {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  /* Zero the block margins explicitly. A <ul> carries margin-block: 1em from the user
+     agent, and setting margin-left alone left 16px above and below the chips inside a
+     row whose own gaps were 16px — 32px of invisible height that made the row look
+     mispositioned rather than merely padded. The auto left margin carries the chips to
+     the end of the row, under Filter and Sort, so they read as belonging to the controls
+     that produced them; it has to live in the shorthand or this reset would drop it. */
+  margin: 0 0 0 auto;
+  gap: var(--space-1) 8px;
+  padding: 0;
+  list-style: none;
+}
+.directory-active {
+  display: inline-flex;
+  position: relative;
+  /* The active-filter chip shares the tag role and a 32px minimum height.
+     Historical: it was first reduced from 38px to 30px to tighten its proportions;
+     the base-unit pass superseded both sizes with 32px. */
+  min-height: 32px;
+  max-width: 100%;
+  align-items: center;
+  gap: var(--space-1) 8px;
+  padding: 0 8px;
+  border: 1px solid color-mix(in srgb, var(--accent) 38%, transparent);
+  border-radius: 999px;
+  /* No resting fill. An accent tint behind accent text cost 0.98 of contrast in light
+     mode and landed the 12.5px label at 4.19:1, under the 4.5:1 floor. The border is
+     what carries the active state; the fill only ever arrives on hover, where the label
+     has already darkened to --accent-hover and can afford it. */
+  background: transparent;
+  color: var(--accent);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--type-label);
+  font-weight: 700;
+  line-height: var(--leading-label);
+  transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease;
+}
+/* The query pill can be a hundred characters. It gives up width before the row wraps
+   badly; the full text stays in the accessible name and the tooltip. */
+.directory-active-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.directory-active svg { --icon-size: var(--icon-sm); }
+.directory-active-x { opacity: .7; transition: opacity 180ms ease; }
+.directory-active-glyph { opacity: .8; }
+.directory-active:hover,
+.directory-active:focus-visible {
+  border-color: color-mix(in srgb, var(--accent) 58%, transparent);
+  background: color-mix(in srgb, var(--accent) 17%, transparent);
+  color: var(--accent-hover);
+}
+.directory-active:hover .directory-active-x,
+.directory-active:focus-visible .directory-active-x { opacity: 1; }
+.directory-active:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+/* Removing the last chip empties the row, which is the same outcome a clear-all button
+   offered, one tap later. */
 .directory-search {
   display: grid;
-  flex: 0 1 280px;
   grid-template-columns: auto minmax(0, 1fr);
   min-width: 0;
-  min-height: 52px;
+  min-height: 48px;
   align-items: center;
-  gap: 10px;
-  padding: 10px 13px;
+  gap: var(--space-1) 8px;
+  padding: var(--space-1) 16px;
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   background: var(--surface);
 }
-.directory-search svg {
-  width: 20px;
-  height: 20px;
-  color: var(--muted);
-}
+.directory-search svg { --icon-size: var(--icon-sm); color: var(--muted); }
 .directory-query-input {
   width: 100%;
   min-width: 0;
@@ -1742,9 +2228,51 @@ a { color: inherit; }
   opacity: 1;
 }
 .directory-query-input:disabled { cursor: not-allowed; }
+
+/* One clear control for every search field on the site. The browser's own cancel button
+   had been doing this job and doing it differently per engine — Chrome reveals it on hover
+   or focus, Safari whenever the field has text — so the affordance appeared and vanished
+   for reasons a reader could not see, and it shipped with `cursor: default`, giving no
+   sign it could be pressed at all. It is switched off on both fields and this stands in
+   its place: the site's own X at the site's own weight, present exactly when there is
+   something to clear. */
+.directory-query-input::-webkit-search-cancel-button,
+.search-input::-webkit-search-cancel-button {
+  appearance: none;
+  -webkit-appearance: none;
+  display: none;
+}
+
+.field-clear {
+  display: grid;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 180ms ease;
+}
+/* 16px at stroke 2, the weight the site gives a glyph at this size. */
+.field-clear svg { --icon-size: var(--icon-sm); }
+.field-clear:hover { color: var(--accent); }
+.field-clear:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+  color: var(--accent);
+}
+
+/* The third track exists only while the button does, so an empty field does not pay a
+   gap for a control that is not there. */
+.directory-search:has(.field-clear:not([hidden])) {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+}
 .filter-option input {
-  width: 15px;
-  height: 15px;
+  width: 16px;
+  height: 16px;
   flex: none;
   margin: 0;
   accent-color: var(--accent);
@@ -1763,21 +2291,21 @@ a { color: inherit; }
   background: var(--accent) url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e") center / 12px no-repeat;
 }
 :root[data-theme='dark'] .filter-option input:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 1px;
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
 }
 /* The count reads out, it does not act. Given the card treatment it looked like a third
    control sitting beside Filter and Sort, and a boxed, centred one at that. It keeps the
    row's height so it still sits on the controls' centre line, and nothing else. */
 .directory-count {
   display: flex;
-  min-height: 52px;
+  /* It sat at 52px to hold the controls' centre line while it was among them. Out of that
+     row it answers to the chips beside it instead, and the 56px full-width band it became
+     on a phone is what made it read as orphaned. */
+  min-height: 32px;
   align-items: center;
   justify-content: flex-start;
-  /* The auto right margin is what pushes the controls to the end of the row. It has to
-     live in the shorthand: a separate `margin-right` above this line was silently reset
-     by it. */
-  margin: 0 auto 0 0;
+  margin: 0;
   padding: 0;
   color: var(--muted);
   /* The metadata role: a step below the controls beside it, tracked and muted, so a
@@ -1791,9 +2319,9 @@ a { color: inherit; }
 .directory-sort {
   display: flex;
   min-width: 0;
-  min-height: 52px;
+  min-height: 48px;
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   background: var(--surface);
 }
 .directory-select {
@@ -1810,9 +2338,9 @@ a { color: inherit; }
   text-transform: none;
 }
 .directory-filter-bar > .directory-select {
-  min-height: 52px;
+  min-height: 48px;
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   background: var(--surface);
 }
 .directory-select-trigger {
@@ -1821,26 +2349,46 @@ a { color: inherit; }
   min-height: 100%;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: var(--space-2) 16px;
   padding: 0 16px;
   border: 0;
-  border-radius: 11px;
+  border-radius: calc(var(--radius-md) - 1px);
   background: transparent;
   color: var(--text);
   font: inherit;
   cursor: pointer;
 }
-.directory-select-trigger:hover {
-  background: color-mix(in srgb, var(--surface-strong) 72%, transparent);
-}
+/* Colour, like every other control that is not a card or a list row. It filled its shell
+   on hover, which made the two dropdown triggers the only things in the control row that
+   answered a pointer with a surface while the field beside them answered with nothing.
+   The open state keeps its fill: that is a state, not a hover. */
+.directory-select-trigger:hover,
+.directory-select-trigger:focus-visible { color: var(--accent); }
+/* Muted, like the magnifier and the clear × in the field beside it. The three controls in
+   this row already carried the same glyph geometry — a 24 viewBox drawn at 16px on a
+   stroke of 2, so 1.33px on screen for all of them — and the chevrons still read heavier
+   because they were at full `--text` while the field's glyphs were muted. Brightness was
+   doing what looked like weight. A glyph that labels a control is muted; the words are
+   what carry the ink. */
 .directory-select-trigger svg {
-  width: 16px;
-  height: 16px;
-  flex: none;
-  transition: transform 160ms ease;
+  --icon-size: var(--icon-sm);
+  color: var(--muted);
+  transition: color 180ms ease, transform 160ms ease;
 }
+/* Follows its label, in all three states. While the trigger filled its shell on hover the
+   chevron only had to come up to `--text`; with the fill gone, colour carries the entire
+   response and the two halves of the control move together. Open is the strongest of the
+   three, not an exception to it: the panel is showing because this control is doing
+   something, so it stays lit for as long as that is true. */
+.directory-select-trigger:hover svg,
+.directory-select-trigger:focus-visible svg,
+.directory-select.is-open .directory-select-trigger svg { color: var(--accent); }
+/* Lit for as long as the panel is open, so the trigger and the menu it opened read as one
+   thing. The fill stays because open is a state rather than a hover, and a state that
+   persists after the pointer leaves needs to hold its own without one. */
 .directory-select.is-open .directory-select-trigger {
   background: color-mix(in srgb, var(--surface-strong) 72%, transparent);
+  color: var(--accent);
 }
 .directory-select.is-open .directory-select-trigger svg { transform: rotate(180deg); }
 .directory-select-options {
@@ -1849,20 +2397,20 @@ a { color: inherit; }
   /* 12px, the same gap the mobile nav menu leaves below the header edge. At 1px the
      panel butted against its own trigger and the query field inside it read as part of
      the button rather than as the top of a menu. */
-  top: calc(100% + 12px);
+  top: calc(100% + 8px);
   right: 0;
   width: 100%;
   overflow: hidden;
   border: 1px solid var(--line);
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   background: var(--surface);
   box-shadow: var(--shadow);
 }
 .directory-select-options button {
   display: block;
   width: 100%;
-  min-height: 38px;
-  padding: 0 13px;
+  min-height: 40px;
+  padding: 0 16px;
   border: 0;
   background: transparent;
   color: var(--text);
@@ -1870,28 +2418,38 @@ a { color: inherit; }
   text-align: left;
   cursor: pointer;
 }
+/* Selection is the fill; focus is the ring. These were the same declaration, so a
+   keyboard reader tabbing the menu could not tell the row they were on from the row
+   already chosen. An option that is both shows both. */
+/* `aria-checked`, not `aria-selected`. The menu is `role="menuitemradio"`, which is the
+   attribute the markup and the script have always set, so the selected option had never
+   taken this fill — the rule matched nothing. Found on 2026-09-07 by reading the rendered
+   state rather than the stylesheet. */
 .directory-select-options button:hover,
-.directory-select-options button:focus-visible,
-.directory-select-options button[aria-selected="true"] {
+.directory-select-options button[aria-checked="true"] {
   background: color-mix(in srgb, var(--accent) 12%, transparent);
-  outline: 0;
+}
+.directory-select-options button:focus-visible {
+  outline: var(--focus-ring);
+  /* Inset, so the ring sits inside the panel rather than crossing its neighbours. */
+  outline-offset: -2px;
 }
 .directory-select-trigger:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: -3px;
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
 }
 .directory-filter-label {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  gap: var(--space-1) 8px;
 }
 .directory-filter-count {
   display: inline-flex;
-  min-width: 19px;
-  height: 19px;
+  min-width: 16px;
+  height: 16px;
   align-items: center;
   justify-content: center;
-  padding: 0 5px;
+  padding: 0 8px;
   border-radius: 999px;
   background: var(--surface-strong);
   color: var(--text);
@@ -1916,38 +2474,47 @@ a { color: inherit; }
      comes up 4px short of the two 180px triggers, and the added term owes the gap plus
      those four pixels: 16 + 4 = 20, giving exactly the 376px the pair spans. The old
      `+ 16px` rendered 372px and left the panel 3px inside Sort's right edge. */
+  /* Derived, not chosen: the panel spans Filter + the 16px control gap + Sort,
+     which is 180 + 16 + 180 = 376. The 20px is the border-box remainder that makes
+     the panel's right edge land exactly on Sort's. Snapping it to 16 breaks that
+     alignment by 4px, so this is an exception to the base unit, not a miss. */
   width: calc(200% + 20px);
 }
 .filter-scroll {
-  max-height: min(282px, 42vh);
+  max-height: min(280px, 42vh);
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 6px 0;
+  padding: var(--space-1) 0;
 }
 @media (max-width: 680px) {
-  .filter-scroll { max-height: min(282px, 36vh); }
+  .filter-scroll { max-height: min(280px, 36vh); }
 }
-.filter-group + .filter-group {
-  margin-top: 6px;
+/* The rule divides one visible group from another, so the previous sibling has to be
+   visible for it to apply. A `hidden` group is still a sibling to `+`, which left a rule
+   drawn across the top of Tags whenever a filter narrowed Collections to nothing. */
+.filter-group:not([hidden]) + .filter-group {
+  margin-top: var(--space-1);
   border-top: 1px solid var(--line);
 }
 .filter-group-label {
   margin: 0;
-  padding: 10px 13px 5px;
+  padding: var(--space-1) 16px var(--space-1);
   color: var(--muted);
   font-size: var(--type-label);
+  line-height: var(--leading-label);
   font-weight: 800;
   letter-spacing: .1em;
   text-transform: uppercase;
 }
 .filter-option {
   display: flex;
-  min-height: 34px;
+  min-height: 32px;
   align-items: center;
-  gap: 10px;
-  padding: 0 13px;
+  gap: var(--space-1) 8px;
+  padding: 0 16px;
   color: var(--text);
   font-size: var(--type-label);
+  line-height: var(--leading-label);
   font-weight: 700;
   cursor: pointer;
 }
@@ -1975,14 +2542,14 @@ a { color: inherit; }
 .filter-actions {
   display: flex;
   justify-content: flex-end;
-  padding: 9px 13px;
+  padding: var(--space-1) 16px;
   border-top: 1px solid var(--line);
 }
 .filter-reset {
   min-height: 32px;
-  padding: 0 11px;
+  padding: 0 8px;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   background: transparent;
   color: var(--muted);
   font: inherit;
@@ -1994,8 +2561,12 @@ a { color: inherit; }
 .filter-reset:focus-visible {
   border-color: color-mix(in srgb, var(--accent) 42%, var(--line));
   color: var(--accent);
-  outline: 2px solid color-mix(in srgb, var(--accent) 30%, transparent);
-  outline-offset: 2px;
+}
+/* Split out: the ring belongs to focus. It was firing on hover as well, which drew a
+   keyboard indicator around a control the pointer was merely resting on. */
+.filter-reset:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
 }
 /* The first-paint cap. The script removes the attribute and takes over with `hidden`, so
    this rule only ever governs the moment before the module runs, and the noscript block in
@@ -2006,21 +2577,26 @@ a { color: inherit; }
 .directory-more {
   display: flex;
   justify-content: center;
-  margin-top: 28px;
+  margin-top: var(--space-4);
 }
 
 .directory-empty {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: var(--space-2) 16px;
   flex-wrap: wrap;
-  margin: 16px 0 0;
-  padding: 26px 24px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: var(--surface);
-  box-shadow: var(--shadow);
-  color: var(--muted);
+  /* No margin of its own. The grid is still in the flow above it with every card hidden,
+     so its own top margin already sets this off the results row; a second margin here
+     stacked on top of it and put it 28px down a column running on 12. Taking zero means
+     this inherits whichever interval the grid is on at that breakpoint. */
+  margin: 0;
+  /* A readout, not an object. The card treatment gave a sentence the same border,
+     surface and shadow the app cards carry, so an absence of results was drawn as
+     heavily as a result — and inset 24px, it did not even align with the count above it
+     or the cards it replaces. Set on the page field it reads as what it is. The same
+     move the count already made when it stopped looking like a third control. */
+  padding: 2px 0;
+  color: var(--body-text);
   font-size: 1rem;
 }
 .directory-empty-action {
@@ -2034,7 +2610,14 @@ a { color: inherit; }
 .directory-empty-action:focus-visible {
   color: var(--accent);
 }
-.directory-grid { margin-top: 16px; }
+/* `all: unset` above strips the ring with everything else, so it is put back explicitly
+   rather than left to colour alone. */
+.directory-empty-action:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+  border-radius: var(--radius-sm);
+}
+.directory-grid { margin-top: var(--space-2); }
 
 @media (hover: hover) and (pointer: fine) {
   /* The One Hover Rule: rest at Ambient Card, cross to Hover Lift over 320ms on
@@ -2044,7 +2627,7 @@ a { color: inherit; }
   .archive-card { transition: box-shadow 320ms cubic-bezier(.16, 1, .3, 1), border-color 320ms cubic-bezier(.16, 1, .3, 1), background-color 320ms cubic-bezier(.16, 1, .3, 1); }
   .app-card:hover,
   .feature-card:hover,
-  .archive-card:hover { border-color: color-mix(in srgb, var(--accent) 42%, var(--line)); background: var(--surface); box-shadow: var(--shadow-hover); }
+  .archive-card:hover { background: var(--surface); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 42%, var(--line)), var(--shadow-hover); }
 
   /* That shorthand would drop the pick card's wash, and the card already rests at
      Hover Lift, so it needs its own answer to the pointer. The light gives it: the
@@ -2064,14 +2647,14 @@ a { color: inherit; }
      focus order do not change when the columns collapse. */
   .app-detail-hero {
     grid-template-columns: minmax(0, 1fr);
-    gap: 28px;
+    gap: var(--space-4) 32px;
   }
   /* No rule here either. The 28px the collapse already opens up is the separation;
      a hairline would read as a seam between two halves of the same block. */
   .app-detail-rail { padding-top: 2px; }
 
-  .site-header { min-height: 76px; }
-  .brand-mark { width: 42px; height: 42px; }
+  .site-header { min-height: 80px; }
+  .brand-mark { width: 40px; height: 40px; }
   /* Stacked, the wave stops being the hero's floor and becomes a divider
      inside it: the fold ends at the water and the pick gets its own beat.
      `display: contents` lets the shell's two columns sit as siblings of the
@@ -2080,8 +2663,25 @@ a { color: inherit; }
     --sea-h: 84px;
     display: flex;
     flex-direction: column;
-    gap: 30px;
-    padding-block: 34px 46px;
+    /* No row gap. Stacked, the hero holds a trail as its first child, and a uniform gap
+       adds its own 32px to the 16px band the trail carries on every other page, opening
+       the trail to 48px on phones and nowhere else. Flex gaps do not collapse into
+       margins, so the two boundaries that actually want 32px ask for it below and the
+       trail keeps its band. */
+    gap: 0 32px;
+    padding-block: var(--space-4) var(--space-8);
+  }
+
+  .home-hero::after {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: var(--space-8);
+    background: linear-gradient(to bottom, transparent, var(--page) 88%);
+    pointer-events: none;
   }
 
   .home-hero-inner { display: contents; }
@@ -2095,37 +2695,37 @@ a { color: inherit; }
   .home-hero-copy { order: 1; }
   .home-hero-sea { position: static; order: 2; width: 100%; height: var(--sea-h); }
   .home-hero-pick { order: 3; }
-  .home-hero + .section { border-top: 1px solid var(--line); }
-  .home-hero-pick-title {
-    position: static;
-    width: auto;
-    height: auto;
-    overflow: visible;
-    clip: auto;
-    clip-path: none;
-    white-space: normal;
-    margin: 0 0 22px;
-    font-family: var(--display);
-    font-size: var(--type-subhead);
-    font-weight: 500;
-    letter-spacing: -.03em;
-    line-height: 1;
-    text-wrap: balance;
-  }
+  .home-hero-sea,
+  .home-hero-pick { margin-top: var(--space-4); }
+  /* No rule here either. This override outlived the site-wide removal of content
+     dividers on 2026-09-05 and put a hairline back under the hero on phones only,
+     so one boundary was space on desktop and space plus a line on mobile. */
   
-  .grid { grid-template-columns: 1fr; }
+  .grid > * { grid-column: span 12; }
+  .issue .section { padding: var(--space-3) 0; }
+  .about-page .section { padding: var(--space-3) 0 var(--space-1); }
   .directory-filter-bar,
   .directory-filter-bar--no-filters {
-    gap: 12px;
+    gap: var(--space-2) 16px;
   }
-  .directory-count { width: 100%; margin: 0; }
-  .directory-search { flex: 1 1 100%; }
-  .directory-filter-bar > .directory-filter,
+  /* Opposite ends of a phone-width row reads as two things, which is the problem this
+     regrouping exists to fix. Left, together, as one block. */
+  .directory-actives { margin-left: 0; }
+  /* One rhythm down the stacked column: the bar's own 12px carries through the results
+     row to the grid, so nothing in the column sits on a different interval. */
+  .directory-results { margin-top: var(--space-2); }
+  .directory-results + .directory-grid { margin-top: var(--space-2); }
+  /* Stacked: the field takes the whole bar and the pair splits it, six tracks each, so
+     the two triggers stay equal and keep their labels readable at a phone width. */
+  .directory-filter-bar > .directory-heading { grid-column: 1 / span 12; }
+  .directory-filter-bar > .directory-search { grid-column: 1 / span 12; }
+  .directory-filter-bar > .directory-filter { grid-column: 1 / span 6; }
   .directory-filter-bar > .directory-sort,
-  .directory-filter-bar--no-filters > .directory-sort { flex: 1 1 0; }
+  .directory-filter-bar--no-filters > .directory-sort { grid-column: 7 / span 6; }
   /* Same correction on the stacked row, where the triggers are flex: 1 1 0 and the pair
-     spans the whole bar: 12px gap + 4px of border. */
-  .directory-filter-panel { width: calc(200% + 16px); }
+     spans the whole bar: 16px gap + 4px of border. It carried 12px + 4px after the gutter
+     moved to 16, which left the panel ending 4px short of Sort's right edge at 800px. */
+  .directory-filter-panel { width: calc(200% + 20px); }
   .editors-pick-card {
     display: flex;
     min-height: auto;
@@ -2143,76 +2743,94 @@ a { color: inherit; }
 
 @media (max-width: 680px) {
   :root { --content-inset: 24px; }
-  .site-header { position: sticky; top: 0; width: 100%; min-height: 70px; gap: 10px; margin: 0; padding: 0 16px; }
+  .site-header { position: sticky; top: 0; width: 100%; min-height: 72px; margin: 0; padding: 0; }
+  .site-header-inner { gap: var(--space-1) 8px; }
   .issue > .section { width: min(var(--content-width), calc(100% - var(--content-inset))); }
-  .brand-mark { width: 38px; height: 38px; }
-  .brand { gap: 10px; }
-  .site-header nav { gap: 10px; }
-  .theme-toggle { width: 44px; height: 44px; }
-  .theme-toggle svg { width: 19px; height: 19px; }
-  .home-hero { --sea-h: 72px; padding-block: 30px 46px; }
-  .content-divider { height: 68px; }
-  .video-section { padding-top: 20px; }
-  :root { --page-start-space: 38px; --type-page-title: clamp(2.8rem, 12vw, 3.75rem); }
-  .archive-page { padding: var(--page-start-space) 0 36px; }
-  .app-detail-page { padding: var(--page-start-space) 0 36px; }
-  .app-detail-hero { padding: 0 0 24px; }
+  .brand-mark { width: 40px; height: 40px; }
+  .brand { gap: var(--space-1) 8px; }
+  .site-header nav { gap: var(--space-1) 8px; }
+  .theme-toggle { width: 48px; height: 48px; }
+  /* Too narrow for a column beside the title, so the search takes its own row under the
+     dek rather than squeezing the opening. It is still not a control floating on an empty
+     row: it sits directly above the list it filters, and the opening above it keeps the
+     shape it has on Explore and About. */
+  .archive-masthead { grid-template-columns: minmax(0, 1fr); }
+  .archive-search { grid-column: 1; grid-row: 3; width: auto; margin-top: var(--space-3); }
+  .home-hero { --sea-h: 72px; padding-block: var(--space-4) var(--space-8); }
+  .content-divider { height: 64px; }
+  .video-section { padding-top: var(--space-2); }
+  .app-detail-hero { padding: 0; }
+  .app-detail-page .section { padding: var(--space-4) 0; }
   .app-detail-actions { flex-direction: column; align-items: flex-start; }
   .explore-subscribe-card { grid-template-columns: 1fr; }
   .explore-utility-grid { grid-template-columns: 1fr; }
   .explore-utility-tags-panel { border-top: 1px solid var(--line); border-left: 0; }
   .explore-category-list { grid-template-columns: 1fr; }
-  .explore-category-list { row-gap: 12px; }
+  .explore-category-list { row-gap: var(--space-2); }
   .explore-category-link { min-height: 0; }
   .explore-discovery-link small.explore-category-description-desktop { display: none; }
   .explore-discovery-link small.explore-category-description-mobile { display: block; }
-  .explore-discovery-section { padding-top: 20px; padding-bottom: 0; }
+  .explore-discovery-section { padding-top: var(--space-2); padding-bottom: 0; }
   .explore-subscribe-heading { align-items: start; }
-  .explore-page .explore-section:has(+ .explore-rss-section) { padding-bottom: 24px; }
-  .explore-rss-section + .explore-section { padding-top: 24px; }
+  .explore-page .explore-section:has(+ .explore-rss-section) { padding-bottom: var(--space-3); }
+  .explore-rss-section + .explore-section { padding-top: var(--space-3); }
   .explore-subscribe-content {
-    gap: 14px;
+    gap: var(--space-2) 16px;
     max-width: none;
-    margin-left: 60px;
+    margin-left: 64px;
   }
   .explore-subscribe-url .rss-copy-button {
-    width: 44px;
-    min-width: 44px;
-    height: 44px;
+    width: 48px;
+    min-width: 48px;
+    height: 48px;
     justify-self: start;
   }
   .directory-filter-bar {
     margin-top: 0;
   }
-  .directory-search { gap: 10px; padding: 10px 14px; }
-  .directory-search svg { width: 21px; height: 21px; }
+  .directory-search { gap: var(--space-1) 8px; padding: var(--space-1) 16px; }
+  /* The magnifier is one size everywhere; this made it 24px on a phone. */
   .directory-query-input { font-size: 16px; }
   .directory-search,
   .directory-filter-bar > .directory-select,
-  .directory-sort,
-  .directory-count { min-height: 56px; }
+  .directory-sort { min-height: 56px; }
 }
 
 @media (pointer: coarse) {
   .theme-toggle {
-    width: 44px;
-    height: 44px;
+    width: 48px;
+    height: 48px;
   }
-  .collection-badge { min-height: 44px; }
+  .collection-badge { min-height: 48px; }
   .directory-select-options button,
   .filter-option,
-  .filter-reset { min-height: 44px; }
+  .filter-reset { min-height: 48px; }
+  /* The Target Floor Rule grows the area around a target that is too small rather than
+     padding the target out, which is how the Editor's Pick mark already works. The chip
+     stays 32px in both pointer worlds and expands through this layer, so the row reads
+     the same on a phone as on a desktop. Only the vertical is grown: every chip is
+     kept at its existing width, and growing sideways would run neighbours together. */
+  .directory-active::after {
+    content: '';
+    position: absolute;
+    /* Offset from the padding box, not the border box: `box-sizing: border-box` puts the
+       1px borders inside the 32px, so the pseudo-element starts from the
+       30px padding box; -8px gives it a 46px hit area. */
+    inset: -8px 0;
+  }
+  /* The area grows 7px past the visible chip on each side; the 16px
+     row gap keeps neighbouring hit areas apart. */
+  .directory-actives { gap: var(--space-2) 8px; }
 }
 
 @media (max-width: 560px) {
   .directory-filter { position: static; }
   .directory-filter-panel {
-    top: calc(100% + 6px);
+    top: calc(100% + 8px);
     right: 0;
     left: 0;
     width: auto;
     border-top: 1px solid var(--line);
-    border-radius: 10px;
   }
 }
 
@@ -2237,18 +2855,18 @@ a { color: inherit; }
   .collection-badge,
   .tag,
   .button,
-  .theme-toggle,
-  .brand-wordmark { transition: none; }
+  .theme-toggle { transition: none; }
+  /* Nothing moves. Removing a transition stops the animation but leaves the destination,
+     so a card still jumped to its lifted position — the difference between a slow move and
+     no move at all. `.button` and the copy control were never covered here; the three card
+     selectors lost their `transform: none` on 2026-09-06, when the line they shared with
+     the theme toggle's rotate was deleted along with it. */
   .app-card:hover,
   .feature-card:hover,
   .archive-card:hover,
-  .theme-toggle:hover { transform: none; }
+  .button:hover,
+  .button:focus-visible { transform: none; }
   .content-divider.is-lit .brand-mark-ping { animation: none; }
-  /* Reduced motion keeps the marker, because which stop you are at is meaningful
-     state, and drops the travel between stops. */
-  .archive-pilot { transition: opacity 300ms ease; }
-  .archive-stop-mark { transition: none; }
-  .archive-origin.is-arrived .archive-origin-mark::after { animation: none; }
   .has-pick-accent::before,
   .has-pick-accent::after { animation: none; }
 }

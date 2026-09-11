@@ -1,0 +1,38 @@
+---
+const { name, class: className, ...attrs } = Astro.props as {
+  name: string;
+  class?: string;
+  [key: string]: unknown;
+};
+
+const escapeAttribute = (value: unknown) =>
+  String(value).replace(/[&<>"']/g, (char) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  }[char] ?? char));
+
+const icons = import.meta.glob(
+  '../../node_modules/@phosphor-icons/core/assets/regular/*.svg',
+  { query: '?raw', import: 'default', eager: true }
+) as Record<string, string>;
+
+const source =
+  icons[`../../node_modules/@phosphor-icons/core/assets/regular/${name}.svg`]
+  ?? icons['../../node_modules/@phosphor-icons/core/assets/regular/star.svg'];
+
+const classes = ['icon', 'phosphor-icon', className].filter(Boolean).join(' ');
+const attributes = Object.entries(attrs)
+  .flatMap(([key, value]) => {
+    if (value === false || value == null) return [];
+    if (value === true) return [key];
+    return [`${key}="${escapeAttribute(value)}"`];
+  })
+  .join(' ');
+const svgTag = ['<', 'svg '].join('');
+const svg = source.replace(svgTag, `${svgTag}class="${classes}" ${attributes} `);
+---
+
+<Fragment set:html={svg} />

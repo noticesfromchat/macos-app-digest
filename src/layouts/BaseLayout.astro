@@ -1,6 +1,6 @@
 ---
-import { Archive, Check, Compass, Copy, Info, Moon, Rss, Search, Sun, X } from 'lucide-astro';
 import BrandMark from '../components/BrandMark.astro';
+import PhosphorIcon from '../components/PhosphorIcon.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import { breadcrumbSchema, type Crumb } from '../data/breadcrumb';
 import { OG_SIZE, ogPath } from '../data/og';
@@ -29,8 +29,11 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 const socialImageUrl = new URL(socialImage, Astro.site);
 const rssUrl = new URL('/rss.xml', Astro.site);
 const searchIndexUrl = new URL('/search-index.json', Astro.site);
-const isHomepage = Astro.url.pathname === '/';
 const googleAnalyticsId = 'G-1WLLER0K5L';
+// Netlify sets CONTEXT to production, deploy-preview or branch-deploy, and leaves it
+// undefined for `astro dev`. Analytics loads only for the real site, so preview builds
+// and local development stay out of the property.
+const isProduction = process.env.CONTEXT === 'production';
 const graph = [
   {
     '@type': 'Organization',
@@ -77,16 +80,20 @@ const graph = [
 <!doctype html>
 <html lang="en">
   <head>
-    <script async src={`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}`}></script>
-    <script
-      is:inline
-      set:html={`window.dataLayer = window.dataLayer || [];
+    {isProduction && (
+      <>
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}`}></script>
+        <script
+          is:inline
+          set:html={`window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', ${JSON.stringify(googleAnalyticsId)}, {
   debug_mode: new URLSearchParams(window.location.search).has('_dbg')
 });`}
-    />
+        />
+      </>
+    )}
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
@@ -115,21 +122,31 @@ gtag('config', ${JSON.stringify(googleAnalyticsId)}, {
     <title>{title}</title>
     <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@graph': graph })} />
     <script is:inline>
+      /* Resolve the theme before first paint. The theme-color meta above ships the light
+         value, which is the honest default because dark is applied only by
+         :root[data-theme='dark'] and so never applies without this script. Setting it
+         here rather than with the toggle wiring at the end of the body is what keeps iOS
+         Safari from painting the status bar Harbor Fog above a dark page: that script
+         runs after the first paint, so the bar had already been drawn light. Both values
+         track --page in global.css. */
       (() => {
         const saved = localStorage.getItem('app-waypoint-theme');
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        document.documentElement.dataset.theme = saved || (prefersDark ? 'dark' : 'light');
+        const theme = saved || (prefersDark ? 'dark' : 'light');
+        document.documentElement.dataset.theme = theme;
+        const themeColor = document.querySelector('meta[name="theme-color"]');
+        if (themeColor) themeColor.setAttribute('content', theme === 'dark' ? '#091321' : '#e8ecf1');
       })();
     </script>
   </head>
   <body>
     <a class="skip-link" href="#content">Skip to content</a>
-    <header class:list={['site-header', { 'is-homepage-brand': isHomepage }]} data-site-header>
-      <a class="brand" href="/" aria-label="App Waypoint home">
-        <BrandMark />
-        <span class="brand-wordmark" data-brand-wordmark>App Waypoint</span>
-      </a>
-      <nav aria-label="Primary navigation">
+    <header class="site-header" data-site-header>
+      <div class="site-header-inner">
+        <a class="brand" href="/" aria-label="App Waypoint home">
+          <BrandMark />
+        </a>
+        <nav aria-label="Primary navigation">
         <div class="desktop-nav-links">
           <a href="/explore/" aria-current={current === 'explore' ? 'page' : undefined}>Explore Apps</a>
           <a href="/archive/" aria-current={current === 'archive' ? 'page' : undefined}>Archive</a>
@@ -145,11 +162,11 @@ gtag('config', ${JSON.stringify(googleAnalyticsId)}, {
           aria-controls="site-search-modal"
           data-search-open
         >
-          <Search aria-hidden="true" />
+          <PhosphorIcon name="magnifying-glass" aria-hidden="true" />
         </button>
         <button class="theme-toggle nav-theme-toggle" type="button" aria-label="Switch to dark theme" data-theme-toggle>
-          <Moon data-theme-moon aria-hidden="true" />
-          <Sun data-theme-sun aria-hidden="true" hidden />
+          <PhosphorIcon name="moon" data-theme-moon aria-hidden="true" />
+          <PhosphorIcon name="sun" data-theme-sun aria-hidden="true" hidden />
         </button>
         <button
           class="nav-menu-toggle"
@@ -166,7 +183,8 @@ gtag('config', ${JSON.stringify(googleAnalyticsId)}, {
             <span></span>
           </span>
         </button>
-      </nav>
+        </nav>
+      </div>
     </header>
     <div class="mobile-nav-overlay" data-nav-menu-overlay hidden>
       <div class="mobile-nav-backdrop" aria-hidden="true"></div>
@@ -180,19 +198,19 @@ gtag('config', ${JSON.stringify(googleAnalyticsId)}, {
       >
         <div class="mobile-nav-actions">
           <button class="mobile-nav-search" type="button" data-mobile-search-open>
-            <Search aria-hidden="true" />
+            <PhosphorIcon name="magnifying-glass" aria-hidden="true" />
             <span>Search</span>
           </button>
           <a href="/explore/" aria-current={current === 'explore' ? 'page' : undefined}>
-            <Compass aria-hidden="true" />
+            <PhosphorIcon name="sailboat" aria-hidden="true" />
             <span>Explore Apps</span>
           </a>
           <a href="/archive/" aria-current={current === 'archive' ? 'page' : undefined}>
-            <Archive aria-hidden="true" />
+            <PhosphorIcon name="archive" aria-hidden="true" />
             <span>Archive</span>
           </a>
           <a href="/about/" aria-current={current === 'about' ? 'page' : undefined}>
-            <Info aria-hidden="true" />
+            <PhosphorIcon name="lighthouse" aria-hidden="true" />
             <span>About</span>
           </a>
         </div>
@@ -207,7 +225,7 @@ gtag('config', ${JSON.stringify(googleAnalyticsId)}, {
             aria-controls="rss-feed-modal"
             data-rss-open
           >
-            <Rss aria-hidden="true" />
+            <PhosphorIcon name="rss-simple" aria-hidden="true" />
             <span>Subscribe</span>
           </button>
         </div>
@@ -223,7 +241,7 @@ gtag('config', ${JSON.stringify(googleAnalyticsId)}, {
         aria-labelledby="search-title"
       >
         <div class="search-input-wrap">
-          <Search class="search-input-icon" aria-hidden="true" />
+          <PhosphorIcon name="magnifying-glass" class="search-input-icon" aria-hidden="true" />
           <label class="sr-only" id="search-title" for="site-search-input">Search apps</label>
           <input
             id="site-search-input"
@@ -235,14 +253,16 @@ gtag('config', ${JSON.stringify(googleAnalyticsId)}, {
             data-search-input
           />
           <button class="search-close" type="button" aria-label="Close search" data-search-close>
-            <X aria-hidden="true" />
+            <PhosphorIcon name="x" aria-hidden="true" />
           </button>
         </div>
         <p class="search-count" aria-live="polite" data-search-count></p>
         <div class="search-results" aria-label="Search results" data-search-results></div>
       </section>
     </div>
-    <main id="content"><slot /></main>
+    {/* tabindex -1 so the skip link moves focus and not just the URL hash. Without it a
+        screen-reader user who skips navigation lands with the caret still in the header. */}
+    <main id="content" tabindex="-1"><slot /></main>
     <SiteFooter current={current} />
     <div class="rss-overlay" data-rss-overlay hidden>
       <button class="rss-backdrop" type="button" aria-label="Close RSS subscription dialog" data-rss-close></button>
@@ -257,7 +277,7 @@ gtag('config', ${JSON.stringify(googleAnalyticsId)}, {
         <div class="rss-modal-topline">
           <p class="rss-kicker">Subscribe</p>
           <button class="rss-close" type="button" aria-label="Close RSS subscription dialog" data-rss-close>
-            <X aria-hidden="true" />
+            <PhosphorIcon name="x" aria-hidden="true" />
           </button>
         </div>
         <h2 id="rss-title">App Waypoint RSS feed</h2>
@@ -267,8 +287,8 @@ gtag('config', ${JSON.stringify(googleAnalyticsId)}, {
         <div class="rss-url-card">
           <code class="rss-url-value" data-rss-url>{rssUrl.href}</code>
           <button class="rss-copy-button" type="button" aria-label="Copy RSS feed URL" data-rss-copy>
-            <Copy class="rss-copy-icon" aria-hidden="true" data-rss-copy-icon />
-            <Check class="rss-copy-check" aria-hidden="true" hidden data-rss-copy-check />
+            <PhosphorIcon name="clipboard" class="rss-copy-icon" aria-hidden="true" data-rss-copy-icon />
+            <PhosphorIcon name="check" class="rss-copy-check" aria-hidden="true" hidden data-rss-copy-check />
             <span class="sr-only" data-rss-copy-label>Copy RSS feed URL</span>
           </button>
         </div>
@@ -317,32 +337,6 @@ gtag('config', ${JSON.stringify(googleAnalyticsId)}, {
       applyTheme(root.dataset.theme || 'light');
       toggle?.addEventListener('click', () => applyTheme(root.dataset.theme === 'dark' ? 'light' : 'dark'));
 
-    </script>
-    <script is:inline>
-      (() => {
-        const header = document.querySelector('[data-site-header].is-homepage-brand');
-        const heroWordmark = document.querySelector('.home-hero-wordmark');
-        if (!header || !heroWordmark) return;
-
-        let ticking = false;
-        const updateHeaderBrand = () => {
-          ticking = false;
-          const headerBottom = header.getBoundingClientRect().bottom;
-          const wordmarkBottom = heroWordmark.getBoundingClientRect().bottom;
-          header.classList.toggle('is-brand-visible', wordmarkBottom <= headerBottom + 8);
-        };
-
-        const requestUpdate = () => {
-          if (ticking) return;
-          ticking = true;
-          window.requestAnimationFrame(updateHeaderBrand);
-        };
-
-        window.addEventListener('scroll', requestUpdate, { passive: true });
-        window.addEventListener('resize', requestUpdate);
-        window.addEventListener('load', requestUpdate);
-        updateHeaderBrand();
-      })();
     </script>
     <script is:inline>
       (() => {

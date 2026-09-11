@@ -7,6 +7,7 @@ import AppCard from '../../components/AppCard.astro';
 import MetaIcon from '../../components/MetaIcon.astro';
 import { fallbackIconColor, fallbackIconCategory } from '../../data/app-icon';
 import { OG_SIZE, appOgSlug, ogPath } from '../../data/og';
+import { relatedAppsFor } from '../../data/related-apps';
 import {
   categories,
   collectionLabels,
@@ -45,25 +46,7 @@ const iconClass = app.data.icon
     ? `app-icon-fallback app-icon-color-${fallbackIconColor(app.id)}`
     : undefined;
 
-// Pool of the most category-related apps, most-related first. The client shuffles
-// this pool on each load; CSS shows only the first six, so no-JS visitors still get
-// the six most-related apps and there is no post-paint card swap. The pool is capped
-// so a broadly-tagged app does not render dozens of hidden cards per page.
-const RELATED_POOL_SIZE = 24;
-const relatedApps = apps
-  .map((entry) => ({
-    entry,
-    sharedCategoryCount: entry.data.categories.filter((category) =>
-      app.data.categories.includes(category)
-    ).length
-  }))
-  .filter(({ entry, sharedCategoryCount }) => entry.id !== app.id && sharedCategoryCount > 0)
-  .sort((a, b) =>
-    b.sharedCategoryCount - a.sharedCategoryCount ||
-    a.entry.data.name.localeCompare(b.entry.data.name, undefined, { sensitivity: 'base' })
-  )
-  .map(({ entry }) => entry)
-  .slice(0, RELATED_POOL_SIZE);
+const relatedApps = relatedAppsFor(app, apps);
 
 const appUrl = new URL(Astro.url.pathname, Astro.site).href;
 const appSchema = [
@@ -86,7 +69,7 @@ const trail = appTrail(app.data.name);
 
 <BaseLayout
   breadcrumb={trail}
-  title={`${app.data.name} for Mac — App Waypoint`}
+  title={`${app.data.name} for Mac — ${app.data.tagline} — App Waypoint`}
   description={app.data.metaDescription ?? app.data.description}
   current="app"
   socialImage={ogPath(appOgSlug(app.id))}
@@ -124,12 +107,12 @@ const trail = appTrail(app.data.name);
         </div>
         <div class="app-detail-actions">
           {/* The house arrow, as the Primary Button component specifies it: an inset
-              head against a full-length shaft at the site's 1.7 stroke. Lucide's
-              ArrowUpRight was drawing a head across the whole box at stroke 2,
-              heavier than every other mark on the site. */}
+              head against a full-length shaft at the site's 1.7 stroke. It stays
+              hand-drawn so the button mark keeps its deliberately lighter geometry. */}
           <a class="button" href={app.data.homepage} target="_blank" rel="noreferrer">
             Homepage
             <svg
+              class="icon"
               viewBox="0 0 24 24"
               aria-hidden="true"
               fill="none"
@@ -190,8 +173,7 @@ const trail = appTrail(app.data.name);
     {relatedApps.length > 0 && (
       <section class="section app-detail-section">
         <div class="section-heading">
-          <p class="eyebrow">You May Also Like</p>
-          <h2>More apps like this</h2>
+          <h2 class="section-title">More apps like this</h2>
         </div>
         <div class="grid directory-grid app-detail-related-grid" data-related-apps-grid>
           {relatedApps.map((entry) => <AppCard app={entry.data} appId={entry.id} />)}
@@ -199,20 +181,4 @@ const trail = appTrail(app.data.name);
       </section>
     )}
   </article>
-  {relatedApps.length > 0 && (
-    <script is:inline>
-      (() => {
-        const grid = document.querySelector('[data-related-apps-grid]');
-        if (!grid) return;
-        const cards = Array.from(grid.children);
-        for (let i = cards.length - 1; i > 0; i -= 1) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [cards[i], cards[j]] = [cards[j], cards[i]];
-        }
-        const fragment = document.createDocumentFragment();
-        cards.forEach((card) => fragment.appendChild(card));
-        grid.appendChild(fragment);
-      })();
-    </script>
-  )}
 </BaseLayout>

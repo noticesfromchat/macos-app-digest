@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "astro dev",
     "sync:categories": "node scripts/sync-app-categories.mjs",
-    "validate": "node scripts/check-private-paths.mjs && node scripts/check-editorial-style.mjs && node scripts/validate-content.mjs",
+    "audit:related-apps": "node scripts/audit-related-apps.mjs",
+    "validate": "node scripts/check-private-paths.mjs && node scripts/check-editorial-style.mjs && node scripts/check-design-invariants.mjs && node scripts/validate-content.mjs",
+    "test": "node --test scripts/*.test.mjs",
     "build": "npm run validate && astro build",
     "preview": "astro preview"
   },
@@ -13,9 +15,9 @@
     "@astrojs/sitemap": "^3.7.3",
     "@fontsource/inter": "^5.3.0",
     "@fontsource/vollkorn": "^5.3.0",
+    "@phosphor-icons/core": "^2.1.1",
     "@resvg/resvg-js": "^2.6.2",
     "astro": "^5.13.0",
-    "lucide-astro": "^0.556.0",
     "satori": "^0.33.4",
     "yaml": "^2.8.1"
   }

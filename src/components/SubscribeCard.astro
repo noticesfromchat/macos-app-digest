@@ -1,10 +1,11 @@
 ---
-import { Check, Copy, Rss, X } from 'lucide-astro';
+import PhosphorIcon from './PhosphorIcon.astro';
 
 /* The subscribe offer, in one place. It began as inline markup on the Explore page and
-   now closes issue pages too: a reader who has just finished an issue is asking when
-   the next one arrives, and the answer should be the same object wherever the question
-   comes up.
+   now closes issue pages and the archive index instead: a reader who has just finished
+   an issue is asking when the next one arrives, and the answer should be the same object
+   wherever the question comes up. Explore dropped it on 2026-09-04 — a browse index has
+   no end to close — so the class name is the only Explore left in it.
 
    `headingLevel` remains available for pages that need a subordinate heading. The rendered
    level follows the document it sits in rather than the component's own preference. */
@@ -16,7 +17,7 @@ const rssFeedUrl = new URL('/rss.xml', Astro.site).href;
 <article class="card explore-subscribe-card">
   <div class="explore-subscribe-heading">
     <span class="explore-subscribe-icon" aria-hidden="true">
-      <Rss />
+      <PhosphorIcon name="rss-simple" />
     </span>
     <Heading>Apps delivered every Friday</Heading>
   </div>
@@ -31,9 +32,9 @@ const rssFeedUrl = new URL('/rss.xml', Astro.site).href;
         data-rss-inline-copy
         data-rss-inline-url={rssFeedUrl}
       >
-        <Copy class="rss-copy-icon" aria-hidden="true" data-rss-inline-copy-icon />
-        <Check class="rss-copy-check" aria-hidden="true" hidden data-rss-inline-copy-check />
-        <X class="rss-copy-fail" aria-hidden="true" hidden data-rss-inline-copy-fail />
+        <PhosphorIcon name="clipboard" class="rss-copy-icon" aria-hidden="true" data-rss-inline-copy-icon />
+        <PhosphorIcon name="check" class="rss-copy-check" aria-hidden="true" hidden data-rss-inline-copy-check />
+        <PhosphorIcon name="x" class="rss-copy-fail" aria-hidden="true" hidden data-rss-inline-copy-fail />
         <span class="sr-only" data-rss-inline-label>Copy RSS feed URL</span>
       </button>
     </div>

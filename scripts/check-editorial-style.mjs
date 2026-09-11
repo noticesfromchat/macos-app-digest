@@ -1,5 +1,6 @@
 import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
+import { pathToFileURL } from 'node:url';
 import process from 'node:process';
 
 const root = process.cwd();
@@ -30,6 +31,49 @@ const editorialDashPattern = /[—–]/;
    before it was written down, so it is checked here rather than trusted. `src/data/issue.ts`
    is the one place allowed to produce the label. */
 const issueNumberPattern = /\bIssue\s+\d{3}\b/;
+/* The Catalog Spelling Rule. Public copy writes "catalog". The site carried both spellings
+   on 2026-09-09: the 404 page's own controls read "Catalog" while the social card that
+   page generates read "catalogue", and the two only met because a single change edited
+   both.
+
+   The rule governs what a reader sees, so three kinds of span are not copy and are blanked
+   before a line is tested: URLs, path and slug literals, and identifiers. Comments are
+   already blanked upstream by stripComments. Blanking rather than exempting the whole line
+   is the point — a URL carrying the word must not buy an exemption for the prose beside it,
+   which is exactly the shape `<a href="/catalogue/">Browse the catalogue</a>` has. */
+const catalogueSpellingPattern = /\bcatalogues?\b/i;
+
+/* Spans that are addressing or code rather than copy. Order matters only in that URLs go
+   first: a URL can contain something that also looks like a slug. */
+const nonCopyPatterns = [
+  /\b[a-z][a-z0-9+.-]*:\/\/[^\s"'`<>()[\]]+/gi,
+  /\bmailto:[^\s"'`<>()[\]]+/gi,
+  /(['"`])\.{0,2}\/[^\s'"`]*\1/g,
+  /(['"`])[A-Za-z0-9._~]+(?:-[A-Za-z0-9._~]+)+\1/g,
+  /(?<![\w$])\.{0,2}\/[A-Za-z0-9._~\-]+(?:\/[A-Za-z0-9._~\-]*)+/g,
+  /\b(?:const|let|var|function|class|interface|type|enum)\s+catalogues?\b/gi,
+  /\.catalogues?\b/gi,
+  /\bcatalogues?\s*=(?!=)/gi,
+  /(?:^|[{,]\s*)catalogues?\s*:/gim,
+  /[{,]\s*catalogues?\s*(?=[},])/gi,
+  /\bcatalogues?\s*\(/gi
+];
+
+/* Replaces each non-copy span with spaces of the same length, so column positions hold and
+   any real copy sharing the line stays testable. */
+export function blankNonCopy(text) {
+  let output = text;
+
+  for (const pattern of nonCopyPatterns) {
+    output = output.replace(pattern, (match) => ' '.repeat(match.length));
+  }
+
+  return output;
+}
+
+export function hasCatalogueViolation(copy) {
+  return catalogueSpellingPattern.test(blankNonCopy(copy));
+}
 const titleExemptionPattern = /(?:^|[\s{[(])title\s*[:=]/i;
 const errors = [];
 
@@ -117,6 +161,10 @@ async function walk(directory) {
         );
       }
 
+      if (hasCatalogueViolation(copy)) {
+        errors.push(`${relative}:${index + 1}: write "catalog" in public copy, not "catalogue"`);
+      }
+
       if (editorialDashPattern.test(copy) && !titleExemptionPattern.test(copy)) {
         errors.push(
           `${relative}:${index + 1}: avoid em dashes and en dashes in public editorial copy; use a period, a comma, a colon, parentheses or a plain hyphen`
@@ -126,14 +174,18 @@ async function walk(directory) {
   }
 }
 
-for (const directory of checkedRoots) {
-  await walk(path.join(root, directory));
-}
+/* Only scan when run as a command. The rule helpers above are imported by
+   check-editorial-style.test.mjs, which must not trigger a repository walk. */
+if (process.argv[1] && pathToFileURL(process.argv[1]).href === import.meta.url) {
+  for (const directory of checkedRoots) {
+    await walk(path.join(root, directory));
+  }
 
-if (errors.length) {
-  console.error(`Editorial style check failed with ${errors.length} issue${errors.length === 1 ? '' : 's'}:\n`);
-  for (const error of errors) console.error(`- ${error}`);
-  process.exit(1);
-}
+  if (errors.length) {
+    console.error(`Editorial style check failed with ${errors.length} issue${errors.length === 1 ? '' : 's'}:\n`);
+    for (const error of errors) console.error(`- ${error}`);
+    process.exit(1);
+  }
 
-console.log('Editorial style check passed.');
+  console.log('Editorial style check passed.');
+}

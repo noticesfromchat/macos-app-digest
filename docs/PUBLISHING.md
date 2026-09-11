@@ -30,22 +30,73 @@ deployment. It combines candidate research, app metadata review, tag maintenance
 Editor's Pick collection, release-candidate coordination, validation and Deploy
 Preview review.
 
+### Overnight draft and Thursday approval gates
+
+The selection task starts Thursday at 12:00 a.m. Pacific, preparing the upcoming
+Friday issue for the editor's Thursday morning review. It reads GitHub sources and
+uses a cloud execution environment when needed, without depending on the editor's
+computer. Read the current `main` documentation plus any explicitly selected
+release-branch process updates, reporting conflicts rather than silently combining
+different versions.
+
+Create or update that issue's review page under the Notion
+[Issues page](https://app.notion.com/p/Issues-3c9d6482d47f808f8806f6eeb0d21a7e?source=copy_link).
+Check for an existing page before creating one and preserve the editor's changes.
+Organize it as Editorial Proof (all issue-facing text and links in website order),
+Review Decisions (checkbox options and free-text alternatives) and Production Notes
+(sources, source counts, icon status, PR selection and check results). Propose two
+eligible apps from the App Selections note; if fewer are eligible, explain the
+shortfall instead of filling the quota with unsuitable apps. The two-per-source cap
+includes the Editor's Pick. Credit discovery separately from official verification;
+checking an official homepage does not change an app's discovery source.
+
+Finish the complete Notion draft before stopping for editor review. Put unresolved
+choices in Review Decisions rather than interrupting overnight research. Do not
+stage issue or app-record changes on the release branch before the editor approves
+the edited Notion proof and required decisions.
+
+After that approval, apply the approved proof and decisions to the explicitly
+selected PR branch. Preserve prior branch selection; do not infer selection from
+recency. Validate, build, verify RSS and push the updated preview for review. This
+preview push precedes final preview approval. Report missing or poor-quality icons
+by app, with the specific problem and options for an official replacement or the
+standard category fallback. Apply supplied icons or agreed fallback decisions,
+refresh relevant checks and preview review, then request final candidate approval.
+If approved text cannot satisfy a hard limit, return that specific conflict to the
+editor instead of silently changing the approved wording.
+
+The selection task ends with the Notion page, decisions, selected PR and commit,
+validation/build/RSS results, preview status, icon decisions, remaining approvals
+and the social-drafting handoff described below. Report checks not yet run as such.
+It never merges or publishes production; publication requires the editor's separate
+instruction.
+
 1. Research candidate apps, links and sources for the upcoming Friday issue.
+   Include app selections from the editor's
+   [App Selections note](https://app.notion.com/p/App-selections-3d1d6482d47f8069b146c4dfec0c0c43?source=copy_link)
+   in the candidate pool before proposing the slate.
 2. Propose a Friday issue slate for editor review. For each proposed app, include
-   the draft description, `bestFor`, tags, source or homepage and any collection
-   recommendations. Also report whether the app record already has a suitable icon,
+   the draft description, `bestFor`, `tagline`, tags, source or homepage and any
+   collection recommendations. The tagline fills the app page's search-result line and
+   is written for the title alone; see section 6 of `STYLE_GUIDE.md`. Also report whether the app record already has a suitable icon,
    whether a new official icon is needed and which `iconStyle` should be used.
-3. Preserve the standard issue section spine exactly:
+3. Do not select more than two apps from any single discovery source for one issue,
+   counting regular section apps and the optional Editor's Pick together. Product
+   Hunt, `r/macapps` and the editor's App Selections note each count as separate
+   sources under this cap. If an otherwise strong slate would exceed the cap,
+   carry the affected choices into the Notion review page as checkbox decisions
+   with verified alternates, then build only from the approved under-cap slate.
+4. Preserve the standard issue section spine exactly:
    `New Discoveries`, `Trending`, `Old Favorites`, `AI & Automation`,
    `Up and Coming`. Do not rename, omit, reorder or add regular app sections.
    The optional Editor's Pick is the only app module outside that spine and, when
    present, belongs between `Trending` and `Old Favorites`.
-4. Audit tags across existing app records. Identify underused, duplicate, vague or
+5. Audit tags across existing app records. Identify underused, duplicate, vague or
    overly broad tags, and flag apps that appear mistagged or would benefit from
    additional tags.
-5. Ask whether the editor wants any changes to existing app records before preparing
+6. Ask whether the editor wants any changes to existing app records before preparing
    the release candidate.
-6. Pull pending Editor's Pick direction from the Notion
+7. Pull pending Editor's Pick direction from the Notion
    [Editor's Picks note](https://app.notion.com/p/Editor-s-Picks-3c8d6482d47f80c4bbc6ce99ed84d908?source=copy_link),
    then check the current workflow context for other previously provided direction,
    including GitHub issues, pull request comments, prior Thursday reports or other
@@ -54,30 +105,37 @@ Preview review.
    candidate. Do not hard-code app names in scheduled-task prompts and do not infer
    or auto-promote Editor's Picks from an old queue unless the editor explicitly
    confirmed that queue is still active.
-7. Ask whether the editor has a new app to contribute as the upcoming Editor's Pick
+8. Ask whether the editor has a new app to contribute as the upcoming Editor's Pick
    when no pending Notion direction or previously confirmed direction exists.
-8. Inspect every open pull request for `noticesfromchat/macos-app-digest` and its
+9. Inspect every open pull request for `noticesfromchat/macos-app-digest` and its
    Netlify Deploy Preview.
-9. Record each preview's purpose, explicit approval state and current Netlify status.
-10. If more than one preview exists, ask the editor which preview should accompany the
+10. Record each preview's purpose, explicit approval state and current Netlify status.
+11. If more than one preview exists, ask the editor which preview should accompany the
    Friday issue. Do this whether none, one or several previews appear approved.
-11. Recommend whether to select one preview, consolidate approved work or leave the
+12. Recommend whether to select one preview, consolidate approved work or leave the
    previews separate.
-12. Create or update the selected release-candidate branch from the latest `main`
+13. Create or update the selected release-candidate branch from the latest `main`
     with the Thursday-reviewed issue slate, confirmed app-record changes, required
-    app records and one issue Markdown file.
-13. For every app added to or newly featured in the issue, add or confirm a local
+    app records and one issue Markdown file. The weekly release branch is named
+    `issue-NNN-weekly-update`, using the same three-digit issue `number` that the
+    issue record carries, so issue 010 ships from `issue-010-weekly-update`. See
+    [`GIT_BRANCHING.md`](GIT_BRANCHING.md) for the full branching path.
+14. For every app added to or newly featured in the issue, add or confirm a local
     icon under `public/app-icons/` when an official app icon is available. Use
     `iconStyle: plain` for finished square app icons, `backed` for transparent
     artwork that needs a white backing and `contain` for non-square marks that
     should not crop. If no suitable official icon is available, omit `icon` and
-    allow the app card to use the first-category fallback tile.
-14. For every app in the required `Old Favorites` section, add `community-favorites` to the app
+    allow the app card to use the first-category fallback tile. Render icons at
+    128px square, resizing larger sources down and smaller ones up. Prefer a source
+    that already meets it, since the icon also renders on the app's Open Graph card
+    at 112px, but use the best one available rather than refusing it. Section 11 of
+    [`STYLE_GUIDE.md`](STYLE_GUIDE.md) carries the rule and the reasoning.
+15. For every app in the required `Old Favorites` section, add `community-favorites` to the app
     record's `collections` array while preserving any existing collection entries.
-15. Include the issue `rss` block with a short issue-specific title and the standard
+16. Include the issue `rss` block with a short issue-specific title and the standard
     `Read this issue` CTA. The feed summary is generated from the issue `dek`, so do
     not duplicate that summary in the `rss` block.
-16. Write `sourceNotes` in concise editorial language that explains where the issue's
+17. Write `sourceNotes` in concise editorial language that explains where the issue's
     app selections and supporting links came from. Include all selected apps, grouped
     by source type when useful. Avoid internal agent or process wording such as
     “checked against records,” “during the research pass,” or “before preparing the
@@ -86,9 +144,9 @@ Preview review.
     rendered: the issue page dropped the Source Notes section on 2026-09-01 and now closes
     with the shared RSS subscribe card. The field is provenance for review, the same way an
     app record's `source` field already was. Keep writing it to the same standard.
-17. Run `npm run validate` and `npm run build`, fix every error and verify the built
+18. Run `npm run validate` and `npm run build`, fix every error and verify the built
     `/rss.xml` feed includes the new issue correctly.
-18. Review new or changed icons in light mode, dark mode and mobile before asking for
+19. Review new or changed icons in light mode, dark mode and mobile before asking for
     approval. Confirm square app icons do not show unwanted backing edges,
     transparent icons remain legible and archived issue pages still render their app
     cards cleanly after any all-app icon rollout. If any icon appears too small,
@@ -96,27 +154,54 @@ Preview review.
     to the app's real icon, record the problem and ask the editor whether to crop the
     local asset, find a better official source, change `iconStyle` or use the
     first-category fallback.
-19. Review the issue's social card at `/og/issue-NNN.png` in the built output. It is
+20. Review the issue's social card at `/og/issue-NNN.png` in the built output. It is
     generated from the issue's number, date, `rss.title` and `dek`, so there is no
     asset to prepare and nothing to author. Confirm the title fits the card and the
     dek still reads as a sentence where it is trimmed. If either is wrong, fix the
     issue record rather than the card. See Social Cards in `DESIGN.md`.
-20. Push the release candidate once, wait for required GitHub checks and the Netlify
+21. Push the release candidate once, wait for required GitHub checks and the Netlify
     Deploy Preview to succeed, then review the Deploy Preview.
-21. Ask the editor for final approval to use that reviewed release candidate for
+22. Ask the editor for final approval to use that reviewed release candidate for
     Friday's production deployment.
-22. Do not merge, close, consolidate or otherwise alter competing previews without
+23. Do not merge, close, consolidate or otherwise alter competing previews without
     the editor's direction.
 
 An idle preview may remain open without creating another build. Minimize Netlify
 credit use by validating locally, batching related changes and pushing only at a
 meaningful review or release milestone.
 
+## Thursday social drafting dependency
+
+Social copy is drafted from the selected release-candidate PR after the editor's
+Notion changes have been applied and its updated Deploy Preview is ready for review.
+Follow the editor's current guidance on post count, voice and format. Record the
+issue date, PR URL and source commit in the weekly Notion social calendar.
+
+Thursday at 3 p.m. Pacific is the planned drafting start, not a readiness deadline.
+If the updated issue is not ready, record social drafting as waiting on the issue
+and report the specific dependency. Do not draft from stale content or substitute
+another issue. When the updated preview is ready, the task preparing it must include
+resuming the pending social draft in its handoff. Resume that week's existing task
+and calendar rather than waiting until the next weekly run or creating a duplicate.
+
+After any later editorial change, compare the social drafts with the updated issue
+and app records. Revise affected posts, verify their claims, links and character
+counts, record the new source commit and return changed copy for editor review.
+Preserve unrelated editor changes. If affected posts have already been scheduled,
+tell the editor exactly which posts need updating and provide the revised copy.
+
+The editor reviews and schedules social posts. Agents prepare drafts only; they do
+not schedule or publish them. Social approval is separate from release approval.
+
 ## Friday production deployment
 
 Friday should be a narrow production step. The issue, app records, validation, build,
 RSS verification, pull request checks and Deploy Preview review should already be
 complete from Thursday.
+
+Publication timing is manual and controlled by the editor. Do not configure a timed
+merge or publication automation. Approval of a preview establishes the candidate;
+the editor's instruction to publish determines when to merge it.
 
 Use the following order of operations:
 
@@ -136,9 +221,10 @@ When exactly one reviewed, passing and editor-approved release-candidate PR exis
 5. Confirm the Netlify production deployment succeeds before claiming the issue is
    live or sending the weekly email.
 
-Routine issue content added to an already approved release candidate does not require
-another manual approval after all checks pass. Do not add new unapproved design,
-architecture or functionality changes during this run.
+Approval applies to the reviewed release candidate. Any subsequent content, app-record,
+design, architecture or functionality change requires refreshed checks, preview review
+and editor approval before deployment. On Friday, pause deployment for a new
+Thursday-style review cycle when the editor requests such a change.
 
 ### No reviewed release candidate
 

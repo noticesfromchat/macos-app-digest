@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-31T23:31:32Z",
+  "generatedAt": "2026-09-08T17:00:00Z",
   "title": "Design System: App Waypoint",
   "extensions": {
     "colorMeta": {
@@ -79,6 +79,18 @@
           "oklch(96% 0.018 255)"
         ]
       },
+      "harbor-body": {
+        "role": "foreground",
+        "displayName": "Harbor Body",
+        "canonical": "#40546a",
+        "purpose": "Light-theme descriptions, explanations and editorial prose."
+      },
+      "harbor-chip-ink": {
+        "role": "foreground",
+        "displayName": "Harbor Chip Ink",
+        "canonical": "#384d63",
+        "purpose": "Light-theme text carried by Shell Quiet chips."
+      },
       "beacon-blue": {
         "role": "primary",
         "displayName": "Beacon Blue",
@@ -139,6 +151,24 @@
           "oklch(97% 0.010 83)"
         ]
       },
+      "current-mist": {
+        "role": "foreground",
+        "displayName": "Current Mist",
+        "canonical": "#aebdca",
+        "purpose": "Dark-theme metadata and utility text on navy surfaces."
+      },
+      "moon-current": {
+        "role": "foreground",
+        "displayName": "Moon Current",
+        "canonical": "#9fb4ca",
+        "purpose": "Dark-theme descriptions, explanations and editorial prose."
+      },
+      "moon-chip-ink": {
+        "role": "foreground",
+        "displayName": "Moon Chip Ink",
+        "canonical": "#b0c0d2",
+        "purpose": "Dark-theme text carried by Midnight Surface Strong chips."
+      },
       "buoy-blue": {
         "role": "primary",
         "displayName": "Buoy Blue",
@@ -153,36 +183,83 @@
           "oklch(91% 0.067 253)",
           "oklch(96% 0.042 253)"
         ]
+      },
+      "error": {
+        "role": "semantic",
+        "displayName": "Error",
+        "light": "#9c2f2a",
+        "dark": "#ff8f86",
+        "purpose": "Failure state. Not emphasis, so it does not touch the Beacon Rule's claim on blue.",
+        "contrast": "5.24:1 on white, 5.68:1 on the dark surface",
+        "recorded": "2026-09-07"
       }
     },
     "typographyMeta": {
       "display": {
         "displayName": "Display",
-        "purpose": "Held in reserve; nothing currently uses it."
+        "purpose": "Held in reserve; nothing currently uses it.",
+        "size": "fluid",
+        "lineBox": "exempt — fluid"
       },
       "headline": {
         "displayName": "Headline",
-        "purpose": "Every page title, delivered through --type-page-title."
+        "purpose": "Every page title, delivered through --type-page-title.",
+        "size": "30-40px fluid",
+        "lineBox": "exempt — fluid (.96)"
       },
       "sectionTitle": {
         "displayName": "Section Title",
-        "purpose": "Headings that open a section within a page, delivered through --type-section-title."
+        "purpose": "Headings that open a section within a page, delivered through --type-section-title.",
+        "size": "24-33px fluid",
+        "lineBox": "exempt — fluid (1)"
+      },
+      "subhead": {
+        "displayName": "Subhead",
+        "purpose": "The step between a section title and a card title: the hero issue number, the Editor's Pick title, and headings nested inside a card. Delivered through --type-subhead.",
+        "size": "22-28px fluid",
+        "lineBox": "exempt — fluid (1.08-1.1)"
+      },
+      "cardTitle": {
+        "displayName": "Card Title",
+        "purpose": "Card titles, app names, and the name of a category or collection. Delivered through --type-card-title.",
+        "size": "23px",
+        "lineBox": "28px (1.2174)"
+      },
+      "tileTitle": {
+        "displayName": "Tile Title",
+        "purpose": "Titles on the Explore taxonomy tiles, where a card title would wrap. Delivered through --type-tile-title.",
+        "size": "18px",
+        "lineBox": "24px (1.3333)"
       },
       "dek": {
         "displayName": "Dek",
-        "purpose": "The standfirst under a page or section title, delivered through --type-dek; always one step above body."
+        "purpose": "The standfirst under a page or section title, delivered through --type-dek; always one step above body.",
+        "size": "19px",
+        "lineBox": "32px (1.6842)"
       },
       "body": {
         "displayName": "Body",
-        "purpose": "Descriptions, explanations, and editorial copy."
-      },
-      "label": {
-        "displayName": "Label",
-        "purpose": "Eyebrows, small UI labels, and control legends."
+        "purpose": "Descriptions, explanations, and editorial copy.",
+        "size": "16px",
+        "lineBox": "24px (--leading-body)"
       },
       "metadata": {
         "displayName": "Metadata",
-        "purpose": "Counts, sources, and secondary operational information."
+        "purpose": "Counts, sources, and secondary operational information.",
+        "size": "14px",
+        "lineBox": "20px (--leading-meta)"
+      },
+      "controlLabel": {
+        "displayName": "Control Label",
+        "purpose": "The text on something you press. The only small role that is neither tracked nor uppercase, because a control is read as a word.",
+        "size": "14px",
+        "lineBox": "20px (--leading-meta)"
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Eyebrows, small UI labels, and control legends.",
+        "size": "12px",
+        "lineBox": "16px (--leading-label)"
       },
       "brand": {
         "displayName": "Brand",
@@ -191,6 +268,17 @@
       "mono": {
         "displayName": "Mono",
         "purpose": "Data a reader might copy. Today that is the RSS feed URL and nothing else; it is not a costume for looking technical."
+      },
+      "_contract": {
+        "rule": "A role is a family, a size, a weight and a line box, defined together.",
+        "fixedRolesStepOn": "4px",
+        "fluidRolesExempt": "Page Title, Section Title and Subhead set size with clamp(), so no single leading puts them on a step across the range.",
+        "leadingTokens": {
+          "--leading-label": "1.3333 -> 16px at 12px",
+          "--leading-meta": "1.4286 -> 20px at 14px",
+          "--leading-body": "1.5 -> 24px at 16px"
+        },
+        "recorded": "2026-09-07"
       }
     },
     "shadows": [
@@ -284,66 +372,141 @@
         "name": "xl",
         "value": "1440px"
       }
-    ]
-  },
-  "components": [
-    {
-      "name": "Primary Button",
-      "kind": "button",
-      "refersTo": "button-primary",
-      "description": "The main call to action, outlined rather than filled so the accent stays legible as ink in both themes.",
-      "html": "<button class=\"ds-btn ds-btn-primary\">Homepage <svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"m7 17 10-10\"></path><path d=\"M9 7h8v8\"></path></svg></button>",
-      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 20px; min-height: 44px; padding: 0 23px; border: 1px solid var(--accent); border-radius: 999px; background: transparent; color: var(--accent); font-family: inherit; font-size: .84rem; font-weight: 700; text-decoration: none; transition: background-color 180ms ease, border-color 180ms ease, transform 180ms ease; } .ds-btn-primary svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; } .ds-btn-primary:hover, .ds-btn-primary:focus-visible { border-color: var(--accent-hover); background: color-mix(in srgb, var(--accent) 10%, transparent); color: var(--accent-hover); transform: translateY(-1px); outline: 0; }"
+    ],
+    "spacingMeta": {
+      "rule": "Structural vertical spacing is a whole multiple of --base (8px). The horizontal field grid is a separate system and does not divide by it.",
+      "derived": "--space-1..9 are calc(var(--base) * n); --eyebrow-gap is var(--space-1). Changing --base moves the whole scale. Structural vertical margin, padding and row-gap consumers use these tokens; horizontal field gutters remain independent.",
+      "stepped": {
+        "breakpoints": "921px and 1100px",
+        "--section-space": "24 / 32 / 40",
+        "--hero-space-top": "32 / 40 / 48",
+        "--hero-space-bottom": "32 / 48 / 56",
+        "--footer-space": "48 / 64 / 72",
+        "--page-start-space": "24 desktop, 32 at 680px and below"
+      },
+      "fluidExceptions": "Horizontal only: the shell gutter, the homepage hero and app-detail rail column gaps, and the app icon frame that scales with its page. Fluid display type is exempt under The Line Box Rule.",
+      "recorded": "2026-09-07",
+      "overlayException": "Viewport-fitting search/RSS top offsets use min(9vh/10vh, 12 base units); mobile overlays respect safe-area insets. Page structural spacing remains stepped.",
+      "searchResultInset": "16px horizontal field gutter; aligns hover/focus fills with the result-count inset"
     },
-    {
-      "name": "Secondary Button",
-      "kind": "button",
-      "refersTo": "button-secondary",
-      "description": "The supporting CTA that stays quieter than the primary action.",
-      "html": "<button class=\"ds-btn ds-btn-secondary\">Reset</button>",
-      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 23px; border: 1px solid var(--line); border-radius: 999px; background: transparent; color: var(--text); font: inherit; font-size: .84rem; font-weight: 700; transition: border-color 180ms ease, background-color 180ms ease, color 180ms ease, transform 180ms ease; } .ds-btn-secondary:hover, .ds-btn-secondary:focus-visible { border-color: var(--text); background: color-mix(in srgb, var(--surface) 50%, transparent); outline: 0; transform: translateY(-1px); }"
+    "gridMeta": {
+      "tracks": 12,
+      "gutter": "16px",
+      "shellMax": "1160px",
+      "trackWidth": "(shell - 11 * 16px) / 12 — fluid; 82px at the maximum shell",
+      "spans": {
+        "categoryTile": "2 tracks = 180px",
+        "appCard": "4 tracks = 376px",
+        "collectionTile": "4 tracks = 376px",
+        "filter": "2 tracks",
+        "sort": "2 tracks",
+        "searchField": "3 tracks",
+        "filterAndSortPair": "4 tracks = one card span at every multi-column width"
+      },
+      "fieldAligned": [
+        "taxonomy rows",
+        "directory toolbar incl. search field and Filter panel",
+        "card grid"
+      ],
+      "editorialExceptions": [
+        "homepage hero (.95/1.05 columns)",
+        "app-detail rail (400px)",
+        "About reading column (measure decision)"
+      ],
+      "wasSixFixedFields": "Until 2026-09-07. Correct at the 1160px maximum only; controls held 180px literals and stopped matching cards below it.",
+      "recorded": "2026-09-07"
     },
-    {
-      "name": "Tag Chip",
-      "kind": "chip",
-      "refersTo": "tag-chip",
-      "description": "A compact metadata chip used for tags and quick filters.",
-      "html": "<a class=\"ds-chip\" href=\"#\">developer</a>",
-      "css": ".ds-chip { display: inline-flex; align-items: center; padding: 7px 10px; border-radius: 999px; background: var(--surface-strong); color: var(--muted); font-family: inherit; font-size: .78rem; font-weight: 700; line-height: 1.15; text-decoration: none; text-transform: lowercase; transition: color 180ms ease, background-color 180ms ease; } .ds-chip:hover, .ds-chip:focus-visible { background: color-mix(in srgb, var(--surface-strong) 82%, var(--accent)); color: var(--accent); outline: 0; }"
+    "sanctionedDecorativeAccent": [
+      "subscribe mark (accent fill and ping)",
+      "archive terminus (second use of The Struck Light Rule)"
+    ],
+    "variantMeta": {
+      "rule": "A component variant carries its base class as well as its own, so it outranks the base by specificity rather than by source order.",
+      "editorsPick": {
+        "title": "Subhead, not Card Title",
+        "inset": "32px (--space-4)",
+        "radius": "32px — matches its own inset",
+        "contentOrder": "identity, description, why it was chosen, Best For, tags",
+        "layout": "single column in document order; flex, not grid"
+      },
+      "wasBroken": "Until 2026-09-07 the base .app-card sat later in the file and won every shared property: declared grid rendered flex, declared fluid padding rendered 24px, declared Subhead rendered Card Title.",
+      "recorded": "2026-09-07"
     },
-    {
-      "name": "App Card",
-      "kind": "card",
-      "refersTo": "card",
-      "description": "The recurring content card for app listings and related recommendations.",
-      "html": "<article class=\"ds-card\"><h3><a href=\"#\">Chimlo</a></h3><p>Tracks Codex and Claude Code sessions from the MacBook notch.</p><p class=\"ds-card-kicker\"><strong>Best for:</strong> Developers supervising several coding agents.</p><div class=\"ds-chip-row\"><a class=\"ds-chip\" href=\"#\">ai</a><a class=\"ds-chip\" href=\"#\">developer</a></div></article>",
-      "css": ".ds-card { display: grid; gap: 16px; min-height: 286px; padding: 24px; border: 1px solid var(--line); border-radius: 12px; background: color-mix(in srgb, var(--surface) 96%, transparent); box-shadow: 0 18px 55px rgba(27, 35, 42, 0.08); transition: box-shadow 180ms ease, border-color 180ms ease, background-color 180ms ease, transform 180ms ease; } .ds-card h3 { margin: 0; font-family: var(--display); font-size: 1.4rem; font-weight: 600; line-height: 1.15; } .ds-card p { margin: 0; color: var(--muted); font-size: .95rem; line-height: 1.55; } .ds-card-kicker strong { color: var(--text); } .ds-chip-row { display: flex; flex-wrap: wrap; gap: 6px; align-content: flex-start; } .ds-card:hover, .ds-card:focus-within { border-color: color-mix(in srgb, var(--accent) 42%, var(--line)); background: var(--surface); box-shadow: 0 26px 68px rgba(27, 35, 42, 0.14); transform: translateY(-2px); outline: 0; }"
+    "measureMeta": {
+      "default": "--measure, 52ch — all prose",
+      "namedException": {
+        "page": "About",
+        "token": "--about-measure",
+        "value": "624px",
+        "appliesTo": [
+          "title",
+          "dek",
+          "section headings",
+          "prose"
+        ],
+        "why": "A page with no grid to fill has nothing to span, so rules and headings sit with the text. At 624px the line runs ~73 characters."
+      },
+      "recorded": "2026-09-07"
     },
-    {
-      "name": "Site Header",
-      "kind": "nav",
-      "refersTo": "nav-link",
-      "description": "The sticky shell that carries the brand, search, archive, and theme controls.",
-      "html": "<header class=\"ds-header\"><a class=\"ds-brand\" href=\"#\"><span class=\"ds-brand-mark\"></span><span class=\"ds-brand-name\">App Waypoint</span></a><nav class=\"ds-nav\"><button class=\"ds-icon-btn\" type=\"button\" aria-label=\"Search apps\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"7\"></circle><path d=\"m16 16 4 4\"></path></svg></button><a class=\"ds-icon-link\" href=\"#\" aria-label=\"Past issues\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 5h16\"></path><path d=\"M4 12h16\"></path><path d=\"M4 19h16\"></path></svg></a><button class=\"ds-icon-btn\" type=\"button\" aria-label=\"Switch to dark theme\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M21 12.79A9 9 0 1 1 11.21 3c0 5 4 9 9 9 .27 0 .53-.01.79-.21Z\"></path></svg></button></nav></header>",
-      "css": ".ds-header { display: flex; align-items: center; justify-content: space-between; gap: 28px; min-height: 84px; padding: 0 clamp(24px, 3.2vw, 38px); border-bottom: 1px solid var(--line); background: radial-gradient(circle at 17% 32%, rgba(255,255,255,.05), transparent 34%), var(--header-fog); backdrop-filter: blur(20px) saturate(115%); } .ds-brand, .ds-nav { display: inline-flex; align-items: center; } .ds-brand { gap: 21px; color: var(--text); font-family: var(--display); font-size: clamp(1.65rem, 2.45vw, 2rem); letter-spacing: .12em; text-decoration: none; text-transform: uppercase; white-space: nowrap; } .ds-brand-mark { width: 56px; height: 56px; border-radius: 50%; background: #f7f0e4; } .ds-nav { gap: clamp(22px, 3.4vw, 42px); } .ds-icon-btn, .ds-icon-link { display: grid; width: 38px; height: 38px; padding: 0; place-items: center; border: 0; background: transparent; color: var(--text); text-decoration: none; transition: color 180ms ease, transform 180ms ease; } .ds-icon-btn svg, .ds-icon-link svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; } .ds-icon-btn:hover, .ds-icon-btn:focus-visible, .ds-icon-link:hover, .ds-icon-link:focus-visible { color: var(--accent); outline: 0; } .ds-icon-btn:hover, .ds-icon-btn:focus-visible { transform: rotate(12deg); } @media (pointer: coarse) { .ds-icon-btn, .ds-icon-link { width: 44px; height: 44px; } } @media (max-width: 680px) { .ds-header { min-height: 70px; gap: 10px; padding: 0 16px; } .ds-brand { gap: 9px; font-size: 1.35rem; letter-spacing: .08em; } .ds-brand-mark { width: 40px; height: 40px; } .ds-nav { gap: 12px; } .ds-icon-btn, .ds-icon-link { width: 44px; height: 44px; } .ds-icon-btn svg, .ds-icon-link svg { width: 19px; height: 19px; } }"
+    "geometryMeta": {
+      "card": {
+        "token": "--card-inset",
+        "value": "var(--space-3)",
+        "consumers": [
+          "padding",
+          "border-radius"
+        ],
+        "surfaces": [
+          "ordinary app cards",
+          "reading cards",
+          "archive cards",
+          "video feature card"
+        ]
+      },
+      "pick": "--pick-inset: var(--space-4); padding and radius share it, rim adds --pick-rim",
+      "iconFrame": "border-radius: 25%; shared by card (48px), hero (56px) and fluid detail (56-80px)",
+      "searchResult": "--radius-sm; the shared 8px small-element corner",
+      "filterPanel": "--radius-md at all widths; mobile spans the page shell, not the viewport",
+      "recorded": "2026-09-07"
     },
-    {
-      "name": "Directory Controls",
-      "kind": "custom",
-      "refersTo": "input-search",
-      "description": "A flex row: the live count leads at its natural width and carries the auto right margin that pushes visible Search apps, Filter and Sort to the end. The count is not a surface; search is 280px and the two menus are 180px each. Collections and Tags live inside Filter.",
-      "html": "<div class=\"ds-directory-bar\"><span class=\"ds-directory-count\">Showing 24 of 102 apps</span><label class=\"ds-directory-search\"><span class=\"ds-sr-only\">Search apps</span><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"8\"></circle><path d=\"m21 21-4.3-4.3\"></path></svg><input type=\"search\" placeholder=\"Search apps\" /></label><div class=\"ds-directory-filter\"><button type=\"button\" aria-expanded=\"false\">Filter</button><div class=\"ds-filter-panel\"><span>Collections</span><span>Tags</span></div></div><button class=\"ds-directory-sort\" type=\"button\">Sort</button></div>",
-      "css": ".ds-directory-bar { position: relative; display: flex; flex-wrap: wrap; gap: 16px; align-items: stretch; } .ds-directory-count { display: flex; min-height: 52px; align-items: center; margin: 0 auto 0 0; padding: 0; color: var(--muted); font-size: .78rem; font-weight: 700; letter-spacing: .04em; white-space: nowrap; } .ds-directory-search { display: grid; flex: 0 1 280px; grid-template-columns: auto minmax(0, 1fr); min-height: 52px; align-items: center; gap: 10px; padding: 10px 13px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); } .ds-directory-search svg { width: 20px; height: 20px; fill: none; stroke: var(--muted); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2; } .ds-directory-search input { min-width: 0; border: 0; background: transparent; color: var(--text); font: inherit; font-size: 1rem; outline: 0; } .ds-directory-filter, .ds-directory-sort { flex: 0 0 180px; min-height: 52px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); } .ds-directory-filter { position: relative; padding: 0; } .ds-directory-filter > button, .ds-directory-sort { display: flex; width: 100%; min-height: 52px; align-items: center; justify-content: space-between; padding: 0 16px; border: 0; background: transparent; color: var(--text); font: inherit; font-size: .84rem; font-weight: 700; } .ds-filter-panel { position: absolute; top: calc(100% + 12px); left: -1px; width: calc(200% + 20px); overflow: hidden; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); } @media (max-width: 920px) { .ds-directory-bar { gap: 12px; } .ds-directory-count, .ds-directory-search { width: 100%; margin: 0; } .ds-directory-search { flex: 1 1 100%; } .ds-directory-filter, .ds-directory-sort { flex: 1 1 0; } .ds-filter-panel { width: calc(200% + 16px); } }"
+    "focusMeta": {
+      "token": "--focus-ring",
+      "offset": "--focus-offset; -2px for menu/search rows",
+      "exceptions": [
+        "caret-bearing text fields",
+        "programmatically focused mobile navigation dialog container"
+      ],
+      "standaloneAction": "Accent at rest, accent-hover on interaction, no underline; shared focus ring"
     },
-    {
-      "name": "Search Modal",
-      "kind": "custom",
-      "refersTo": "input-search",
-      "description": "The centered search overlay that covers the site with a controlled, frosted backdrop.",
-      "html": "<div class=\"ds-search\"><div class=\"ds-search-backdrop\"></div><section class=\"ds-search-panel\" role=\"dialog\" aria-modal=\"true\"><div class=\"ds-search-row\"><label class=\"ds-sr-only\" for=\"site-search\">Search apps</label><svg class=\"ds-search-icon\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"7\"></circle><path d=\"m16 16 4 4\"></path></svg><input id=\"site-search\" class=\"ds-search-input\" type=\"search\" placeholder=\"Search\" /><button class=\"ds-search-close\" type=\"button\" aria-label=\"Close search\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M6 6l12 12\"></path><path d=\"M18 6 6 18\"></path></svg></button></div><p class=\"ds-search-count\" aria-live=\"polite\">12 matching apps</p><div class=\"ds-search-results\"><a class=\"ds-search-result\" href=\"#\"><strong>Snapdown</strong><span>Turn markdown into diagrams with fast local previews.</span></a><a class=\"ds-search-result\" href=\"#\"><strong>Shortcutie</strong><span>Build and inspect shortcuts with a Mac-native editor.</span></a></div></section></div>",
-      "css": ".ds-search { position: fixed; inset: 0; display: grid; place-items: start center; padding: min(9vh, 92px) 20px 24px; } .ds-search-backdrop { position: absolute; inset: 0; background: radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 38%), rgba(2, 11, 24, 0.52); backdrop-filter: blur(12px) saturate(110%); } .ds-search-panel { position: relative; z-index: 1; width: min(820px, 100%); overflow: hidden; border: 1px solid var(--line); border-radius: 18px; background: color-mix(in srgb, var(--surface) 98%, transparent); box-shadow: 0 30px 90px rgba(0, 0, 0, 0.28); } .ds-search-row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 14px; padding: 18px 20px; border-bottom: 1px solid var(--line); } .ds-search-icon { width: 24px; height: 24px; color: var(--muted); fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; } .ds-search-input { width: 100%; border: 0; background: transparent; color: var(--text); font: inherit; font-size: clamp(1.1rem, 2vw, 1.45rem); font-weight: 600; outline: 0; } .ds-search-input::placeholder { color: color-mix(in srgb, var(--muted) 78%, transparent); } .ds-search-close { display: grid; width: 36px; height: 36px; place-items: center; border: 1px solid transparent; border-radius: 50%; background: transparent; color: var(--muted); transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease; } .ds-search-close svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; } .ds-search-close:hover, .ds-search-close:focus-visible { border-color: var(--line); background: var(--surface-strong); color: var(--text); outline: 0; } .ds-search-count { margin: 0; padding: 10px 20px 0; color: var(--muted); font-size: .78rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; } .ds-search-results { display: grid; gap: 0; max-height: min(58vh, 560px); overflow-y: auto; padding: 10px; } .ds-search-result { display: grid; gap: 1px; padding: 14px 16px; border-radius: 12px; color: var(--text); text-decoration: none; transition: background-color 120ms ease, color 120ms ease; } .ds-search-result strong { overflow: hidden; font-family: var(--display); font-size: 1.18rem; font-weight: 600; line-height: 1.18; text-overflow: ellipsis; white-space: nowrap; } .ds-search-result span { overflow: hidden; color: var(--muted); font-size: 1rem; line-height: 1.55; text-overflow: ellipsis; white-space: nowrap; } .ds-search-result:hover, .ds-search-result:focus-visible { background: color-mix(in srgb, var(--surface-strong) 80%, var(--accent) 7%); outline: 0; } @media (pointer: coarse) { .ds-search-close { width: 44px; height: 44px; } } @media (max-width: 680px) { .ds-search { padding: max(12px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom)); } .ds-search-panel { border-radius: 14px; } .ds-search-row { gap: 10px; padding: 14px; } .ds-search-icon { width: 21px; height: 21px; } .ds-search-close { width: 44px; height: 44px; } .ds-search-input { font-size: 16px; } .ds-search-count { padding: 14px 14px 12px; } .ds-search-results { max-height: calc(100dvh - 168px); padding: 0 8px 8px; } .ds-search-result { padding: 13px 12px; } .ds-search-result strong { font-size: 1.08rem; } .ds-search-result span { display: -webkit-box; overflow: hidden; white-space: normal; -webkit-box-orient: vertical; -webkit-line-clamp: 2; } }"
+    "componentExampleMeta": {
+      "status": "retired; no active handwritten previews",
+      "authority": "Current Astro components and styles govern implementation. Inspect the production routes listed in docs/COMPONENT_REFERENCE.md.",
+      "currentReference": "docs/COMPONENT_REFERENCE.md",
+      "archive": "docs/archive/design-component-gallery-2026-09-07.json",
+      "archivedOn": "2026-09-07",
+      "panelBehaviour": "An empty components array omits preview tiles; tokens and narrative remain available.",
+      "futurePreviews": "Render production components with their production styles; do not restore independent ds-* CSS."
+    },
+    "glyphMeta": {
+      "sizesPx": {
+        "small": 16,
+        "medium": 24
+      },
+      "renderedStrokePx": 1.5,
+      "viewBoxSize": 24,
+      "authoredStroke": "calc(var(--icon-stroke) * 24 / var(--icon-size, var(--icon-md)))",
+      "exclusions": [
+        "filled brand marks"
+      ],
+      "recorded": "2026-09-07"
+    },
+    "headerInteractionMeta": {
+      "hover": "accent colour only; no theme-toggle rotation",
+      "focus": "var(--focus-ring) with var(--focus-offset), 3px",
+      "recorded": "2026-09-07"
     }
-  ],
+  },
+  "components": [],
   "narrative": {
     "northStar": "Quiet harbor editorial",
     "overview": "App Waypoint feels like a calm dock under overcast light: cool paper, deep-water text, and a single reliable blue used sparingly so the page never shouts. It is editorial rather than promotional, organized like a magazine, but laid out like a utility. Dense information sits inside soft cards and quiet section breaks instead of loud banners.\n\nThe language prefers stable geometry, soft depth, and generous breathing room. Serif headlines carry the authority; the system sans supports the utility layers, controls, and metadata. The result is familiar and trustworthy, with enough atmosphere to feel considered but not styled for its own sake.",
@@ -351,7 +514,7 @@
       "White paper on a cool fog-grey field, with navy ink.",
       "Beacon blue reserved for actions and current states.",
       "Serif headlines, system-sans utility.",
-      "Soft 10-18px radii and ambient shadows.",
+      "Corners derived from component insets and nested geometry, with proportional app icon frames.",
       "Dense content organized through cards, chips, and careful spacing."
     ],
     "rules": [
@@ -366,18 +529,23 @@
         "section": "colors"
       },
       {
-        "name": "The Even Rule Rule",
-        "body": "A horizontal rule carries the same space above it as below it: --section-space, clamp(26px, 3.8vw, 40px), one value for the whole site. That space belongs to the blocks on either side, so a page opening closes on it before the first divider. Only blocks following a drawn divider rather than a rule sit tighter.",
+        "name": "The Surface Ink Rule",
+        "body": "Primary reading copy, chip text and metadata are separate semantic roles: --body-text, --chip-text and --muted. Each theme maps them onto the surface's blue axis. Descriptions and editorial prose use --body-text; tag labels use --chip-text; dates, counts, breadcrumbs, sources and operational hints use --muted. Every mapping clears AA on its supported surfaces.",
+        "section": "colors"
+      },
+      {
+        "name": "The No Content Divider Rule",
+        "body": "Content is separated by spacing, not rules. Structural vertical spacing derives from --base through --space-1..9; named section/hero/footer tokens step at the responsive breakpoints. Control boundaries are not content dividers.",
         "section": "layout"
       },
       {
         "name": "The One Measure Rule",
-        "body": "All prose runs to --measure (52ch). Because ch scales with the element font size, one token holds roughly seventy characters at every size in the ramp. A fixed-pixel max-width on running text is a bug.",
+        "body": "Prose uses --measure (52ch), following its own font and size. About is the named exception: --about-measure (624px) applies to title, dek, headings and prose.",
         "section": "typography"
       },
       {
         "name": "The One Page Title Rule",
-        "body": "Every page opens with its title in Headline at --type-page-title, hard against --page-start-space with no margin of its own, and the dek 15px beneath at --type-dek. App detail pages are not an exception; presence comes from composition, never from a private type scale.",
+        "body": "Every page opens with its title in Headline at --type-page-title, hard against --page-start-space with no margin of its own, and the dek 16px beneath at --type-dek. App detail pages are not an exception; presence comes from composition, never from a private type scale.",
         "section": "typography"
       },
       {
@@ -396,8 +564,8 @@
         "section": "components"
       },
       {
-        "name": "The Two Control Heights",
-        "body": "Every pill control is inline-flex with a min-height and horizontal padding only, at 44px for a primary action or 38px for a secondary one (44px on coarse pointers). Rank comes from height and from whether the border and label carry the accent or the neutral line, never from a fill and never from a different construction, and a button is as wide as its label. Nothing on the site is a filled control: the dark theme's blue is tuned to read as ink on the dark surface, so using it as a ground put white text at 2.62:1.",
+        "name": "Control heights follow the grid",
+        "body": "Control dimensions use whole multiples of the 8px\nbase, with roles defined by the actual component. Both `.button` and `.button.secondary`\nhave a 48px minimum height with horizontal padding of 24px and no vertical padding. Header controls,\ndirectory toolbar controls and collection badge rows are also 48px. Sort menu options\nare 40px, rising to 48px on coarse pointers. Tags, active-filter chips, category rows,\nfilter options and reset controls use 32px; filter options and reset controls rise to\n48px on coarse pointers. Mobile directory search and sort controls use 56px. Active-filter\nchips retain their visible height and expand their hit area through a pseudo-element.\nStandalone small targets have a 24px floor; links inside sentences remain inline.\n\nPrimary buttons use an accent border and label; secondary buttons use neutral ones.\nBoth are transparent at rest. On hover or keyboard focus, the primary gains a 10% accent\ntint and both inherit a 1px lift; the secondary stays transparent. Reduced motion removes\nthe lift. These are existing button exceptions to the general colour-only hover rule.\n\nHistorical: this was called *The Two Control Heights* until 2026-09-06 and described\n44px primary / 38px secondary controls. That pair is superseded by the component roles\nabove; it is not a recipe for new controls.",
         "section": "components"
       },
       {
@@ -412,7 +580,12 @@
       },
       {
         "name": "The Eyebrow Binding Rule",
-        "body": "An eyebrow names the block beneath it, so the gap binding the two is one value for the whole site: --eyebrow-gap, 11px, used whether it comes from the .eyebrow margin in normal flow or from a grid gap. The rhythm is two values, not one: 11px binds an eyebrow to its content, 24px separates one labelled group from the next. That contrast is what lets a rail read as three groups without a rule drawn between them. A surface that sets its own number drifts out of the pair. 11px sits between the sm and md spacing steps; it is the established value across every surface, held in a token rather than repeated.",
+        "body": "--eyebrow-gap derives from --space-1 (8px) and binds each label to its content. --space-3 (24px) separates a section header from the block it names, on every surface that draws one except About, which binds its headings to running prose at 8px through .about-page .section-heading. A card section heads a grid its own cards already bound, so 24px reads as binding there; About heads prose, where the heading and its first line are one block. See The About ladder.",
+        "section": "layout"
+      },
+      {
+        "name": "The Two Level Rule",
+        "body": "An eyebrow and a heading belong together only when each level carries information the other cannot: a fixed rubric over an issue-specific title (5 eyebrows against 37 non-repeating titles across 9 issues), current or archived over the issue number, and the app detail rail's labels, which are a single level by construction. Whether a string lives in a template or a content record decides nothing; that test was proposed and rejected on 2026-09-09 because it disqualifies the rail labels while admitting filler. A single heading is a supported form, not half a lockup: it takes .section-heading and the explicit .section-title hook, which exists because .section h2 does not reach headings outside a .section. A heading opening a standalone section takes Section Title; a heading labelling one featured card inside the hero may take the compact Label role, because there the app's name is the primary visual identity. Heading semantics stay independent of visual size: the level states document structure, the role states rank. The visible label and the heading announced to assistive technology must be one element.",
         "section": "layout"
       },
       {
@@ -432,7 +605,7 @@
       },
       {
         "name": "The Target Floor Rule",
-        "body": "Anything a reader taps carries a minimum target: 24px, and the 44px the control system already gives every pill on a coarse pointer. Footer navigation, the explore section links, the carousel's directory link and the feature card's outbound link were all the text line box alone, 16 to 21px. An icon link too small to grow, like the Editor's Pick mark beside an app name, gets its hit area expanded around it instead, and stops at 24 so it does not start taking taps meant for the title. A link inside a sentence is exempt and stays inline.",
+        "body": "Standalone small targets have a 24px floor; links inside sentences remain inline. Both button variants and header controls are 48px. Sort options grow from 40px to 48px on coarse pointers; filter options and reset controls grow from 32px to 48px. Active-filter chips keep their 32px visible box and expand their hit area through a pseudo-element. See Control heights follow the grid for component-specific dimensions.",
         "section": "components"
       },
       {
@@ -468,17 +641,18 @@
     ],
     "dos": [
       "Do keep the fog-grey field, white paper, deep-sea text, and blue accent in a tight relationship.",
+      "Do assign prose, chip labels and metadata through --body-text, --chip-text and --muted by meaning rather than by page.",
       "Do reuse the shared page shell so archive, tag, collection, about, and app pages line up.",
       "Do keep shadows soft and ambient.",
       "Do let serif headlines carry the editorial voice while system sans handles utility.",
       "Do keep the defining tag or collection locked when it is the page’s own context.",
-      "Do keep the uppercase eyebrow above section and card headings. General design guidance treats a kicker above a heading as filler; here it is load-bearing house style, it names the issue section, the pick and the current-issue block, and it is the documented Label role. This is a deliberate, standing exception."
+      "Do keep the uppercase eyebrow where each level carries what the other cannot: the issue section's rubric over its title, current or archived over the issue number, and the app detail rail's labels. General design guidance treats a kicker above a heading as filler; on those it is load-bearing house style and a deliberate, standing exception. Do drop the second level where it only restates the first, and give a single heading .section-heading and .section-title rather than half a lockup. See The Two Level Rule."
     ],
     "donts": [
       "Don't introduce loud secondary colors just to add energy.",
       "Don't reintroduce warm sand or cream into the light theme; the day palette is white and Deep-Sea-tinted grey.",
       "Don't replace the soft shadow system with hard offsets or heavy glow.",
-      "Don't use tinted text as neutral gray on colored surfaces.",
+      "Don't use neutral gray on colored surfaces; derive secondary ink from the surface hue and give each reading role one semantic token.",
       "Don't make chips, filters, or buttons feel like separate UI worlds.",
       "Don't let the brand wordmark typography spread into body copy.",
       "Don't use em dashes or en dashes in public editorial copy.",

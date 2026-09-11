@@ -78,6 +78,24 @@ for (const filename of appFiles) {
   if (sentenceCount(data.bestFor) !== 1) errors.push(`${relative}: bestFor must be exactly one sentence`);
   checkLength(relative, 'bestFor', data.bestFor, 8, 24);
 
+  /* The tagline exists to fill the search-result line, so what matters is the assembled
+     title rather than the field on its own: the budget is whatever the app's own name
+     leaves under 60, and the longest name leaves 11. Checked here rather than trusted to
+     the writer, because the schema can only cap the field and cannot see the name it
+     will sit beside. The limit is really pixel width, so 60 is the conservative read of
+     it and a title landing exactly there is treated as over. */
+  if (!data.tagline) {
+    errors.push(`${relative}: missing tagline`);
+  } else {
+    const title = `${data.name} for Mac \u2014 ${data.tagline} \u2014 App Waypoint`;
+    if (title.length >= 60) {
+      errors.push(`${relative}: page title is ${title.length} characters, must stay under 60 ("${title}")`);
+    }
+    if (/\bmac\b/i.test(data.tagline)) {
+      errors.push(`${relative}: tagline repeats "Mac", which the title already carries ("${data.tagline}")`);
+    }
+  }
+
   if (!Array.isArray(data.tags) || data.tags.length < 2 || data.tags.length > 6) {
     errors.push(`${relative}: tags must contain 2-6 entries`);
   } else if (new Set(data.tags).size !== data.tags.length) {
@@ -171,6 +189,19 @@ for (const filename of issueFiles) {
       errors.push(`${relative}: missing rss title`);
     } else if (String(data.rss.title).length > 90) {
       errors.push(`${relative}: rss title exceeds 90 characters`);
+    } else {
+      /* The rss title is also the issue page's title, where it sits beside the issue
+         label. 90 is the right cap for a feed entry and far too loose for a search
+         result: issue 09 shipped a 55-character sentence, which assembled to 82. The
+         page title is checked on its own terms, the way an app's is. */
+      const label = String(data.number ?? '').replace(/^0+(?=\d\d)/, '');
+      const pageTitle = `${data.rss.title} \u2014 Issue ${label} \u2014 App Waypoint`;
+      if (pageTitle.length >= 60) {
+        errors.push(`${relative}: issue page title is ${pageTitle.length} characters, must stay under 60 ("${pageTitle}")`);
+      }
+      if (/[.]$/.test(String(data.rss.title).trim())) {
+        errors.push(`${relative}: rss title is a headline, not a sentence, so it takes no full stop`);
+      }
     }
 
     if ((data.rss.cta ?? 'Read this issue') !== 'Read this issue') {
@@ -273,6 +304,37 @@ for (let index = 1; index < chronologicalIssues.length; index += 1) {
 
   for (const appId of new Set(repeats)) {
     errors.push(`${current.relative}: Up and Coming app "${appId}" repeats the immediately preceding issue`);
+  }
+}
+
+/* The editor-name rule reaches pages now, not only content frontmatter. It did not
+   before, which is how a personal name and three social-card descriptions shipped on
+   About past a check that had existed all along: the guard was right and its reach was
+   the defect.
+
+   Pages are allowed the first name, since 2026-09-04, because About speaks in the
+   editor's voice. The full name is not allowed anywhere. So this matches the shape of a
+   full name rather than the name itself, "Zac" followed by any capitalised word, which
+   enforces the rule without writing a private surname into a public repository. */
+const pagesDir = path.join(root, 'src/pages');
+const fullNamePattern = /\b[Zz]ac\s+[A-Z][a-z]+/;
+
+async function sourceFiles(directory) {
+  const entries = await readdir(directory, { withFileTypes: true });
+  const found = [];
+  for (const entry of entries) {
+    const full = path.join(directory, entry.name);
+    if (entry.isDirectory()) found.push(...await sourceFiles(full));
+    else if (/\.(astro|ts|js|mjs)$/.test(entry.name)) found.push(full);
+  }
+  return found;
+}
+
+for (const file of await sourceFiles(pagesDir)) {
+  const relative = path.relative(root, file);
+  const source = await readFile(file, 'utf8');
+  if (fullNamePattern.test(source)) {
+    errors.push(`${relative}: public pages must not carry the editor's full name`);
   }
 }
 

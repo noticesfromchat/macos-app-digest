@@ -38,7 +38,7 @@ const appIcon = (app: { id: string; data: { icon?: string; iconStyle: string; ca
   const category = fallbackIconCategory(app.data);
   return {
     kind: 'fallback',
-    lucide: category?.icon ?? 'sparkles',
+    phosphor: category?.icon ?? 'robot',
     background: missingIconBackground[fallbackIconColor(app.id)]
   };
 };
@@ -97,9 +97,12 @@ export async function getStaticPaths() {
       slug: 'not-found',
       card: {
         layout: 'page' as const,
-        eyebrow: 'Page not found',
-        title: 'You have lost your way',
-        dek: 'That page is not here. Explore the catalogue, browse the archive or search from any page on the site.'
+        eyebrow: '404',
+        /* The title matches the page's own h1 so the card and the page state the same
+           fact. The dek stays written for a card seen without the page, where "the links
+           below" names nothing. */
+        title: 'Page not found',
+        dek: 'That page is not here. Explore the catalog, browse the archive or search from any page on the site.'
       }
     },
     {

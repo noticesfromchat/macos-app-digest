@@ -1,8 +1,9 @@
 ---
 name: shape
-description: "Plan UX and UI before code. Runs a required multi-round discovery interview, uses visual probes when available, and produces a user-confirmed design brief for implementation."
-argument-hint: "[feature to shape]"
-user-invocable: true
+description: "Plan UX and deliver a design brief without implementation."
+metadata:
+  argument-hint: "[feature to shape]"
+  user-invocable: true
 ---
 
 <!-- impeccable-pinned-skill -->

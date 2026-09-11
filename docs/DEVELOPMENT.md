@@ -7,11 +7,15 @@ Codex and other development agents.
 
 1. Open the repository root, not an empty parent folder.
 2. Fetch the remote and start from the latest `main`.
-3. Create a short-lived task branch. Do not edit or commit directly on `main`.
-4. Read `AGENTS.md` and the task-relevant documentation:
+3. Create a short-lived task branch. Do not edit or commit directly on `main`. Name
+   a single stream of work descriptively (`hero-redesign`, `tag-audit`); name the
+   weekly release branch `issue-NNN-weekly-update` for the issue it publishes. Which
+   branch the work belongs on is the editor's call, so ask rather than assume.
+4. Use `AGENTS.md` to select the task-relevant documentation and read the relevant sections:
    - `docs/STYLE_GUIDE.md` for any content or presentation change
    - `docs/ISSUE_TEMPLATE.md` for app or issue content
    - `docs/PUBLISHING.md` for weekly release work
+   - `docs/GIT_BRANCHING.md` for branch naming and combining work into a release
 5. Inspect the current content schema, components and related content before editing.
 
 Use repository-relative paths in committed files. Never commit a username, home
@@ -56,6 +60,11 @@ card URL from a local dev server is this, not a broken card. Confirm against
 `npm run build` output before treating it as a defect.
 
 ## 3. Validate before publishing
+
+During local work, use checks relevant to the change. Do not run the complete suite
+for every intermediate edit. Inspect focused patches and preserve unrelated behavior.
+Before committing or preparing publication, run the full checks below. After they
+pass, repeat only when further changes or unresolved failures justify it.
 
 Run both commands from the repository root:
 

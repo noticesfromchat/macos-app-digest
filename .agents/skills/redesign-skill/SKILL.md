@@ -1,7 +1,13 @@
 ---
 name: redesign-existing-projects
-description: Upgrades existing websites and apps to premium quality. Audits current design, identifies generic AI patterns, and applies high-end design standards without breaking functionality. Works with any CSS framework or vanilla CSS.
+description: "Redesign an existing interface while preserving its content and functionality."
 ---
+
+Use the style below only within the user's requested aesthetic. Existing product
+constraints and explicit instructions take precedence over these example recipes.
+Do not add a library, replace fonts, introduce motion or change content just because
+an example uses it. Preserve accessibility and reduced-motion behavior.
+
 
 # Redesign Skill
 
@@ -146,7 +152,7 @@ When upgrading a project, pull from these high-impact techniques to replace gene
 
 ### Motion Upgrades
 - **Smooth scroll with inertia.** Decouple scrolling from browser defaults for a heavier, cinematic feel.
-- **Staggered entry.** Elements cascade in with slight delays, combining Y-axis translation with opacity fade. Never mount everything at once.
+- **Staggered entry.** Elements cascade in with slight delays, combining Y-axis translation with opacity fade. Instant rendering is valid when it best serves the task.
 - **Spring physics.** Replace linear easing with spring-based motion for a natural, weighty feel on all interactive elements.
 - **Scroll-driven reveals.** Content entering through expanding masks, wipes, or draw-on SVG paths tied to scroll progress.
 

@@ -2,6 +2,7 @@
 name: Raindrop
 description: Organizes bookmarks, articles, PDFs and media into searchable collections with tags, highlights, previews, web archives and cross-platform apps.
 bestFor: Researchers and collectors who need a durable, organized home for links across browsers and devices.
+tagline: bookmark manager
 tags: [research, reading, productivity, files, pdf]
 categories: [files-research-documents, writing-notes-reading, productivity-workflow]
 collections: [editors-picks]

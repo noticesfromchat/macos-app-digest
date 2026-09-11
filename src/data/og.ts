@@ -29,7 +29,7 @@ export type OgCard =
 export type OgAppIcon =
   | { kind: 'plain' | 'backed' | 'contain'; src: string }
   /* No icon of its own: the first category's mark, white on its stable colour. */
-  | { kind: 'fallback'; lucide: string; background: string };
+  | { kind: 'fallback'; phosphor: string; background: string };
 
 export const appOgSlug = (id: string) => `app-${id}`;
 

@@ -27,19 +27,29 @@ const {
 const appsById = new Map(appEntries.map((entry) => [entry.id, entry]));
 const label = issueLabel(issue.number);
 const editorsPick = issue.editorsPick ? appsById.get(issue.editorsPick.app) : undefined;
+const videoCta = issue.video.url.includes('developer.apple.com/videos')
+  ? 'Watch on Apple Developer'
+  : issue.video.url.includes('youtube.com') || issue.video.url.includes('youtu.be')
+    ? 'Watch on YouTube'
+    : 'Watch video';
 const Wordmark = homepage ? 'h1' : 'p';
 const IssueHeading = homepage ? 'p' : 'h1';
 ---
 
 <article class="issue">
-  {!homepage && (
-    <div class="page-shell issue-breadcrumb-shell">
-      <Breadcrumb trail={trail} />
-    </div>
-  )}
   <header class="home-hero">
     <canvas class="home-hero-sky" aria-hidden="true"></canvas>
     <canvas class="home-hero-sea" aria-hidden="true"></canvas>
+
+    {/* The trail sits inside the hero rather than above it. Above it, it pushed the hero
+        down the page and exposed the page ground as a band between the header and the
+        hero's darker opening. Inside, it stands on the ground the hero already paints and
+        costs the hero no vertical position. */}
+    {!homepage && (
+      <div class="page-shell issue-breadcrumb-shell">
+        <Breadcrumb trail={trail} />
+      </div>
+    )}
 
     <div class="home-hero-inner">
     <div class="home-hero-copy">
@@ -63,8 +73,7 @@ const IssueHeading = homepage ? 'p' : 'h1';
 
     {editorsPick && (
       <div class="home-hero-pick" id="editors-pick">
-        <p class="eyebrow">{homepage ? 'This Week’s Editor’s Pick' : 'Editor’s Pick'}</p>
-        <h2 class="home-hero-pick-title">One app worth a closer look</h2>
+        <h2 class="home-hero-pick-title">{homepage ? 'This Week’s Editor’s Pick' : 'Editor’s Pick'}</h2>
         <AppCard
           app={editorsPick.data}
           appId={editorsPick.id}
@@ -101,20 +110,26 @@ const IssueHeading = homepage ? 'p' : 'h1';
 
   <section class="section video-section">
     <div class="section-heading">
-      <p class="eyebrow">Video of the Week</p>
-      <h2>{issue.video.title}</h2>
+      <h2 class="section-title">Video of the Week</h2>
     </div>
+    {/* The supplied title sits inside the card at Card Title rank rather than heading the
+        section. At Section Title scale a promotional listicle headline read at the same
+        rank, and in the same editorial serif, as the publication's own section titles.
+        Card Title is still serif; what changes is rank and placement, so the title stays
+        attributed and stays a heading. Third-party titles are not barred from being
+        headings: ReadingCard renders each Weekend Reading title as its own h3 the same
+        way. What is barred is one of them opening a section in the publication's voice. */}
     <article class="card feature-card">
+      <h3 class="feature-card-title">{issue.video.title}</h3>
       <p><strong>Creator:</strong> {issue.video.creator}</p>
       <p>{issue.video.description}</p>
-      <a href={issue.video.url} target="_blank" rel="noreferrer">Watch on YouTube</a>
+      <a href={issue.video.url} target="_blank" rel="noreferrer">{videoCta}</a>
     </article>
   </section>
 
   <section class="section">
     <div class="section-heading">
-      <p class="eyebrow">Weekend Reading</p>
-      <h2>Three reads for Mac context</h2>
+      <h2 class="section-title">Weekend Reading</h2>
     </div>
     <div class="grid">
       {issue.readings.map((reading) => <ReadingCard reading={reading} />)}

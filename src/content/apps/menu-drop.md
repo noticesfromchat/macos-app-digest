@@ -2,8 +2,10 @@
 name: Menu Drop
 description: A Sindre Sorhus menu bar utility for AirDropping files, folders, links and clipboard text by dropping them on an icon.
 bestFor: Mac users who send things between Apple devices constantly and want AirDrop to be one gesture faster.
+tagline: menu bar AirDrop
 tags: [menubar, airdrop, files, utility]
 categories: [mac-utilities-customization, files-research-documents]
+collections: [hidden-gems]
 source: Mac Power Users #854 and official homepage
 homepage: https://sindresorhus.com/menu-drop
 icon: /app-icons/menu-drop.png

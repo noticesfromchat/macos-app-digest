@@ -9,6 +9,8 @@ colors:
   shell-quiet: "#f0f3f7"
   deep-sea: "#092443"
   tide-slate: "#4d5762"
+  harbor-body: "#40546a"
+  harbor-chip-ink: "#384d63"
   line-water: "rgba(9, 35, 66, 0.2)"
   beacon-blue: "#0862d8"
   beacon-blue-hover: "#004caf"
@@ -18,7 +20,9 @@ colors:
   midnight-surface: "#0b1c30"
   midnight-surface-strong: "#10253b"
   moon-ink: "#f3ecdf"
-  fog-mist: "#afb6bf"
+  current-mist: "#aebdca"
+  moon-current: "#9fb4ca"
+  moon-chip-ink: "#b0c0d2"
   night-line: "rgba(217, 229, 240, 0.2)"
   buoy-blue: "#57a2ff"
   buoy-blue-hover: "#81b8ff"
@@ -72,7 +76,7 @@ typography:
     fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif'
     fontSize: "1rem"
     fontWeight: 400
-    lineHeight: 1.55
+    lineHeight: 1.5
     letterSpacing: "normal"
   label:
     fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif'
@@ -99,44 +103,43 @@ typography:
     lineHeight: 0.96
     letterSpacing: "0"
 rounded:
-  xs: "8px"
-  sm: "10px"
-  md: "12px"
-  ml: "14px"
-  lg: "16px"
-  xl: "18px"
+  sm: "8px"
+  md: "16px"
+  lg: "24px"
   pill: "999px"
 spacing:
-  xs: "6px"
-  sm: "10px"
-  md: "14px"
-  lg: "16px"
-  xl: "24px"
-  2xl: "32px"
-  3xl: "40px"
-  4xl: "56px"
-  5xl: "72px"
+  base: "8px"
+  s1: "8px"
+  s2: "16px"
+  s3: "24px"
+  s4: "32px"
+  s5: "40px"
+  s6: "48px"
+  s7: "56px"
+  s8: "64px"
+  s9: "72px"
 components:
   button-primary:
-    backgroundColor: "{colors.beacon-blue}"
-    textColor: "#ffffff"
+    backgroundColor: "transparent"
+    textColor: "{colors.beacon-blue}"
     rounded: "{rounded.pill}"
-    padding: "0 23px"
-    minHeight: "44px"
+    padding: "0 24px"
+    minHeight: "48px"
   button-secondary:
     backgroundColor: "transparent"
     textColor: "{colors.deep-sea}"
     rounded: "{rounded.pill}"
-    padding: "0 23px"
+    padding: "0 24px"
+    minHeight: "48px"
   collection-badge:
     backgroundColor: "transparent"
     textColor: "{colors.deep-sea}"
-    rounded: "{rounded.pill}"
-    padding: "0 14px"
-    minHeight: "38px"
+    rounded: "0"
+    padding: "0"
+    minHeight: "48px"
   tag-chip:
     backgroundColor: "{colors.shell-quiet}"
-    textColor: "{colors.tide-slate}"
+    textColor: "{colors.harbor-chip-ink}"
     rounded: "{rounded.pill}"
     padding: "7px 10px"
   card:
@@ -159,6 +162,10 @@ components:
 # Design System: App Waypoint
 
 ## Overview
+
+**Implementation references:** use [the current component reference](docs/COMPONENT_REFERENCE.md)
+for production markup, styles and review routes. The handwritten component gallery was
+retired on 2026-09-07; the active sidecar retains tokens and rules, with no copied previews.
 
 **Creative North Star: "Quiet harbor editorial"**
 
@@ -188,7 +195,9 @@ The palette is a two-mode harbor system: white paper on fog grey with navy ink b
 - **Shell Strong** (#e3e8ee): the control fill — hover and focus feedback on icon buttons, nav items, search rows, and the filter count badge.
 - **Shell Quiet** (#f0f3f7): the chip fill, one step quieter than the control fill. Tag chips are metadata that should recede on a card, not controls asking to be pressed, so they sit at roughly half Shell Strong's distance from the card surface — the same step the night theme already gives them.
 - **Deep Sea** (#092443): the primary light-theme ink.
-- **Tide Slate** (#4d5762): secondary text and metadata.
+- **Tide Slate** (#4d5762): light-theme metadata and utility text.
+- **Harbor Body** (#40546a): light-theme reading copy below primary Deep Sea ink.
+- **Harbor Chip Ink** (#384d63): light-theme text carried by Shell Quiet chips.
 - **Line Water** (rgba(9, 35, 66, 0.2)): borders and separators.
 - **Header Fog** (rgba(244, 246, 249, 0.96)): the light sticky header.
 
@@ -198,7 +207,9 @@ The palette is a two-mode harbor system: white paper on fog grey with navy ink b
 - **Midnight Surface** (#0b1c30): the primary dark surface.
 - **Midnight Surface Strong** (#10253b): the dark surface contrast tone, and the value Shell Quiet resolves to at night — the night chip was already sitting at the quiet step, which is why only the day chip had to move.
 - **Moon Ink** (#f3ecdf): the main dark-theme foreground.
-- **Fog Mist** (#afb6bf): muted dark-theme copy.
+- **Current Mist** (#aebdca): dark-theme metadata and utility text.
+- **Moon Current** (#9fb4ca): dark-theme reading copy, derived from the navy surface hue.
+- **Moon Chip Ink** (#b0c0d2): dark-theme text carried by Midnight Surface Strong chips.
 - **Night Line** (rgba(217, 229, 240, 0.2)): borders and separators in dark mode.
 - **Buoy Blue Hover** (#81b8ff): the brighter dark-theme hover state.
 - **Night Header Fog** (rgba(4, 20, 38, 0.96)): the dark sticky header.
@@ -212,6 +223,14 @@ These are drawn, not printed: they exist only inside the homepage hero's canvas 
 
 **The Beacon Rule.** Blue is reserved for actions, links, focus, and active states. It should not become page chrome or decorative noise. The palette carries no warm accent: a light wash behind the hero was tried and removed for drawing attention to itself rather than to the pick it sat behind.
 
+**The Surface Ink Rule.** Primary reading copy, chip text and metadata are separate semantic
+roles: `--body-text`, `--chip-text` and `--muted`. Each theme maps those roles onto the
+surface's own blue axis instead of dropping a neutral grey over a chromatic ground. Primary
+descriptions, explanations and editorial prose use `--body-text`; tag labels use
+`--chip-text`; dates, counts, breadcrumbs, sources and operational hints use `--muted`.
+Beacon Blue remains reserved for actions, focus, active states and the established eyebrow
+labels. Every mapping clears AA on each surface where it appears.
+
 ## Typography
 
 **Display Font:** Iowan Old Style, Baskerville, "Times New Roman", serif
@@ -221,29 +240,167 @@ These are drawn, not printed: they exist only inside the homepage hero's canvas 
 The type system is split between a classic editorial serif for the headlines and a practical system sans for everything that carries utility, metadata, or navigation. The App Waypoint wordmark uses the same editorial serif as the headline system so the brand voice stays consistent.
 
 ### Hierarchy
-- **Display** (500, clamp(4rem, 8vw, 6rem), 0.92): held in reserve. Nothing currently uses it — the app detail title was its last user and now takes Headline like every other page title. Reintroduce it only for a surface that genuinely outranks a page title.
-- **Headline** (500, clamp(3.25rem, 5.1vw, 4.25rem), 0.96): every page title — archive, explore, about, tag, collection, category, and app detail. Delivered through `--type-page-title`, which steps down to clamp(2.8rem, 12vw, 3.75rem) below 680px so long titles wrap instead of overflowing.
-- **Section Title** (500, clamp(2.2rem, 4vw, 3.8rem), 1.0, -0.03em): the heading that opens a section within a page, on every page including About. Delivered through `--type-section-title`. A heading nested *inside* a card is a rank below this and sets its own smaller size.
-- **Subhead** (600, fluid 1.9-2.35rem, 1.1): the hero's issue number, its Editor's Pick title, and headings nested inside a card — the step between a section title and a card title.
-- **Title** (600, 1.4rem, 1.15): card titles, app names, and the name of a category or collection wherever it appears — app detail, explore, and the category directory all set it at this one size.
-- **Dek** (400, clamp(1.12rem, 1.4vw, 1.25rem), 1.58): the standfirst under a title, page or section. One clear step above body — never level with it — muted in colour, and identical everywhere. Delivered through `--type-dek`.
-- **Body** (400, 1rem, 1.55): descriptions, explanations, and editorial copy.
-- **Label** (800, .78rem, .1em, uppercase): eyebrows, small UI labels, control legends, and counts inside chips. There is no size below this one — a label that felt it needed to be smaller was drift, not a role.
-- **Control Label** (700, .84rem): the text on something you press — `.button`, and the Filter and Sort triggers. It is the only small role that is neither tracked nor uppercase, because a control is read as a word and not as a heading.
-- **Metadata** (600, .84rem, 1.45): counts, sources, and secondary operational information. The directory's live count is the tracked variant of this role, at 700 with .04em and muted, sitting one step *below* the controls beside it so a readout is not mistaken for something to press.
+Every role is a family, a size, a weight **and a line box**, defined together. A size
+changed without its leading is how the same role ends up in two different boxes: mobile
+search titles sat in a 21.97px box until 2026-09-07 because a breakpoint moved the size
+and left the ratio behind. Leading is unitless so it survives a reader's zoom.
+
+The sizes below are the **implemented** scale, confirmed against the running site on
+2026-09-07. This file previously described page titles at 52-68px and section titles at
+35.2-60.8px, a scale nothing had rendered for weeks; a correction made faithfully against
+that text would have enlarged every title on the site by roughly seventy per cent. The
+implemented scale is the baseline and this table is now the record of it.
+
+| Role | Size | Line box | Weight | Token |
+| --- | --- | --- | --- | --- |
+| Page Title | 30-40px fluid | .96 — exempt | 500 | `--type-page-title` |
+| Section Title | 24-33px fluid | 1 — exempt | 500 | `--type-section-title` |
+| Subhead | 22-28px fluid | 1.08-1.1 — exempt | 600 | `--type-subhead` |
+| Card Title | 23px | **28px** (1.2174) | 600 | `--type-card-title` |
+| Tile Title | 18px | **24px** (1.3333) | 600 | `--type-tile-title` |
+| Dek | 19px | **32px** (1.6842) | 400 | `--type-dek` |
+| Body | 16px | **24px** (`--leading-body`) | 400 | — |
+| Metadata | 14px | **20px** (`--leading-meta`) | 600 | `--type-meta` |
+| Label | 12px | **16px** (`--leading-label`) | 800 | `--type-label` |
+
+**Fluid display type is exempt from the step.** Page Title, Section Title and Subhead set
+their size with `clamp()`, so no single leading can put them on a 4px box across the range.
+They keep tight ratios instead. Every fixed role lands on a 4px step, which is what The
+Line Box Rule allows and what makes an interval after a label predictable.
+
+**Leading is a token, not a literal.** `--leading-label` (1.3333) and `--leading-meta`
+(1.4286) both existed in the stylesheet before 2026-09-07 as correct numbers typed at two
+use sites — `.tag` and `.breadcrumb` — while nine other uses of the same two roles inherited
+body's 1.5 and landed on 18px and 21px boxes. The values did not change; naming them did.
+A repeated eyebrow was adding 18px to a stack built on 8px, which is why an 8px margin
+after one never produced a regular interval.
+
+There is no size below Label. A label that felt it needed to be smaller was drift, not a
+role.
 
 **The two small roles use the opposite tokens to their names.** Control Label is delivered by `--type-meta` and the count's metadata variant by `--type-label`. This is backwards and it is deliberate for now: the tokens are plain sizes used across dozens of rules, and renaming them to match the roles is a site-wide pass, not a footnote to this one. Read the role from the entry above, never from the token name, and do not "correct" a measured page back toward the token that names it.
 - **Brand** (500, fluid 1.35-2rem): the App Waypoint wordmark set in the same editorial serif as the headline system.
 
-**The Even Rule Rule.** A horizontal rule carries the same space above it as below it. That space is `--section-space` — clamp(26px, 3.8vw, 40px), one value for the whole site — and it belongs to whatever sits on either side, which means a page's opening block pays the bottom half before the first divider. A rule that hugs the content above it is the tell that a block forgot to close on the rhythm. The rhythm is close rather than airy on purpose: the pages are dense and the rules are hairlines, so a wide gap reads as a gap rather than as a division. The only blocks that sit tighter are the ones that follow a drawn divider instead of a rule, where there is no rule to be symmetric with.
+**No section draws a rule.** Content is separated by the grid, not by hairlines. A hairline between two blocks already a full section apart states the boundary twice, and once the spacing scale was doing the work honestly the rules had nothing left to say. They went from issues and About on 2026-09-05, then from the archive, Explore and app detail pages the same day; the site now draws no horizontal rule that divides content anywhere.
 
-**The Eyebrow Binding Rule.** An eyebrow names the block beneath it, so the gap that binds the two is one value for the whole site: `--eyebrow-gap`, 11px. Every eyebrow on every surface uses it, whether it comes from the `.eyebrow` margin in normal flow or from a grid `gap` where the group is laid out as a grid. A surface that sets its own number drifts out of the pair, and that is exactly how the app-detail rail ended up with 14px inside its groups while the rest of the site sat at 11px, and 40px before one eyebrow against 22px before the next.
+A hairline that *constitutes a control* is not a divider and stays: the RSS URL card's edge, the filter panel's structure, an input's border. The test is whether removing it would make something harder to operate rather than merely less ruled.
 
-The rhythm is two values, not one. **11px binds an eyebrow to its content; 24px separates one labelled group from the next.** That contrast is what makes a rail read as three groups rather than one list, and it is why the separation never needs a rule drawn between the groups. Note that 11px sits between the `sm` and `md` steps of the spacing scale: it is the established value across every existing surface, held in a token rather than repeated, and worth revisiting only as a deliberate site-wide pass.
+This replaced **The Even Rule Rule**, which asked that a rule carry the same space above it as below — `--section-space`, one value for the whole site, paid half by each side. That rule was sound and it is recorded because it was load-bearing for a year: it is the reason section spacing was ever symmetric, and why removing the lines meant re-deriving the intervals rather than simply deleting a border. Sections now sit on one interval instead of two halves flanking a line, and the padding is asymmetric so that interval can be an odd number of steps.
 
-**The One Measure Rule.** All prose runs to `--measure` (52ch) and nothing else. Because `ch` scales with the element's own font size, the same token holds roughly seventy characters at the dek's 17.9px, at body's 16px, and at the footnote's 13.4px — a pixel column cannot do that, it just widens as the type shrinks. Every prose surface is on it: deks, About, footnotes, best-for, panel copy, feature-card copy, and category descriptions. A fixed-pixel `max-width` on running text is a bug.
+**The Base Unit.** Every *structural vertical* spacing value on the site is a whole
+multiple of 8px, held as `--base` with the scale `--space-1` through `--space-9` running
+8 to 72. Adopted 2026-09-05; made a real dependency 2026-09-07.
 
-**The One Page Title Rule.** Every page opens the same way: the breadcrumb trail at the shell's `--page-start-space`, the title in Headline at `--type-page-title` 11px beneath it, and the dek 15px beneath that at `--type-dek`. The title carries no margin of its own; the trail owns the gap, at `--eyebrow-gap`, because it names the page under it exactly as an eyebrow does. Until 2026-09-02 the title itself sat hard against `--page-start-space` and nothing preceded it. That changed when the trail arrived, and it changed on every page at once rather than on the deep ones only, so the opening stayed one shape. App detail pages are not an exception — the app name is a page title, not a bigger thing. A page that wants more presence gets it from its composition below the fold, never from a private type scale.
+The wording matters, and it is narrower than this rule used to claim. It said every
+spacing value, **dimension** and radius, which was not true of three things at once: the
+field grid's 180px is 22.5 units, an app icon frame's corner is 25% of its own side, and
+line boxes step on 4. The horizontal grid is a separate system and does not divide by the
+vertical base; that is the two-grid model, not a violation of it.
+
+**The scale is calculated, not typed.** `--space-3` is `calc(var(--base) * 3)` and
+`--eyebrow-gap` is `var(--space-1)`. Until 2026-09-07 every step repeated its own pixel
+literal, so the values agreed with the base by coincidence and changing `--base` changed
+nothing at all. They are now a dependency: setting the base to 10px moves the whole scale,
+and consumers must use the tokens too. Shared styles and scoped page styles now take
+vertical spacing from this scale; horizontal field gutters remain independent.
+
+Before that the scale existed only in this file, as prose, while every value was typed
+literally at its use site. The stylesheet carried 11, 13, 14, 18, 20, 22, 27, 30, 34 and
+38px all at once, and from the outside there was no way to tell which of those were
+hard-won decisions and which were accidents nobody had caught. The scale is now a
+mechanism rather than a description of what happened, and that is the whole point of it: a
+rule that cannot be read from the code is not a rule, it is a memory.
+
+**Structural vertical spacing steps; it does not interpolate.** `--section-space`,
+`--page-start-space`, the hero's own padding and the footer's margin were all `clamp()`
+expressions, so the one value the whole site uses for a section boundary was whatever the
+viewport made it — 38px at a 1000px viewport, 60px between the last section and the footer.
+Each now takes a token that steps at 921px and 1100px, the site's own breakpoints, landing
+on the values the clamps reached at their floor, middle and cap: the boundary is 24 / 32 /
+40, the hero opens 32 / 40 / 48 and closes 32 / 48 / 56, and the footer stands off 48 / 64
+/ 72. A width between two breakpoints now gets a spacing decision rather than an
+interpolation.
+
+Fluid values that remain are horizontal and are exceptions by the two-grid model rather
+than by oversight: the shell's own gutter, the column gaps in the homepage hero and the
+app-detail rail, and the icon frame that scales with its page. Fluid *display type* is also
+kept, under The Line Box Rule. Overlay placement is a separate viewport-fitting
+exception: search opens at min(9vh, 12 base units), RSS at min(10vh, 12 base units),
+and mobile overlays respect safe-area insets. These offsets position dialogs in the
+viewport; they do not set the vertical rhythm of page content.
+
+Four things sit outside the base deliberately. Hairlines and optical nudges of 4px and
+under keep their own values, because a 1px border is not a spacing decision. Line boxes
+step on 4px, half the base, for the reason given below. Touch targets round up and never
+down for coarse-pointer controls; the role-specific heights below define their targets. And one derived width stays odd: the filter
+panel's `calc(200% + 20px)` is what makes its right edge land exactly on the Sort control's,
+and snapping that 20 to 16 would break the alignment by 4px.
+
+An exception is only legible when there is a rule to depart from. That is as much of the
+argument for a base unit as consistency is — 8px is what makes an odd number mean something.
+
+**The Line Box Rule.** What stacks on a page is not the font size, it is the line box: the
+strip each line occupies, whose height is the line-height. Body is 16px at 1.5, so its line
+box is 24px, three base units, and a three-line paragraph is exactly 72px every time.
+
+Every fixed-size role is set so its line box lands on a 4px step. Tag chips go 12px to a
+16px box, card titles 23px to 28, deks 19px to 32, meta text 14px to 20. Forcing all of
+them onto a full 8px step would distort real type — a 23px title wants about 28px of
+leading, and 24 is too tight while 32 is too loose — so the half-step is the working
+compromise, and most roles land on 8 anyway.
+
+The values are unitless ratios rather than pixel leadings, so the whole system scales when
+a reader enlarges text in their browser instead of the line box staying fixed while the
+type grows out of it.
+
+Two kinds of text are exempt. Fluid display type sets its size with `clamp()` — the page
+title, section headings, the wordmark — so no single leading can sit on the base across the
+range; those keep their ratios. And an element that carries its own height is measured by
+its box, not its line box: the footer's nav links have a 21px line box inside a 24px
+`min-height` set for WCAG 2.2 target size, so the box already lands on the base and the
+line box inside it is the wrong thing to measure.
+
+**The Radius Scale.** Three steps on the base, `--radius-sm` 8px, `--radius-md` 16px and
+`--radius-lg` 24px, with `--radius` aliasing the large one, plus the pill and the circle. A
+component's radius matches its own inset: ordinary and video cards use one
+`--card-inset: var(--space-3)` for both padding and radius (24px). The Editor's Pick
+uses `--pick-inset: var(--space-4)` for its 32px padding, corner and accent rim.
+The radius scale itself derives from the spacing tokens.
+
+**Concentric corners.** An element nested N px inside another takes the parent's radius
+minus N, so the two curves stay parallel rather than showing a second arc where they
+diverge. Three places had drifted out of this by 2026-09-05 and all three were visible.
+The Editor's Pick accent rim computed 13.5px around a 24px card, because `--pick-radius`
+had been written against the old 12px corner and never followed it; it now takes
+`--pick-inset` through `--pick-radius`, with the ordinary radius as a fallback. The Filter trigger sat at 8px one pixel inside a 16px
+wrapper, and now takes `calc(var(--radius-md) - 1px)`. Its dropdown sat at 8px beneath a
+16px control, and now takes the full `--radius-md` at every width so trigger and panel read as one object.
+The mobile panel spans the page shell, not the viewport, and keeps that same 16px corner.
+Search result rows use the sitewide `--radius-sm` at 8px. Their one-pixel difference from
+the mathematically concentric 7px inner corner is less visible than a fourth radius value
+appearing in the interface, so consistency with other small nested elements wins here.
+Their hover and focus fills sit 16px inside the search panel, matching the horizontal field
+gutter used by the result count; the row's own 16px padding remains inside that boundary.
+
+**The Eyebrow Binding Rule.** An eyebrow names the block beneath it, so the gap that binds the two is one value for the whole site: `--eyebrow-gap`, 8px, one base unit. Every eyebrow on every surface uses it, whether it comes from the `.eyebrow` margin in normal flow or from a grid `gap` where the group is laid out as a grid. A surface that sets its own number drifts out of the pair, and that is exactly how the app-detail rail ended up with 14px inside its groups while the rest of the site sat at the shared value, and 40px before one eyebrow against 22px before the next.
+
+The rhythm is two values, not one. **8px binds an eyebrow to its content; 24px separates one labelled group from the next.** That contrast is what makes a rail read as three groups rather than one list, and it is why the separation never needs a rule drawn between the groups. The gap was 11px until 2026-09-05, a value that sat between two steps of the old scale. This file used to note it was worth revisiting only as a deliberate site-wide pass; the base-unit adoption was that pass, and it moved to 8px, exactly one unit.
+
+**The One Measure Rule.** Prose uses `--measure` (52ch), except for About's named reading-column exception below. The `ch` unit follows the element's font and size, so the current 19px dek and 16px body derive their own widths from the same token; it does not guarantee an exact character count. Deks, footnotes, best-for, panel copy, feature-card copy and category descriptions use this shared measure. Metadata is currently 14px and is a separate role, not a prose-width reference.
+
+**About is that exception, and it is named.** Its column is `--about-measure`, 624px, and the title, the dek, the section headings and the prose all take it. On this page the column and the reading measure are the same number: a page with no grid to fill has nothing to span, so the rules and headings must sit with the text rather than reaching past it, and at 624px the line runs about 73 characters — inside the 65-75 the craft floor asks for, and slightly wider than the 62 that 52ch was giving. It is a width rather than a character count because the *column* is what is being set here, and the measure follows from it.
+
+This file used to claim About was on `--measure` like everything else. It never was, and the title was not even on the column: About carries `.archive-page` as well as `.about-page`, so `.archive-page h1`'s 920px cap outranked `.about-page > *` and the heading ran 296px past the text beneath it until 2026-09-07. The width is now defined once and every element on the page stops at the same edge.
+
+**The One Page Title Rule.** Every page opens the same way: the breadcrumb trail in a 16px band at the top of the shell — `--page-start-space` above it and 16px below — then the title in Headline at `--type-page-title`, and the dek 16px beneath that at `--type-dek`. The title carries no margin of its own; the trail owns the gap. Until 2026-09-02 the title itself sat hard against `--page-start-space` and nothing preceded it. That changed when the trail arrived, and it changed on every page at once rather than on the deep ones only, so the opening stayed one shape. A page that wants more presence gets it from its composition below the fold, never from a private type scale.
+
+**The trail sits in an even band, and that band is 16px.** The gap above the trail and the gap below it are the same number on every page and at every width. The trail spans the distance between the header and the page it names and belongs to neither, so an uneven band reads as the trail having fallen toward whichever side is closer rather than as a deliberate opening.
+
+It took `--eyebrow-gap` beneath it until 2026-09-09, on the reading that the trail names the page under it exactly as an eyebrow names its block. That is true of what the trail *says* and not of where it *sits*: an eyebrow is set inside its own block and shares that block's ground, while the trail has ground on both sides. App detail pages had already been carrying 16px beneath the trail for their taller icon lockup, which was the same conclusion reached one page at a time. The eyebrow token is unchanged and still binds every actual eyebrow at 8px; only the trail moved off it.
+
+Above the trail, `--page-start-space` went 36px → 24px (2026-09-04) → 16px, and it no longer steps up to 32px below 680px. A band that means one thing has to measure one thing at every width, so the phone opening that was deliberately wider than desktop's is now the same as it. The homepage and 404 carry no trail; they still open on `--page-start-space` and simply have no band to balance.
+
+**A control beside the title does not get to set the title's position.** The archive puts its search on the opening rather than on a row of its own, and while that was a flex row shared with the title it made the row as tall as the control — 48px against the title's 38.4px line, 56px against 30px at the widths where controls grow. Centred, the row paid half that difference into the gap above the title and half into the gap below, so the archive opened 20.8px under its trail where Explore and About open at 16, and 29.6px at mid widths; once the row wrapped, the search dropped between the title and the dek and made that gap 88px. The title and the dek now own the rows and the search spans both and centres against the pair, so it can be taller than either without moving them, and below 680px it takes its own row beneath the dek. Every page that opens with a title now opens on the same two steps at every width. Fixed 2026-09-09.
 
 **The Plain Dash Rule.** Public editorial copy uses no em dash and no en dash. Restructure to a period, a comma, a colon, or parentheses, and set number and date ranges with a plain hyphen: `August 5-19, 2026`, not `August 5–19, 2026`. The em dash is the clearest tell of machine-drafted prose, and this publication is human-led by design. Three things sit outside the rule and stay as they are. Page-title separators are an SEO and publishing convention and are indexed, so `Archive — App Waypoint` is correct. Quoted external titles in source notes and reading lists keep their own punctuation, because changing it misquotes the source; source notes stopped being published on 2026-09-01 but are still written and still validated, so the exception still governs how they are recorded. Code comments are not copy and no reader sees them. The rule governs the site's public copy, not this repository's documentation. General frontend guidance in `.agents/skills/taste-skill` states a blanket zero-tolerance ban covering titles as well; that is a marketing-page heuristic, this narrower rule is what governs here, and the vendored skill is deliberately left unedited so it stays diffable against upstream.
 
@@ -255,13 +412,170 @@ The rhythm is two values, not one. **11px binds an eyebrow to its content; 24px 
 
 The site uses a shared centered shell with a maximum width of 1160px and responsive gutters that resolve to 20px on desktop and 12px on mobile. The same shell is used across app detail, tag, collection, archive, and about pages so the directory feels like one system instead of separate templates.
 
-About is not a special case: its headings sit in ordinary `.section` blocks at full shell width, and only its paragraphs take `--measure`. A section rule is always flanked symmetrically by `--section-space` (clamp(26px, 3.8vw, 40px), so 40px on desktop and 26px on a phone — the cap lands exactly on the 3xl spacing step), including the first rule on a page — a page's opening block closes on that same space so the rule lands centred rather than hugging the paragraph above it. The homepage opens wider and more scenic, but its content still obeys the same page rhythm: full-width header and footer, then a controlled interior with sections separated by thin rules. Desktop cards usually live in a three-column grid; below 920px the grid collapses to one column and the pages stop pretending they are desktops. Around 680px the mobile gutters tighten, the header simplifies further, and coarse-pointer contexts inherit larger hit targets even when they are wider than a phone.
+**The Field Grid.** The shell is **twelve tracks on 16px gutters**, each track derived from
+the width actually available: `track = (shell - 11 x 16) / 12`. At the 1160px maximum that
+is 82px. Spans are what components ask for: a category tile takes 2 tracks (180px), an app
+card and a collection tile take 4 (376px), and Filter and Sort take 2 each so the pair
+covers 4 — one card — with the gutter between them.
+
+It ran on six fixed 180px fields until 2026-09-07. The arithmetic was right at the maximum
+width and only there: 180 x 6 + 16 x 5 = 1160, and a card was two fields plus a gutter. But
+the fields were literals, so they stopped being fields the moment the shell shrank. At a
+1000px viewport the cards measured 309.33px while Filter and Sort still measured 180 each
+and their pair still measured 376, and the toolbar and the catalogue no longer shared an
+edge. Twelve fluid tracks render the 1160px composition identically — every measured
+position and width is unchanged — and hold it at every width below.
+
+Twelve rather than six for growth as well as fluidity. Six held six categories at one field
+and three collections at two, and had no span for a fourth collection, because 1.5 fields
+does not exist. Twelve contains six, so nothing today moves, and it takes four collections
+across at 3 tracks each when one ships. That is a future option requiring a label-fit test,
+not automatic behaviour.
+
+**What is on the grid, and what is not.** Field-aligned: the taxonomy rows, the directory
+toolbar including its search field and Filter panel, and the card grid. Deliberate editorial
+exceptions, within the same shell: the homepage hero, whose two columns are a .95/1.05 split
+because the pick card and the copy are not a card grid; the app-detail rail at a fixed 400px,
+sized from the tag sets it holds; and About's reading column, which is a measure decision
+rather than a grid one. Those three are exceptions because a page composed for reading is
+not a catalogue, not because the grid failed to reach them.
+
+About is the one page that narrows its column. Its shell is the usual 1160px, so the page starts on the same left edge as every other page, but the blocks inside it cap at 620px, so its headings sit with its prose instead of spanning the full shell (its section rules did too, while it had any). Narrowing the shell itself would have centred the column and made About the one page whose content begins somewhere else. Everywhere else the shell is 1160px because a three-column card grid fills it, and a full-width rule there divides full-width content. About has nothing to fill it: its rules were running 1032px to head a 524px column, leaving a 508px dead field and a divider promising content to its right that was never coming. Prose still takes `--measure` inside that column, so the reading measure is unchanged at roughly seventy characters; what changed is that the dividers now match the thing they divide. This page previously followed the shell like every other, and that is recorded here because the uniformity was deliberate rather than accidental: the rule was written for pages the shell fits, and this is the one it does not. Issues and About draw no section rules. The grid separates their content, and a hairline
+between two blocks already a full section apart was a second statement of the same boundary.
+Their sections sit on one interval instead of two halves flanking a line, and the padding is
+asymmetric so that interval can be an odd number of steps: the gap is one section's bottom
+plus the next one's top, so a symmetric pair only reaches even multiples of 16. It also puts
+more space above a heading than below the content it introduces, which is the rhythm these
+pages already wanted.
+
+An issue is a run of card sections, each already bounded by its own cards, so it reads at
+**56px**, seven steps, from 32 above and 24 below. About is prose rather than cards, so it runs on a
+three-step ladder of its own instead of a single section value.
+
+**The About ladder.** Three intervals, each double the last, so every gap says which level
+of grouping it marks: **8px binds** a heading to the content it introduces and one list item
+to the next, **16px is paragraph rhythm** between siblings in a block, and **32px is a group
+boundary** between the dek and the body, the intro and the first section, and one section and
+the next. The section padding is 24 above and 8 below, which sums to that 32 while putting
+three times as much space above a heading as beneath it.
+
+**The section's padding owns that boundary, so nothing that ends a section adds to it.**
+`.about-page .section > *:last-child` carries no bottom margin. The criteria list sets a
+symmetric 16px, which is correct between two paragraphs and wrong as the last block in a
+section: it made the gap under *What earns a spot* 48px where every prose section closed at
+32. The rule is written against the last child rather than against the list, because the
+next block to end a section would have reached the same 48. Fixed 2026-09-09.
+
+**The Section Header Gap.** A section header — a section title, alone or under an uppercase
+eyebrow — sits **24px above the content it names**, `--space-3`, on every surface that
+draws one: the homepage, issue pages, Explore and app detail. It is one value in one place,
+`.section-heading`, and one surface overrides it. That container holds either form; see The
+Two Level Rule for which one a given section gets.
+
+**About is the exception, and it is 8px.** `.about-page .section-heading` binds its heading
+to the prose beneath at `--space-1`, not `--space-3`. A card section heads a grid that its
+own cards already bound, so 24px reads as binding; About heads running prose, where the
+heading and its first line are one block and 24px would read as the tail of the section
+above. It is the same reasoning as The About ladder, where 8px is what binds a heading to
+what it introduces, and it is why the override stayed scoped even after the site value came
+down from 32 to 24. Preserved unchanged on 2026-09-09 when About moved onto `.section-title`.
+
+The header is a lockup that names the block beneath it, so the gap that binds it to that
+block has to read as shorter than the gap that separates one section from the next. On an
+issue that separation is 56px, so at 32px the header was sitting closer to half way between
+its own cards and the section above than to the cards it introduces, and a run of five card
+sections read as one long list with labels floating in it rather than as five groups. 24px
+against 56 states the hierarchy the page actually has. The value went from 32 to 24 on
+2026-09-09.
+
+App detail pages ran a private `--space-3` here from the start and reached the site value
+from the other direction — the same eyebrow, the same section title and the same cards were
+briefly on two rhythms while the base was 32. That override is gone; the page inherits.
+
+**The Two Level Rule.** An eyebrow and a heading belong together only when **each level
+contributes information the other cannot**. A fixed rubric above an issue-specific
+editorial angle earns both: across 37 sections in nine issues there are five eyebrows and
+37 titles that never repeat, so the eyebrow is the index a returning reader navigates by
+and the title is what this week's three apps have in common. Current or archived issue over
+the issue number earns both the same way, status over identity. The app detail rail's four
+labels are a single level by construction: nothing sits beneath them but the block they
+name.
+
+Whether a string lives in a template or in a content record decides nothing. That test was
+proposed and rejected on 2026-09-09: it would disqualify the rail labels, which are fixed
+strings doing necessary work, while admitting any filler an editor happened to type. What
+disqualifies a second level is saying nothing the first did not. Three failed that test and
+are gone: `One app worth a closer look` under This Week's Editor's Pick, `Three reads for
+Mac context` under Weekend Reading, and `You May Also Like` over `More apps like this`,
+where the eyebrow went rather than the heading because it spoke in a recommendation
+engine's register on the page whose whole claim is that a person chose these one at a time.
+
+**A single heading is a supported form, not half a lockup.** It takes `.section-heading`
+like any other section header, and its heading takes the explicit `.section-title` hook.
+The hook exists because `.section h2` only reaches headings inside a `.section`, and
+Explore's taxonomy sections are not one; lacking a way to say "Section Title" out loud,
+they borrowed `.eyebrow` for its type ramp, which is how two of the page's three sibling
+h2s came to render at 12px beside a third at 33px, on the rail's 8px binding rather than
+this 24px gap.
+
+**Which role a heading takes, and why it is not the heading level.** A heading that **opens
+a standalone section** takes Section Title. A heading that **labels one featured card
+inside the hero** may take the compact Label role, because there the app's own name is the
+block's primary visual identity and a section-scale line above it would outrank the thing
+it introduces. That is the whole of the exception: it explains the Editor's Pick heading
+and it does not reach Explore's standalone sections. **Heading semantics stay independent
+of visual size.** The level states document structure and is chosen for the outline; the
+role states rank and is chosen for the eye. An h2 at Label scale is not a demoted heading,
+and an h2 at Section Title scale on one page is not a promise about h2 on another.
+
+**The label a reader sees and the heading assistive technology announces are one element.**
+The Editor's Pick carried an eyebrow paragraph and a separate clipped h2 until 2026-09-09,
+so above 920px sighted readers saw `This Week's Editor's Pick` while heading navigation
+announced `One app worth a closer look`, and below 920px the filler heading appeared at
+subhead scale and tied the app's own name at the same size. Two audiences, two different
+words, one block. One heading now carries both jobs, and it is visible at every width.
+
+**Card grids collapse into this gap, they do not add to it.** `.directory-grid` carries a
+16px top margin for the directory surfaces, where it follows a filter toolbar rather than a
+header. Where it follows a header the two are adjacent siblings, so the margins collapse to
+24 and not 40. This file recorded the app detail gap as 40px and a 48px default until
+2026-09-09; neither number was ever on the page, because both were written as a sum of two
+margins that collapse. Any future change here is a change to one margin, not to a sum.
+
+**About is the exception, and it is the ladder's own value rather than this one.** Its
+headers sit at 8px because they head prose, where a heading and its first line are one
+block, and because its sections run on the 32px ladder above rather than the 56px issue
+interval. That the two numbers are now both drawn from the low end of the scale is not a
+reason to merge them: they answer to different intervals above them.
+
+Before this the page had one value doing nine jobs: 16px separated the title from the dek,
+the dek from the body, paragraph from paragraph, a heading from its content, a list from its
+lead-in, and one list item from the next, while sections sat at 24 — eight pixels more than a
+paragraph break, which is not enough difference to mean anything. Every value was on the base
+and the page still read as arbitrary, because a scale is only legible when the steps are far
+enough apart to be told apart. Both fall back
+to a symmetric `--space-3` and 48px below 920px, where a single column makes every section
+long anyway.
+
+The issue page has one wider boundary by design: an 80px `content-divider` sits between the
+launches and video sections, so that gap measures 136px rather than 56. Both are whole steps at every
+width, which the old pair was not — `--section-space` was a fluid clamp, so doubling it landed
+on the base only at the clamp's endpoints and gave 76px at a 1000px viewport.
+
+Explore, the archive and app detail pages were the last three surfaces still drawing section
+rules, and they stopped on 2026-09-05. Each one had the same fault underneath: the rule was
+carrying a boundary that the interval on either side of it was also carrying, so removing it
+left the space doubled rather than correct. The app detail page was the clearest case — the
+hero's `border-bottom` and `.section`'s `border-top` sat directly on each other, two hairlines
+thick, with 40px of padding on each side. It resolved to one owner and one interval: the hero
+carries no bottom padding, the section carries 32px, which is the step the issue page uses.
+The homepage opens wider and more scenic, but its content obeys the same page rhythm: full-width header and footer, then a controlled interior whose sections are separated by space. Desktop cards usually live in a three-column grid; below 920px the grid collapses to one column and the pages stop pretending they are desktops. Around 680px the mobile gutters tighten, the header simplifies further, and coarse-pointer contexts inherit larger hit targets even when they are wider than a phone.
 
 Prose everywhere runs to `--measure`, so the reading column is the same width in characters on every page regardless of the type size sitting in it. App detail pages use the same shell and the same page-title and dek roles as every other interior page; what makes them editorial is the composition below the title — content set directly on the page field rather than in a card, a two-column best-for/tags panel, and a narrower related-apps grid. Section spacing is generous but disciplined, with more space above headings than below them.
 
 ## Elevation & Depth
 
-Depth is soft and ambient rather than structural. Surfaces stay flat at rest, then gain soft shadows, border contrast, and subtle hover lift when they need separation. The sticky header and search overlay add atmosphere with blur and translucency, but the system never relies on hard offsets or gimmicky glow.
+Depth is soft and ambient rather than structural. Surfaces stay flat at rest, then gain soft shadows, an inset accent ring, and subtle hover lift when they need separation. The sticky header and search overlay add atmosphere with blur and translucency, but the system never relies on hard offsets or gimmicky glow.
 
 ### Shadow Vocabulary
 - **Ambient Card** (`box-shadow: 0 18px 55px rgba(27, 35, 42, 0.08)`): resting cards and surface containers.
@@ -269,13 +583,18 @@ Depth is soft and ambient rather than structural. Surfaces stay flat at rest, th
 - **Night Ambient** (`box-shadow: 0 20px 60px rgba(0, 0, 0, 0.24)`): dark-theme resting surfaces.
 - **Night Hover** (`box-shadow: 0 28px 72px rgba(0, 0, 0, 0.42)`): dark-theme hover elevation.
 
-**The Soft Hull Rule.** Surfaces lift with a soft shadow and a border change, not with hard edges or dramatic offsets. The lift settles rather than snaps: cards cross to their hover state over 320ms on `cubic-bezier(.16, 1, .3, 1)`, the same exponential ease-out the brand wordmark uses.
+**The Soft Hull Rule.** Surfaces lift with a soft shadow and an inset ring, not with hard edges or dramatic offsets. The lift settles rather than snaps: cards cross to their hover state over 320ms on `cubic-bezier(.16, 1, .3, 1)`, an exponential ease-out. The header wordmark used to fade in on the same curve at 520ms; that wordmark was removed on 2026-09-06 and the curve is now stated by the cards alone.
 
 ## Shapes
 
-The shape language is rounded but disciplined. Two radii sit outside the scale on purpose: the app icon frames at 11px and 13px are proportional to the icon they hold, roughly 22% of its side, which is what keeps a rendered mark reading as a macOS icon rather than a rounded box.
+The shape language is rounded but disciplined, and since 2026-09-05 it runs on three steps of the base unit rather than seven scattered values. App icon frames use one proportional `border-radius: 25%`, rather than a fixed radius: 25%
+of the frame's side, which is what keeps a rendered mark reading as a macOS icon rather than
+a rounded box. A 48px directory frame takes 12px and the 56px pick frame takes 14px, the
+same proportion the old 44/11 and 52/13 pairs carried. The base-unit pass briefly put both
+frames on `--radius-md` at 16px, which is 33% of a 48px side and visibly rounder; a
+proportion is not a value to snap.
 
- Cards use 12px corners, search overlays sit at 14px on mobile and 18px on desktop, and control menus stay close to 10px so they feel compact rather than playful. Buttons and tag chips go all the way to pills, while the logo and footer mark stay circular. The result is friendly without becoming bubbly.
+Ordinary and video cards derive 24px padding and corners from `--card-inset`; the Editor's Pick derives 32px from `--pick-inset`. Controls, menus and overlays use `--radius-md` at 16px. Nested elements derive corners from the parent geometry; other small elements use `--radius-sm` at 8px. App artwork frames stay at 25% across card, hero and detail sizes. Buttons and tag chips go all the way to pills, while the logo and footer mark stay circular. The result is friendly without becoming bubbly.
 
 The system prefers clipped rectangles, thin borders, and deliberate rounding over ornate silhouettes. Geometry stays stable so the content can carry the personality.
 
@@ -291,6 +610,13 @@ Until 2026-09-03 this was a count: the divider buoy and the Editor's Pick light 
 
 The effect is reserved for **arrivals**: a card the reader is meant to stop at, at most one per surface. Two carry it. In the hero it is the Editor's Pick, the one app an issue argues for, lit by that app's own normalised colour. On the archive it is the terminus, the card that says where the publication started, lit by the site accent rather than an app's colour because what is being marked there is the journey ending and no app is being argued for. Until 2026-09-03 the rule read that nothing else should ever carry it; that was a reservation to the hero specifically, and the terminus is the same kind of moment on a page that earns one. It stays scarce by that test, not by a list: a second lit card on either surface would dilute both.
 
+Both arrival cards are built the same way, and until 2026-09-05 only the hero one was.
+Each rests at Hover Lift rather than Ambient Card, because it is the block its page is
+arguing for, and each takes the card radius so the accent rim stays concentric with the
+corner it traces. The terminus had been sitting at a 16px radius while its rim was drawn
+from `--pick-radius` at 24, so the two arcs diverged visibly at every corner, and it
+carried a border and the resting shadow instead of the lift.
+
 Four things hold it inside the design system:
 
 1. **The colour is normalised, never raw.** Across the current picks the dominant icon hues run from a fully saturated magenta to a near-black brown. `scripts/extract-icon-accent.mjs` fixes every pick to one lightness and chroma in OKLCh, so the card reads at the same weight whichever app is featured. The result is committed to the app record as `iconAccent` and reviewed like an icon.
@@ -302,17 +628,23 @@ Because the card rests at Hover Lift rather than Ambient Card, it cannot answer 
 
 **The buoy stays the one authored moment.** The mark on the content divider flashes once as the reader passes it. That is deliberate: it marks the passage the divider stands for, and it sits alongside the light on the Editor's Pick card. The old archive timeline in the removed `Keep Exploring` closer retired with that section on 2026-09-01, leaving the issue page calmer at the finish.
 
-**The Pilot Rule.** The archive's beacon marks which stop the reader is at. One lit dot rests inside a ring, and when the nearest stop changes it makes a single bounded move to the new one over 420ms on `ease-settle`, then rests again. It is confined to `/archive/`.
+**The archive carried a route and a pilot until 2026-09-05.** Its issue cards sat in a
+timeline: a vertical line down the left, a ring at each stop, and one lit dot that moved to
+whichever stop the reader was nearest, plus a Landfall Ping when they reached the terminus.
+It is recorded here because it was deliberate work and because its removal was a judgement
+about reliability rather than taste.
 
-It earns its place under The Earned Motion Rule by carrying the page's own subject. The archive is the only surface here that is genuinely a sequence, so a marker moving through that sequence explains where the reader is; nothing else on the site has a state like it.
+The pilot's position was measured in script from the live geometry of every ring, and
+re-measured on scroll, resize, search input, batch reveal and font load. Any of those could
+leave it out of step, and in practice it did: the base-unit pass alone put a 16px dot inside
+a 13px ring by changing the ring and the dot independently, because their sizes were derived
+from each other in a comment rather than in the code. A decoration that has five ways to
+desync and no way to fail visibly is a maintenance cost the page was paying every week.
 
-The first version got this wrong in a way worth recording, because the fault was structural and four rounds of tuning its speed never touched it. It followed the scroll position every frame, which meant it was in motion the whole time the reader was, and easing it toward a target made it travel faster the harder they scrolled. A marker that continuously chases the viewport explains nothing and competes with the reading. The state it represents is discrete: the reader is at a stop, and what changes is which stop. Once the dot belonged to a ring rather than to the scroll, the qualities that had been chased with constants fell out of the structure. It holds, because resting is its default. It arrives, because the move is bounded rather than asymptotic. And scrolling faster cannot make it hurry, because speed changes when the stop flips, never how long the move takes.
-
-Three things keep it quiet. Scroll decides only which stop is current and CSS owns the movement, so nothing runs on a still page and the browser retargets cleanly when a reader passes several stops at once. The dot is the only lit thing on the route: its fill is a state, so it takes the accent under The Beacon Rule, and no stop stays lit behind it. Under `prefers-reduced-motion` the marker stays and only the travel between stops is dropped, because which issue the reader is at is meaningful state and reduced motion means less movement, not less meaning.
-
-Two details decide whether the dock reads as exact, and both were wrong at first. The travel is **not rounded to whole pixels**: a stop's centre lands on a half pixel as often as not, so rounding put the beacon up to half a pixel off the ring it was filling, which is a whole device pixel of misplaced blue on a 2x display and a different error at every stop. And **the route stops at each ring rather than passing under it**. Hiding the line behind a ring's own fill left it crossing the ring's outer band, where the beacon's halo sits, so the reader saw a line drawn through the stop; each mark now clears the line for the width of that halo, which makes the ring an object the route arrives at instead of a bead threaded on it. The halo stays translucent so the ring's outline still reads through the docked beacon.
-
-**The Landfall Ping.** Reaching the terminus is the one completion this page has, so the origin answers it: the same three-pulse `beacon-ping` the RSS mark uses when the subscribe card is hovered, on the same keyframes and the same curve. It fires on arrival rather than on load, because landing is the moment and a reader at the top of the page has not travelled anywhere yet. It is three pulses rather than a loop, so it cannot become friction on the way back down, and it re-arms only after the reader leaves, so returning is acknowledged again. Reduced motion drops it entirely: it carries feeling, not state, and nothing is lost by its absence.
+The archive is now a plain column: cards span the full shell width and the reading order is
+the order they are in. What the timeline expressed — that an archive is a route back through
+the publication — the year headings and the dates already say. `beacon-ping` stays in the
+stylesheet; the RSS mark still uses it.
 
 **The Swell Rule.** The water moves, and it is the only thing on the page that moves without wanting to be noticed. Both wave bands, the hero's waterline and the content divider's, breathe: the crests hold their positions while the height of the water and the weight of its second harmonic settle and return, on periods of 23 and 31 seconds that do not divide into one another, so the band never repeats a state the eye can catch.
 
@@ -352,7 +684,7 @@ unreachable.
 ### Buttons
 Buttons are quiet, pill-shaped workhorses: obvious, tactile, and not over-embellished.
 - **Shape:** 999px pill for the primary and secondary CTA buttons.
-- **Primary:** outlined, not filled. A 1px blue border and a blue label over the page, 44px minimum height, 23px horizontal padding, and a small icon gap. A button is as wide as its label — never a fixed box padded out to a round number. It carried a blue fill with white text until the dark palette exposed why that could not hold: Buoy Blue is tuned to be legible as ink *on* the dark surface, so inverting it into a ground put white text at 2.62:1, well under AA, and made the button the brightest object on the page. As a label the same blue clears AA in both themes (5.17:1 light, 7.54:1 dark).
+- **Primary:** outlined, not filled. A 1px blue border and a blue label over the page, 48px minimum height, 24px horizontal padding, and a small icon gap. A button is as wide as its label — never a fixed box padded out to a round number. It carried a blue fill with white text until the dark palette exposed why that could not hold: Buoy Blue is tuned to be legible as ink *on* the dark surface, so inverting it into a ground put white text at 2.62:1, well under AA, and made the button the brightest object on the page. As a label the same blue clears AA in both themes (5.17:1 light, 7.54:1 dark).
 - **Hover / Focus:** the blue deepens on hover, and focus is handled with a clear accessible outline rather than a visual stunt.
 
 **Text fields are the exception to the focus outline.** The search modal's input and the
@@ -363,20 +695,40 @@ from the text they are entering. The exception covers text inputs only. Every co
 without a caret, which is every button, chip, link and checkbox on the site, keeps its
 outline, because for those colour alone is not a focus indicator.
 - **Secondary:** transparent fill, ink text, and a borderless or low-border utility presence.
-- **Icon Buttons:** the header search and theme controls are 44px circles on desktop, mobile and coarse-pointer devices.
+- **Icon Buttons:** the header search and theme controls are 48px circles on desktop, mobile and coarse-pointer devices.
 
-**The Target Floor Rule.** Anything a reader taps carries a minimum target: 24px, and the 44px the control system already gives every pill on a coarse pointer. This is not only for pills. Footer navigation, the explore section links and the feature card's outbound link were each the height of their own text, 16 to 21px, because a bare link has no box unless it is given one.
+**The Target Floor Rule.** Standalone small targets have a 24px floor; links inside
+sentences remain inline. Larger controls use the component-specific heights in Control
+heights follow the grid below. Coarse-pointer adjustments grow small controls or their
+hit areas without treating every pill as the same role.
 
-An icon link too small to grow gets its hit area expanded around it instead of being padded out, so the line it sits in is undisturbed. The Editor's Pick mark beside an app name works that way, and stops at 24px rather than 44px because a larger area would start taking taps meant for the title. A link inside a sentence is exempt and stays inline; the RSS link in the subscribe copy is the one that qualifies.
+An icon link too small to grow gets its hit area expanded around it instead of being padded out, so the line it sits in is undisturbed. The Editor's Pick mark beside an app name works that way, and stops at 24px rather than 48px because a larger area would start taking taps meant for the title. A link inside a sentence is exempt and stays inline; the RSS link in the subscribe copy is the one that qualifies.
 
-**The Two Control Heights.** Every pill control is built the same way — inline-flex, a `min-height`, horizontal padding, no vertical padding — and stands at one of two heights: **44px** for a primary action and **38px** for a secondary one, rising to 44px on coarse pointers. Rank comes from the height and from whether the border and label carry the accent or the neutral line, never from a fill and never from a different construction. Nothing on the site is a filled control. A control that sets vertical padding instead of a min-height will drift out of the pair the moment its type changes.
+**Control heights follow the grid.** Control dimensions use whole multiples of the 8px
+base, with roles defined by the actual component. Both `.button` and `.button.secondary`
+have a 48px minimum height with horizontal padding of 24px and no vertical padding. Header controls,
+directory toolbar controls and collection badge rows are also 48px. Sort menu options
+are 40px, rising to 48px on coarse pointers. Tags, active-filter chips, category rows,
+filter options and reset controls use 32px; filter options and reset controls rise to
+48px on coarse pointers. Mobile directory search and sort controls use 56px. Active-filter
+chips retain their visible height and expand their hit area through a pseudo-element.
+Standalone small targets have a 24px floor; links inside sentences remain inline.
+
+Primary buttons use an accent border and label; secondary buttons use neutral ones.
+Both are transparent at rest. On hover or keyboard focus, the primary gains a 10% accent
+tint and both inherit a 1px lift; the secondary stays transparent. Reduced motion removes
+the lift. These are existing button exceptions to the general colour-only hover rule.
+
+**Historical:** this was called *The Two Control Heights* until 2026-09-06 and described
+44px primary / 38px secondary controls. That pair is superseded by the component roles
+above; it is not a recipe for new controls.
 
 ### Collection Badges
 The collection badge on an app detail page is a link to a curated collection, and it is the rarest fact on that page: six of a hundred apps carry one. It is an honour marker, not a chip. It was a 38px outlined pill sitting above the primary button, where it read as a second, weaker control; it now opens the detail rail.
 - **Style:** the collection's mark beside its name in ink at Metadata weight 700. Built exactly like a category row: no container, no ring, no fill, and the glyph simply inherits the row's colour and turns blue with it on hover. A ring around the mark made the mark the loud thing rather than the honour.
-- **Rank:** first item in the rail, above Categories and Tags. Rank comes from position, from the label sitting in ink at weight 700 where a category label sits muted at 600, and from a 44px row against the category rows' 34px. Never from a colour of its own.
+- **Rank:** first item in the rail, above Categories and Tags. Rank comes from position and from the label sitting in ink at weight 700 where a category label sits muted at 600. The rows use the same 32px rhythm as category rows so the spacing inside the rail stays even. Never from a colour of its own.
 - **Named, like its neighbours.** The group carries a `Collections` eyebrow and 18px of clear space beneath it. It was the only unlabelled group in the rail, which is why it read as orphaned: every other group on the site is named by an eyebrow, and this one had opted out of the house's own strongest device. Setting the names in the display serif at Title was tried for the same reason and rejected; the rail keeps one voice.
-- **Marks:** 19px, the same as a category mark. Lucide scales its stroke with the glyph, so an icon set larger here would render a heavier stroke and put one icon family at two weights in a single column.
+- **Marks:** 24px (`--icon-md`) in the same 32px icon column as category marks. The shared glyph rule compensates for rendered size where stroked icons are used; Phosphor collection marks render as filled paths at the same glyph size.
 - **Separation:** space alone divides it from the taxonomy below. A rule there reads as a container seam and competes with the thing it is meant to set apart.
 - **State:** hover tints the label blue and the mark follows it. Focus adds the accent outline, because colour alone is not a focus indicator.
 
@@ -387,14 +739,44 @@ Tag chips are compact chips rather than buttons. They read as metadata first.
 
 ### Cards
 Cards are the primary container language for apps, readings, and archive entries. Apparatus and secondary matter are set under a hairline instead, so a card always means a thing worth looking at rather than a thing worth reading past. An app card carries three regions and nothing else: the summary, the best-for line, and the tags. Its single app destination is the generated detail page; the title link and stretched pointer overlay go to the same internal URL, while the official homepage lives on the detail page. It used to end with a source credit; that was provenance for the editor rather than information for the reader, and removing it took a whole region off every card.
-- **Corner Style:** 12px radius on most cards.
-- **Background:** the surface color — white by day — with a faint border and soft shadow.
-- **Internal Padding:** usually 24px, with denser or looser variants where the content demands it.
+- **Corner Style:** `--radius` at 24px, the same as the card's inset.
+- **Background:** the surface color — white by day — with a soft shadow and no border.
+- **Internal Padding:** 24px, which is also the card's corner radius.
+- **Summary Rhythm:** when an app icon is present, the description starts 24px below the
+  icon-title row. The icon and title stay 16px apart inside that row.
+
+An archive row is an app card in every respect that matters, and takes the same rest state
+and the same hover contract. It set `box-shadow: none` until 2026-09-05, which was correct
+while a border drew its edge and left it with no edge at all once borders went.
+
+**Cards carry no border.** The surface fill and the resting shadow already separate a card
+from the page; a hairline on top of both was a third signal saying the same thing. Adopted
+2026-09-05.
+
+The edge returns on hover, as an inset ring rather than a border. That is not a stylistic
+preference: a border, even a transparent one held at rest, puts its 1px back into the
+card's row arithmetic, and at two of the three floors that 1px crosses a rounding step and
+costs 8px each — 16px of height on every card in the catalogue for an edge nobody sees
+until they point at it. The ring is drawn inside the box and costs nothing.
+
+The resting shadow carries a transparent ring layer of its own, so the hover transition
+interpolates one shadow layer against one rather than none against one. Without it the
+fade stutters on the first frame.
 - **Behavior:** hover deepens the shadow and shifts the border toward blue on pointer devices, settling over 320ms rather than snapping.
 
 **The One Card Height Rule.** Every app card on a page is the same height, and the regions inside them line up across the whole grid rather than only within a row. The grid defines three repeating tracks and each card spans them as a subgrid, so a card agrees with the one beside it and the one two rows below it.
 
-The floors are what the tallest record in the catalogue actually needs, measured across all 102: `230/149/122` where the three columns are narrowest, settling to `205/99/88` above 1100px once the content column stops growing.
+The floors are what the tallest record in the catalogue actually needs, measured across all
+118: `232/120/136` where the three columns are narrowest, settling to `184/96/96` above
+1100px once the content column stops growing. Each is the measured maximum rounded up to
+the base, never down, because a floor below the true maximum lets that row outgrow it and
+the whole grid stops agreeing.
+
+They are re-measured, not adjusted. Any change to type, padding or the catalogue itself
+moves them, and on 2026-09-05 all three moved twice in one pass: once for the base unit
+and once for the line boxes. A single record can set them for everyone — MacWhisper's
+description was the only one of 118 running to five lines, which was adding 24px to every
+card until it was trimmed to four.
 
 **The floors only apply where the grid is multi-column.** Below 921px each card is its own height. A single column has no neighbour to agree with, so a floor buys nothing there and costs a great deal: the budgets are sized for a card about 270px wide, while a one-column card is 351px and wraps far less, so on a phone they were adding a median of 159px to every card and 17,000px of scrolling to the directory. The first and last include the card's 24px padding, because a subgrid item's padding comes out of the tracks it spans. They are `minmax(floor, auto)` rather than fixed heights, so a future record that outgrows its budget makes its own band taller instead of being clipped.
 
@@ -402,13 +784,120 @@ This replaced a set of fixed `min-height` budgets on each region. Those were gue
 
 **Reading cards are the exception, and align on their own terms.** They carry `.app-card` too, but hold three parts inside a wrapper rather than three children, so the card and the wrapper both subgrid onto the shared rows. They take no floors: a reading card should be as tall as the longest of the three and no taller. Their own `min-height` budgets were doing the same job far worse, reserving three lines of title space for a one-line headline and leaving the card half again as tall as it needed to be.
 
-**The One Hover Rule.** Every card that leads somewhere shares one hover contract: rest at Ambient Card, move to Hover Lift and a border of `color-mix(in srgb, var(--accent) 42%, var(--line))`, cross over 320ms on `cubic-bezier(.16, 1, .3, 1)`, and do it only under `(hover: hover) and (pointer: fine)`. App cards, feature cards, reading cards, archive rows, and category directory rows are all on it, the last two through `.archive-card`. A card that carries a category accent keeps that accent in its resting border and gives it up on hover; nothing else about the contract changes per card type.
+**One Glyph Contract.** Interface and taxonomy icons use Phosphor. Every stroked icon on
+the site is drawn by one rule, matched on the explicit `.icon` opt-in used by Phosphor and
+the handful that are hand-written. It carries the four presentation properties — `fill`,
+`stroke`, `stroke-linecap`, `stroke-linejoin` — and derives both size and weight from a
+single custom property, so a caller sets `--icon-size` and nothing else. Six rules used to
+restate those four properties and then choose their own size and weight, which is the
+mechanism behind every icon drift found in the week to 2026-09-06: a 16px search mark
+standing beside a 24px theme toggle, a modal icon silently inheriting its authored stroke
+because no rule had claimed it. Phosphor regular icons are filled paths, so
+`.phosphor-icon` opts back into `fill: currentColor` and `stroke: none` while preserving the
+shared sizing contract.
+
+**Two sizes, one line.** `--icon-sm` is 16 and `--icon-md` is 24, both on the base unit;
+14, 21 and 27 were in use until 2026-09-06, each set locally to fit one spot. The default
+glyph size is 24px. The smaller 16px token remains for compact controls such as directory
+field marks and chevrons, while mobile menu rows, RSS close and copy controls, app detail
+category rows and app detail collection badges now use the 24px token. `--icon-stroke` is
+**1.5px as it lands on screen**, which is the number that had never been controlled. A
+24-unit SVG viewBox scales authored strokes with the glyph: an authored width of 2 draws at
+1.33px inside a 16px box and at 2px inside a 24px one, and `getComputedStyle` reports `2px`
+for both. Dividing the authored width back out by the rendered size —
+`calc(var(--icon-stroke) * 24 / var(--icon-size))` — holds the line steady at every size.
+This is why the directory chevrons read heavier than the field's glyphs while every declared
+number matched.
+
+The rule is scoped, never applied to bare `svg`. The buoy mark, the hero wordmark and the
+footer's social marks are filled rather than stroked, and a blanket `fill: none` would erase
+all four. **An app icon frame's corner is also outside this system and outside the radius
+scale**: it takes 25% of its own side — 12px on a 48px frame, 14px on the 56px pick frame —
+which is what makes a rendered mark read as a macOS icon rather than a rounded box.
+
+**The Beacon Rule has one semantic exception, and it is named.** Blue is the site's only
+accent and marks action. **Failure is state, not emphasis**, so it takes `--error` —
+`#9c2f2a` by day and `#ff8f86` by night, both clearing AA on the surface they appear on at
+5.24:1 and 5.68:1. It was two hex literals repeated across four rules until 2026-09-07,
+which left no way to tell a sanctioned exception from a stray colour.
+
+Two decorative uses of the accent are also sanctioned and recorded here so the same question
+does not have to be re-answered: the **subscribe mark**, which carries an accent fill and a
+ping, and the **archive terminus**, which is the second use of The Struck Light Rule and is
+argued for above. Anything else reaching for a colour outside the palette is drift.
+
+**Design invariants are checked, not remembered.** `scripts/check-design-invariants.mjs`
+runs in `npm run validate` and guards eight relationships that each broke silently in
+practice: an SVG missing the glyph contract and rendering at 0×0, a fixed text role
+inheriting its line box, structural spacing declared fluid, the spacing scale not deriving
+from `--base`, a control declaring its own focus ring, a content divider returning through a
+breakpoint, a state selector that does not match the markup, and a hover lift not reset
+under reduced motion. Each check tests a *relationship between* declarations rather than
+restating a literal — asserting that `--space-3` is 24px tells you nothing that reading the
+line does not, and passes happily while the thing that value was meant to produce is broken.
+Source checks also reject untokenized whole-step vertical spacing and suppressed non-caret focus rings, except the explicitly named dialog-container exception.
+The read-only browser check in `scripts/check-rendered-design.mjs` verifies card inset/corner/rim, icon proportions, search nesting, directory edges and fixed-role leading against the actual DOM. Run it on the relevant pages, open panels and both sides of the responsive breakpoints; source checks alone cannot verify layout.
+
+**The Editor's Pick variant owns its differences.** The pick is the one app an issue argues
+for, so its card outranks the ones beside it: the title takes Subhead rather than Card Title,
+and the card takes a 32px inset with the 32px corner that inset implies. Every selector in
+the variant carries `.app-card` as well as its own class, so it beats the base by specificity
+rather than by hoping to be read last.
+
+The rim that traces it reads the same variable. `--pick-inset` is the card's inset, its
+corner and the radius the accent rim is drawn from, so the three cannot diverge. They did,
+briefly, on the day the inset moved: the rim tracked `--radius` directly and stayed at 24px
+while the card went to 32, and the two arcs separated visibly at the corner. Three things
+reading one variable is what keeps them concentric; three things repeating one literal is
+how they come apart.
+
+It did not, until 2026-09-07. `.editors-pick-card` and `.app-card` are each one class and the
+base sits later in the file, so the base won every property they shared: the variant declared
+`display: grid` and rendered flex, declared a fluid padding and rendered 24px, declared a
+Subhead title and rendered Card Title. The code described a composition the browser had never
+drawn, which is the most expensive kind of wrong — it reads as intent to anyone maintaining it.
+
+The `grid-template-areas` that sat in that block were deleted rather than revived. They
+ordered the card summary / best-for / note / tags while the markup emits summary / note /
+best-for / tags, because the hero states its reason before its audience. Reviving them would
+have reordered the card to match markup that no longer exists. The layout is a single column
+in document order, which flex already does; what the variant needed was its inset, its corner
+and its title, not a grid.
+
+**The One Focus Ring.** Every control that takes keyboard focus draws the same ring:
+`--focus-ring` (2px solid, the accent at 38%) at `--focus-offset` (3px). It is a token, not
+a convention, because a convention is what the site had — nine different treatments across
+six stylesheets on 2026-09-06, spanning four accent alphas, five offsets and two mechanisms,
+each written by whoever added the control. Three of them drew the ring with `box-shadow`
+behind `outline: 0`, which meant the ring did not follow the control's radius and vanished
+in forced-colours mode. The one legitimate variation is the offset: menu and search-result rows inside a panel
+take `-2px` so the ring sits inside the row rather than crossing its neighbours, and they
+override only that. Colour is never the indicator on its own — a control that answers a
+pointer with colour still owes a keyboard reader a ring. Adopted 2026-09-06.
+
+**Colour is the hover language.** The default control response is a colour change. Cards and panel rows have their own responses: a **card** lifts, under The One
+Hover Rule below, because the whole surface is the target; a **list row** inside a panel —
+menu options, search results, filter rows — fills, because the row is the target and colour
+alone would not show which of a stack of rows is live. Buttons retain the tint/lift exception specified under Control heights follow the grid. Other controls use colour. This was
+already true of seventeen rules before it was written down, which is exactly why it kept
+being broken: the dropdown triggers filled their shells and the secondary button invented a
+surface it does not have at rest, both of them local decisions that nothing contradicted.
+The primary `.button` is transparent at rest; its interaction tint arrives on hover or
+keyboard focus. Describing it as filled at rest was an obsolete instruction, corrected
+on 2026-09-07 without changing the treatment.
+
+An **open** control stays lit. A dropdown trigger holds the accent, in its label and its
+chevron, for as long as its panel is showing, so the trigger and the menu it opened read as
+one object rather than two; it keeps a fill there as well, because a state that persists
+after the pointer has left cannot rely on a hover to carry it. Adopted 2026-09-06.
+
+**The One Hover Rule.** Every card that leads somewhere shares one hover contract: rest at Ambient Card, move to Hover Lift and an inset ring of `color-mix(in srgb, var(--accent) 42%, var(--line))`, cross over 320ms on `cubic-bezier(.16, 1, .3, 1)`, and do it only under `(hover: hover) and (pointer: fine)`. App cards, feature cards, reading cards, archive rows, and category directory rows are all on it, the last two through `.archive-card`. A card that carries a category accent keeps that accent in its resting ring and gives it up on hover; nothing else about the contract changes per card type.
 
 Three things are deliberately outside it. The app-detail rail's category rows are links in a list rather than cards, so they answer the pointer with the accent over 180ms and take no lift; they were bordered cards until the rail replaced them. Cards that are containers rather than destinations — the explore utility and subscribe cards, which hold their own links and controls — stay flat, because a lift would promise a click the card does not accept.
 
 ### Explore Directory
 
-Explore carries the catalogue itself, not a sample of it: the taxonomy card, then
+Explore carries the catalogue itself, not a sample of it: category and collection cards, then
 `AppDirectory` over all 102 apps with the count, filter and sort the tag, collection and
 category pages already use. One component, four pages.
 
@@ -427,16 +916,35 @@ recommended. And the client renderer carried a hand-copied duplicate of `AppCard
 that had already drifted from it. Removing the shelves removed the renderer, and the
 renderer took both with it.
 
-- **Order:** taxonomy, then catalogue. The card teaches the six lanes; the directory is
-  the thing itself. The subscribe card closes the page rather than interrupting it at a
-  third of the way down, where it used to sit between two app shelves.
+- **Order:** categories, collections, then catalogue. The opening uses six category
+  cards on the Field Grid's 16px gutters, with an icon, serif title and live app count.
+  The collection row divides evenly among the existing collections; two occupy three
+  fields each, and three occupy two each. Cards use 16px insets and matching corners,
+  with 8px between each muted section label and its row and 24px between groups.
+  The category row becomes three columns below 1100px, two below 680px and one below
+  360px. Collections stack below 680px. This compact opening follows the editor's
+  September 5 mockup; descriptions remain on category pages and tags in the directory filter.
 - **The count is stated, once.** The directory's filter bar carries it and keeps it live as
   filters narrow. The hero carried it too until 2026-09-02, which meant the page opened by
   announcing a number and then restated it a screen later; the dek now describes what the
   page holds and the count belongs to the control that changes it. The page previously
   never said how many apps existed at all.
-- **The directory controls are a row, not a grid.** The live count leads and Search apps,
-  Filter and Sort sit at the end, pushed there by the count's own auto right margin. It was a
+- **One glyph treatment across the control row.** Search, Filter and Sort are three 48px
+  shells with a 1px border and a 16px radius, and the glyph in each — the magnifier, the
+  clear ×, the two chevrons — is a 24 viewBox drawn at 16px on a stroke of 2, which is
+  1.33px on screen. That was already true when the chevrons still looked heavier than the
+  field's glyphs: they sat at full `--text` while the magnifier and the × were `--muted`,
+  and brightness was doing the work that looked like weight. Every glyph in the row is muted
+  now, and a chevron comes up to `--text` on hover, focus or while its menu is open. It does
+  not go to the accent: blue is rationed, and a chevron acknowledging a pointer is not a
+  thing being chosen. The words carry the ink; the glyphs label what the control is.
+- **The directory controls are a row, not a grid.** The surface's own heading leads where it
+  has one, and Search apps, Filter and Sort sit at the end, pushed there by the heading's auto
+  right margin. The live count led that row until 2026-09-02, when it moved down to sit with
+  the active-filter chips against the grid they describe; the row kept the mechanism and lost
+  the element, which left 488px of empty field beside the controls until Explore's `All apps`
+  took the place. A surface with no heading of its own passes none, keeps its screen-reader
+  heading, and the row aligns to its end as before. It was a
   six-track grid until 2026-09-02, with the count spanning tracks 1-2, the menus at 5 and
   6, and tracks 3 and 4 existing only as spacers. Six tracks for three items reads as a
   layout right up until a fourth control arrives, and then it reads as a puzzle.
@@ -446,13 +954,33 @@ renderer took both with it.
   the card grid collapses, count and search each take a full row while Filter and Sort share
   the row beneath them, preserving DOM and focus order. Each visible control stays flat with
   a border and no lift.
-- **Mobile taxonomy keeps the lane, not the lecture.** Below 680px, Explore swaps each full
-  category description for its approved shorter line and removes the desktop row floor. The
-  full descriptions remain on larger screens and category pages. Categories, Collections and
-  Popular tags explain their roles in muted copy directly below each heading, in normal flow,
-  so help never covers the first link or depends on hover.
+- **The default order follows what the surface is doing.** Unnarrowed, the grid sorts by
+  date featured; the moment a query or a filter is applied it sorts A-Z. Adopted
+  2026-09-05, because the alphabet is a lookup order and this grid is not a lookup. With
+  no query it put the same eighteen names on screen forever — Actions, Agent Mac,
+  AgentPeek — chosen by nothing but their first letter, on the largest block of the page.
+  Date featured is the publication's own order, it turns over completely with every issue
+  at no editorial cost, and 117 of the 118 apps carry a date for it. Once a reader states
+  what they are after, they are looking something up rather than browsing, and a narrowed
+  set gains nothing from recency, so the index order returns.
+
+  A lane page — a category, collection or tag — is narrowed from the first paint and stays
+  A-Z throughout. It is detected as having been handed fewer apps than the catalogue holds,
+  not from `defaultFilterType`: only collection and tag pages set that, because a category
+  page passes its own subset and there is no category filter in the menu for it to pass.
+  The subset test is the one fact all three share and there is no prop for a future lane to
+  forget.
+
+  Choosing from the Sort menu takes the control over permanently. After that the order is
+  the reader's and stops moving when they type, which is the difference between a default
+  and an override. Ties inside an issue fall back to the app name, so the order is total
+  and the server and the client cannot disagree about it — the server renders the first
+  eighteen cards and CSS caps the grid at parse time, so whatever it emits is what appears
+  before any script runs.
 - **Directory state is shareable.** Query, optional collections, optional tags and a
-  non-default sort are written to the query string and restored on load. Typing uses
+  sort that differs from the one the current state would derive are written to the query
+  string and restored on load. A sort in the URL is treated as a choice the reader made,
+  so it is honoured as an explicit one and does not move when they narrow further. Typing uses
   `replaceState`, so the browser history does not receive one entry per character. A tag,
   collection or category named by the path remains the page's immutable starting set;
   tag and collection controls stay checked and disabled, and no path-defining value is
@@ -492,7 +1020,11 @@ badges or decorative clutter, and a September critique scored Visibility of Syst
 - **It is a trail, not a drawn course.** Sentence case at `--type-meta`, muted, middle-dot
   separators between the ancestors. The gap before the last crumb carries the position
   marker instead of a separator: the marker is already a dot in that slot, so a middle dot
-  in front of it reads as two dots rather than as a mark. The site already carries its nautical world in the buoy lockup and the wave
+  in front of it reads as two dots rather than as a mark. The same test removed the middle
+  dot from the archive card's scent line on 2026-09-05: that line is a flex row with a 16px
+  column gap, so the space was already separating the pick from the count and the dot was a
+  second separator in the same slot. A middle dot earns its place only where two facts share
+  one text run with no gap between them, which is why the lane card eyebrows keep theirs. The site already carries its nautical world in the buoy lockup and the wave
   bands; a rope, a compass or a chart line here would be a fourth voice saying the same
   thing louder. The waypoint idea is in the marking of the current position, which is the
   one thing a chart does that a list of links does not.
@@ -526,10 +1058,70 @@ badges or decorative clutter, and a September critique scored Visibility of Syst
   itself because the hero's own top padding sits below it.
 
 ### Site Header and Navigation
-The header is sticky, translucent, and restrained. The brand wordmark uses the same editorial serif as the headline system, while the icon controls stay compact and monochrome until hover or focus gives them blue.
-- **Desktop:** brand on the left, then Explore Apps, Archive, About, an icon-only Lucide Search control and the icon-only theme toggle on the right.
+The header is sticky, translucent, and restrained. The brand is the buoy mark alone; the icon controls stay compact and monochrome until hover or focus gives them blue.
+
+**The wordmark left the header on 2026-09-06.** It set "App Waypoint" in the editorial serif beside the mark, and on the homepage it was hidden until the reader scrolled past the hero's own large wordmark, then faded in over 520ms — a hand-off, so the name was never stated twice at once. The mark carries the brand on its own and the link keeps `aria-label="App Waypoint home"`, so nothing is lost to a screen reader. Removing it took the `is-homepage-brand` gate, the `is-brand-visible` state, the scroll listener that maintained it and the `--type-brand-nav` token with it: the whole apparatus existed to manage a conflict that no longer occurs. The hero wordmark on the homepage is untouched.
+- **Desktop:** brand on the left, then Explore Apps, Archive, About, an icon-only Phosphor Search control and the icon-only theme toggle on the right.
 - **Mobile:** the header keeps the brand and theme toggle visible, then moves Search, Explore Apps, Archive, About and Subscribe into the navigation dialog.
-- **Hover / Active:** navigation links shift to the accent on hover, focus and current-page state. Icon controls stay circular and borderless, with the same accent response.
+- **Hover / Active:** everything in the header answers a pointer the same way — the label
+  or glyph shifts to the accent, and nothing else moves. The search button, menu toggle and
+  theme toggle used to fill a circle behind their glyph on hover, so two of the five things
+  in the row replied with a disc while the other three replied with colour. The discs went
+  on 2026-09-06. Focus keeps a ring, because colour alone is not an adequate focus
+  indicator: the shared `--focus-ring` uses `--focus-offset` (3px), following each control's
+  radius. Historical: the theme toggle rotated 12° until 2026-09-06; it now changes colour
+  only, with no hover rotation.
+- **One glyph size, one weight.** Every icon in the header is 24px in a 48px control at
+  a rendered 1.5px stroke, the menu toggle's lines included, and the search modal's input icon
+  joins them: it is the same magnifier at the same size as the header button, so a reader
+  who opens search sees the mark they clicked. The search mark was 16px against the theme
+  toggle's 24px until 2026-09-06 — the two were declared in different stylesheets,
+  `global.css` for the toggle's base and `search.css` for the button, which is how they
+  drifted with nothing to catch it. The size and weight they must agree on are now stated
+  once, in a rule that names them together, and `global.css`'s shadowed `.theme-toggle svg`
+  block went with the fix rather than being left to describe a rendering that no longer
+  happened. The modal's input icon had no stroke-width at all and fell through to its own
+  authored `stroke-width="2"`, which made the heaviest glyph on the site one nobody had chosen.
+- **One rendered stroke at every size.** `--icon-stroke: 1.5` defines the line that lands
+  on screen for stroked marks. For the shared 24-unit SVG viewBox, authored stroke-width is
+  `calc(var(--icon-stroke) * 24 / var(--icon-size, var(--icon-md)))`: 1.5 at 24px and
+  2.25 at 16px. Phosphor's regular icons are filled paths, so they opt out of stroke while
+  keeping the same 16px and 24px size tokens. Filled brand marks are outside this
+  outline-glyph contract. Historical: the former 1.8/2 authored weights were superseded by
+  this size compensation; do not restore them.
+- **The directory's search field carries the site's own clear ×.** Both search inputs are
+  `type="search"`, so WebKit drew a native cancel button in them, and it behaved differently
+  per engine — Chrome reveals it on hover or focus, Safari whenever the field has text — so
+  the affordance appeared and vanished for reasons a reader could not see, and it shipped
+  with `cursor: default`, giving no sign it could be pressed. It is switched off on both
+  fields. In its place the directory gets `.field-clear`: the site's X at 16px and stroke 2
+  in a 24px control, muted at rest, accent on hover, present exactly when the field has a
+  value. Clearing returns focus to the field, since the button it was on is about to be
+  hidden. Adopted 2026-09-06.
+
+  The search modal deliberately has no clear of its own. Its × dismisses the modal, its
+  field empties on every open, and a second × beside the first read as two identical marks
+  doing different things. The directory's query is the one worth a control: it survives
+  navigation, it is shareable in the URL, and it is the one a reader arrives already holding.
+  Both fields are grids with a track per control, and the clear's track exists only while
+  the button does — the modal's close silently wrapped to a second row the first time a
+  fourth child appeared in that row without one.
+- **The modal close buttons take the same colour-only hover.** They filled a 32px disc and
+  drew a ring around themselves on hover, which made the control that dismisses a modal the
+  loudest thing in it. They shift to the accent now and nothing else moves, and the ring
+  they kept is a focus ring, since the fill they had been relying on for focus is gone.
+  Removed 2026-09-06 alongside the header's. The RSS copy button was already on colour plus
+  a 1px lift and did not change.
+- **The navigation menu is on the base unit.** Its rows carry a 16px inset, a 16px gap and a
+  24px icon, but the space *between* them ran on 3px, and the two groups paid 4px each into
+  their shared boundary — the two values the base unit exists to remove. Every step in it is
+  now 8px or a multiple: rows are 40px, the gap between them is 8px, and the inset is 8px,
+  which also makes the corners concentric, since the modal's 16px radius less that inset is
+  the rows' own 8px. Search once led a group of its own, separated by a hairline and then by
+  16px of space; it sits on the same 8px step as every other row now, so the menu reads as
+  one list rather than an action above a list. The rows are the one control on the site under
+  the 48px height, which is a deliberate trade for a shorter menu: 40px clears WCAG 2.2's
+  24px minimum comfortably but is under the 44px Apple recommends for touch.
 - **Skip link:** every page starts with a hidden-until-focused skip link that lands on the main content landmark.
 
 ### Directory Controls
@@ -563,19 +1155,22 @@ view in place and never compete with the Cmd+K search modal's navigation job.
 
 ### Search Modal
 Search is a centered overlay over a frosted backdrop, with a bright, controlled surface.
-- **Shape:** 18px radius on desktop, 14px on mobile.
+- **Shape:** `--radius-md`, 16px, at every size.
 - **Structure:** input row, result count, then a scrollable result list.
+- **The count owns its band.** The result count sits 16px below the input's rule and 16px above the first result, and it carries both halves as its own padding. The lower half used to be the list's `padding-top`, which travels with the content of a scroll container and so collapsed as soon as the list moved. The list keeps its 16px side and bottom inset and takes none at the top.
 - **Behavior:** the backdrop blurs, the modal remains narrow enough to feel deliberate, the app index loads on demand, and results behave like normal focusable links rather than a custom combobox.
 
 **The One Scrim Rule.** Search, the navigation menu and the subscribe dialog share one backdrop, `--scrim`, and it follows the theme. All three were a near-black navy in both themes, which is right over a dark page and turns a light one grey; light now takes Harbor Fog at 62%, so the page stays bright and the blur does the obscuring. The blur is the same in all three at `blur(12px) saturate(110%)`; the nav menu had drifted to 10px for no reason anyone recorded. A panel separates from the scrim on its own shadow, not on the scrim being dark.
 
 ### App Detail Page
 The detail page answers three questions in order: what is this, is it for me, and where do I get it. The masthead carries that path and the rail carries everything that files the app rather than describes it.
-- **Masthead:** the app's own icon and the page title form one lockup, the icon scaling from 56px to 76px against the title's cap height at the documented `md` radius. Then the dek, then Best For, then the single Homepage button. An app with no icon takes a category mark on the documented missing-icon colour, stable from the app ID so a card and its detail page always agree. Which category is the app's first by default, or whichever `iconCategory` names when the editor has directed otherwise.
+- **Masthead:** the app's own icon and the page title form one lockup, the icon scaling from 56px to 80px against the title's cap height, with a corner of 25% of its own side. Then the dek, then Best For, then the single Homepage button. An app with no icon takes a category mark on the documented missing-icon colour, stable from the app ID so a card and its detail page always agree. Which category is the app's first by default, or whichever `iconCategory` names when the editor has directed otherwise.
+- **Opening gap:** the breadcrumb sits 16px above the icon/title lockup, matching the 16px step from that lockup to the dek, so the trail, the lockup and the dek run one even ladder. This was a scoped override for the taller lockup until 2026-09-09; it is now simply the site value under The One Page Title Rule, and the page carries no rule of its own for it.
 - **Rail:** a 400px column holding three labelled groups, Collections then Categories then Tags, each built the same way: an eyebrow, `--eyebrow-gap` beneath it, then its items at 2px. 24px separates the groups. Nothing is divided by a rule. It occupies what used to be empty space beside a 900px masthead on a 1160px page. The width is set by the tag chips: measured across all 102 apps a tag set needs 311px at the median and 399px at the 95th percentile, so 400px keeps 95% of the catalogue on a single line. The longest set needs 473px, and buying that last 2% would cost 60px of the prose column.
-- **Taxonomy rank:** categories are the most generic fact an app carries and read at Metadata scale in muted ink, as 34px rows with their marks. They were 22.4px serif inside 80px bordered cards, which made the least meaningful metadata the largest thing on the page after the title. Tags stay chips at Label scale. Nothing here outranks the app's own name, dek or Best For.
-- **One axis:** every mark in the rail shares a centre and every label starts at the same x, because the badge and the category rows use the same 34px icon column and 12px gap. Their glyphs are both 19px.
-- **Collapse:** at 920px, where the whole site drops to one column, the rail stacks under the masthead and keeps its DOM order, so reading and focus order do not change. No rule divides them, and none divides the badge from the taxonomy: inside the rail the separation is space. The only rule on the page closes the hero against the related apps below.
+- **Taxonomy rank:** categories are the most generic fact an app carries and read at Metadata scale in muted ink, as 32px rows with their marks. They were 22.4px serif inside 80px bordered cards, which made the least meaningful metadata the largest thing on the page after the title. Tags stay chips at Label scale. Nothing here outranks the app's own name, dek or Best For.
+- **One axis:** every mark in the rail shares a centre and every label starts at the same x, because the badge and the category rows use the same 32px icon column and 8px gap. Their glyphs are both 24px.
+- **Related-app rhythm:** the gap from the related-app heading to the card grid is 24px, `--space-3`, the site value for a section header — see The Section Header Gap. The page carries no override of its own. `.section-heading`'s bottom margin and `.directory-grid`'s 16px top margin are adjacent siblings, so they collapse to the larger of the two rather than summing.
+- **Collapse:** at 920px, where the whole site drops to one column, the rail stacks under the masthead and keeps its DOM order, so reading and focus order do not change. No rule divides them, and none divides the badge from the taxonomy: inside the rail the separation is space. The hero used to close against the related apps on a rule; since 2026-09-05 that boundary is 32px of the section's own top padding, and the page draws no rule at all.
 
 ### Homepage Hero
 
@@ -585,21 +1180,31 @@ A full-bleed band whose content sits on the shared page shell, so the wordmark a
 - **Structure:** identity (wordmark, wave rule, tagline) over a hairline, then the issue block; the Editor's Pick renders beside it as a real `AppCard`, the only card in the fold.
 - **Atmosphere:** two drawn layers — a star field (night only) and an engraved wave band. The stars stop at the water, and the horizon is measured from the sea canvas rather than taken as a fraction of the hero's height. Below 920px the sea stops being absolutely positioned and becomes a block in the flow with the Editor's Pick beneath it, so a fixed fraction put stars under the waterline on every phone. All canvas, no image request, painted once and repainted only on theme change or resize. The day sky above the water stays empty; a cloud bank was drawn there and removed for adding noise rather than calm.
 - **The waterline.** The band's ground fades to the page colour across the wave band and the strokes taper to nothing, so the hero ends on the colour the next section begins with. A single `--sea-h` drives the canvas height, the bottom padding, and the fade distance.
+- **The fade is eased at both ends, not just aimed at the right colour.** Landing on the page colour is what keeps the hero from ending on a step; easing out of it is what keeps the hero from ending on a *line*. A linear ramp meeting a flat field agrees with it in value and disagrees in slope, and the eye reads that corner as an edge — light mode showed a hairline under the water on phones while the hero's last row and the page's first row were both `--page`, which is why it survived a check that only compared the two colours. The ramp is a smoothstep, so its slope reaches zero at each end. Light mode also has only twelve levels of ink to spend across the fade, few enough to band in 8-bit; the easing puts the closest-spaced steps mid-fade where the water gives them texture to hide in, and the fade runs `--sea-h` plus 96px rather than 38px to buy back the steepness the easing adds there. Fixed 2026-09-09.
 - **Motion:** the star field is painted once and never moves, and there is no load-in entrance. The waterline swells under The Swell Rule, quietly enough that it reads as atmosphere rather than as animation. The Editor's Pick card is the one thing in the fold that moves for attention, under The Struck Light Rule, and it earns that by being the app the issue is arguing for.
-- **The pick title is clipped, never removed.** Above 920px the eyebrow and the card carry
-  the meaning, so `One app worth a closer look` is not shown, but it is hidden with the
-  `sr-only` clip rather than `display: none`. Removing it took the h2 out of the document
-  and ran the desktop homepage straight from h1 to the app card's h3, a heading-sequence
-  break that existed only at the widths most readers use and disappeared on mobile, which is
-  why review kept missing it. A heading that orders the outline stays in the outline at every
-  width.
+- **The pick carries one visible heading at every width.** `.home-hero-pick-title` is an
+  `h2` set in the accent Label role, reading *This Week's Editor's Pick* on the homepage and
+  *Editor's Pick* on an archived issue, with `--eyebrow-gap` beneath it to the card. It
+  takes the Label role rather than Section Title because it names one featured card inside
+  the hero and the app's own name is that block's identity; see The Two Level Rule.
+  Until 2026-09-09 this was an eyebrow paragraph above a *clipped* h2 reading `One app worth
+  a closer look`. That clip was the right answer to the wrong question: removing the h2 had
+  run the desktop homepage from h1 to the app card's h3, so the clip kept the level in the
+  outline, but it also left sighted readers and heading navigation with two different labels
+  for one block above 920px, and below 920px the filler heading appeared at subhead scale and
+  tied the app's own name. **A heading that orders the outline stays in the outline at every
+  width, and the words it announces are the words on the screen.**
 
 ### Issue Subscribe Card
 
 Every issue page, including the homepage and archived issues, closes with the shared RSS
-subscribe card after `Weekend Reading`. It is the same object used on Explore because the
-reader's question is the same in both places: when does the next issue arrive, and what URL
-goes into an RSS reader?
+subscribe card after `Weekend Reading`, and the archive index closes with the same object.
+The reader's question is the same in both places: when does the next issue arrive, and what
+URL goes into an RSS reader?
+
+Explore carried the card until 2026-09-04 and no longer does. It is a browse index rather
+than something a reader finishes, so the card was closing a page nobody reaches the end of,
+and the offer already meets that reader in the header and the footer.
 
 The public `Keep Exploring` closer was removed on 2026-09-01. The archive and catalogue
 remain available through the header and footer, but the issue page no longer repeats them
@@ -607,10 +1212,11 @@ as a large final browse module. The finish should now be simpler: read the issue
 supporting links, then subscribe if the cadence is useful.
 
 The card renders as a standalone section with its own `h2`, rather than as a subordinate
-block inside another closer. It keeps the Explore card's layout, copy, copy-to-clipboard
-control and interaction states so there is one maintained subscription pattern across the
-site. The issue placement only adds extra bottom padding so the final card has a deliberate
-landing before the footer.
+block inside another closer. It keeps the layout, copy, copy-to-clipboard control and
+interaction states the card has always had, so there is one maintained subscription pattern
+across the site. The closing interval belongs to the shared issue section padding and footer spacing.
+The old extra subscribe padding never won the cascade and was removed. The component and its `explore-subscribe-card` class
+still carry the name of the page the markup started on; the name is history, not a location.
 
 The Source Notes section remains retired from the public page. `sourceNotes` still belongs
 in issue frontmatter as the editorial audit trail, but nothing renders it.
@@ -618,9 +1224,15 @@ in issue frontmatter as the editorial audit trail, but nothing renders it.
 ### Not Found
 
 Every route that does not exist renders `src/pages/404.astro` on the same page shell as the
-rest of the site: the `Page Not Found` eyebrow, page title, dek, then one bordered recovery
-panel spanning the full page shell. The panel reuses the Explore mega card's container,
-spacing, two-column discovery grid, typography and Lucide icon tiles. Its four destinations
+rest of the site: the page title `Page not found`, its dek, then one bordered recovery panel
+spanning the full page shell. It carries no eyebrow. The diagnosis is the title, under The
+One Page Title Rule, because until 2026-09-09 the fact sat in a 12px eyebrow above a 40px
+line of voice and a dek that restated the voice a third time, leaving the smallest type on
+the page carrying the only thing a lost reader came for. The generated social card states
+the same fact under a `404` eyebrow, since a card seen away from the site cannot say "the
+links below". The panel reuses the Explore mega card's container,
+spacing, two-column discovery grid and Phosphor icon tiles. Its four recovery titles use the
+23px/28px Card Title role rather than the Explore taxonomy name's private treatment. Its four destinations
 are Search, Explore, Archive, then About. The tile itself does not get a row hover wash; only
 the title and icon respond, exactly like the Explore discovery links.
 
@@ -632,11 +1244,11 @@ A dead link now stays inside the publication.
 
 ### Search Surface Type
 
-The search modal, the mobile nav search and the RSS dialog run on their own type sizes
-rather than the page scale: the nav search at 1.05rem, the search input at
-`clamp(1.1rem, 2vw, 1.45rem)`, the two search-result treatments at 1.18rem and .9rem, and
-the RSS dialog heading at its own clamp on each of two breakpoints. Seven values in
-`src/styles/search.css`, all deliberate.
+The search modal, the mobile nav search and the RSS dialog run on their own named type tokens
+rather than the page scale: `--type-mobile-nav-action`, `--type-search-input`,
+`--type-search-result-title`, `--type-search-result-meta`, `--type-rss-title`, and mobile
+overrides for the result and RSS titles. Their seven values live together at the top of
+`src/styles/search.css` and retain the reviewed sizes exactly.
 
 They are deliberate because that surface is not the page. It opens over everything, it is
 read at arm's length in a hurry, and its input is the reference the directory filter bar
@@ -645,8 +1257,9 @@ and the dialog look in order to satisfy a detector advisory, which is the wrong 
 The mobile search input's explicit 16px is load-bearing for a different reason: anything
 smaller makes iOS Safari zoom the page when the field takes focus.
 
-The mechanical detector reports these seven as `design-system-font-size` advisories on
-every run. That is expected. Treat a change in the count as the signal, not the count.
+The tokens exist so the mechanical detector can distinguish this documented overlay system
+from accidental literals. A new `design-system-font-size` advisory in `search.css` is now a
+real signal rather than part of a standing count.
 
 ### Social Cards
 
@@ -692,8 +1305,8 @@ anchor and the Best For eyebrow already divides; a third device would be decorat
 card that has to read at thumbnail size. The mark is drawn at 112px rather than the ~160 the
 canvas would take, because app icons top out at 128px source and upscaling them would undo
 the payload work that put them there for a blurrier result. An icon-less app falls back to
-its first category's Lucide mark on the same stable colour its cards use, read out of the
-`lucide-astro` package at build time rather than copied into this repository.
+its first category's Phosphor mark on the same stable colour its cards use, read out of the
+`@phosphor-icons/core` package at build time rather than copied into this repository.
 
 **Titles are never truncated; the type gives way instead.** A longer title steps down the
 scale and takes a shorter dek with it. Deks may be trimmed at a word boundary, because a dek
@@ -703,17 +1316,18 @@ is a standfirst and reads whole either way; a title is the editorial line itself
 
 ### Do:
 - **Do** keep the fog-grey field, white paper, deep-sea text, and blue accent in a tight relationship.
+- **Do** assign prose, chip labels and metadata through `--body-text`, `--chip-text` and `--muted` by meaning rather than by page.
 - **Do** reuse the shared page shell so archive, tag, collection, about, and app pages line up.
 - **Do** keep shadows soft and ambient.
 - **Do** let serif headlines carry the editorial voice while system sans handles utility.
 - **Do** keep the defining tag or collection locked when it is the page’s own context.
-- **Do** keep the uppercase eyebrow above section and card headings. General design guidance treats a kicker above a heading as filler; here it is load-bearing house style — it names the issue section, the pick, and the current-issue block, and it is the documented Label role. This is a deliberate, standing exception.
+- **Do** keep the uppercase eyebrow where each level carries what the other cannot: the issue section's rubric over its title, current or archived over the issue number, and the app detail rail's labels. General design guidance treats a kicker above a heading as filler; on those it is load-bearing house style and a deliberate, standing exception. **Do** drop the second level where it only restates the first, and give a single heading `.section-heading` and `.section-title` rather than half a lockup. See The Two Level Rule.
 
 ### Don't:
 - **Don't** introduce loud secondary colors just to add energy.
 - **Don't** reintroduce warm sand or cream into the light theme; the day palette is white and Deep-Sea-tinted grey.
 - **Don't** replace the soft shadow system with hard offsets or heavy glow.
-- **Don't** use tinted text as neutral gray on colored surfaces.
+- **Don't** use neutral gray on colored surfaces; derive secondary ink from the surface hue and give each reading role one semantic token.
 - **Don't** make chips, filters, or buttons feel like separate UI worlds.
 - **Don't** let the brand wordmark typography spread into body copy.
 - **Don't** add a font to this repository without its licence file. See The Borrowed Type Rule.

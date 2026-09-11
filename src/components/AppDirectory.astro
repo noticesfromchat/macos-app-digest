@@ -9,12 +9,14 @@ const {
   apps,
   defaultFilterType,
   defaultFilterValue,
-  showFilterMenu = true
+  showFilterMenu = true,
+  heading
 } = Astro.props as {
   apps: CollectionEntry<'apps'>[];
   defaultFilterType?: FilterType;
   defaultFilterValue?: string;
   showFilterMenu?: boolean;
+  heading?: string;
 };
 
 const [allApps, issues] = await Promise.all([
@@ -65,8 +67,39 @@ const tagOptions = [
    first paint is already short and the page does not collapse from full height once the
    module runs. Keep this in step with the nth-child rule in global.css. */
 const DIRECTORY_BATCH = 18;
+
+/* The default order says what the surface is for. Unnarrowed, this grid is a browse
+   surface and the alphabet means nothing — it just puts the same first eighteen names
+   on screen forever, chosen by nothing but their first letter. Recency is the
+   publication's own order and it turns over with every issue at no editorial cost.
+   Narrowed, the reader has stated what they are after and is looking something up, so
+   the index order is the useful one and a small result set gains nothing from recency.
+
+   A lane page (a category, collection or tag) is narrowed by definition, which is why
+   the server can pick the order here: it is the one form of narrowing that is known at
+   build time. A `?q=` arriving on Explore is settled by the script instead.
+
+   Detected from the catalogue the surface was handed rather than from `defaultFilterType`,
+   because only two of the three lane kinds set it: collection and tag pages pass a filter
+   the reader cannot remove, while a category page just passes its own subset, and there is
+   no category filter in the menu for it to pass. Being given fewer apps than exist is the
+   one fact all three share, and it needs no prop that a future lane could forget. */
+const SORT_LABELS: Record<string, string> = {
+  'a-z': 'A-Z',
+  'z-a': 'Z-A',
+  'date-featured': 'Date featured'
+};
+const isLanePage = apps.length < allApps.length;
+const initialSort = isLanePage ? 'a-z' : 'date-featured';
+
+const byName = (a: CollectionEntry<'apps'>, b: CollectionEntry<'apps'>) =>
+  a.data.name.localeCompare(b.data.name, undefined, { sensitivity: 'base' });
+/* Ties inside an issue fall back to the name, so the order is total and the server and
+   the client cannot disagree about it. */
 const sortedApps = [...apps].sort((a, b) =>
-  a.data.name.localeCompare(b.data.name, undefined, { sensitivity: 'base' })
+  initialSort === 'date-featured'
+    ? (featuredDates.get(b.id) ?? '').localeCompare(featuredDates.get(a.id) ?? '') || byName(a, b)
+    : byName(a, b)
 );
 ---
 <div
@@ -74,18 +107,20 @@ const sortedApps = [...apps].sort((a, b) =>
   data-app-directory
   data-default-type={defaultFilterType}
   data-default-value={defaultFilterValue}
+  data-lane={isLanePage ? '' : undefined}
 >
   {/* The page title is the h1 and every card title is an h3, so without this the
-      directory skipped a level. It names the region for a screen reader and keeps
-      the outline whole; there is no visible heading here by design. */}
-  <h2 class="sr-only">Apps</h2>
+      directory skipped a level. A surface with its own visible heading passes it instead,
+      and it leads the control row rather than sitting on a line of its own: the row was
+      built around a leading element with an auto right margin, and when the count moved
+      down to the grid nothing replaced it, leaving 488px of empty field beside the
+      controls. Either way the outline gets exactly one h2. */}
+  {!heading && <h2 class="sr-only">Apps</h2>}
   <div class:list={['directory-filter-bar', !showFilterMenu && 'directory-filter-bar--no-filters']}>
-    <p class="directory-count" aria-live="polite" data-directory-count>
-      {apps.length} {apps.length === 1 ? 'app' : 'apps'}
-    </p>
-
+    {heading && <h2 class="directory-heading">{heading}</h2>}
     <div class="directory-search">
       <svg
+        class="icon"
         aria-hidden="true"
         viewBox="0 0 24 24"
         fill="none"
@@ -111,6 +146,20 @@ const sortedApps = [...apps].sort((a, b) =>
         disabled
         data-directory-query
       />
+      {/* Ships hidden and is revealed by the script the moment the field has a value, so a
+          reader without JavaScript is never offered a control that cannot work. */}
+      <button
+        type="button"
+        class="field-clear"
+        aria-label="Clear search"
+        hidden
+        data-directory-query-clear
+      >
+        <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+          <path d="M18 6 6 18"></path>
+          <path d="m6 6 12 12"></path>
+        </svg>
+      </button>
     </div>
 
     {showFilterMenu && (
@@ -127,6 +176,7 @@ const sortedApps = [...apps].sort((a, b) =>
             <span class="directory-filter-count" hidden data-filter-count></span>
           </span>
           <svg
+            class="icon"
             aria-hidden="true"
             viewBox="0 0 24 24"
             fill="none"
@@ -197,8 +247,15 @@ const sortedApps = [...apps].sort((a, b) =>
           aria-expanded="false"
           data-sort-trigger
         >
-          <span>Sort</span>
+          {/* The trigger reads as its current value rather than as the word "Sort",
+              so the applied order is visible without opening the menu. The label is
+              the value alone, with the control's name carried for assistive tech in
+              the span before it, which keeps the button announcing "Sort by A-Z". It
+              ships the order the server actually rendered, so the control is not
+              claiming one order while the grid shows another. */}
+          <span><span class="sr-only">Sort by </span><span data-sort-label>{SORT_LABELS[initialSort]}</span></span>
           <svg
+            class="icon"
             aria-hidden="true"
             viewBox="0 0 24 24"
             fill="none"
@@ -211,13 +268,36 @@ const sortedApps = [...apps].sort((a, b) =>
           </svg>
         </button>
         <div class="directory-select-options" role="menu" aria-label="Sort apps" hidden data-sort-options>
-          <button type="button" role="menuitemradio" aria-checked="true" data-sort-value="a-z">A-Z</button>
-          <button type="button" role="menuitemradio" aria-checked="false" data-sort-value="z-a">Z-A</button>
-          <button type="button" role="menuitemradio" aria-checked="false" data-sort-value="date-featured">Date featured</button>
+          {(['a-z', 'z-a', 'date-featured'] as const).map((value) => (
+            <button
+              type="button"
+              role="menuitemradio"
+              aria-checked={String(value === initialSort)}
+              data-sort-value={value}
+            >{SORT_LABELS[value]}</button>
+          ))}
         </div>
       </div>
     </div>
 
+  </div>
+  {/* The count and the chips answer the same question — how many, and why that many — so
+      they share a row, and that row sits against the grid it describes rather than at the
+      top of the toolbar. In the toolbar the count was a 56px full-width band on a phone,
+      three rows above the first card and attached to nothing.
+
+      The chips stay a sibling of the count and never move inside it: .directory-count is
+      aria-live, and controls in a live region get re-announced on every result change.
+
+      The list is empty in the markup on purpose. Filtering is script-owned — the query
+      input ships disabled — so without JavaScript there is nothing here to remove. The
+      script fills it from the same state that drives the count and the URL, which is what
+      makes filters restored from ?tags= arrive as chips on load. */}
+  <div class="directory-results">
+    <p class="directory-count" aria-live="polite" data-directory-count>
+      {apps.length} {apps.length === 1 ? 'app' : 'apps'}
+    </p>
+    <ul class="directory-actives" aria-label="Active filters" hidden data-directory-actives></ul>
   </div>
   <div class="grid directory-grid" data-app-grid data-directory-cap={DIRECTORY_BATCH}>
     {sortedApps.map((entry) => (
@@ -231,7 +311,6 @@ const sortedApps = [...apps].sort((a, b) =>
   <p class="directory-empty" hidden data-directory-empty>
     <span data-directory-empty-message>No apps match every selected filter</span>
     <button type="button" class="directory-empty-action" hidden data-query-reset>Clear search</button>
-    <button type="button" class="button" hidden data-filter-reset>Reset filters</button>
   </p>
   <div class="directory-more">
     <button type="button" class="button" hidden data-directory-more></button>
@@ -265,12 +344,13 @@ const sortedApps = [...apps].sort((a, b) =>
     const emptyState = directory.querySelector<HTMLElement>('[data-directory-empty]');
     const emptyMessage = directory.querySelector<HTMLElement>('[data-directory-empty-message]');
     const queryReset = directory.querySelector<HTMLButtonElement>('[data-query-reset]');
-    const emptyFilterReset = emptyState?.querySelector<HTMLButtonElement>('[data-filter-reset]');
+    const queryClear = directory.querySelector<HTMLButtonElement>('[data-directory-query-clear]');
     const moreButton = directory.querySelector<HTMLButtonElement>('[data-directory-more]');
     const filterMenu = directory.querySelector<HTMLElement>('[data-filter-menu]');
     const filterTrigger = directory.querySelector<HTMLButtonElement>('[data-filter-trigger]');
     const filterPanel = directory.querySelector<HTMLElement>('[data-filter-panel]');
     const filterCount = directory.querySelector<HTMLElement>('[data-filter-count]');
+    const activesList = directory.querySelector<HTMLElement>('[data-directory-actives]');
     const sortMenu = directory.querySelector<HTMLElement>('[data-sort-menu]');
     const sortTrigger = directory.querySelector<HTMLButtonElement>('[data-sort-trigger]');
     const sortOptions = directory.querySelector<HTMLElement>('[data-sort-options]');
@@ -291,7 +371,12 @@ const sortedApps = [...apps].sort((a, b) =>
     const requiredFilter = filters.find((filter) => isDefaultFilter(filter));
     const batchSize = Number(grid.dataset.directoryCap) || 24;
     let visibleLimit = batchSize;
+    /* Resolved from the narrowing state below before anything is sorted. `sortExplicit`
+       is the reader taking the control over: until they pick from the menu the order
+       follows what the surface is currently doing, and once they pick it stops moving
+       under them. */
     let selectedSort = 'a-z';
+    let sortExplicit = false;
 
     /* CSS owns the first-paint cap. Once the module runs, `hidden` becomes the single
        visibility mechanism and the query field becomes interactive. */
@@ -402,11 +487,111 @@ const sortedApps = [...apps].sort((a, b) =>
       optionalCollections.length
         ? url.searchParams.set('collections', optionalCollections.sort().join(','))
         : url.searchParams.delete('collections');
-      selectedSort === 'a-z'
+      /* Omitted when it matches what this filter state derives on its own, so a shared
+         link reproduces the screen without carrying a value it would have picked. */
+      selectedSort === derivedSort()
         ? url.searchParams.delete('sort')
         : url.searchParams.set('sort', selectedSort);
 
       window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`);
+    };
+
+    /* Everything the reader added, which is exactly what the badge counts and the URL
+       carries. The page's own filter is never in here: on a lane page it is checked and
+       disabled, and the h1 directly above already states it. */
+    const removableFilters = () =>
+      selectedFilters().filter((filter) => !isDefaultFilter(filter));
+
+    /* Built as nodes rather than markup because the query pill's label is whatever the
+       reader typed. */
+    const SVG_NS = 'http://www.w3.org/2000/svg';
+    const svgIcon = (className: string, shapes: [string, Record<string, string>][]) => {
+      const svg = document.createElementNS(SVG_NS, 'svg');
+      /* `icon` opts these into the site's one glyph contract, which is what gives them a
+         size at all: built here rather than in markup, they carry no Phosphor wrapper, and
+         the contract is deliberately not applied to bare `svg`. */
+      svg.setAttribute('class', `icon ${className}`);
+      svg.setAttribute('aria-hidden', 'true');
+      svg.setAttribute('viewBox', '0 0 24 24');
+      svg.setAttribute('fill', 'none');
+      svg.setAttribute('stroke', 'currentColor');
+      svg.setAttribute('stroke-width', '2');
+      svg.setAttribute('stroke-linecap', 'round');
+      svg.setAttribute('stroke-linejoin', 'round');
+      for (const [tag, attrs] of shapes) {
+        const node = document.createElementNS(SVG_NS, tag);
+        for (const [name, value] of Object.entries(attrs)) node.setAttribute(name, value);
+        svg.append(node);
+      }
+      return svg;
+    };
+
+    const buildPill = (
+      label: string,
+      actionLabel: string,
+      kind: string,
+      value: string,
+      leading?: SVGElement
+    ) => {
+      const item = document.createElement('li');
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'directory-active';
+      button.dataset.removeKind = kind;
+      button.dataset.removeValue = value;
+      /* The visible label is the tag alone, which does not say what pressing it does. */
+      button.setAttribute('aria-label', actionLabel);
+      button.title = actionLabel;
+      if (leading) button.append(leading);
+      const text = document.createElement('span');
+      text.className = 'directory-active-label';
+      text.textContent = label;
+      button.append(text, svgIcon('directory-active-x', [
+        ['path', { d: 'M18 6 6 18' }],
+        ['path', { d: 'm6 6 12 12' }]
+      ]));
+      item.append(button);
+      return item;
+    };
+
+    /* Coarsest first: the query, then collections, then tags. */
+    const renderActiveFilters = () => {
+      if (!activesList) return;
+      const removable = removableFilters();
+      const rawQuery = queryValue();
+
+      activesList.replaceChildren();
+
+      if (rawQuery) {
+        activesList.append(buildPill(
+          rawQuery,
+          `Clear search: ${rawQuery}`,
+          'query',
+          '',
+          svgIcon('directory-active-glyph', [
+            ['circle', { cx: '11', cy: '11', r: '8' }],
+            ['path', { d: 'm21 21-4.3-4.3' }]
+          ])
+        ));
+      }
+
+      for (const filter of removable) {
+        if (filter.dataset.filterType !== 'collection') continue;
+        /* The panel already holds the display label, so a collection reads as
+           "Editor's Picks" here rather than as its slug. */
+        const name = filter
+          .closest('.filter-option')
+          ?.querySelector('.filter-option-name')
+          ?.textContent?.trim() || filter.value;
+        activesList.append(buildPill(name, `Remove filter: ${name}`, 'collection', filter.value));
+      }
+
+      for (const filter of removable) {
+        if (filter.dataset.filterType !== 'tag') continue;
+        activesList.append(buildPill(filter.value, `Remove filter: ${filter.value}`, 'tag', filter.value));
+      }
+
+      activesList.hidden = activesList.childElementCount === 0;
     };
 
     const applyFilters = (updateUrl = true) => {
@@ -450,10 +635,11 @@ const sortedApps = [...apps].sort((a, b) =>
             : 'No apps match every selected filter';
         }
         if (queryReset) queryReset.hidden = !query;
-        if (emptyFilterReset) {
-          emptyFilterReset.hidden = selected.filter((filter) => !isDefaultFilter(filter)).length === 0;
-        }
       }
+      /* Tracks the raw value, not the normalised one: a field holding only spaces still
+         has something to clear. */
+      if (queryClear) queryClear.hidden = !queryInput?.value;
+
       if (moreButton) {
         moreButton.hidden = remaining === 0;
         if (remaining > 0) {
@@ -469,6 +655,8 @@ const sortedApps = [...apps].sort((a, b) =>
         filterCount.hidden = optionalFilterCount === 0;
         filterMenu?.classList.toggle('has-custom-filters', optionalFilterCount > 0);
       }
+
+      renderActiveFilters();
 
       filters.forEach((filter, index) => {
         const row = filterRows[index];
@@ -502,11 +690,20 @@ const sortedApps = [...apps].sort((a, b) =>
 
     const appName = (card: HTMLElement) => card.dataset.appName ?? '';
     const featuredDate = (card: HTMLElement) => card.dataset.featuredDate ?? '';
+    /* A lane page is narrowed from the first paint and stays that way. The verdict comes
+       from the server so both sides cannot disagree about what the default order is. */
+    const isLane = directory.dataset.lane !== undefined;
+    const isNarrowed = () =>
+      Boolean(normalizedQuery()) || removableFilters().length > 0 || isLane;
+    const derivedSort = () => (isNarrowed() ? 'a-z' : 'date-featured');
+    const sortLabel = directory.querySelector<HTMLElement>('[data-sort-label]');
     const updateSortUi = () => {
       const selectedButton = sortButtons.find((button) => button.dataset.sortValue === selectedSort);
       sortButtons.forEach((button) => {
         button.setAttribute('aria-checked', String(button === selectedButton));
       });
+      /* The menu option's own text is the label, so the two can never disagree. */
+      if (sortLabel && selectedButton) sortLabel.textContent = selectedButton.textContent ?? '';
     };
     const sortCards = (updateUrl = true) => {
       cards.sort((a, b) => {
@@ -524,6 +721,20 @@ const sortedApps = [...apps].sort((a, b) =>
       applyFilters(updateUrl);
     };
 
+    /* Narrowing can change which order is the right default, so these paths re-sort
+       rather than only re-hiding cards. The comparison keeps that to the moments the
+       answer actually changes: re-appending 118 nodes on every keystroke would be a
+       real cost for no visible difference. */
+    const refilter = () => {
+      const next = sortExplicit ? selectedSort : derivedSort();
+      if (next === selectedSort) {
+        applyFilters();
+        return;
+      }
+      selectedSort = next;
+      sortCards();
+    };
+
     const initialUrl = new URL(window.location.href);
     const knownTags = new Set(
       filters.filter((filter) => filter.dataset.filterType === 'tag').map((filter) => filter.value)
@@ -539,10 +750,9 @@ const sortedApps = [...apps].sort((a, b) =>
         .split(',')
         .filter((value) => knownCollections.has(value))
     );
-    const urlSort = initialUrl.searchParams.get('sort') ?? 'a-z';
+    const urlSort = initialUrl.searchParams.get('sort') ?? '';
 
     if (queryInput) queryInput.value = (initialUrl.searchParams.get('q') ?? '').slice(0, 100);
-    selectedSort = allowedSorts.has(urlSort) ? urlSort : 'a-z';
     filters.forEach((filter) => {
       if (isDefaultFilter(filter)) {
         filter.checked = true;
@@ -552,6 +762,12 @@ const sortedApps = [...apps].sort((a, b) =>
         ? urlTags.has(filter.value)
         : urlCollections.has(filter.value);
     });
+
+    /* After the query and the filters are restored, because the derivation reads both.
+       A `sort` in the URL is a choice the reader made and shared, so it is honoured as
+       an explicit one. */
+    sortExplicit = allowedSorts.has(urlSort);
+    selectedSort = sortExplicit ? urlSort : derivedSort();
 
     let filterMenuRegistration: (typeof menus)[number] | undefined;
     if (filterMenu && filterTrigger && filterPanel) {
@@ -568,7 +784,8 @@ const sortedApps = [...apps].sort((a, b) =>
       sortButtons.forEach((option) => {
         option.addEventListener('click', () => {
           const nextSort = option.dataset.sortValue ?? 'a-z';
-          selectedSort = allowedSorts.has(nextSort) ? nextSort : 'a-z';
+          selectedSort = allowedSorts.has(nextSort) ? nextSort : derivedSort();
+          sortExplicit = true;
           sortCards();
           closeMenu(sortMenuRegistration, true);
         });
@@ -578,7 +795,7 @@ const sortedApps = [...apps].sort((a, b) =>
     filters.forEach((filter) => {
       filter.addEventListener('change', () => {
         visibleLimit = batchSize;
-        applyFilters();
+        refilter();
         if (
           filterMenuRegistration
           && filter.dataset.filterType === 'tag'
@@ -596,13 +813,44 @@ const sortedApps = [...apps].sort((a, b) =>
           filter.checked = isDefaultFilter(filter);
         });
         visibleLimit = batchSize;
-        applyFilters();
+        refilter();
       });
+    });
+
+    activesList?.addEventListener('click', (event) => {
+      const button = (event.target as HTMLElement)
+        .closest<HTMLButtonElement>('[data-remove-kind]');
+      if (!button || !activesList) return;
+
+      const index = [...activesList.querySelectorAll('button')].indexOf(button);
+
+      if (button.dataset.removeKind === 'query') {
+        if (queryInput) queryInput.value = '';
+      } else {
+        const match = filters.find((filter) =>
+          filter.dataset.filterType === button.dataset.removeKind
+          && filter.value === button.dataset.removeValue
+        );
+        if (match && !isDefaultFilter(match)) match.checked = false;
+      }
+
+      visibleLimit = batchSize;
+      refilter();
+
+      /* The pill that was focused has just been destroyed. Land on whatever took its
+         place, then the last pill, then Clear all, then the control that opens the
+         filters. Anything else drops focus to the top of the document. */
+      const remaining = [...activesList.querySelectorAll<HTMLButtonElement>('button')];
+      const next = remaining[index] ?? remaining[remaining.length - 1];
+
+      if (next) next.focus();
+      else if (filterTrigger) filterTrigger.focus();
+      else queryInput?.focus();
     });
 
     queryInput?.addEventListener('input', () => {
       visibleLimit = batchSize;
-      applyFilters();
+      refilter();
     });
     queryInput?.addEventListener('keydown', (event) => {
       if (event.key !== 'Enter') return;
@@ -613,7 +861,17 @@ const sortedApps = [...apps].sort((a, b) =>
       if (!queryInput) return;
       queryInput.value = '';
       visibleLimit = batchSize;
-      applyFilters();
+      refilter();
+      queryInput.focus();
+    });
+
+    /* Clearing hands focus back to the field. The button is about to be hidden, so leaving
+       focus on it would drop the reader to the top of the document. */
+    queryClear?.addEventListener('click', () => {
+      if (!queryInput) return;
+      queryInput.value = '';
+      visibleLimit = batchSize;
+      refilter();
       queryInput.focus();
     });
 

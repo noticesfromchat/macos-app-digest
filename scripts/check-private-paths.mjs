@@ -1,8 +1,12 @@
+import { execFileSync } from 'node:child_process';
 import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 
 const root = process.cwd();
+/* `.git` is invisible to `git ls-files`, so it has to be named. The rest are already
+   covered by .gitignore and stay here only to keep the walk short when git cannot be
+   asked and every ignored path is being scanned. */
 const ignoredDirectories = new Set([
   '.astro',
   '.git',
@@ -10,17 +14,38 @@ const ignoredDirectories = new Set([
   'dist',
   'node_modules',
 ]);
+/* Vendored skill sources. These are tracked, so git has nothing to say about them,
+   and they carry absolute paths in their own documentation and fixtures. */
 const ignoredPrefixes = [
   '.github/skills/',
   '.agents/skills/impeccable/',
-  /* Impeccable's local state. The skill records absolute paths in these and adds
-     them to .git/info/exclude itself, so they are never committed and the check
-     has nothing to protect here. Its critique reports are not on this list: those
-     are tracked, and must carry repository-relative paths like anything else. */
-  '.impeccable/hook.cache.json',
-  '.impeccable/hook.pending.json',
-  '.impeccable/config.local.json',
 ];
+
+/* What git will never commit cannot leak, so the check defers to .gitignore instead of
+   keeping a second list of the same files. That list had reached three entries — the
+   hook cache, the pending file and the local config — each a separate note making the
+   same point: this file is ignored. `.impeccable/critique/` was about to be the fourth,
+   and the comment beside the other three had gone stale in the meantime, still calling
+   the critique reports tracked after .gitignore started excluding them. The reports
+   live in Notion; the snapshots on disk are the skill's own state.
+
+   Directories that git reports as wholly ignored come back with a trailing slash and
+   have their subtree skipped. If git cannot answer — no repository, no git on PATH —
+   the set is empty and everything is scanned, which is the safe direction to fail. */
+function gitIgnoredEntries() {
+  try {
+    const output = execFileSync(
+      'git',
+      ['ls-files', '-z', '--others', '--ignored', '--exclude-standard', '--directory'],
+      { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] },
+    );
+    return new Set(output.split('\0').filter(Boolean));
+  } catch {
+    return new Set();
+  }
+}
+
+const gitIgnored = gitIgnoredEntries();
 const textExtensions = new Set([
   '.astro', '.css', '.html', '.js', '.json', '.md', '.mjs', '.toml',
   '.ts', '.txt', '.yaml', '.yml',
@@ -39,6 +64,7 @@ async function walk(directory) {
     const absolutePath = path.join(directory, entry.name);
     const relativePath = path.relative(root, absolutePath).split(path.sep).join('/');
     if (ignoredPrefixes.some((prefix) => relativePath.startsWith(prefix))) continue;
+    if (gitIgnored.has(entry.isDirectory() ? `${relativePath}/` : relativePath)) continue;
 
     if (entry.isDirectory()) {
       await walk(absolutePath);

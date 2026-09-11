@@ -1,8 +1,9 @@
 ---
 name: extract
-description: "Pull reusable patterns, components, and design tokens into the design system. Identifies repeated patterns and consolidates them. Use when you have drift across the codebase and want to bring things back to a consistent system."
-argument-hint: "[target]"
-user-invocable: true
+description: "Consolidate repeated UI patterns into reusable components and tokens."
+metadata:
+  argument-hint: "[target]"
+  user-invocable: true
 ---
 
 <!-- impeccable-pinned-skill -->
