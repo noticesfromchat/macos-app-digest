@@ -3,7 +3,7 @@ name: AI Actions
 description: Adds GPT, Claude and OpenAI-compatible model actions to Apple Shortcuts, with API keys stored in the system keychain.
 bestFor: Shortcuts builders who want model calls inside automations without hand-rolling API steps.
 tagline: adds AI to Shortcuts
-tags: [ai, automation, productivity, utility]
+tags: [ai, automation, productivity, utility, shortcuts]
 categories: [ai-agents, automation-shortcuts, productivity-workflow, mac-utilities-customization]
 source: Official AI Actions product information
 homepage: https://sindresorhus.com/ai-actions
