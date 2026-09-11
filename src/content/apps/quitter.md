@@ -1,6 +1,6 @@
 ---
 name: Quitter
-description: Hide or quit an app after it has sat untouched for a few minutes, so Slack stops sitting there with an unread badge you have to look at.
+description: Hide or quit an app after it has sat untouched for a few minutes, so the chat window you stopped reading is not still there radiating unread messages.
 bestFor: Mac users running twenty apps they stopped using hours ago and never thought to quit.
 tagline: idle app closer
 tags: [productivity, automation, utility]
