@@ -916,14 +916,19 @@ recommended. And the client renderer carried a hand-copied duplicate of `AppCard
 that had already drifted from it. Removing the shelves removed the renderer, and the
 renderer took both with it.
 
-- **Order:** categories, collections, then catalogue. The opening uses six category
-  cards on the Field Grid's 16px gutters, with an icon, serif title and live app count.
-  The collection row divides evenly among the existing collections; two occupy three
-  fields each, and three occupy two each. Cards use 16px insets and matching corners,
-  with 8px between each muted section label and its row and 24px between groups.
-  The category row becomes three columns below 1100px, two below 680px and one below
-  360px. Collections stack below 680px. This compact opening follows the editor's
-  September 5 mockup; descriptions remain on category pages and tags in the directory filter.
+- **Order:** categories, collections, then catalogue. The opening is one grouped
+  menu on the surface fill, with 32px insets and the shared radius. Each group has
+  an accent Label-scale heading with h2 semantics. Rows reuse the app detail rail's
+  sans-serif type and Phosphor marks: categories are muted at weight 600 and
+  collections use text ink at 700. Counts align at the right in muted tabular numerals;
+  their app unit remains available to screen readers.
+  Eight categories run alphabetically down three columns, then two below 1100px
+  and one below 680px. Collections use three columns, then one below 680px. Rows
+  have 32px minimum heights, 8px row gaps and 24px column gaps. Headings sit 8px
+  above their lists; groups are 16px apart. On mobile the panel inset is 24px.
+  The editor's September
+  11 mockups establish this grouped menu and detail-rail styling; descriptions stay
+  on category pages and tags in the directory filter.
 - **The count is stated, once.** The directory's filter bar carries it and keeps it live as
   filters narrow. The hero carried it too until 2026-09-02, which meant the page opened by
   announcing a number and then restated it a screen later; the dek now describes what the
