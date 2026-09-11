@@ -7,5 +7,6 @@ tags: [health, productivity, utility, menubar]
 categories: [productivity-workflow, mac-utilities-customization]
 source: Issue 11 selection list and official homepage
 homepage: https://lookaway.com/
+icon: /app-icons/lookaway.png
 iconStyle: plain
 ---

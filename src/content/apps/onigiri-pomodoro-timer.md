@@ -7,5 +7,6 @@ tags: [productivity, utility, menubar]
 categories: [productivity-workflow, mac-utilities-customization]
 source: Issue 11 selection list and Mac App Store listing
 homepage: https://apps.apple.com/us/app/onigiri-pomodoro-timer/id1639917298?mt=12
+icon: /app-icons/onigiri-pomodoro-timer.png
 iconStyle: plain
 ---

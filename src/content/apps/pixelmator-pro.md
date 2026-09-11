@@ -8,5 +8,6 @@ categories: [mac-utilities-customization]
 collections: [community-favorites]
 source: Issue 11 selection list and Apple product page
 homepage: https://www.apple.com/pixelmator-pro/
+icon: /app-icons/pixelmator-pro.png
 iconStyle: plain
 ---

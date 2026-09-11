@@ -7,5 +7,6 @@ tags: [dictation, local, ai, writing, open-source]
 categories: [writing-notes-reading, ai-agents]
 source: Issue 11 selection list and official homepage
 homepage: https://altic.dev/fluid
+icon: /app-icons/fluidvoice.png
 iconStyle: plain
 ---

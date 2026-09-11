@@ -7,5 +7,6 @@ tags: [remote, utility, productivity]
 categories: [mac-utilities-customization, productivity-workflow]
 source: Issue 11 selection list and official homepage
 homepage: https://jumpdesktop.com/
+icon: /app-icons/jump-desktop.png
 iconStyle: plain
 ---

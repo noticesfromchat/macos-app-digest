@@ -7,5 +7,6 @@ tags: [calendar, menubar, productivity]
 categories: [productivity-workflow, mac-utilities-customization]
 source: Issue 11 selection list and official homepage
 homepage: https://sindresorhus.com/dato
+icon: /app-icons/dato.png
 iconStyle: plain
 ---

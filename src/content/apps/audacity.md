@@ -8,5 +8,6 @@ categories: [mac-utilities-customization, files-research-documents]
 collections: [community-favorites]
 source: Issue 11 selection list and official homepage
 homepage: https://www.audacityteam.org/
+icon: /app-icons/audacity.png
 iconStyle: plain
 ---

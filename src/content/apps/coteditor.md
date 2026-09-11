@@ -8,5 +8,6 @@ categories: [writing-notes-reading, developer-tools]
 collections: [community-favorites]
 source: Issue 11 selection list and official homepage
 homepage: https://coteditor.com/
+icon: /app-icons/coteditor.png
 iconStyle: plain
 ---

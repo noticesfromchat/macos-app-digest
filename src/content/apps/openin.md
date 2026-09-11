@@ -7,5 +7,6 @@ tags: [automation, utility, shortcuts]
 categories: [productivity-workflow, mac-utilities-customization]
 source: Issue 11 selection list and official homepage
 homepage: https://loshadki.app/openin4/#description
+icon: /app-icons/openin.png
 iconStyle: plain
 ---

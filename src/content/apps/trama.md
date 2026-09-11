@@ -7,5 +7,6 @@ tags: [automation, ai, shortcuts]
 categories: [productivity-workflow, ai-agents]
 source: Issue 11 selection list and official homepage
 homepage: https://usetrama.com/
+icon: /app-icons/trama.png
 iconStyle: plain
 ---

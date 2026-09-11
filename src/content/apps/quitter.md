@@ -8,5 +8,7 @@ categories: [productivity-workflow, mac-utilities-customization]
 collections: [editors-picks]
 source: Issue 11 selection list and Marco Arment apps page
 homepage: https://marco.org/apps
+icon: /app-icons/quitter.png
 iconStyle: plain
+iconAccent: "#d15d4b"
 ---

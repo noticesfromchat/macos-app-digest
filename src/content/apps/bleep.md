@@ -8,5 +8,6 @@ categories: [files-research-documents, writing-notes-reading, mac-utilities-cust
 collections: [hidden-gems]
 source: Issue 11 selection list and official homepage
 homepage: https://bleep.is/
+icon: /app-icons/bleep.png
 iconStyle: plain
 ---

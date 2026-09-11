@@ -7,5 +7,6 @@ tags: [messages, productivity, privacy]
 categories: [writing-notes-reading, productivity-workflow, mac-utilities-customization]
 source: Issue 11 selection list and official homepage
 homepage: https://mimestream.com/
+icon: /app-icons/mimestream.png
 iconStyle: plain
 ---

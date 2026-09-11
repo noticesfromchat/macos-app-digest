@@ -7,5 +7,6 @@ tags: [ai, dictation, local, productivity]
 categories: [ai-agents, writing-notes-reading, productivity-workflow]
 source: Issue 11 selection list and official homepage
 homepage: https://snaply.ai/
+icon: /app-icons/snaply.png
 iconStyle: plain
 ---

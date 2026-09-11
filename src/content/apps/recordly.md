@@ -7,5 +7,6 @@ tags: [capture, video, open-source]
 categories: [files-research-documents]
 source: Issue 11 selection list and official homepage
 homepage: https://recordly.dev/
+icon: /app-icons/recordly.png
 iconStyle: plain
 ---
