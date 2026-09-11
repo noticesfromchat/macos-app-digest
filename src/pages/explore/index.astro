@@ -128,17 +128,13 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
        it keeps the tightest step at every width. That is a deliberate exception to the
        section ladder and the reason it is written down here.
 
-       No horizontal padding. The lanes below track the card grid's own columns, which
-       are measured against the full shell width, so insetting this box would shift
-       every column off the cards it is meant to line up with. The breathing room comes
-       from the lane padding instead, which is the card's own inset. */
+       No horizontal padding, and the lanes take none either. The rows sit on the card
+       grid's own columns, measured against the full shell width, so a row starts where
+       the card below it starts. That gives the page one left margin: the title, the
+       dek, this menu, the directory heading and the cards all begin on it. */
     padding: var(--space-3) 0;
   }
-  /* The eyebrow starts where a lane's mark starts, not at the panel edge. */
-  .explore-taxonomy .eyebrow {
-    margin: 0 0 var(--space-1);
-    padding-inline: var(--space-3);
-  }
+  .explore-taxonomy .eyebrow { margin: 0 0 var(--space-1); }
   /* Three columns on the card grid's own geometry. `.grid` is twelve tracks with a
      16px column gap and each card spans four, which puts the card edges at exactly the
      same places three equal columns with a 16px gap do, provided both are measured
@@ -159,9 +155,6 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
   .explore-lanes li { min-width: 0; }
   .explore-lane {
     grid-template-columns: 32px minmax(0, 1fr) auto;
-    /* The app card's own inset, so a lane's mark and label start on the same vertical
-       as the icon and title of the card beneath it. */
-    padding-inline: var(--space-3);
     min-height: 32px;
     height: 100%;
     column-gap: var(--space-1);
@@ -192,16 +185,6 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
     font-weight: 600;
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
-  }
-  /* Flush left on a phone. The 24px inset is the app card's, and it earns its keep while
-     the rows sit beside cards in a multi column grid: it puts a lane's mark on the same
-     vertical as the icon of the card below it. On one column there is no card beside a
-     row to agree with, and the inset reads as an unexplained indent against the page
-     title and the dek, which start at the edge. The count stays in the last track, so
-     it lands on the opposite edge. */
-  @media (max-width: 680px) {
-    .explore-lane,
-    .explore-taxonomy .eyebrow { padding-inline: 0; }
   }
   /* Collapse where the cards collapse. `.grid > *` goes from span 4 to span 12 at 920
      with no two-column step in between, so a two-column taxonomy over a three-column
