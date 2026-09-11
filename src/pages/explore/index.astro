@@ -184,6 +184,17 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
   @media (pointer: coarse) {
     .explore-lane { min-height: 48px; }
   }
+  /* Collections read as categories here. The rail's own contrast, ink at 700 against
+     muted at 600, is what gives a collection rank in a sidebar where it sits above the
+     categories; in this menu it sits below them and the two groups read as two
+     different kinds of row instead of one index. Scoped to this page, so the app detail
+     rail keeps its own treatment. Provisional, at the editor's direction: the rank now
+     comes from the eyebrow and the order alone. */
+  .explore-lanes-collections .explore-lane {
+    color: var(--muted);
+    font-weight: 600;
+    line-height: var(--leading-meta);
+  }
   .explore-lane-count {
     padding-left: var(--space-1);
     color: var(--muted);
