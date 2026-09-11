@@ -155,18 +155,11 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
     column-gap: var(--space-1);
     font-family: var(--sans);
   }
-  /* A list row inside a panel fills. These rows wear the app detail rail's type and
-     marks, and the rail is named in DESIGN.md as outside the hover contract because its
-     rows sit alone in a column: colour is enough to say which one the pointer is on.
-     That exemption does not travel. Here eight rows stack three columns wide at an 8px
-     gap, which is the menu-option case the same rule sends to a fill, and the fill is
-     the one the directory's own select options already use. */
-  @media (hover: hover) and (pointer: fine) {
-    .explore-lane:hover {
-      background: color-mix(in srgb, var(--accent) 12%, transparent);
-    }
-  }
-  .explore-lane:hover,
+  /* Hover is the accent on the label and nothing else, inherited from the app detail
+     rail's own rows. This is a named exception to the panel-row fill in DESIGN.md,
+     decided by the editor on 2026-09-11: the menu is a quiet index at the top of the
+     page, and a fill under every row the pointer crosses made it the loudest object on
+     a surface whose job is to be scanned. The ring below still needs a corner. */
   .explore-lane:focus-visible { border-radius: var(--radius-sm); }
   /* Inset, so the ring sits inside the row rather than crossing the row 8px below it.
      The rail's +3px offset is correct in a rail and wrong in a dense panel; the
