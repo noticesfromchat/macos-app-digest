@@ -154,11 +154,11 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
   .explore-lanes li { min-width: 0; }
   .explore-lane {
     grid-template-columns: 32px minmax(0, 1fr) auto;
-    /* The app card's own inset, so a row's mark sits on the same vertical as the icon
-       of the card below it. The eyebrow above deliberately does not take it: a group
-       label hangs at the page margin and its items indent under it, which is what says
-       the label owns the rows rather than standing as one of them. */
-    padding-inline: var(--space-3);
+    /* Asymmetric on purpose. The mark and the label start on the page margin, with the
+       eyebrow above them and the card edge below. The count stops a card's inset short
+       of the column's right edge, which is where the text inside that card stops, so
+       the number lands on the card's measure rather than on its border. */
+    padding-inline: 0 var(--space-3);
     min-height: 32px;
     height: 100%;
     column-gap: var(--space-1);
@@ -190,12 +190,9 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
   }
-  /* Flush left on a phone. The inset pays for itself while the rows sit above a multi
-     column grid, lining a mark up with the icon of the card below it. On one column
-     there is no card beside a row to agree with, and the indent reads as unexplained
-     against the title and the dek. The eyebrow is already at the margin, so only the
-     lane has anything to give up; the count stays in the last track and lands on the
-     opposite edge. */
+  /* The count goes to the edge on a phone. Its inset tracks the right hand end of a
+     card's measure, and on one column the card is the full shell, so the number would
+     sit an unexplained 24px short of everything else on the page. */
   @media (max-width: 680px) {
     .explore-lane { padding-inline: 0; }
   }
