@@ -91,14 +91,12 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
           {collections.map((collection) => (
             <li><a class="collection-badge explore-lane" href={`/collections/${collection.slug}/`}>
               <span class="app-detail-category-mark" aria-hidden="true"><MetaIcon name={collection.icon} /></span>
-              <span class="collection-badge-label">
-                {collectionLabels[collection.slug]}
-                <span class="explore-lane-dek">{collectionMenuDek(collection.slug)}</span>
-              </span>
+              <span class="collection-badge-label">{collectionLabels[collection.slug]}</span>
               <span class="explore-lane-count">
                 <span>{collectionCounts.get(collection.slug)}</span>
                 <span class="sr-only">{collectionCounts.get(collection.slug) === 1 ? 'app' : 'apps'}</span>
               </span>
+              <span class="explore-lane-dek">{collectionMenuDek(collection.slug)}</span>
             </a></li>
           ))}
         </ul>
@@ -181,16 +179,28 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
      Community Favorites and Hidden Gems are both "good apps" until something says who
      decided and on what grounds. The name keeps text ink at 700 and the line sits muted
      at the same size, so weight and colour separate them without a second type size. */
+  /* A collection row is a category row with a second line under it. The name, its mark
+     and its count share the first grid row and centre on each other exactly as a
+     category's do; the line drops to a second row starting at the name's own column.
+     Nesting it inside the label instead put the mark 8px below the name's centre,
+     because the mark was then centring against a two line box. */
+  .explore-lanes-collections .explore-lane {
+    grid-template-rows: auto auto;
+    align-items: center;
+    /* No gap between the name and its line. The row inherits an 8px one, which put 22px
+       between the two line boxes and read as a detached sentence rather than a caption.
+       At zero the leading does the separating, which is what sets a paragraph apart from
+       a stack of rows, and the pair still clears the name by 14px. */
+    row-gap: 0;
+  }
   .explore-lane-dek {
-    display: block;
+    grid-column: 2 / -1;
     color: var(--muted);
     font-weight: 400;
+    /* Paragraph leading. The row's own 1.1429 is a label's line box, set for a single
+       line of name, and it packed the two lines against each other with no gap at all. */
+    line-height: var(--leading-meta);
   }
-  /* The collection row grows to hold two lines, so its mark and count align to the
-     name rather than floating to the centre of a box the name does not fill. */
-  .explore-lanes-collections .explore-lane { align-items: start; }
-  .explore-lanes-collections .app-detail-category-mark,
-  .explore-lanes-collections .explore-lane-count { min-height: var(--space-4); }
   .explore-lane-count {
     padding-left: var(--space-1);
     color: var(--muted);
