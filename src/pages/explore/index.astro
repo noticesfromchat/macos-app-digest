@@ -76,7 +76,7 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
               <span class="app-detail-category-mark" aria-hidden="true"><MetaIcon name={category.icon} /></span>
               <span>{category.title}</span>
               <span class="explore-lane-count">
-                <span>({categoryCounts.get(category.slug)})</span>
+                <span class="explore-lane-count-value">{categoryCounts.get(category.slug)}</span>
                 <span class="sr-only">{categoryCounts.get(category.slug) === 1 ? 'app' : 'apps'}</span>
               </span>
             </a></li>
@@ -92,7 +92,7 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
               <span class="app-detail-category-mark" aria-hidden="true"><MetaIcon name={collection.icon} /></span>
               <span class="collection-badge-label">{collectionLabels[collection.slug]}</span>
               <span class="explore-lane-count">
-                <span>({collectionCounts.get(collection.slug)})</span>
+                <span class="explore-lane-count-value">{collectionCounts.get(collection.slug)}</span>
                 <span class="sr-only">{collectionCounts.get(collection.slug) === 1 ? 'app' : 'apps'}</span>
               </span>
             </a></li>
@@ -189,6 +189,11 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
        rather than any part of a target. */
     .explore-lanes { row-gap: 0; }
   }
+  /* The brackets are drawn, not written, so the one breakpoint below can drop them
+     without a second copy of the markup. They sit on the number itself rather than on
+     the count, which keeps them clear of the unit noun a screen reader reads. */
+  .explore-lane-count-value::before { content: "("; }
+  .explore-lane-count-value::after { content: ")"; }
   .explore-lane-count {
     /* Inherited, not restated. The row already resolves to muted, so this reads the same
        at rest and comes with the row's hover and focus for free: the count was the one
@@ -211,5 +216,12 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
       grid-template-rows: none;
       grid-auto-flow: row;
     }
+    /* One column, so the row runs the width of the page and the count goes to the far
+       edge. The brackets come off with the move: they were tying the number to the name
+       beside it, and a number alone at the end of a full width row is already read as
+       that row's, the way a price is. */
+    .explore-lane-count { justify-self: end; }
+    .explore-lane-count-value::before,
+    .explore-lane-count-value::after { content: none; }
   }
 </style>
