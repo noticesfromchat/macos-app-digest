@@ -2390,15 +2390,15 @@ h1.home-hero-number {
    three, not an exception to it: the panel is showing because this control is doing
    something, so it stays lit for as long as that is true. */
 .directory-select-trigger:hover svg,
-.directory-select-trigger:focus-visible svg,
-.directory-select.is-open .directory-select-trigger svg { color: var(--accent); }
-/* Lit for as long as the panel is open, so the trigger and the menu it opened read as one
-   thing. The fill stays because open is a state rather than a hover, and a state that
-   persists after the pointer leaves needs to hold its own without one. */
-.directory-select.is-open .directory-select-trigger {
-  background: color-mix(in srgb, var(--surface-strong) 72%, transparent);
-  color: var(--accent);
-}
+.directory-select-trigger:focus-visible svg { color: var(--accent); }
+/* Open is not a colour. The trigger held the accent and a fill for as long as its panel
+   was showing, on the reasoning that a state outlasting the pointer cannot rely on a
+   hover to carry it. The panel carries it: it is a large lit surface attached to the
+   control, and the chevron turns over to point at it, so the state was already stated
+   twice before the colour said it a third time. Colour here also collided with the
+   control's one real use of the accent, which is answering a pointer, and made an open
+   menu look permanently hovered. Changed 2026-09-11 at the editor's direction; the
+   chevron and `aria-expanded` carry the state now. */
 .directory-select.is-open .directory-select-trigger svg { transform: rotate(180deg); }
 .directory-select-options {
   position: absolute;
