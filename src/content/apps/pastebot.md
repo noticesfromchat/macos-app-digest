@@ -4,7 +4,7 @@ description: A rebuilt clipboard manager with smart collections, sequential past
 bestFor: Automation-heavy workflows that move, transform and reuse large volumes of copied material.
 tagline: clipboard manager
 tags: [clipboard, automation, productivity, utility]
-categories: [writing-notes-reading, productivity-workflow, mac-utilities-customization]
+categories: [writing-notes-reading, automation-shortcuts, productivity-workflow, mac-utilities-customization]
 collections: [community-favorites]
 source: MacStories review and official homepage
 homepage: https://tapbots.com/pastebot/

@@ -4,7 +4,7 @@ description: A Mac-first AI app builder that turns plain-language requests into 
 bestFor: Raycast users and automation-minded teams who want tiny internal tools without starting a full coding project.
 tagline: AI app builder
 tags: [ai, automation, developer, productivity]
-categories: [ai-agents, productivity-workflow, developer-tools]
+categories: [ai-agents, automation-shortcuts, developer-tools, productivity-workflow]
 source: Product Hunt, Raycast and official homepage
 homepage: https://www.glaze.app/
 icon: /app-icons/glaze-by-raycast.png

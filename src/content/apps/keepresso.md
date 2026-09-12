@@ -4,7 +4,7 @@ description: Keeps a Mac awake through rules for agents, downloads, calls and ot
 bestFor: People running long builds, downloads, remote sessions or headless Macs who need conditional power control.
 tagline: keep-awake rules
 tags: [menubar, automation, utility, open-source, developer]
-categories: [mac-utilities-customization, productivity-workflow, developer-tools]
+categories: [mac-utilities-customization, automation-shortcuts, developer-tools]
 source: Product Hunt Mac launch and official homepage
 homepage: https://keepresso.com/
 icon: /app-icons/keepresso.png

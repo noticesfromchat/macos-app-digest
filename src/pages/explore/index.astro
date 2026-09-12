@@ -69,39 +69,35 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
 
     <div class="explore-taxonomy">
       <section aria-labelledby="explore-categories-heading">
-        <div class="section-heading">
-          <h2 class="section-title" id="explore-categories-heading">Categories</h2>
-        </div>
-        <div class="explore-lanes explore-lanes-categories">
+        <h2 class="eyebrow" id="explore-categories-heading">Categories</h2>
+        <ul class="explore-lanes explore-lanes-categories">
           {sortedCategories.map((category) => (
-            <a class="explore-lane explore-lane-category" href={`/categories/${category.slug}/`}>
-              <span class="explore-lane-icon" aria-hidden="true"><MetaIcon name={category.icon} /></span>
-              <strong>{category.title}</strong>
+            <li><a class="app-detail-category-row explore-lane" href={`/categories/${category.slug}/`}>
+              <span class="app-detail-category-mark" aria-hidden="true"><MetaIcon name={category.icon} /></span>
+              <span>{category.title}</span>
               <span class="explore-lane-count">
-                <span>{categoryCounts.get(category.slug)}</span>
-                <span class="explore-lane-count-unit">{categoryCounts.get(category.slug) === 1 ? 'app' : 'apps'}</span>
+                <span class="explore-lane-count-value">{categoryCounts.get(category.slug)}</span>
+                <span class="sr-only">{categoryCounts.get(category.slug) === 1 ? 'app' : 'apps'}</span>
               </span>
-            </a>
+            </a></li>
           ))}
-        </div>
+        </ul>
       </section>
 
       <section aria-labelledby="explore-collections-heading">
-        <div class="section-heading">
-          <h2 class="section-title" id="explore-collections-heading">Collections</h2>
-        </div>
-        <div class="explore-lanes explore-lanes-collections" style={`--collection-count: ${collections.length}`}>
+        <h2 class="eyebrow" id="explore-collections-heading">Collections</h2>
+        <ul class="explore-lanes explore-lanes-collections">
           {collections.map((collection) => (
-            <a class="explore-lane explore-lane-collection" href={`/collections/${collection.slug}/`}>
-              <span class="explore-lane-icon" aria-hidden="true"><MetaIcon name={collection.icon} /></span>
-              <strong>{collectionLabels[collection.slug]}</strong>
+            <li><a class="collection-badge explore-lane" href={`/collections/${collection.slug}/`}>
+              <span class="app-detail-category-mark" aria-hidden="true"><MetaIcon name={collection.icon} /></span>
+              <span class="collection-badge-label">{collectionLabels[collection.slug]}</span>
               <span class="explore-lane-count">
-                <span>{collectionCounts.get(collection.slug)}</span>
-                <span class="explore-lane-count-unit">{collectionCounts.get(collection.slug) === 1 ? 'app' : 'apps'}</span>
+                <span class="explore-lane-count-value">{collectionCounts.get(collection.slug)}</span>
+                <span class="sr-only">{collectionCounts.get(collection.slug) === 1 ? 'app' : 'apps'}</span>
               </span>
-            </a>
+            </a></li>
           ))}
-        </div>
+        </ul>
       </section>
     </div>
 
@@ -113,137 +109,114 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
 </BaseLayout>
 
 <style>
+  /* A single grouped menu, using the detail rail's labels and Phosphor marks. It takes
+     no surface of its own. An index is page structure rather than an object placed on
+     the page, and a card around it made it read as the first item in the directory
+     below rather than the way into it. The spacing does the separating, which is the
+     same argument that took the hairlines off every other section here. */
   .explore-taxonomy {
     display: grid;
-    gap: var(--space-3);
-    padding-top: var(--space-4);
+    gap: var(--space-2);
+    /* One boundary, 24px top and bottom. It was a 32px margin plus 32px of padding,
+       which the card justified: the margin held the card off the hero and the padding
+       inset the rows inside it. With no card there is no inside, so the two stacked
+       into 64px above the eyebrow against 32px below the last row.
+
+       Held at 24 rather than `--section-space`, which steps 24/32/40 and would open
+       this boundary to 40 on a wide screen. The menu is an index the reader passes
+       through on the way to the directory, not a section arguing for its own space, so
+       it keeps the tightest step at every width. That is a deliberate exception to the
+       section ladder and the reason it is written down here.
+
+       No horizontal padding. The lanes below sit on the card grid's own columns,
+       measured against the full shell width, so insetting this box would shift every
+       column off the cards it is meant to line up with. */
+    padding: var(--space-3) 0;
   }
-  /* The same twelve tracks the card grid uses, so a taxonomy tile and a card beneath it
-     share vertical edges at every width rather than only at the 1160px maximum. */
-  .explore-lanes { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+  .explore-taxonomy .eyebrow { margin: 0 0 var(--space-1); }
+  /* Three columns on the card grid's own geometry. `.grid` is twelve tracks with a
+     16px column gap and each card spans four, which puts the card edges at exactly the
+     same places three equal columns with a 16px gap do, provided both are measured
+     across the full shell width. The gap is the load-bearing part: at 24px the columns
+     drifted +32, +13 and -5px against the three cards below them. */
   .explore-lanes {
     display: grid;
-    gap: var(--space-2);
-  }
-  .explore-lane-category { grid-column: span 2; }
-  .explore-lane-collection { grid-column: span 4; }
-  .explore-lane {
-    display: grid;
-    min-width: 0;
-    gap: var(--space-2);
-    padding: var(--space-3);
-    /* The card rest state. No border: the fill and the resting shadow separate a card
-       from the page, and the ring layer is carried transparent so the hover cross
-       interpolates one layer against one rather than none against one. Inset and
-       radius are both 24px, the app card's, so a tile is a card at tile size. */
-    border: 0;
-    border-radius: var(--radius);
-    background: var(--surface);
-    box-shadow: inset 0 0 0 1px transparent, var(--shadow);
-    color: var(--text);
-    text-decoration: none;
-  }
-  .explore-lane-category { grid-template-rows: auto 1fr auto; }
-  .explore-lane-icon {
-    display: flex;
-    align-items: center;
-    min-height: var(--space-4);
-  }
-  .explore-lane-icon :global(svg) { --icon-size: var(--icon-md); }
-  .explore-lane strong {
-    font-family: var(--display);
-    font-size: var(--type-tile-title);
-    font-weight: 600;
-    line-height: var(--leading-tile-title);
-    overflow-wrap: anywhere;
-  }
-  .explore-lane-count {
-    display: flex;
-    align-items: baseline;
-    gap: var(--space-1);
-    white-space: nowrap;
-    font-family: var(--display);
-    /* The count sits at the title's own size and separates on weight instead: 400
-       against the name's 600. It was the subhead clamp, so a number inside a fixed
-       180px tile scaled with the viewport and reached 28px, outranking the name it
-       qualifies. Taxonomy does not outrank identity, and the category name is the
-       identity here while the count is metadata about it. */
-    font-size: var(--type-tile-title);
-    line-height: var(--leading-tile-title);
-    font-variant-numeric: tabular-nums;
-  }
-  /* The count's unit noun. It borrowed `.eyebrow` for its type ramp and then had to
-     override the two properties that make an eyebrow one, the accent colour and the
-     family, because `.explore-lane-count` above it sets the display serif. An eyebrow
-     names the block beneath it; this names nothing and has nothing beneath it, so it is
-     the Label role stated in full rather than a borrowed class minus its identity. */
-  .explore-lane-count-unit {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-1) 16px;
     margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .explore-lanes-categories {
+    grid-auto-flow: column;
+    grid-template-rows: repeat(3, minmax(32px, auto));
+  }
+  .explore-lanes li { min-width: 0; }
+  .explore-lane {
+    /* The label takes its own width and the count follows it rather than being pushed
+       to a far edge, so the number belongs to the name it counts. The last track
+       absorbs the slack; nothing is right aligned, so the counts deliberately do not
+       form a column of their own. */
+    grid-template-columns: 32px auto minmax(0, 1fr);
+    /* No inset. Every row starts on the eyebrow above it and on the card edge below,
+       which is the one margin this page keeps. */
+    min-height: 32px;
+    height: 100%;
+    column-gap: var(--space-1);
     font-family: var(--sans);
-    color: var(--muted);
-    font-size: var(--type-label);
-    line-height: var(--leading-label);
-    font-weight: 800;
-    letter-spacing: .1em;
-    text-transform: uppercase;
   }
-  .explore-lane-collection {
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    align-items: center;
-    min-height: calc(var(--space-5) * 2);
+  /* Hover is the accent on the label and nothing else, inherited from the app detail
+     rail's own rows. This is a named exception to the panel-row fill in DESIGN.md,
+     decided by the editor on 2026-09-11: the menu is a quiet index at the top of the
+     page, and a fill under every row the pointer crosses made it the loudest object on
+     a surface whose job is to be scanned. The ring below still needs a corner. */
+  .explore-lane:focus-visible { border-radius: var(--radius-sm); }
+  /* Inset, so the ring sits inside the row rather than crossing the row 8px below it.
+     The rail's +3px offset is correct in a rail and wrong in a dense panel; the
+     directory's select options already take -2px for exactly this reason. */
+  .explore-lane:focus-visible { outline-offset: -2px; }
+  /* The coarse-pointer floor reaches `.collection-badge` globally, but this page's
+     scoped 32px carries the Astro attribute and outranks it, so the floor silently
+     stopped applying to the rows that quote it. Restated here at the same specificity
+     as the declaration that broke it. */
+  /* The brackets are drawn, not written, so the one breakpoint below can drop them
+     without a second copy of the markup. They sit on the number itself rather than on
+     the count, which keeps them clear of the unit noun a screen reader reads. */
+  .explore-lane-count-value::before { content: "("; }
+  .explore-lane-count-value::after { content: ")"; }
+  .explore-lane-count {
+    /* Inherited, not restated. The row already resolves to muted, so this reads the same
+       at rest and comes with the row's hover and focus for free: the count was the one
+       part of a link that stayed grey while the rest of it went blue, which made the
+       number look like it belonged to the page rather than to the row you were on. */
+    color: inherit;
+    font-size: var(--type-meta);
+    line-height: var(--leading-meta);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
   }
-  /* The One Hover Rule, the same contract every card that leads somewhere is on:
-     rest at Ambient Card, cross to Hover Lift and an accent ring over 320ms, and only
-     where a pointer can actually hover, so a touch device is not left in a stuck
-     hover state. The label and mark taking the accent is this surface's own addition
-     on top of the contract, kept because a ring alone is quiet at tile size. */
-  @media (hover: hover) and (pointer: fine) {
-    .explore-lane {
-      transition:
-        box-shadow 320ms cubic-bezier(.16, 1, .3, 1),
-        color 320ms cubic-bezier(.16, 1, .3, 1);
-    }
-    .explore-lane:hover {
-      box-shadow:
-        inset 0 0 0 1px color-mix(in srgb, var(--accent) 42%, var(--line)),
-        var(--shadow-hover);
-    }
-    .explore-lane:hover strong,
-    .explore-lane:hover .explore-lane-icon { color: var(--accent); }
-  }
-  /* The border used to carry focus. With it gone, focus takes the house ring. */
-  .explore-lane:focus-visible {
-    outline: var(--focus-ring);
-    outline-offset: var(--focus-offset);
-  }
-  .explore-lane:focus-visible strong,
-  .explore-lane:focus-visible .explore-lane-icon { color: var(--accent); }
-  @media (max-width: 1100px) {
-    .explore-lane-category { grid-column: span 4; }
-  }
-  /* The band where three collection tiles share a shrinking shell: 332px each at 1100
-     and 277px at 921. A count sitting beside the title takes width the name needs, and
-     "Community Favorites" was breaking mid-word — "Commu / nity" — to fit what was left.
-     The count moves under the title here so the name has the tile's full measure. Above
-     1100 the tile is 376px and does not need it; below 921 the row is one column and has
-     the whole shell. */
-  @media (min-width: 921px) and (max-width: 1100px) {
-    .explore-lane-collection { grid-template-columns: auto minmax(0, 1fr); }
-    .explore-lane-collection .explore-lane-count { grid-column: 2; }
-  }
-  /* Collections collapse with the app grid rather than 240px later. They held three
-     columns down to 680 while the cards beneath had already gone to one, which is what
-     made the row read as broken rather than merely tight. */
+  /* Collapse where the cards collapse. `.grid > *` goes from span 4 to span 12 at 920
+     with no two-column step in between, so a two-column taxonomy over a three-column
+     card grid would be misaligned by construction at exactly the widths this is meant
+     to line up at. */
   @media (max-width: 920px) {
-    .explore-lane-collection { grid-column: span 12; }
-  }
-  @media (max-width: 680px) {
-    .explore-taxonomy { padding-top: var(--space-3); }
-    .explore-lane-category { grid-column: span 6; }
-  }
-  @media (max-width: 360px) {
-    .explore-lane-category { grid-column: span 12; }
-    .explore-lane-collection { grid-template-columns: auto minmax(0, 1fr); }
-    .explore-lane-collection .explore-lane-count { grid-column: 2; }
+    .explore-lanes {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: none;
+      grid-auto-flow: row;
+    }
+    /* No row gap in one column. The same 8px that sets a comfortable rhythm across
+       three short columns reads as slack down a single column of eleven rows, because
+       nothing beside a row competes for the eye there. At zero the pitch is 32px, four
+       units, and every row still clears the 24px floor the Target Floor Rule sets. */
+    .explore-lanes { row-gap: 0; }
+    /* One column, so the row runs the width of the page and the count goes to the far
+       edge. The brackets come off with the move: they were tying the number to the name
+       beside it, and a number alone at the end of a full width row is already read as
+       that row's, the way a price is. */
+    .explore-lane-count { justify-self: end; }
+    .explore-lane-count-value::before,
+    .explore-lane-count-value::after { content: none; }
   }
 </style>

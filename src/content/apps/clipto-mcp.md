@@ -4,7 +4,7 @@ description: Connects clipboard history and notes to assistant workflows through
 bestFor: AI-tool users who want clipboard recall and notes exposed to local assistant workflows.
 tagline: clipboard MCP server
 tags: [ai, clipboard, automation, productivity]
-categories: [ai-agents, writing-notes-reading, productivity-workflow]
+categories: [ai-agents, writing-notes-reading, automation-shortcuts, productivity-workflow]
 source: Product Hunt listing and official Clipto product information
 homepage: https://www.producthunt.com/products/clipto-ai
 icon: /app-icons/clipto-mcp.png

@@ -4,8 +4,8 @@ description: A local-first Mac map that stores places as Markdown, works offline
 bestFor: Researchers and planners who want portable geographic data, offline maps and agent-assisted spatial analysis without cloud lock-in.
 tagline: local-first Markdown map
 tags: [maps, local, ai, automation, markdown]
-categories: [ai-agents, productivity-workflow, writing-notes-reading]
-iconCategory: productivity-workflow
+categories: [ai-agents, automation-shortcuts, writing-notes-reading]
+iconCategory: automation-shortcuts
 source: r/macapps August App Pile and official homepage
 homepage: https://mapos.md/
 ---

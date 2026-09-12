@@ -4,7 +4,7 @@ description: Connects MCP-compatible AI clients to Calendar, Mail, Notes, Remind
 bestFor: Agent users who want local Mac app control without routing personal data through another automation service.
 tagline: MCP bridge to apps
 tags: [ai, automation, local, calendar]
-categories: [ai-agents, productivity-workflow]
+categories: [ai-agents, automation-shortcuts, productivity-workflow]
 source: Product Hunt, GitHub and official homepage
 homepage: https://macuse.app/
 icon: /app-icons/macuse.png

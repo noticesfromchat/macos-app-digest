@@ -225,9 +225,11 @@ it. See Issue Subscribe Card in `DESIGN.md` for the structure and the reasoning.
   desktop controls. When the app grid collapses to one column, give the count and search field
   their own full rows, then split Filter and Sort across the row beneath them. Keep a 16px
   mobile input floor.
-- On Explore, use compact category and collection cards with icons, names and live
-  counts. Keep full descriptions on category pages and tags in the directory filter.
-  Follow the Field Grid and responsive card layout in `DESIGN.md`.
+- On Explore, group category and collection links in one menu with icons, names and
+  live counts. Reuse the app detail rail's category and collection styling, with
+  accent Label-scale h2 headings for the two groups. Keep full descriptions on
+  category pages and tags in the directory filter. Follow the grouped menu's
+  responsive layout in `DESIGN.md`.
 - When a query produces no results, name the query safely with `textContent` and offer to
   clear only the query, preserving every other active filter.
 - Do not display a separate “Sort apps” label.
@@ -235,6 +237,15 @@ it. See Issue Subscribe Card in `DESIGN.md` for the structure and the reasoning.
   new tag, check whether an existing tag already covers the reader intent. If a new
   tag is necessary, audit existing app records for the same tag during the same
   publishing pass.
+- Use `shortcuts` for Apple Shortcuts integration, construction or execution, and
+  `keyboard` for keyboard-driven control. An app having keyboard shortcuts does not
+  make it an Apple Shortcuts tool. The former maps to Automation & Shortcuts; the
+  latter maps to Mac Utilities & Customization.
+- Use `dictation` for speaking directly into writing and `transcription` for turning
+  recordings, meetings or system audio into text. Dictation maps to Writing, Notes &
+  Reading; transcription maps to Media & Capture. An app may carry both when both
+  are meaningful uses, as Snaply does. Judge these distinctions from the app's
+  description and `bestFor`, not keyword matching.
 - Run a tag audit every four issues, and produce a before/after map for editorial
   review before changing app records. Remove or consolidate tags that are redundant,
   too narrow, vague, or unlikely to remain useful as the catalog grows.
@@ -452,8 +463,8 @@ recognition without making cards feel like an app-store grid.
 - Direct it with `iconCategory`, never by reordering `categories`. That line is derived
   from the app's tags and rewritten by `scripts/sync-app-categories.mjs`, so a manual
   reorder fails validation and would be overwritten on the next sync. MapOS is the
-  worked example: its tags put `ai-agents` first, but it is a map app, so it carries
-  `iconCategory: productivity-workflow`.
+  worked example: its tags put `ai-agents` first, but the editor chose the workflow
+  mark for its spatial workflows, so it carries `iconCategory: automation-shortcuts`.
 - The fallback color is stable from the app ID rather than the category, so directing
   the mark does not change the colour and cards do not reshuffle between builds.
 - An app that may be featured as an Editor's Pick also carries `iconAccent`, the colour

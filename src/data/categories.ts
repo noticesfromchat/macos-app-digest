@@ -1,8 +1,10 @@
 export type CategorySlug =
   | 'ai-agents'
+  | 'automation-shortcuts'
   | 'developer-tools'
   | 'files-research-documents'
   | 'mac-utilities-customization'
+  | 'media-capture'
   | 'productivity-workflow'
   | 'writing-notes-reading';
 
@@ -33,6 +35,15 @@ export const categories: Category[] = [
     accent: 'color-mix(in srgb, var(--accent) 12%, var(--surface-strong))'
   },
   {
+    slug: 'automation-shortcuts',
+    title: 'Automation & Shortcuts',
+    description: 'Build Shortcuts, set rules and connect actions so your Mac can handle the work you repeat. Set it up once, then let the machine remember it.',
+    mobileDescription: 'Shortcuts and rules for the work you repeat.',
+    tags: ['automation', 'shortcuts'],
+    icon: 'flow-arrow',
+    accent: 'color-mix(in srgb, var(--accent) 13%, var(--surface-strong))'
+  },
+  {
     slug: 'developer-tools',
     title: 'Developer Tools',
     description: 'The terminal you actually want, and the tools that sit around the code rather than in it. Editors, inspectors, clients, whatever else is on the bench.',
@@ -44,9 +55,9 @@ export const categories: Category[] = [
   {
     slug: 'files-research-documents',
     title: 'Files, Research & Documents',
-    description: "Finding what's on your disk, and turning up the thing you saved six months ago. Plus the capturing and filing that got it there in the first place.",
+    description: "Finding what's on your disk, and turning up the thing you saved six months ago. Plus the filing and searching that made it findable at all.",
     mobileDescription: 'Finding files, and finding them again later.',
-    tags: ['files', 'finder', 'documents', 'research', 'pdf', 'ebooks', 'backup', 'downloads', 'capture', 'airdrop', 'quicklook'],
+    tags: ['files', 'finder', 'documents', 'research', 'pdf', 'ebooks', 'backup', 'downloads', 'airdrop', 'quicklook'],
     icon: 'files',
     accent: 'color-mix(in srgb, var(--accent) 8%, var(--surface-strong))'
   },
@@ -55,16 +66,25 @@ export const categories: Category[] = [
     title: 'Mac Utilities & Customization',
     description: "Menu bar extras, window managers, launchers and the small tweaks that make a Mac feel like yours instead of Apple's. Mostly small, mostly single-purpose.",
     mobileDescription: 'Menu bar extras and window managers that make a Mac yours.',
-    tags: ['utility', 'menubar', 'customization', 'privacy', 'launcher', 'windows', 'keyboard', 'accessibility', 'audio', 'network', 'monitoring', 'maintenance', 'battery', 'dashboard', 'remote', 'ios'],
+    tags: ['utility', 'menubar', 'customization', 'privacy', 'launcher', 'windows', 'keyboard', 'accessibility', 'network', 'monitoring', 'maintenance', 'battery', 'dashboard', 'remote', 'ios'],
     icon: 'sliders',
     accent: 'color-mix(in srgb, var(--accent) 9%, var(--surface-strong))'
   },
   {
+    slug: 'media-capture',
+    title: 'Media & Capture',
+    description: 'Capture screens, work with images, record and play audio or video, then turn a recording into text you can actually search.',
+    mobileDescription: 'Screens, images, audio and video, plus transcripts.',
+    tags: ['capture', 'audio', 'video', 'images', 'transcription'],
+    icon: 'camera',
+    accent: 'color-mix(in srgb, var(--accent) 6%, var(--surface-strong))'
+  },
+  {
     slug: 'productivity-workflow',
     title: 'Productivity & Workflow',
-    description: 'Automation and task managers for the work you do over and over and would rather stop thinking about. Set it up once, then let the Mac remember it.',
-    mobileDescription: 'Automation for the work you do over and over.',
-    tags: ['productivity', 'tasks', 'reminders', 'automation', 'calendar', 'shortcuts'],
+    description: 'Task managers, reminders and calendars for the work you are trying to keep track of. Somewhere to put it down so you can stop carrying it around.',
+    mobileDescription: 'Tasks, reminders and calendars for work you track.',
+    tags: ['productivity', 'tasks', 'reminders', 'calendar'],
     icon: 'list-checks',
     accent: 'color-mix(in srgb, var(--accent) 11%, var(--surface-strong))'
   },
