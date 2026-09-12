@@ -436,7 +436,7 @@ not automatic behaviour.
 **What is on the grid, and what is not.** Field-aligned: the taxonomy rows, the directory
 toolbar including its search field and Filter panel, and the card grid. Deliberate editorial
 exceptions, within the same shell: the homepage hero, whose two columns are a .95/1.05 split
-because the pick card and the copy are not a card grid; the app-detail rail at a fixed 400px,
+because the pick card and the copy are not a card grid; the app-detail rail at a fixed 376px,
 sized from the tag sets it holds; and About's reading column, which is a measure decision
 rather than a grid one. Those three are exceptions because a page composed for reading is
 not a catalogue, not because the grid failed to reach them.
@@ -729,8 +729,8 @@ above; it is not a recipe for new controls.
 
 ### Collection Badges
 The collection badge on an app detail page is a link to a curated collection, and it is the rarest fact on that page: six of a hundred apps carry one. It is an honour marker, not a chip. It was a 38px outlined pill sitting above the primary button, where it read as a second, weaker control; it now opens the detail rail.
-- **Style:** the collection's mark beside its name in ink at Metadata weight 700. Built exactly like a category row: no container, no ring, no fill, and the glyph simply inherits the row's colour and turns blue with it on hover. A ring around the mark made the mark the loud thing rather than the honour.
-- **Rank:** first item in the rail, above Categories and Tags. Rank comes from position and from the label sitting in ink at weight 700 where a category label sits muted at 600. The rows use the same 32px rhythm as category rows so the spacing inside the rail stays even. Never from a colour of its own.
+- **Style:** the collection's mark beside its name, set exactly like a category row and not merely built like one: muted at Metadata weight 600, no container, no ring, no fill, and the glyph simply inherits the row's colour and turns blue with it on hover. A ring around the mark made the mark the loud thing rather than the honour.
+- **Rank:** first item in the rail, above Categories and Tags, and that position is now the whole of it. The label carried ink at weight 700 against a category's muted 600 until 2026-09-11. Two surfaces show both groups as one list, the rail and the Explore menu, and in a list that contrast stopped saying "this one outranks" and started saying "this is a different kind of row". The eyebrow and the order say it instead, which is what names every other group in the rail. Never a colour of its own.
 - **Named, like its neighbours.** The group carries a `Collections` eyebrow and 18px of clear space beneath it. It was the only unlabelled group in the rail, which is why it read as orphaned: every other group on the site is named by an eyebrow, and this one had opted out of the house's own strongest device. Setting the names in the display serif at Title was tried for the same reason and rejected; the rail keeps one voice.
 - **Marks:** 24px (`--icon-md`) in the same 32px icon column as category marks. The shared glyph rule compensates for rendered size where stroked icons are used; Phosphor collection marks render as filled paths at the same glyph size.
 - **Separation:** space alone divides it from the taxonomy below. A rule there reads as a container seam and competes with the thing it is meant to set apart.
@@ -890,14 +890,18 @@ The primary `.button` is transparent at rest; its interaction tint arrives on ho
 keyboard focus. Describing it as filled at rest was an obsolete instruction, corrected
 on 2026-09-07 without changing the treatment.
 
-An **open** control stays lit. A dropdown trigger holds the accent, in its label and its
-chevron, for as long as its panel is showing, so the trigger and the menu it opened read as
-one object rather than two; it keeps a fill there as well, because a state that persists
-after the pointer has left cannot rely on a hover to carry it. Adopted 2026-09-06.
+**An open control is not a colour.** A dropdown trigger changes nothing but its chevron,
+which turns over to point at the panel it opened. It held the accent in its label and its
+chevron and carried a fill from 2026-09-06 to 2026-09-11, on the reasoning that a state
+outlasting the pointer cannot rely on a hover to carry it. The panel carries it: it is a
+large lit surface attached to the control, and with the chevron already turned the state
+was stated twice before the colour said it a third time. Colour also collided with the
+accent's one real job on that control, answering a pointer, which left an open menu
+looking permanently hovered. `aria-expanded` states it for anyone not reading the page.
 
 **The One Hover Rule.** Every card that leads somewhere shares one hover contract: rest at Ambient Card, move to Hover Lift and an inset ring of `color-mix(in srgb, var(--accent) 42%, var(--line))`, cross over 320ms on `cubic-bezier(.16, 1, .3, 1)`, and do it only under `(hover: hover) and (pointer: fine)`. App cards, feature cards, reading cards, archive rows, and category directory rows are all on it, the last two through `.archive-card`. A card that carries a category accent keeps that accent in its resting ring and gives it up on hover; nothing else about the contract changes per card type.
 
-Three things are deliberately outside it. The app-detail rail's category rows are links in a list rather than cards, so they answer the pointer with the accent over 180ms and take no lift; they were bordered cards until the rail replaced them. Cards that are containers rather than destinations — the explore utility and subscribe cards, which hold their own links and controls — stay flat, because a lift would promise a click the card does not accept.
+Three things are deliberately outside it. The app-detail rail's rows, category and collection alike, are links in a list rather than cards, so they answer the pointer with the accent over 180ms and take no lift; they were bordered cards until the rail replaced them. The Explore menu reuses those rows and keeps the colour response rather than the panel-row fill, which is argued for in the Explore Directory section above. Cards that are containers rather than destinations — the explore utility and subscribe cards, which hold their own links and controls — stay flat, because a lift would promise a click the card does not accept.
 
 ### Explore Directory
 
@@ -920,19 +924,54 @@ recommended. And the client renderer carried a hand-copied duplicate of `AppCard
 that had already drifted from it. Removing the shelves removed the renderer, and the
 renderer took both with it.
 
-- **Order:** categories, collections, then catalogue. The opening is one grouped
-  menu on the surface fill, with 32px insets and the shared radius. Each group has
-  an accent Label-scale heading with h2 semantics. Rows reuse the app detail rail's
-  sans-serif type and Phosphor marks: categories are muted at weight 600 and
-  collections use text ink at 700. Counts align at the right in muted tabular numerals;
-  their app unit remains available to screen readers.
-  Eight categories run alphabetically down three columns, then two below 1100px
-  and one below 680px. Collections use three columns, then one below 680px. Rows
-  have 32px minimum heights, 8px row gaps and 24px column gaps. Headings sit 8px
-  above their lists; groups are 16px apart. On mobile the panel inset is 24px.
-  The editor's September
-  11 mockups establish this grouped menu and detail-rail styling; descriptions stay
-  on category pages and tags in the directory filter.
+- **Order:** categories, collections, then catalogue. The opening is one grouped menu,
+  and it takes no surface of its own. An index is page structure rather than an object
+  placed on the page, and a card around it read as the first item in the directory below
+  rather than as the way into it; spacing does the separating, which is the argument that
+  took the hairlines off every other section here. It sits in a 24px boundary top and
+  bottom, held at `--space-3` rather than `--section-space`, which steps 24/32/40 and
+  would open this to 40 on a wide screen. The menu is passed through on the way to the
+  directory, not a section arguing for its own space, so it keeps the tightest step at
+  every width. That is a deliberate exception to the section ladder.
+
+  Each group has an accent Label-scale heading with h2 semantics, 8px above its list,
+  with 16px between the groups. Rows reuse the app detail rail's sans-serif type and
+  Phosphor marks, muted at weight 600. Collections are set exactly like categories: they
+  carried text ink at 700 until 2026-09-11, and in a list where both groups are visible
+  at once that contrast stopped reading as rank and started reading as two different
+  kinds of row. Rank comes from the eyebrow and the order.
+
+  **The menu sits on the card grid's own columns.** Three equal columns with a 16px gap
+  land on exactly the same edges as the twelve tracks below with each card spanning four,
+  provided both are measured across the full shell width. The gap is the load-bearing
+  part: at 24px the columns drifted +32, +13 and -5px against the three cards under them.
+  Rows take the card's 24px inset at both ends, so a row sits on the measure of the card
+  below it and the eyebrow hangs outside on the page margin.
+
+  Eight categories run alphabetically down three columns, then one below 920px.
+  Collections do the same. 920 is where `.grid > *` goes from span 4 to span 12 with
+  nothing in between, so a two-column taxonomy over a three-column card grid would be
+  misaligned by construction across that whole band. Rows are 32px on an 8px row gap in
+  three columns, and the gap closes in one column: the interval that sets a rhythm across
+  three short columns reads as slack down a single column of eleven rows. Stacked, the
+  pitch is the row.
+
+  **The count belongs to the name it counts.** In three columns it follows the name in
+  brackets, drawn with pseudo-elements rather than written into the markup so one
+  breakpoint can drop them. Nothing is right aligned there and the counts deliberately do
+  not form a column of their own. In one column the row runs the page width, so the count
+  goes to the far edge and the brackets come off: a number alone at the end of a full
+  width row is already read as that row's, the way a price is. The unit noun stays in the
+  screen reader copy at both widths.
+
+  **Hover here is colour, not fill.** These rows are the one named exception to the
+  panel-row fill in Colour is the hover language: the menu is a quiet index at the top of
+  the page, and a fill under every row the pointer crossed made it the loudest object on
+  a surface whose job is to be scanned. The focus ring insets to -2px so it does not
+  cross the row below.
+
+  The editor's September 11 and 12 direction establishes this menu; descriptions stay on
+  category pages and tags in the directory filter.
 - **The count is stated, once.** The directory's filter bar carries it and keeps it live as
   filters narrow. The hero carried it too until 2026-09-02, which meant the page opened by
   announcing a number and then restated it a screen later; the dek now describes what the
@@ -1175,7 +1214,11 @@ Search is a centered overlay over a frosted backdrop, with a bright, controlled 
 The detail page answers three questions in order: what is this, is it for me, and where do I get it. The masthead carries that path and the rail carries everything that files the app rather than describes it.
 - **Masthead:** the app's own icon and the page title form one lockup, the icon scaling from 56px to 80px against the title's cap height, with a corner of 25% of its own side. Then the dek, then Best For, then the single Homepage button. An app with no icon takes a category mark on the documented missing-icon colour, stable from the app ID so a card and its detail page always agree. Which category is the app's first by default, or whichever `iconCategory` names when the editor has directed otherwise.
 - **Opening gap:** the breadcrumb sits 16px above the icon/title lockup, matching the 16px step from that lockup to the dek, so the trail, the lockup and the dek run one even ladder. This was a scoped override for the taller lockup until 2026-09-09; it is now simply the site value under The One Page Title Rule, and the page carries no rule of its own for it.
-- **Rail:** a 400px column holding three labelled groups, Collections then Categories then Tags, each built the same way: an eyebrow, `--eyebrow-gap` beneath it, then its items at 2px. 24px separates the groups. Nothing is divided by a rule. It occupies what used to be empty space beside a 900px masthead on a 1160px page. The width is set by the tag chips: measured across all 102 apps a tag set needs 311px at the median and 399px at the 95th percentile, so 400px keeps 95% of the catalogue on a single line. The longest set needs 473px, and buying that last 2% would cost 60px of the prose column.
+- **Rail:** a 376px column holding three labelled groups, Collections then Categories then Tags, each built the same way: an eyebrow, `--eyebrow-gap` beneath it, then its items at 2px. 24px separates the groups. Nothing is divided by a rule, and nothing in it is indented: eyebrows, rows and tag chips all start on the column's own edge. An indent was tried on 2026-09-11, borrowing the Explore menu's hanging eyebrow, and read as a stagger rather than a hierarchy, because the rail is a single column of labels with nothing beside a row to make a second alignment mean anything. It occupies what used to be empty space beside a 900px masthead on a 1160px page.
+
+  **376px is one card.** The rail is right aligned in the shell, so its left edge is `shellRight - 376`, and a card's left edge is the same expression: the third card spans four of twelve tracks and ends at the shell. The two agree at every width without a breakpoint, whatever the fluid gap beside them is doing, which is why the number is a card width rather than a measured one.
+
+  It was 400px until 2026-09-11, set by the tag chips: measured across the catalogue a tag set needs 311px at the median and 399px at the 95th percentile, so 400px kept 95% on a single line, and the longest set needs 473px. Those 24px are the cost of the alignment and they are paid in tag wrapping rather than in the prose column, which does not move. Alfred, the widest set, wrapped before and still does; the five-tag sets nearest the old ceiling measure 334 and 336px and stay on one line.
 - **Taxonomy rank:** categories are the most generic fact an app carries and read at Metadata scale in muted ink, as 32px rows with their marks. They were 22.4px serif inside 80px bordered cards, which made the least meaningful metadata the largest thing on the page after the title. Tags stay chips at Label scale. Nothing here outranks the app's own name, dek or Best For.
 - **One axis:** every mark in the rail shares a centre and every label starts at the same x, because the badge and the category rows use the same 32px icon column and 8px gap. Their glyphs are both 24px.
 - **Related-app rhythm:** the gap from the related-app heading to the card grid is 24px, `--space-3`, the site value for a section header — see The Section Header Gap. The page carries no override of its own. `.section-heading`'s bottom margin and `.directory-grid`'s 16px top margin are adjacent siblings, so they collapse to the larger of the two rather than summing.

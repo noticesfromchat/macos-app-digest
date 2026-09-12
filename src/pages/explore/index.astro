@@ -171,14 +171,10 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
      page, and a fill under every row the pointer crosses made it the loudest object on
      a surface whose job is to be scanned. The ring below still needs a corner. */
   .explore-lane:focus-visible { border-radius: var(--radius-sm); }
-  /* Inset, so the ring sits inside the row rather than crossing the row 8px below it.
-     The rail's +3px offset is correct in a rail and wrong in a dense panel; the
-     directory's select options already take -2px for exactly this reason. */
+  /* Inset, so the ring sits inside the row rather than crossing its neighbour. The
+     rail's +3px offset is correct where rows stand alone and wrong in a list this
+     dense; the directory's select options already take -2px for the same reason. */
   .explore-lane:focus-visible { outline-offset: -2px; }
-  /* The coarse-pointer floor reaches `.collection-badge` globally, but this page's
-     scoped 32px carries the Astro attribute and outranks it, so the floor silently
-     stopped applying to the rows that quote it. Restated here at the same specificity
-     as the declaration that broke it. */
   /* The brackets are drawn, not written, so the one breakpoint below can drop them
      without a second copy of the markup. They sit on the number itself rather than on
      the count, which keeps them clear of the unit noun a screen reader reads. */
