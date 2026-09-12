@@ -1287,10 +1287,16 @@ h1.home-hero-number {
    fixed and the masthead flexible, so the prose measure stays honest at any width. */
 .app-detail-hero {
   display: grid;
-  /* 400px holds 95% of the catalogue's tag sets on one line, measured across all
-     102 apps: median 311px, p95 399px. The longest set needs 473px, and buying
-     that last 2% would cost 60px of the prose column. */
-  grid-template-columns: minmax(0, 1fr) 400px;
+  /* 376px, which is the width of one card in the grid below. The rail is right aligned
+     in the shell, so its left edge lands at `shellRight - 376` at every width, and a
+     card's left edge is the same expression: the third card spans four of twelve tracks
+     and ends at the shell. The two therefore agree without a breakpoint, whatever the
+     gap beside them is doing.
+
+     It was 400px, sized so 95% of tag sets sat on one line: median 311px, p95 399px.
+     Giving up those 24px is the cost of the alignment, and it is paid in tag wrapping
+     rather than in the prose column, which does not move. */
+  grid-template-columns: minmax(0, 1fr) 376px;
   align-items: start;
   gap: clamp(32px, 5vw, 72px);
   padding: 0;
@@ -1319,6 +1325,12 @@ h1.home-hero-number {
    groups, md from an eyebrow to the content it names. Every group is built the
    same way, so the space before each eyebrow is the same space. */
 .app-detail-rail { display: grid; gap: var(--space-3) 24px; min-width: 0; }
+/* The rail reads like the Explore menu: an eyebrow hangs on the card edge and the rows
+   it names indent to that card's content. Scoped to the rail, because the same two row
+   classes are used on Explore, where the lane already supplies this inset. Tags keep the
+   edge with their eyebrow, which is also what leaves them the full 376px to wrap in. */
+.app-detail-rail .app-detail-category-row,
+.app-detail-rail .collection-badge { padding-left: var(--space-3); }
 .app-detail-rail-group { display: grid; gap: var(--eyebrow-gap); min-width: 0; }
 .app-detail-rail-group .eyebrow { margin: 0; }
 
