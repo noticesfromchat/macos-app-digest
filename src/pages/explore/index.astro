@@ -181,6 +181,13 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
      as the declaration that broke it. */
   @media (pointer: coarse) {
     .explore-lane { min-height: 48px; }
+    /* No row gap where the rows are 48px. The gap and the floor are both on the base and
+       both defensible, but they are additive: a 20px line in a 48px box already carries
+       14px of clear space above and below it, and the gap put another 8px between two
+       bands of nothing. Removing it takes the pitch from 7 units to 6 and leaves every
+       hit area at its full 48px, because what goes is the dead space between targets
+       rather than any part of a target. */
+    .explore-lanes { row-gap: 0; }
   }
   .explore-lane-count {
     /* Inherited, not restated. The row already resolves to muted, so this reads the same
