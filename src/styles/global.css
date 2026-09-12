@@ -343,9 +343,9 @@ body {
 .site-footer-inner p { line-height: var(--leading-meta); }
 
 /* The footer's own nav links are left alone deliberately. Their line box is 21px, but
-   they are inline-flex with min-height 24px for WCAG 2.2 target size, so the rendered
-   box is 24px and already lands on the base. The line box is the wrong measure for a
-   flex item that carries its own height. */
+   they are inline-flex with a min-height set for target size rather than for type, 24px
+   in a row and 32px once the nav stacks, so the rendered box already lands on the base.
+   The line box is the wrong measure for a flex item that carries its own height. */
 .directory-count { line-height: var(--leading-label); }
 /* Grows to fill what the header and footer do not, and never shrinks below its content. */
 main { flex: 1 0 auto; }

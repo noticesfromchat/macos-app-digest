@@ -356,9 +356,10 @@ type grows out of it.
 Two kinds of text are exempt. Fluid display type sets its size with `clamp()` — the page
 title, section headings, the wordmark — so no single leading can sit on the base across the
 range; those keep their ratios. And an element that carries its own height is measured by
-its box, not its line box: the footer's nav links have a 21px line box inside a 24px
-`min-height` set for WCAG 2.2 target size, so the box already lands on the base and the
-line box inside it is the wrong thing to measure.
+its box, not its line box: the footer's nav links have a 21px line box inside a
+`min-height` set for target size rather than for type, 24px in a row and 32px stacked, so
+the box already lands on the base and the line box inside it is the wrong thing to
+measure.
 
 **The Radius Scale.** Three steps on the base, `--radius-sm` 8px, `--radius-md` 16px and
 `--radius-lg` 24px, with `--radius` aliasing the large one, plus the pill and the circle. A
@@ -710,7 +711,10 @@ have a 48px minimum height with horizontal padding of 24px and no vertical paddi
 directory toolbar controls and collection badge rows are also 48px. Sort menu options
 are 40px, rising to 48px on coarse pointers. Tags, active-filter chips, category rows,
 filter options and reset controls use 32px; filter options and reset controls rise to
-48px on coarse pointers. Mobile directory search and sort controls use 56px. Active-filter
+48px on coarse pointers. Footer nav links are 24px in a row and rise to 48px on a coarse
+pointer, but the stacked footer nav below 680px is a 32px row instead, matching the
+Explore menu it repeats: the same four destinations were reading at two tempos depending
+on which page carried them. Mobile directory search and sort controls use 56px. Active-filter
 chips retain their visible height and expand their hit area through a pseudo-element.
 Standalone small targets have a 24px floor; links inside sentences remain inline.
 
