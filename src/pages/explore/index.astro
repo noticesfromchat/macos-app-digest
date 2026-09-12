@@ -76,7 +76,7 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
               <span class="app-detail-category-mark" aria-hidden="true"><MetaIcon name={category.icon} /></span>
               <span>{category.title}</span>
               <span class="explore-lane-count">
-                <span>{categoryCounts.get(category.slug)}</span>
+                <span>({categoryCounts.get(category.slug)})</span>
                 <span class="sr-only">{categoryCounts.get(category.slug) === 1 ? 'app' : 'apps'}</span>
               </span>
             </a></li>
@@ -92,7 +92,7 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
               <span class="app-detail-category-mark" aria-hidden="true"><MetaIcon name={collection.icon} /></span>
               <span class="collection-badge-label">{collectionLabels[collection.slug]}</span>
               <span class="explore-lane-count">
-                <span>{collectionCounts.get(collection.slug)}</span>
+                <span>({collectionCounts.get(collection.slug)})</span>
                 <span class="sr-only">{collectionCounts.get(collection.slug) === 1 ? 'app' : 'apps'}</span>
               </span>
             </a></li>
@@ -153,12 +153,13 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
   }
   .explore-lanes li { min-width: 0; }
   .explore-lane {
-    grid-template-columns: 32px minmax(0, 1fr) auto;
-    /* The app card's own inset, both ends. A row sits on the measure of the card below
-       it: the mark starts where that card's icon starts and the count stops where its
-       text stops. The eyebrow above deliberately keeps the page margin instead, so the
-       group label hangs outside the block it names. */
-    padding-inline: var(--space-3);
+    /* The label takes its own width and the count follows it rather than being pushed
+       to a far edge, so the number belongs to the name it counts. The last track
+       absorbs the slack; nothing is right aligned, so the counts deliberately do not
+       form a column of their own. */
+    grid-template-columns: 32px auto minmax(0, 1fr);
+    /* No inset. Every row starts on the eyebrow above it and on the card edge below,
+       which is the one margin this page keeps. */
     min-height: 32px;
     height: 100%;
     column-gap: var(--space-1);
@@ -182,7 +183,6 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
     .explore-lane { min-height: 48px; }
   }
   .explore-lane-count {
-    padding-left: var(--space-1);
     /* Inherited, not restated. The row already resolves to muted, so this reads the same
        at rest and comes with the row's hover and focus for free: the count was the one
        part of a link that stayed grey while the rest of it went blue, which made the
@@ -193,12 +193,6 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
     font-weight: 600;
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
-  }
-  /* Flush left on a phone, count to the edge. The inset tracks the measure of a card
-     beside the row, and on one column there is no such card: the card is the full
-     shell, so both ends would sit an unexplained 24px inside everything else. */
-  @media (max-width: 680px) {
-    .explore-lane { padding-inline: 0; }
   }
   /* Collapse where the cards collapse. `.grid > *` goes from span 4 to span 12 at 920
      with no two-column step in between, so a two-column taxonomy over a three-column
