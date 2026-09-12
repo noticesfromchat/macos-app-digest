@@ -1325,12 +1325,6 @@ h1.home-hero-number {
    groups, md from an eyebrow to the content it names. Every group is built the
    same way, so the space before each eyebrow is the same space. */
 .app-detail-rail { display: grid; gap: var(--space-3) 24px; min-width: 0; }
-/* The rail reads like the Explore menu: an eyebrow hangs on the card edge and the rows
-   it names indent to that card's content. Scoped to the rail, because the same two row
-   classes are used on Explore, where the lane already supplies this inset. Tags keep the
-   edge with their eyebrow, which is also what leaves them the full 376px to wrap in. */
-.app-detail-rail .app-detail-category-row,
-.app-detail-rail .collection-badge { padding-left: var(--space-3); }
 .app-detail-rail-group { display: grid; gap: var(--eyebrow-gap); min-width: 0; }
 .app-detail-rail-group .eyebrow { margin: 0; }
 
