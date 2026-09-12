@@ -125,11 +125,16 @@ const { current = '' } = Astro.props;
       padding-bottom: var(--space-3);
     }
 
+    /* No gap between the links. Stacked, each one is already a 48px box holding a 21px
+       line, so it carries its own clear space above and below; the 8px on top of that
+       put a band of nothing between two bands of nothing and took the pitch to 56px.
+       This is the rhythm the Explore menu uses down a single column, where the rows
+       also touch and the height of the target is the whole interval. */
     .site-footer nav {
       width: 100%;
       flex-direction: column;
       align-items: flex-start;
-      gap: var(--space-1);
+      gap: 0;
       white-space: normal;
     }
   }
