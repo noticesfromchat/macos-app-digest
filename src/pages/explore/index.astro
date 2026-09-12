@@ -154,11 +154,11 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
   .explore-lanes li { min-width: 0; }
   .explore-lane {
     grid-template-columns: 32px minmax(0, 1fr) auto;
-    /* Asymmetric on purpose. The mark and the label start on the page margin, with the
-       eyebrow above them and the card edge below. The count stops a card's inset short
-       of the column's right edge, which is where the text inside that card stops, so
-       the number lands on the card's measure rather than on its border. */
-    padding-inline: 0 var(--space-3);
+    /* The app card's own inset, both ends. A row sits on the measure of the card below
+       it: the mark starts where that card's icon starts and the count stops where its
+       text stops. The eyebrow above deliberately keeps the page margin instead, so the
+       group label hangs outside the block it names. */
+    padding-inline: var(--space-3);
     min-height: 32px;
     height: 100%;
     column-gap: var(--space-1);
@@ -194,9 +194,9 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
   }
-  /* The count goes to the edge on a phone. Its inset tracks the right hand end of a
-     card's measure, and on one column the card is the full shell, so the number would
-     sit an unexplained 24px short of everything else on the page. */
+  /* Flush left on a phone, count to the edge. The inset tracks the measure of a card
+     beside the row, and on one column there is no such card: the card is the full
+     shell, so both ends would sit an unexplained 24px inside everything else. */
   @media (max-width: 680px) {
     .explore-lane { padding-inline: 0; }
   }
