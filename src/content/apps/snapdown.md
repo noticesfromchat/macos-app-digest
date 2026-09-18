@@ -4,7 +4,7 @@ description: Captures any region of a Mac screen as structured Markdown, preserv
 bestFor: Writers, researchers and developers who regularly convert visual references into editable structured notes.
 tagline: screen to Markdown
 tags: [markdown, capture, ai, local, productivity]
-categories: [writing-notes-reading, files-research-documents, ai-agents, productivity-workflow]
+categories: [writing-notes-reading, media-capture, ai-agents, productivity-workflow]
 source: Product Hunt recent Mac launch and official homepage
 homepage: https://snapdown.com.au/
 icon: /app-icons/snapdown.png

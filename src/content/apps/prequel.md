@@ -4,7 +4,7 @@ description: Records Mac demos with automatic zooms, camera framing, timeline ed
 bestFor: Builders who need product walkthrough videos without hand-editing every zoom.
 tagline: demo screen recorder
 tags: [capture, productivity, video, local]
-categories: [files-research-documents, productivity-workflow]
+categories: [media-capture, productivity-workflow]
 source: Product Hunt and official Prequel homepage
 homepage: https://prequel.sh/
 icon: /app-icons/prequel.svg

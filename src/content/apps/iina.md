@@ -4,7 +4,7 @@ description: Plays almost any media file in a modern open-source Mac video playe
 bestFor: Mac users who want a capable local video player that feels at home on macOS.
 tagline: open-source video player
 tags: [video, open-source, local, utility]
-categories: [mac-utilities-customization]
+categories: [media-capture, mac-utilities-customization]
 collections: [community-favorites]
 source: Official IINA homepage and canonical repository
 homepage: https://iina.io/

@@ -4,7 +4,7 @@ description: A mature archive manager for inspecting, editing and extracting com
 bestFor: Mac users who work with archives often enough to need selective extraction, presets and automation beyond Archive Utility.
 tagline: archive manager
 tags: [files, utility, automation, finder, quicklook]
-categories: [files-research-documents, mac-utilities-customization, productivity-workflow]
+categories: [files-research-documents, mac-utilities-customization, automation-shortcuts]
 source: r/macapps community discussion and official BetterZip 6 release information
 homepage: https://macitbetter.com/
 icon: /app-icons/betterzip.png

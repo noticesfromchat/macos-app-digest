@@ -4,7 +4,7 @@ description: Manages Git worktrees, reusable repository commands, development to
 bestFor: Developers juggling parallel features, reviews and hotfixes across several worktrees.
 tagline: Git worktree manager
 tags: [developer, automation, local]
-categories: [developer-tools, productivity-workflow]
+categories: [developer-tools, automation-shortcuts]
 source: Taphouse Software launch post and official homepage
 homepage: https://taphouse.io/arborist
 icon: /app-icons/arborist.png

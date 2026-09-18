@@ -4,7 +4,7 @@ description: Federico Viticci's Claude Code and Codex plugin for generating, val
 bestFor: Automation users who have ideas for Shortcuts but do not want to hand-build fragile action graphs from scratch.
 tagline: agent plugin
 tags: [automation, shortcuts, ai, open-source]
-categories: [productivity-workflow, ai-agents]
+categories: [automation-shortcuts, ai-agents]
 source: MacStories and GitHub
 homepage: https://github.com/viticci/shortcuts-playground-plugin
 icon: /app-icons/shortcuts-playground.png

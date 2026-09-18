@@ -1287,10 +1287,16 @@ h1.home-hero-number {
    fixed and the masthead flexible, so the prose measure stays honest at any width. */
 .app-detail-hero {
   display: grid;
-  /* 400px holds 95% of the catalogue's tag sets on one line, measured across all
-     102 apps: median 311px, p95 399px. The longest set needs 473px, and buying
-     that last 2% would cost 60px of the prose column. */
-  grid-template-columns: minmax(0, 1fr) 400px;
+  /* 376px, which is the width of one card in the grid below. The rail is right aligned
+     in the shell, so its left edge lands at `shellRight - 376` at every width, and a
+     card's left edge is the same expression: the third card spans four of twelve tracks
+     and ends at the shell. The two therefore agree without a breakpoint, whatever the
+     gap beside them is doing.
+
+     It was 400px, sized so 95% of tag sets sat on one line: median 311px, p95 399px.
+     Giving up those 24px is the cost of the alignment, and it is paid in tag wrapping
+     rather than in the prose column, which does not move. */
+  grid-template-columns: minmax(0, 1fr) 376px;
   align-items: start;
   gap: clamp(32px, 5vw, 72px);
   padding: 0;
@@ -1358,19 +1364,22 @@ h1.home-hero-number {
 }
 .app-detail-category-mark { display: inline-flex; align-items: center; justify-content: center; }
 .app-detail-category-mark svg { --icon-size: var(--icon-md); }
-/* Named by its own eyebrow like every other group in the rail. It stays in the rail's
-   utility voice: rank comes from position and the label sitting in ink at weight 700
-   where a category label sits muted at 600, while the row rhythm matches categories. */
+/* Named by its own eyebrow like every other group in the rail, and set exactly like a
+   category row. It carried ink at weight 700 against a category's muted 600 until
+   2026-09-11, to give the honour rank. Two surfaces now show both groups as one list,
+   the rail and the Explore menu, and in a list the contrast stopped reading as rank and
+   started reading as two different kinds of row. Rank comes from the eyebrow and the
+   position, which is what names every other group here. */
 .collection-badge {
   display: grid;
   grid-template-columns: 32px minmax(0, 1fr);
   align-items: center;
   gap: var(--space-1) 8px;
   min-height: 32px;
-  color: var(--text);
+  color: var(--muted);
   font-size: var(--type-meta);
-  font-weight: 700;
-  line-height: 1.1429;
+  font-weight: 600;
+  line-height: var(--leading-meta);
   text-decoration: none;
   transition: color 180ms ease;
 }
@@ -2381,15 +2390,15 @@ h1.home-hero-number {
    three, not an exception to it: the panel is showing because this control is doing
    something, so it stays lit for as long as that is true. */
 .directory-select-trigger:hover svg,
-.directory-select-trigger:focus-visible svg,
-.directory-select.is-open .directory-select-trigger svg { color: var(--accent); }
-/* Lit for as long as the panel is open, so the trigger and the menu it opened read as one
-   thing. The fill stays because open is a state rather than a hover, and a state that
-   persists after the pointer leaves needs to hold its own without one. */
-.directory-select.is-open .directory-select-trigger {
-  background: color-mix(in srgb, var(--surface-strong) 72%, transparent);
-  color: var(--accent);
-}
+.directory-select-trigger:focus-visible svg { color: var(--accent); }
+/* Open is not a colour. The trigger held the accent and a fill for as long as its panel
+   was showing, on the reasoning that a state outlasting the pointer cannot rely on a
+   hover to carry it. The panel carries it: it is a large lit surface attached to the
+   control, and the chevron turns over to point at it, so the state was already stated
+   twice before the colour said it a third time. Colour here also collided with the
+   control's one real use of the accent, which is answering a pointer, and made an open
+   menu look permanently hovered. Changed 2026-09-11 at the editor's direction; the
+   chevron and `aria-expanded` carry the state now. */
 .directory-select.is-open .directory-select-trigger svg { transform: rotate(180deg); }
 .directory-select-options {
   position: absolute;

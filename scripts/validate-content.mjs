@@ -2,13 +2,32 @@ import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 import { parse } from 'yaml';
-import { categorySlugs, getCategoriesForTags } from '../src/data/categories.ts';
+import { categories, categorySlugs, getCategoriesForTags } from '../src/data/categories.ts';
 
 const root = process.cwd();
 const appsDir = path.join(root, 'src/content/apps');
 const issuesDir = path.join(root, 'src/content/issues');
 const errors = [];
 const validCategorySlugs = new Set(categorySlugs);
+
+/* One tag, one category. `categoryTagMap` is built by flattening every category's
+   `tags` array into a Map, so a tag listed under two categories does not error or
+   split: the later definition simply wins and the earlier one silently stops
+   working. That is invisible in review and only shows up as an app missing from a
+   category it should be in. Checked here because the map is data, and the failure
+   it causes is a content failure. */
+const tagOwners = new Map();
+for (const category of categories) {
+  for (const tag of category.tags) {
+    if (tagOwners.has(tag)) {
+      errors.push(
+        `src/data/categories.ts: tag "${tag}" is claimed by both ${tagOwners.get(tag)} and ${category.slug}; a tag belongs to exactly one category`
+      );
+    } else {
+      tagOwners.set(tag, category.slug);
+    }
+  }
+}
 const standardIssueSectionEyebrows = [
   'New Discoveries',
   'Trending',

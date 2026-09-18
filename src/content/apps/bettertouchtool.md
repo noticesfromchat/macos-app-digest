@@ -4,7 +4,7 @@ description: Customizes gestures, keyboard shortcuts, window actions and conditi
 bestFor: Power users who want one utility to reshape how every input device behaves.
 tagline: input customizer
 tags: [automation, customization, keyboard, utility]
-categories: [productivity-workflow, mac-utilities-customization]
+categories: [automation-shortcuts, mac-utilities-customization]
 collections: [community-favorites]
 source: Official BetterTouchTool homepage
 homepage: https://folivora.ai/
