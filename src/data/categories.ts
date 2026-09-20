@@ -36,8 +36,8 @@ export const categories: Category[] = [
   },
   {
     slug: 'automation-shortcuts',
-    title: 'Automation & Shortcuts',
-    description: 'Build Shortcuts and set rules so your Mac handles the work you repeat. Set it up once, then let the machine remember it.',
+    title: "Automation & Shortcuts",
+    description: "Build Shortcuts, set rules and connect actions so your Mac can handle the work you repeat. Set it up once, then let the app remember it.",
     mobileDescription: 'Shortcuts and rules for the work you repeat.',
     tags: ['automation', 'shortcuts'],
     icon: 'flow-arrow',
@@ -54,8 +54,8 @@ export const categories: Category[] = [
   },
   {
     slug: 'files-research-documents',
-    title: 'Files, Research & Documents',
-    description: "Finding what's on your disk, and turning up the thing you saved six months ago. Plus the filing and searching that made it findable at all.",
+    title: "Files, Research & Documents",
+    description: "Finding what's on your disk, and turning up the thing you saved six months ago. Plus the filing and search tools that made it findable at all.",
     mobileDescription: 'Finding files, and finding them again later.',
     tags: ['files', 'finder', 'documents', 'research', 'pdf', 'ebooks', 'backup', 'downloads', 'airdrop', 'quicklook'],
     icon: 'files',
@@ -63,8 +63,8 @@ export const categories: Category[] = [
   },
   {
     slug: 'mac-utilities-customization',
-    title: 'Mac Utilities & Customization',
-    description: "Window managers and the small tweaks that make a Mac feel like yours instead of Apple's. Mostly small, mostly single-purpose.",
+    title: "Mac Utilities & Customization",
+    description: "Menu bar extras, window managers, launchers, even the small tweaks that make a Mac feel like yours instead of Apple's. Mostly small, mostly single-purpose.",
     mobileDescription: 'Menu bar extras and window managers that make a Mac yours.',
     tags: ['utility', 'menubar', 'customization', 'privacy', 'launcher', 'windows', 'keyboard', 'accessibility', 'network', 'monitoring', 'maintenance', 'battery', 'dashboard', 'remote', 'ios'],
     icon: 'sliders',
@@ -81,8 +81,8 @@ export const categories: Category[] = [
   },
   {
     slug: 'productivity-workflow',
-    title: 'Productivity & Workflow',
-    description: 'Tasks and reminders for the work you are trying to keep track of. Somewhere to put it down so you can stop carrying it around.',
+    title: "Productivity & Workflow",
+    description: "Task managers, reminders and calendars for the work you are trying to keep track of. A place for you to put it down so you can stop carrying it around.",
     mobileDescription: 'Tasks and reminders for the work you track.',
     tags: ['productivity', 'tasks', 'reminders', 'calendar'],
     icon: 'list-checks',
@@ -90,8 +90,8 @@ export const categories: Category[] = [
   },
   {
     slug: 'writing-notes-reading',
-    title: 'Writing, Notes & Reading',
-    description: 'For anyone whose day is mostly text: somewhere to draft it, and somewhere quieter to read it back later.',
+    title: "Writing, Notes & Reading",
+    description: "For anyone whose day is mostly text: somewhere to draft it, catch it before it's gone, dictate it or read it back somewhere quieter for later on.",
     mobileDescription: 'Somewhere to write it down, and somewhere to read it later.',
     tags: ['writing', 'notes', 'markdown', 'dictation', 'clipboard', 'messages', 'reading', 'rss'],
     icon: 'notepad',
@@ -107,7 +107,7 @@ export const collections: CollectionMeta[] = [
   },
   {
     slug: 'community-favorites',
-    title: 'Community Favorites',
+    title: "Community Favorites",
     icon: 'heart'
   },
   {

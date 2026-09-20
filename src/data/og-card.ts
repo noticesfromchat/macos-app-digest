@@ -23,7 +23,7 @@ import { OG_SIZE, type OgAppIcon, type OgCard } from './og';
 
 /* Light-theme tokens from DESIGN.md. A card is one fixed image, so it cannot
    follow the reader's theme; it takes the day palette the site opens in. */
-const PAGE = '#e8ecf1';
+const PAGE = '#ffffff';
 const INK = '#092443';
 const MUTED = '#4d5762';
 const LINE = 'rgba(9, 35, 66, 0.2)';

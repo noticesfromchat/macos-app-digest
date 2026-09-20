@@ -177,8 +177,7 @@ export const tagMetaDescription = (tag: string) =>
 const collectionDescriptions: Record<string, string> = {
   'editors-picks':
     'Explore Mac apps the editor singled out for doing a familiar job in a way worth switching for.',
-  'community-favorites':
-    'Explore Mac apps the community keeps recommending, long after the week they first came up.',
+  "community-favorites": "Explore Mac apps the community keeps recommending.",
   'hidden-gems':
     'Explore Mac apps worth more attention than they get: small, well made tools that solve a real problem without a marketing budget behind them.'
 };

@@ -1315,6 +1315,12 @@ real signal rather than part of a standing count.
 
 ### Social Cards
 
+Social preview images use the current light-mode palette: a pure-white (`#ffffff`)
+background, Deep Sea ink and Beacon Blue accents. The shared `src/data/og-card.ts`
+renderer owns this palette for every card, including Open Graph and X previews.
+When the site's light-mode colours change, update these renderer tokens in the same
+pass; generated images do not inherit the site's CSS.
+
 **The Borrowed Type Rule.** A social card is the only surface that cannot use the site's own
 typeface. Iowan Old Style is a macOS system font with no file to embed, so a build-time
 renderer has nothing to load. Vollkorn stands in: it is the closest embeddable face measured
