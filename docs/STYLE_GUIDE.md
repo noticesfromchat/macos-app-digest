@@ -38,6 +38,16 @@ The site should feel like a small, premium editorial publication for experienced
 - See The Struck Light Rule in `DESIGN.md` for the pick card, and the easing tokens in
   the Motion section there for everything else.
 
+### Light-mode surfaces
+
+- Use pure white (`#ffffff`) for the page, hero, footer and card surfaces; the sticky
+  header uses white at 96% opacity
+- Separate white cards with the shared faint cool edge and soft shadows, without
+  adding a border that changes card dimensions
+- Keep cool grey fills for chips and controls, and Harbor Fog for overlay scrims
+- Preserve dark-mode colours and shadows
+- Use the Fog Rule, Soft Hull Rule and shadow tokens in `DESIGN.md` for implementation
+
 ### Editorial punctuation
 
 - Do not use Oxford commas in App Waypoint editorial copy. In lists of three or

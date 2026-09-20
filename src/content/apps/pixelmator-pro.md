@@ -1,6 +1,6 @@
 ---
 name: Pixelmator Pro
-description: Edit images, RAW files and video frames without ever baking a change in and find the file you saved last month still fully editable today.
+description: Edit images and RAW files without ever baking a change in, and find last month's file still fully editable today.
 bestFor: Photo edits and design cleanup that need more than Preview and less ceremony than Photoshop.
 tagline: image editor
 tags: [images, utility, local]

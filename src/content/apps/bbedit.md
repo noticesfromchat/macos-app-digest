@@ -1,7 +1,7 @@
 ---
 name: BBEdit
-description: Handle prose, HTML, source code and very large search jobs in a Mac text editor that has been arguing for plain text for decades.
-bestFor: Writers and developers after one text app that handles notes, site files and the messy search-and-replace jobs.
+description: Write prose or code in a Mac text editor that has been arguing for plain text for decades, with search and replace built for very large jobs.
+bestFor: Writers and developers who want one text app for everything, the messy search-and-replace jobs included.
 tagline: plain-text editor
 tags: [developer, writing, local]
 categories: [developer-tools, writing-notes-reading]

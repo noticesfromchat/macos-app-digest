@@ -1,6 +1,6 @@
 ---
 name: Supercharge
-description: Adds deep system tweaks, Finder commands, keyboard shortcuts and trackpad gestures that macOS does not provide itself.
+description: Add the Finder commands and trackpad gestures macOS never shipped, from one app instead of a drawer of single-purpose utilities.
 bestFor: Experienced Mac users who want precise control without assembling many single-purpose utilities.
 tagline: system tweaks
 tags: [utility, finder, keyboard, customization]

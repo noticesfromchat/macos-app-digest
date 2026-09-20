@@ -1,7 +1,7 @@
 ---
 name: NotchLive
-description: Captions Mac audio locally, separates speakers on Apple silicon and turns speech into reviewable meeting records.
-bestFor: People who need private captions, transcripts and translation across Mac apps.
+description: Caption any Mac audio locally and keep the speakers apart, so a meeting becomes a record you can review.
+bestFor: People who want private captions and transcripts of whatever plays on the Mac.
 tagline: local live captions
 tags: [audio, accessibility, local, ai, transcription]
 categories: [media-capture, mac-utilities-customization, ai-agents]

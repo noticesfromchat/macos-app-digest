@@ -125,16 +125,16 @@ const tagDescriptions: Record<string, string> = {
   "customization": "Change how the Mac looks and behaves until it stops getting in your way.",
   "dashboard": "One screen with the numbers you'd otherwise open five apps to check.",
   "database": "A real window onto your data instead of a terminal prompt.",
-  "developer": "The bench that sits around the code: editors, inspectors, clients, diff tools.",
+  "developer": "The editors and inspectors that sit around the code.",
   "dictation": "Turning speech into text, and the tools for delivering it out loud.",
   "documents": "Reading and editing the files people email you.",
   "downloads": "Queues and scheduling, for when the browser's own downloads aren't enough.",
   "ebooks": "A library of your own files rather than one you're renting from a store.",
-  "files": "Finding, moving, renaming and clearing out what's on your disk.",
+  "files": "Finding what's on your disk, and clearing out what shouldn't be.",
   "finance": "Money and markets on your desktop instead of your phone.",
   "finder": "Fixes for the app you use more than any other and think about least.",
   "health": "Nudges to stand up and stop working for a minute.",
-  "images": "Making a picture, fixing one or finding the one you know is somewhere on the disk.",
+  "images": "Fixing a picture, or finding the one you know is somewhere on the disk.",
   "ios": "Mac apps that talk to your iPhone or iPad, or bring something across from it.",
   "keyboard": "Remap the keys and stop reaching for the mouse.",
   "launcher": "Hit a key, type a few letters and you're there.",
@@ -144,11 +144,11 @@ const tagDescriptions: Record<string, string> = {
   "markdown": "Writing in plain text and watching it come out looking right.",
   "menubar": "Small tools that sit up top and stay one click away all day.",
   "messages": "Searching and exporting the conversations already on your Mac.",
-  "monitoring": "What your Mac is doing right now: CPU, memory, disk, temperature, all of it.",
+  "monitoring": "What your Mac is doing right now, down to the temperature.",
   "network": "See how fast it is, and what's quietly phoning home.",
   "notes": "Somewhere to put a thought before it's gone.",
   "open-source": "Source you can read, from projects built in the open.",
-  "pdf": "Reading, marking up, merging and getting text back out of PDFs.",
+  "pdf": "Marking up PDFs, and getting the text back out of them.",
   "privacy": "Apps that work without shipping your data somewhere else.",
   "productivity": "Getting more done, or at least spending less time on the parts that don't count.",
   "quicklook": "Press space on a file and actually see what's inside it.",
@@ -161,7 +161,7 @@ const tagDescriptions: Record<string, string> = {
   "shortcuts": "Extra actions and better tooling for Apple's Shortcuts app.",
   "tasks": "Lists that hold up once the list gets long.",
   "terminal": "Shells and emulators, and everything that makes the command line nicer to live in.",
-  "transcription": "Turning a recording, a meeting or whatever the Mac just played into text you can search.",
+  "transcription": "Turning a meeting, or whatever the Mac just played, into text you can search.",
   "utility": "Small apps that do one job and then stay out of the way.",
   "video": "Players and screen recorders, plus a way to subtitle what you're watching.",
   "windows": "Put windows where you want them and get back to the one you need.",
@@ -176,9 +176,9 @@ export const tagMetaDescription = (tag: string) =>
 
 const collectionDescriptions: Record<string, string> = {
   'editors-picks':
-    'Explore Mac apps singled out by the editor for exceptional utility, thoughtful design or a distinctive approach to a familiar workflow.',
+    'Explore Mac apps the editor singled out for doing a familiar job in a way worth switching for.',
   'community-favorites':
-    'Explore Mac apps the community keeps recommending for practical workflows, dependable utility and standout execution.',
+    'Explore Mac apps the community keeps recommending, long after the week they first came up.',
   'hidden-gems':
     'Explore Mac apps worth more attention than they get: small, well made tools that solve a real problem without a marketing budget behind them.'
 };

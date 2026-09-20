@@ -40,6 +40,20 @@ up reviewing `:4322` while the editor is looking at `:4321`, and the two disagre
 moment either of you edits a file. Preview tooling that expects 4321 will error instead,
 which is the better outcome only because it is visible.
 
+### Local catalogue editor
+
+Run `npm run editor` to open the private catalogue editor at
+`http://127.0.0.1:4319`. It binds only to the local Mac and is not part of the Astro
+site or its production build. Its Apps tab loads current values from
+`src/content/apps/*.md` and can update descriptions, Best for text, tags and
+collections. Tag changes derive and update the record's categories automatically.
+The Categories, Collections and Tags tabs edit the public names and descriptions in
+`src/data/categories.ts` and `src/data/lanes.ts`; slugs, icons, mappings and app
+assignments remain protected.
+
+Stop the editor with Control-C when the editing session is complete. Run the normal
+validation and build checks before committing edited records.
+
 Do not kill or restart a server you did not start. A change that needs a restart to take
 effect, anything in `astro.config.mjs` among them, is reported to the editor to restart
 rather than restarted for them.

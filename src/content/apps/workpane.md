@@ -1,6 +1,6 @@
 ---
 name: WorkPane
-description: Streams individual Mac windows to iPad as separate Stage Manager windows, with touch, keyboard and per-window audio over encrypted connections.
+description: Stream single Mac windows to an iPad as their own Stage Manager windows, each with its own audio.
 bestFor: Mac and iPad power users who want remote access to selected windows without shrinking an entire desktop.
 tagline: windows on iPad
 tags: [remote, windows, ios, productivity]

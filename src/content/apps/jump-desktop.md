@@ -1,6 +1,6 @@
 ---
 name: Jump Desktop
-description: Connect to a Mac, a PC or a server over a Fluid protocol that delivers a picture sharp enough to read code in rather than a slideshow.
+description: Connect to a remote Mac or PC over a Fluid protocol that delivers a picture sharp enough to read code in rather than a slideshow.
 bestFor: Developers and admins who spend real hours on a remote machine, not the occasional rescue mission.
 tagline: remote desktop
 tags: [remote, utility, productivity]

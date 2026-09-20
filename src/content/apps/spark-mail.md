@@ -1,6 +1,6 @@
 ---
 name: Spark Mail
-description: Adds local CLI and agent skills to a multi-account email client, exposing messages, calendars, contacts and meeting notes for search and triage.
+description: Give an agent local access to a multi-account inbox for search and triage, without setting up each provider's API.
 bestFor: Agent-assisted email workflows that need local context across several accounts without configuring separate provider APIs.
 tagline: email with agent skills
 tags: [ai, automation, productivity, messages, cli, calendar]

@@ -1,7 +1,7 @@
 ---
 name: Maccy
-description: Provides a lightweight clipboard history for macOS with keyboard search, pinned items and open-source defaults that stay out of the way.
-bestFor: Keyboard-heavy users who need fast recall of copied text, links and snippets.
+description: Keep a lightweight, open-source clipboard history you search from the keyboard and mostly forget is running.
+bestFor: Keyboard-heavy users who lose track of something they copied an hour ago.
 tagline: clipboard history
 tags: [clipboard, productivity, utility, open-source]
 collections: [community-favorites]

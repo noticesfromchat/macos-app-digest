@@ -1,6 +1,6 @@
 ---
 name: DeepCleanMac
-description: Scans hidden locations for caches, leftovers and duplicate files, then combines reviewed cleanup with app removal, updates and disk visualization.
+description: Find the caches and leftovers hiding on your disk and review every one before it goes, with app removal and a disk map in the same window.
 bestFor: Mac users who want a compact, on-demand maintenance utility instead of a persistent background suite.
 tagline: disk cleanup
 tags: [maintenance, files, utility, productivity]

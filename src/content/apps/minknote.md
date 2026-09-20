@@ -1,6 +1,6 @@
 ---
 name: MinkNote
-description: A native, private Mac notebook that keeps journals, projects and attachments in ordinary Markdown files without accounts or proprietary storage.
+description: Keep journals and project notes as ordinary Markdown files in a private Mac notebook, with no account to sign up for.
 bestFor: Writers and researchers who want structured notes while retaining direct ownership of every file.
 tagline: private Markdown notebook
 tags: [notes, markdown, local, writing]

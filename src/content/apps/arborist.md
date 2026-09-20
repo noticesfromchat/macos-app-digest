@@ -1,7 +1,7 @@
 ---
 name: Arborist
-description: Manages Git worktrees, reusable repository commands, development tools and coding-agent conversations from one native Mac workspace.
-bestFor: Developers juggling parallel features, reviews and hotfixes across several worktrees.
+description: Manage Git worktrees and the coding-agent conversations running in each of them from one native Mac workspace.
+bestFor: Developers juggling several branches at once across separate worktrees.
 tagline: Git worktree manager
 tags: [developer, automation, local]
 categories: [developer-tools, automation-shortcuts]

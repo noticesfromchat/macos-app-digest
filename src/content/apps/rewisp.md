@@ -1,6 +1,6 @@
 ---
 name: Rewisp
-description: Remembers on-screen text locally, then retrieves past context, commitments and changes through natural-language questions.
+description: Keep a local memory of the text that passed across your screen, and ask about it later in plain language.
 bestFor: Researchers and operators who repeatedly need to recover details seen across many apps.
 tagline: on-screen memory recall
 tags: [ai, search, local, open-source]

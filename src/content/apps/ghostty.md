@@ -1,6 +1,6 @@
 ---
 name: Ghostty
-description: Runs a fast GPU-accelerated terminal with native UI, strong defaults and cross-platform configuration.
+description: Run a fast GPU-accelerated terminal that looks native on the Mac and needs very little configuring out of the box.
 bestFor: Terminal-heavy users who want speed and polish without leaving native Mac conventions.
 tagline: GPU terminal
 tags: [terminal, developer, open-source, utility]

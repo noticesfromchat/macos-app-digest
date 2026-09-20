@@ -14,7 +14,7 @@ colors:
   line-water: "rgba(9, 35, 66, 0.2)"
   beacon-blue: "#0862d8"
   beacon-blue-hover: "#004caf"
-  header-fog: "rgba(244, 246, 249, 0.96)"
+  header-fog: "rgba(255, 255, 255, 0.96)"
   night-harbor: "#091321"
   abyss: "#020b18"
   midnight-surface: "#0b1c30"
@@ -174,7 +174,7 @@ App Waypoint feels like a calm dock under overcast light: cool paper, deep-water
 The language prefers stable geometry, soft depth, and generous breathing room. Serif headlines carry the authority; the system sans supports the utility layers, controls, and metadata. The result is familiar and trustworthy, with enough atmosphere to feel considered but not styled for its own sake.
 
 **Key Characteristics:**
-- White paper on a cool fog-grey field, with navy ink.
+- White cards on a white page, with navy ink and soft cool edges.
 - Beacon blue reserved for actions and current states.
 - Serif headlines, system-sans utility.
 - Soft 10-18px radii and ambient shadows.
@@ -182,16 +182,16 @@ The language prefers stable geometry, soft depth, and generous breathing room. S
 
 ## Colors
 
-The palette is a two-mode harbor system: white paper on fog grey with navy ink by day, deep water and moon ink by night. The light-mode greys sit on Deep Sea's hue rather than on a neutral ramp, so the field reads as harbor weather instead of default UI grey. Blue is the only strong accent and stays carefully rationed.
+The palette is a two-mode harbor system: white paper with navy ink by day, deep water and moon ink by night. The page field is pure white. Supporting greys in chips, controls and overlay scrims stay on Deep Sea's hue. Blue is the only strong accent and stays carefully rationed.
 
 ### Primary
 - **Beacon Blue** (#0862d8): primary buttons, links, active states, and key affordances.
 - **Buoy Blue** (#57a2ff): the dark-theme accent and lighter emphasis layer.
 
 ### Neutral
-- **Harbor Fog** (#e8ecf1): the outer page field, a cool grey on the ink's own hue.
-- **Drift Mist** (#f4f6f9): header and footer atmosphere.
-- **Surf Foam** (#ffffff): the primary surface color for cards and panels. Foam is the brightest thing in the harbor, so the card surface is true white and every other light tone sits below it.
+- **Harbor Fog** (#e8ecf1): the cool grey used by the light overlay scrim.
+- **Drift Mist** (#f4f6f9): a supporting cool neutral; the header, hero and footer now use white.
+- **Surf Foam** (#ffffff): the page, hero, footer and primary surface color for cards and panels. Soft edge shadows separate white cards from the white page.
 - **Shell Strong** (#e3e8ee): the control fill — hover and focus feedback on icon buttons, nav items, search rows, and the filter count badge.
 - **Shell Quiet** (#f0f3f7): the chip fill, one step quieter than the control fill. Tag chips are metadata that should recede on a card, not controls asking to be pressed, so they sit at roughly half Shell Strong's distance from the card surface — the same step the night theme already gives them.
 - **Deep Sea** (#092443): the primary light-theme ink.
@@ -199,7 +199,7 @@ The palette is a two-mode harbor system: white paper on fog grey with navy ink b
 - **Harbor Body** (#40546a): light-theme reading copy below primary Deep Sea ink.
 - **Harbor Chip Ink** (#384d63): light-theme text carried by Shell Quiet chips.
 - **Line Water** (rgba(9, 35, 66, 0.2)): borders and separators.
-- **Header Fog** (rgba(244, 246, 249, 0.96)): the light sticky header.
+- **Header Fog** (rgba(255, 255, 255, 0.96)): the light sticky header.
 
 ### Night Shift
 - **Night Harbor** (#091321): the dark page field.
@@ -219,7 +219,7 @@ These are drawn, not printed: they exist only inside the homepage hero's canvas 
 
 - **Sea Ink** (`9 35 66` by day, `226 236 250` at night): RGB triples rather than hex so the wave band and star field can vary alpha per line. They are Deep Sea and a pale moon tone, not new colours.
 
-**The Fog Rule.** Every light-mode neutral sits on Deep Sea's hue — OKLCH hue 253–258, the ink's own axis — at a chroma of 0.010 or less: Surf Foam 0.000, Drift Mist 0.005, Harbor Fog 0.008, Shell Strong 0.010, Shell Quiet 0.006. That is what keeps the field reading as harbor weather rather than default UI grey. A neutral off that axis, or any warm tone reintroduced into the light theme, breaks the day palette. The ink, the hairline, and the blue are shared with the old warm scheme and did not move.
+**The Fog Rule.** The light-mode page, hero and footer use pure white (`#ffffff`), and the sticky header uses white at 96% opacity. Supporting chromatic neutrals stay on Deep Sea's hue, OKLCH 253–258, at a chroma of 0.010 or less. Harbor Fog remains the overlay scrim colour; it is not the page background. Keep chips and control fills cool, and do not reintroduce warm sand or cream. Dark-mode colours are unchanged.
 
 **The Beacon Rule.** Blue is reserved for actions, links, focus, and active states. It should not become page chrome or decorative noise. The palette carries no warm accent: a light wash behind the hero was tried and removed for drawing attention to itself rather than to the pick it sat behind.
 
@@ -576,15 +576,15 @@ Prose everywhere runs to `--measure`, so the reading column is the same width in
 
 ## Elevation & Depth
 
-Depth is soft and ambient rather than structural. Surfaces stay flat at rest, then gain soft shadows, an inset accent ring, and subtle hover lift when they need separation. The sticky header and search overlay add atmosphere with blur and translucency, but the system never relies on hard offsets or gimmicky glow.
+Depth is soft and ambient rather than structural. White cards retain a faint cool edge and soft shading at rest; hover deepens the shadow and adds an inset accent ring without moving the card. The sticky header and search overlay add atmosphere with blur and translucency, but the system never relies on hard offsets or gimmicky glow.
 
 ### Shadow Vocabulary
-- **Ambient Card** (`box-shadow: 0 18px 55px rgba(27, 35, 42, 0.08)`): resting cards and surface containers.
-- **Hover Lift** (`box-shadow: 0 26px 68px rgba(27, 35, 42, 0.11)`): hovered cards and callout surfaces. The light-theme lift is deliberately shallow — a 1.4x step over the resting shadow rather than a new weight — because the white card already separates from the fog field on value alone.
+- **Ambient Card** (`box-shadow: 0 0 0 1px rgba(9, 35, 66, 0.07), 0 2px 5px rgba(9, 35, 66, 0.025), 0 10px 28px rgba(9, 35, 66, 0.055)`): resting cards and surface containers.
+- **Hover Lift** (`box-shadow: 0 0 0 1px rgba(9, 35, 66, 0.08), 0 4px 8px rgba(9, 35, 66, 0.03), 0 16px 38px rgba(9, 35, 66, 0.075)`): hovered cards and callout surfaces. The light-theme lift retains the faint edge and deepens the soft shading without moving the card.
 - **Night Ambient** (`box-shadow: 0 20px 60px rgba(0, 0, 0, 0.24)`): dark-theme resting surfaces.
 - **Night Hover** (`box-shadow: 0 28px 72px rgba(0, 0, 0, 0.42)`): dark-theme hover elevation.
 
-**The Soft Hull Rule.** Surfaces lift with a soft shadow and an inset ring, not with hard edges or dramatic offsets. The lift settles rather than snaps: cards cross to their hover state over 320ms on `cubic-bezier(.16, 1, .3, 1)`, an exponential ease-out. The header wordmark used to fade in on the same curve at 520ms; that wordmark was removed on 2026-09-06 and the curve is now stated by the cards alone.
+**The Soft Hull Rule.** White cards separate from the white page through a faint 1px cool edge in the shared shadow, close contact shading and soft ambient depth. Hover adds the existing inset accent ring without changing layout. Dark-mode surfaces and shadows remain unchanged. The lift settles rather than snaps: cards cross to their hover state over 320ms on `cubic-bezier(.16, 1, .3, 1)`, an exponential ease-out. The header wordmark used to fade in on the same curve at 520ms; that wordmark was removed on 2026-09-06 and the curve is now stated by the cards alone.
 
 ## Shapes
 
@@ -744,7 +744,7 @@ Tag chips are compact chips rather than buttons. They read as metadata first.
 ### Cards
 Cards are the primary container language for apps, readings, and archive entries. Apparatus and secondary matter are set under a hairline instead, so a card always means a thing worth looking at rather than a thing worth reading past. An app card carries three regions and nothing else: the summary, the best-for line, and the tags. Its single app destination is the generated detail page; the title link and stretched pointer overlay go to the same internal URL, while the official homepage lives on the detail page. It used to end with a source credit; that was provenance for the editor rather than information for the reader, and removing it took a whole region off every card.
 - **Corner Style:** `--radius` at 24px, the same as the card's inset.
-- **Background:** the surface color — white by day — with a soft shadow and no border.
+- **Background:** the surface color, white by day, with a faint shadow-drawn edge and soft shading; no layout border.
 - **Internal Padding:** 24px, which is also the card's corner radius.
 - **Summary Rhythm:** when an app icon is present, the description starts 24px below the
   icon-title row. The icon and title stay 16px apart inside that row.
@@ -753,11 +753,11 @@ An archive row is an app card in every respect that matters, and takes the same 
 and the same hover contract. It set `box-shadow: none` until 2026-09-05, which was correct
 while a border drew its edge and left it with no edge at all once borders went.
 
-**Cards carry no border.** The surface fill and the resting shadow already separate a card
-from the page; a hairline on top of both was a third signal saying the same thing. Adopted
-2026-09-05.
+**Cards carry no layout border.** On the white light-mode page, the shared shadow includes
+a faint 1px cool edge, a close contact shadow and soft ambient shading. This keeps cards
+legible without changing their dimensions. Dark mode retains its existing shadow treatment.
 
-The edge returns on hover, as an inset ring rather than a border. That is not a stylistic
+An accent edge appears on hover, as an inset ring rather than a border. That is not a stylistic
 preference: a border, even a transparent one held at rest, puts its 1px back into the
 card's row arithmetic, and at two of the three floors that 1px crosses a rounding step and
 costs 8px each — 16px of height on every card in the catalogue for an edge nobody sees
@@ -1367,7 +1367,7 @@ is a standfirst and reads whole either way; a title is the editorial line itself
 ## Do's and Don'ts
 
 ### Do:
-- **Do** keep the fog-grey field, white paper, deep-sea text, and blue accent in a tight relationship.
+- **Do** keep the light-mode page white, cards softly defined, text deep-sea and blue reserved for actions.
 - **Do** assign prose, chip labels and metadata through `--body-text`, `--chip-text` and `--muted` by meaning rather than by page.
 - **Do** reuse the shared page shell so archive, tag, collection, about, and app pages line up.
 - **Do** keep shadows soft and ambient.

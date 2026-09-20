@@ -1,6 +1,6 @@
 ---
 name: CleanShot
-description: Captures, annotates, records and shares screenshots through a polished Mac-native workflow built for fast visual communication.
+description: Capture and annotate screenshots or screen recordings in one polished workflow, built for explaining something quickly.
 bestFor: Mac users who rely on screenshots and screen recordings to explain work clearly.
 tagline: screenshot capture
 tags: [capture, productivity, utility, video]

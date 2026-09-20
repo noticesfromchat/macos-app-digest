@@ -1,6 +1,6 @@
 ---
 name: PostHog Desktop
-description: Brings PostHog product work into a desktop editor focused on analysis, issue review, feature flags and product-builder workflows.
+description: Work in PostHog from a focused desktop editor instead of a browser tab full of dashboards.
 bestFor: Product teams who live in PostHog and want a focused desktop command center.
 tagline: product analytics
 tags: [developer, productivity, dashboard, monitoring]

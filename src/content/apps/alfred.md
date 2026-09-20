@@ -1,6 +1,6 @@
 ---
 name: Alfred
-description: Launches apps, searches files and the web, expands text and runs extensible keyboard-driven workflows from one fast command bar.
+description: Launch anything from one fast command bar, then build keyboard workflows on top of it once launching stops being enough.
 bestFor: Keyboard-focused Mac users who want a mature, customizable automation layer above Spotlight.
 tagline: launcher and workflows
 tags: [launcher, automation, productivity, keyboard, customization]

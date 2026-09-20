@@ -1,6 +1,6 @@
 ---
 name: MiniBar
-description: Combines a compact menu-bar launcher for apps, sites, Shortcuts and AirDrop with lightweight hardware widgets and practical system controls.
+description: Launch apps and Shortcuts from a small visual menu bar panel that stops well short of being a command center.
 bestFor: People who want a small visual launcher without replacing Spotlight or adopting a full command center.
 tagline: launcher and widgets
 tags: [menubar, launcher, shortcuts, utility, monitoring]

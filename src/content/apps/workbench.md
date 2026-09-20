@@ -1,7 +1,7 @@
 ---
 name: Workbench
-description: Streams a remote Mac to nearby Apple devices with privacy curtain, watchdog recovery, picture-in-picture and iPad shortcut mapping.
-bestFor: Users running a headless Mac, remote workstation or agent box from another Apple device.
+description: Stream a remote Mac to a nearby iPad or iPhone, with a privacy curtain over the Mac's own screen while you work.
+bestFor: Anyone running a headless Mac, agent box included, from another Apple device.
 tagline: stream to Apple devices
 tags: [remote, ios, productivity, utility]
 categories: [mac-utilities-customization, productivity-workflow]

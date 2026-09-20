@@ -1,6 +1,6 @@
 ---
 name: Chimlo
-description: Tracks Codex and Claude Code sessions from the MacBook notch, including status, questions, approvals and provider usage.
+description: Track Codex and Claude Code sessions from the MacBook notch, and see the moment one stops to ask you a question.
 bestFor: Developers supervising several coding agents who need waiting sessions surfaced immediately.
 tagline: notch agent tracker
 tags: [ai, developer, utility, open-source]

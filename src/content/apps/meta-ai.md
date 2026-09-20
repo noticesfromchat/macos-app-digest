@@ -1,6 +1,6 @@
 ---
 name: Meta AI
-description: Brings Meta's assistant to a native Mac shell with quick invocation, system-wide dictation, window context, media generation and scheduled tasks.
+description: Bring Meta's assistant to a native Mac app you can call up anywhere, and that can see the window you are working in.
 bestFor: People already using Meta AI who want faster access and Mac-specific context features.
 tagline: native assistant shell
 tags: [ai, productivity, automation, dictation]

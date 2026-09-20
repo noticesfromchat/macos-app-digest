@@ -1,6 +1,6 @@
 ---
 name: Hyperduck
-description: Sends links from iPhone, iPad and Vision Pro to a chosen Mac, including offline delivery and Shortcuts-triggered handoffs.
+description: Send a link from your iPhone or iPad to a chosen Mac and find it open when you sit down, even if the Mac was offline when you sent it.
 bestFor: Cross-device workers who collect mobile links and want them opened automatically on their Mac.
 tagline: links from iPhone
 tags: [automation, productivity, ios, utility]

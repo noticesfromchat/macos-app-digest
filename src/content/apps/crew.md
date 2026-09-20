@@ -1,6 +1,6 @@
 ---
 name: Crew
-description: Represents Claude Code chats and subagents as animated desktop creatures that surface activity, completion states and approval requests.
+description: Turn Claude Code chats and subagents into animated desktop creatures, so you can tell from the corner of your eye which one needs approval.
 bestFor: Developers supervising several Claude Code sessions who need peripheral status without repeatedly switching windows.
 tagline: agents as desktop pets
 tags: [ai, developer, agents, local, utility]

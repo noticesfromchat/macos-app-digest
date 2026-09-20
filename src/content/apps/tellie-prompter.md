@@ -1,6 +1,6 @@
 ---
 name: Tellie Prompter
-description: Turns scripts and talking points into a Mac teleprompter that tracks delivery, pauses and unsaid lines during recording.
+description: Read from a Mac teleprompter that follows your pace and notices the lines you skipped.
 bestFor: Video creators and presenters who need a calmer way to stay on script while recording.
 tagline: teleprompter
 tags: [writing, dictation, video, productivity]

@@ -1,7 +1,7 @@
 ---
 name: Pastebot 3
-description: A rebuilt clipboard manager with smart collections, sequential paste stacks, transform filters, Shortcuts actions, a CLI and MCP support.
-bestFor: Automation-heavy workflows that move, transform and reuse large volumes of copied material.
+description: Keep a clipboard history you can transform and paste in sequence, now scriptable from Shortcuts and the command line.
+bestFor: Anyone who copies large volumes of text and reshapes it before pasting.
 tagline: clipboard manager
 tags: [clipboard, automation, productivity, utility]
 categories: [writing-notes-reading, automation-shortcuts, productivity-workflow, mac-utilities-customization]

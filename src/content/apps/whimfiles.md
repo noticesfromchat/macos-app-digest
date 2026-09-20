@@ -1,6 +1,6 @@
 ---
 name: WhimFiles
-description: A lightweight native file manager with dual panes, fuzzy navigation, persistent filters, tabs, quick previews and batch renaming.
+description: Move through files fast with dual panes and fuzzy navigation, in a native file manager that stays lightweight.
 bestFor: Finder power users who want faster local file triage without adopting an expansive cloud or transfer client.
 tagline: dual-pane file manager
 tags: [files, finder, productivity, utility]

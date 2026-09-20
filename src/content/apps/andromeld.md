@@ -1,6 +1,6 @@
 ---
 name: AndroMeld
-description: Opens Android apps in Mac windows while bridging phone files, notifications, clipboard content and controls over a local USB or Wi-Fi connection.
+description: Open Android apps in Mac windows and pull the phone's files and notifications across over USB or Wi-Fi, with no cloud relay in between.
 bestFor: Mac users with Android phones who want continuity features without an emulator or cloud relay.
 tagline: Android apps in windows
 tags: [utility, remote, files, productivity, privacy]

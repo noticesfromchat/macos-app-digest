@@ -1,7 +1,7 @@
 ---
 name: Snapdown
-description: Captures any region of a Mac screen as structured Markdown, preserving headings, lists and tables while processing everything locally.
-bestFor: Writers, researchers and developers who regularly convert visual references into editable structured notes.
+description: Capture any region of the screen as Markdown that keeps its headings and tables, processed entirely on your Mac.
+bestFor: Anyone who regularly retypes text from screenshots into their notes.
 tagline: screen to Markdown
 tags: [markdown, capture, ai, local, productivity]
 categories: [writing-notes-reading, media-capture, ai-agents, productivity-workflow]

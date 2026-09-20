@@ -1,6 +1,6 @@
 ---
 name: Hazel
-description: Watches folders and applies rules that rename, sort, tag, archive, upload or delete files while also managing Trash and app leftovers.
+description: Set rules on a folder once and let them file whatever lands there from then on, so Downloads stops being a pile.
 bestFor: File-heavy workflows that benefit from dependable background automation instead of repeated Finder cleanup.
 tagline: folder automation rules
 tags: [automation, files, finder, productivity, utility]

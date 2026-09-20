@@ -1,6 +1,6 @@
 ---
 name: MultiDock 2
-description: Adds configurable extra docks for apps, files and folders so frequently used workspaces stay close without crowding the system Dock.
+description: Add extra docks for each project so the files you need sit close without crowding the system Dock.
 bestFor: Mac users who organize projects visually and want several launch areas for different contexts.
 tagline: extra docks
 tags: [launcher, files, productivity, customization]

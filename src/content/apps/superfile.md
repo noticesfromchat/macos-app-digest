@@ -1,6 +1,6 @@
 ---
 name: Superfile
-description: A fast terminal file manager with keyboard navigation, multiple panels, previews, bulk operations, themes and plugin support.
+description: Manage files in the terminal with multiple panels and previews, including over a remote shell.
 bestFor: Developers who want visual file management without leaving a terminal or remote shell.
 tagline: terminal file manager
 tags: [files, terminal, open-source, developer]

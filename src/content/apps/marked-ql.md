@@ -1,6 +1,6 @@
 ---
 name: Marked QL
-description: A Quick Look extension that renders Markdown with math, Mermaid diagrams, syntax highlighting, task lists and custom preview styles.
+description: Press space on a Markdown file in Finder and see it rendered properly, Mermaid diagrams and math included.
 bestFor: Developers and writers who inspect complex Markdown files repeatedly from Finder or Terminal.
 tagline: Markdown Quick Look
 tags: [markdown, finder, quicklook, developer]

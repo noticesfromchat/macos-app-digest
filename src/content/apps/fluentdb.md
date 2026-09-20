@@ -1,6 +1,6 @@
 ---
 name: FluentDB
-description: A native database client with guarded AI query generation, schema-aware editing, fast data grids, dashboards and user-supplied model support.
+description: Query a database in a native client that drafts the SQL for you and lets you check it before it runs, on your own model if you prefer.
 bestFor: Developers and analysts who want assisted SQL without surrendering database control or model choice.
 tagline: native database client
 tags: [database, ai, developer, local]
