@@ -5,6 +5,7 @@ bestFor: Mac users who open archives often enough to have outgrown Archive Utili
 tagline: archive manager
 tags: [files, utility, automation, finder, quicklook]
 categories: [files-research-documents, mac-utilities-customization, automation-shortcuts]
+collections: [hidden-gems]
 source: r/macapps community discussion and official BetterZip 6 release information
 homepage: https://macitbetter.com/
 icon: /app-icons/betterzip.png

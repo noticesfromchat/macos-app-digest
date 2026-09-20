@@ -5,6 +5,7 @@ bestFor: Writers who want local grammar cleanup without sending text to a cloud 
 tagline: on-device writing fixes
 tags: [writing, ai, local, keyboard]
 categories: [writing-notes-reading, ai-agents, mac-utilities-customization]
+collections: [hidden-gems]
 source: Product Hunt, canonical repository and official Tidy about page
 homepage: https://greene-squares.github.io/tidy-releases/about.html
 icon: /app-icons/tidy.png

@@ -5,6 +5,7 @@ bestFor: Desk-bound Mac users whose long days end with dry eyes and a stiff neck
 tagline: eye break reminders
 tags: [health, productivity, utility, menubar]
 categories: [productivity-workflow, mac-utilities-customization]
+collections: [hidden-gems]
 source: Issue 11 selection list and official homepage
 homepage: https://lookaway.com/
 icon: /app-icons/lookaway.png

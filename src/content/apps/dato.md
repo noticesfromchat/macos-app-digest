@@ -5,6 +5,7 @@ bestFor: Managers who live in back-to-back calls and would rather not hunt for t
 tagline: menu bar calendar
 tags: [calendar, menubar, productivity]
 categories: [productivity-workflow, mac-utilities-customization]
+collections: [community-favorites]
 source: Issue 11 selection list and official homepage
 homepage: https://sindresorhus.com/dato
 icon: /app-icons/dato.png

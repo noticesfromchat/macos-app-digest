@@ -5,6 +5,7 @@ bestFor: Gmail users who have given Apple Mail a fair try twice now and went bac
 tagline: native Gmail client
 tags: [messages, productivity, privacy]
 categories: [writing-notes-reading, productivity-workflow, mac-utilities-customization]
+collections: [community-favorites]
 source: Issue 11 selection list and official homepage
 homepage: https://mimestream.com/
 icon: /app-icons/mimestream.png

@@ -5,6 +5,7 @@ bestFor: Mac users switching to a private daily browser who do not fancy rebuild
 tagline: private browser
 tags: [privacy, productivity, utility]
 categories: [mac-utilities-customization, productivity-workflow]
+collections: [community-favorites]
 source: Kagi Orion official homepage
 homepage: https://orionbrowser.com/
 icon: /app-icons/orion-browser.png
