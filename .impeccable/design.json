@@ -614,6 +614,11 @@
         "section": "motion"
       },
       {
+        "name": "The Social Overlay Rule",
+        "body": "App, category, collection and tag social cards share a white editorial cover: brand at top, 112px icon left of the serif name with a -9px optical shift, then a 36px description at a 940px measure. Titles step through 100px, 76px and 58px without truncation. Keep the lower edge clear for X's destination overlay: no footer, domain, wave or Best For section. Taxonomy counts sit top right. Phosphor Regular category and collection marks come from categories.ts; explicit tag pairings come from tag-icons.ts and validation checks coverage and assets.",
+        "section": "components"
+      },
+      {
         "name": "The Borrowed Type Rule",
         "body": "A social card is the only surface that cannot use the site's own typeface: Iowan Old Style is a macOS system font with no file to embed. Vollkorn stands in, as the closest embeddable face measured against Iowan (x-height over cap +0.010, the width of Hamburgefonstiv within 0.1% at 100px) and the only close match shipping the 500 and 600 weights this scale uses; Inter stands in for -apple-system. Both are SIL OFL 1.1 and carry their licence in the package, which is the standing condition for any font entering this repository. Nothing else on the site may substitute a typeface, and a card never truncates a title: the type steps down the scale instead.",
         "section": "components"

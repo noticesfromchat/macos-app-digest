@@ -1338,8 +1338,8 @@ is no shared fallback image any more. `harbor-hero-clean.webp`, a 1200x800 photo
 all 175 pages pointed at, was deleted on 2026-09-03: it had stopped being the homepage hero
 at the redesign and was the wrong shape for a social card, so a scraper cropped roughly 85px
 off the top and bottom of it. The layout's default is a generated card like any other. They are generated rather than authored so a Friday issue arrives
-with its own card and no separate asset step to forget. The composition is the page's own
-opening, in the page's own tokens: the buoy and wordmark, the eyebrow, the title, the buoy's
+with its own card and no separate asset step to forget. Issues and general pages keep the
+page-opening composition, in the page's own tokens: the buoy and wordmark, the eyebrow, the title, the buoy's
 wave in Beacon Blue, then the dek at the house measure over a hairline footer. The mark
 geometry comes from `src/data/mark.ts`, so a card and the site's header cannot drift.
 
@@ -1357,14 +1357,21 @@ archive critique asked for on the page itself. The titles and deks come from
 `src/data/lanes.ts`, which the lane pages themselves also read, so a card cannot name a lane
 something other than its own heading.
 
-**An app card is the detail page's identity block:** the icon on its plate, the name, what
-the app does, then who it is for. It carries no wave rule, because the icon is already the
-anchor and the Best For eyebrow already divides; a third device would be decoration on a
-card that has to read at thumbnail size. The mark is drawn at 112px rather than the ~160 the
-canvas would take, because app icons top out at 128px source and upscaling them would undo
-the payload work that put them there for a blurrier result. An icon-less app falls back to
-its first category's Phosphor mark on the same stable colour its cards use, read out of the
-`@phosphor-icons/core` package at build time rather than copied into this repository.
+**The Social Overlay Rule.** App, category, collection and tag cards share an editorial
+cover: the buoy and wordmark at the top, a 112px icon to the left of the large serif
+name, then the description at 36px. Keep the bottom clear for X's destination overlay;
+these cards have no footer, domain, wave rule or Best For section. The icon moves 9px
+up from its layout center to align optically with Vollkorn's visible letters. Titles
+step from 100px to 76px to 58px as their length increases. The description uses a 940px
+measure and may trim at 175 characters. Category, collection and tag cards retain their
+page type and live app count at the top right of the brand row.
+
+App icons stay at 112px because their source assets top out at 128px. Icon-less apps
+retain the same category mark and stable background colour as the site. Category and
+collection icons come from `src/data/categories.ts`; the editor-approved tag pairings
+live in `src/data/tag-icons.ts`. Taxonomy marks are unbacked, Deep Sea Phosphor Regular
+icons, read from `@phosphor-icons/core` at build time. Every tag in use must have an
+explicit pairing; content validation checks coverage and icon-file availability.
 
 **Titles are never truncated; the type gives way instead.** A longer title steps down the
 scale and takes a shorter dek with it. Deks may be trimmed at a word boundary, because a dek

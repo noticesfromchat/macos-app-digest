@@ -1,14 +1,23 @@
-import { readdir, readFile } from 'node:fs/promises';
+import { access, readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 import { parse } from 'yaml';
 import { categories, categorySlugs, getCategoriesForTags } from '../src/data/categories.ts';
+import { tagIcons } from '../src/data/tag-icons.ts';
 
 const root = process.cwd();
 const appsDir = path.join(root, 'src/content/apps');
 const issuesDir = path.join(root, 'src/content/issues');
 const errors = [];
 const validCategorySlugs = new Set(categorySlugs);
+
+for (const [tag, icon] of Object.entries(tagIcons)) {
+  try {
+    await access(path.join(root, 'node_modules/@phosphor-icons/core/assets/regular', `${icon}.svg`));
+  } catch {
+    errors.push(`Tag "${tag}" references unavailable Phosphor icon "${icon}"`);
+  }
+}
 
 /* One tag, one category. `categoryTagMap` is built by flattening every category's
    `tags` array into a Map, so a tag listed under two categories does not error or
@@ -122,6 +131,11 @@ for (const filename of appFiles) {
   }
 
   const expectedCategories = Array.isArray(data.tags) ? getCategoriesForTags(data.tags) : [];
+  for (const tag of Array.isArray(data.tags) ? data.tags : []) {
+    if (!Object.hasOwn(tagIcons, tag)) {
+      errors.push(`${relative}: tag "${tag}" needs an explicit icon in src/data/tag-icons.ts`);
+    }
+  }
 
   if (!Array.isArray(data.categories)) {
     errors.push(`${relative}: categories must contain 1-${categorySlugs.length} entries`);
