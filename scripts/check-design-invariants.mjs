@@ -190,6 +190,27 @@ for (const [file, src] of allCss) {
   }
 }
 
+// The site's serif and generated cards must agree, and redistributed font files
+// must retain the exact copyright and licence shipped by their package.
+const displayFamily = global.match(/--display:\s*"([^"]+)"/)?.[1];
+const cardFamily = read('src/data/og-card.ts').match(/const SERIF = '([^']+)'/)?.[1];
+if (!displayFamily || displayFamily !== cardFamily) {
+  fail('shared-serif', 'The site display font and social-card serif must match');
+}
+const baseLayout = read('src/layouts/BaseLayout.astro');
+for (const weight of [400, 500, 600]) {
+  if (!baseLayout.includes(`@fontsource/vollkorn/latin-${weight}.css`)) {
+    fail('shared-serif', `BaseLayout is missing the Vollkorn ${weight} face`);
+  }
+}
+try {
+  if (read('public/fonts/vollkorn-LICENSE.txt') !== read('node_modules/@fontsource/vollkorn/LICENSE')) {
+    fail('font-license', 'The deployed Vollkorn licence differs from its installed package');
+  }
+} catch {
+  fail('font-license', 'The deployed Vollkorn licence or installed package licence is missing');
+}
+
 if (failures.length) {
   console.error('Design invariant check failed:\n');
   for (const { check, detail } of failures) console.error(`  [${check}] ${detail}`);

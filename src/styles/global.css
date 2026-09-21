@@ -95,7 +95,7 @@
   --hero-space-bottom: var(--space-4);
   --footer-space: var(--space-6);
   --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
-  --display: "Iowan Old Style", "Baskerville", "Times New Roman", serif;
+  --display: "Vollkorn", "Iowan Old Style", "Baskerville", "Times New Roman", serif;
   --type-label: .75rem;
   --type-meta: .875rem;
   --type-subhead: clamp(1.375rem, 2.2vw, 1.75rem);

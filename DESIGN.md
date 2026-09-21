@@ -37,31 +37,31 @@ typography:
     lineHeight: 1.35
     letterSpacing: "0"
   display:
-    fontFamily: 'Iowan Old Style, Baskerville, "Times New Roman", serif'
+    fontFamily: 'Vollkorn, Iowan Old Style, Baskerville, "Times New Roman", serif'
     fontSize: "clamp(4rem, 8vw, 6rem)"
     fontWeight: 500
     lineHeight: 0.9
     letterSpacing: "0"
   headline:
-    fontFamily: 'Iowan Old Style, Baskerville, "Times New Roman", serif'
+    fontFamily: 'Vollkorn, Iowan Old Style, Baskerville, "Times New Roman", serif'
     fontSize: "clamp(3.25rem, 5.1vw, 4.25rem)"
     fontWeight: 500
     lineHeight: 0.96
     letterSpacing: "-0.035em"
   subhead:
-    fontFamily: 'Iowan Old Style, Baskerville, "Times New Roman", serif'
+    fontFamily: 'Vollkorn, Iowan Old Style, Baskerville, "Times New Roman", serif'
     fontSize: "clamp(1.9rem, 2.4vw, 2.35rem)"
     fontWeight: 600
     lineHeight: 1.1
     letterSpacing: "-0.02em"
   title:
-    fontFamily: 'Iowan Old Style, Baskerville, "Times New Roman", serif'
+    fontFamily: 'Vollkorn, Iowan Old Style, Baskerville, "Times New Roman", serif'
     fontSize: "1.4rem"
     fontWeight: 600
     lineHeight: 1.15
     letterSpacing: "-0.02em"
   sectionTitle:
-    fontFamily: 'Iowan Old Style, Baskerville, "Times New Roman", serif'
+    fontFamily: 'Vollkorn, Iowan Old Style, Baskerville, "Times New Roman", serif'
     fontSize: "clamp(2.2rem, 4vw, 3.8rem)"
     fontWeight: 500
     lineHeight: 1
@@ -91,13 +91,13 @@ typography:
     lineHeight: 1.45
     letterSpacing: ".02em"
   brand:
-    fontFamily: 'Iowan Old Style, Baskerville, "Times New Roman", serif'
+    fontFamily: 'Vollkorn, Iowan Old Style, Baskerville, "Times New Roman", serif'
     fontSize: "clamp(1.35rem, 2.45vw, 2rem)"
     fontWeight: 500
     lineHeight: 1
     letterSpacing: "0"
   displayAsset:
-    fontFamily: 'Iowan Old Style, Baskerville, "Times New Roman", serif'
+    fontFamily: 'Vollkorn, Iowan Old Style, Baskerville, "Times New Roman", serif'
     fontSize: "clamp(3.25rem, 5.1vw, 4.25rem)"
     fontWeight: 400
     lineHeight: 0.96
@@ -233,9 +233,11 @@ labels. Every mapping clears AA on each surface where it appears.
 
 ## Typography
 
-**Display Font:** Iowan Old Style, Baskerville, "Times New Roman", serif
+**Display Font:** Vollkorn, Iowan Old Style, Baskerville, "Times New Roman", serif
 **Body Font:** -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif
 **Label Font:** -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif
+
+Vollkorn replaced Iowan Old Style as the primary serif on 2026-09-20 after an editor-reviewed site preview. See The Shared Serif Rule for loading and licensing.
 
 The type system is split between a classic editorial serif for the headlines and a practical system sans for everything that carries utility, metadata, or navigation. The App Waypoint wordmark uses the same editorial serif as the headline system so the brand voice stays consistent.
 
@@ -1321,15 +1323,21 @@ renderer owns this palette for every card, including Open Graph and X previews.
 When the site's light-mode colours change, update these renderer tokens in the same
 pass; generated images do not inherit the site's CSS.
 
-**The Borrowed Type Rule.** A social card is the only surface that cannot use the site's own
-typeface. Iowan Old Style is a macOS system font with no file to embed, so a build-time
-renderer has nothing to load. Vollkorn stands in: it is the closest embeddable face measured
-against Iowan on the two things that decide whether a line breaks the same way, x-height over
-cap at +0.010 and the width of `Hamburgefonstiv` within 0.1% at 100px, and unlike the Charter
-derivatives it ships the 500 and 600 weights this scale uses. Inter stands in for
-`-apple-system`. Both are SIL OFL 1.1 and carry the licence in their package, which is the
-standing condition for any font entering this repository: the Philippine files were deleted in
-September 2026 for arriving without one. Nothing else on the site may substitute a typeface.
+**The Shared Serif Rule.** Vollkorn is the editorial serif on both the site and its
+social cards. The site self-hosts the Latin 400, 500, 600 and 700 normal weights through
+`@fontsource/vollkorn` imports in `BaseLayout.astro`, with `font-display: swap`. The 700
+face supports bold serif text such as archive links without synthetic bold. The shared
+`--display` token supplies headings, app names, search-result titles and the wordmark;
+Iowan Old Style, Baskerville and Times New Roman remain fallbacks only. Keep existing
+sizes, weights and line heights when changing the family. Social cards embed Vollkorn
+400, 500 and 600 from the same package; Inter substitutes for the site's system sans
+only in generated images.
+
+Both packages use SIL OFL 1.1 and include their licences. The deployed site also carries
+Vollkorn's copyright and licence at `/fonts/vollkorn-LICENSE.txt`, alongside the font
+files emitted by the build. Retain that notice when updating or redistributing the
+font. A new font must include its licence; the checker verifies the shared serif,
+its imported weights and the deployed licence against the installed package.
 
 Cards are 1200x630, drawn by `src/data/og-card.ts` and generated at build time by
 `src/pages/og/[slug].png.ts`, one for every URL in the sitemap: each issue, each app, each
@@ -1395,7 +1403,7 @@ is a standfirst and reads whole either way; a title is the editorial line itself
 - **Don't** use neutral gray on colored surfaces; derive secondary ink from the surface hue and give each reading role one semantic token.
 - **Don't** make chips, filters, or buttons feel like separate UI worlds.
 - **Don't** let the brand wordmark typography spread into body copy.
-- **Don't** add a font to this repository without its licence file. See The Borrowed Type Rule.
+- **Don't** add a font to this repository without its licence file. See The Shared Serif Rule.
 - **Don't** use em dashes or en dashes in public editorial copy.
 - **Don't** let the Editor's Pick accent leave that one card, or reach a link, control or state. It is light, not a second accent.
 - **Don't** hand-write an `iconAccent`. Generate it so every pick lands in the same lightness and chroma band.

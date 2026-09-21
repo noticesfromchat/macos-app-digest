@@ -6,11 +6,9 @@
  * same buoy geometry and the same editorial fields the pages already carry, so a
  * card cannot drift from the publication it represents.
  *
- * The type is not the site's own: Iowan Old Style is a macOS system font with no
- * file to embed. Vollkorn is the closest embeddable stand-in measured against it
- * (x-height/cap +0.010, "Hamburgefonstiv" within 0.1% at 100px) and, unlike the
- * Charter derivatives, it ships the 500 and 600 weights this type scale uses.
- * Both faces here are SIL OFL 1.1 and carry their licence in the package.
+ * Vollkorn is also the site's editorial serif, loaded from the same Fontsource
+ * package. Inter stands in for the site's system sans in generated images.
+ * Both faces are SIL OFL 1.1 and carry their licence in the package.
  */
 import { Resvg } from '@resvg/resvg-js';
 import { readFileSync } from 'node:fs';

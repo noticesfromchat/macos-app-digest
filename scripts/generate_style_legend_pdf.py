@@ -340,7 +340,7 @@ def page_typography(c: Canvas) -> None:
 
     draw_round_rect(c, MARGIN, 290, 342, 180, LIGHT_THEME.surface, LIGHT_THEME.line, 14)
     label(c, "Current stacks", MARGIN + 18, 442, LIGHT_THEME.accent)
-    para(c, "<b>Display:</b> Iowan Old Style, Baskerville, Times New Roman, serif", MARGIN + 18, 420, 300, FONTS["ui"], 10, LIGHT_THEME.text, 14)
+    para(c, "<b>Display:</b> Vollkorn (Iowan Old Style and system serif fallbacks)", MARGIN + 18, 420, 300, FONTS["ui"], 10, LIGHT_THEME.text, 14)
     para(c, "<b>UI/body:</b> -apple-system, BlinkMacSystemFont, SF Pro Text, Segoe UI, sans-serif", MARGIN + 18, 372, 300, FONTS["ui"], 10, LIGHT_THEME.text, 14)
     para(c, "<b>Mono:</b> ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas", MARGIN + 18, 318, 300, FONTS["ui"], 10, LIGHT_THEME.text, 14)
 
