@@ -769,11 +769,33 @@ const sortedApps = [...apps].sort((a, b) =>
     sortExplicit = allowedSorts.has(urlSort);
     selectedSort = sortExplicit ? urlSort : derivedSort();
 
+    /* The panel's max-height is the smaller of a ceiling the stylesheet chooses and the
+       room between the panel's own top and the fold. Only the second needs measuring:
+       it moves with the page's scroll position, so no CSS length can stand for it, and
+       the fixed cap it replaced clipped the reset row below the fold on a short phone.
+       The panel flexes inside whatever this sets, so the list absorbs the difference. */
+    const sizeFilterPanel = () => {
+      if (!filterPanel || filterPanel.hidden) return;
+      const room = window.innerHeight - filterPanel.getBoundingClientRect().top - 16;
+      /* A floor, so a trigger near the bottom of the viewport still opens something
+         readable rather than a sliver; below it the panel is allowed off the fold. */
+      filterPanel.style.setProperty('--filter-panel-room', `${Math.max(room, 240)}px`);
+    };
+
     let filterMenuRegistration: (typeof menus)[number] | undefined;
     if (filterMenu && filterTrigger && filterPanel) {
       filterMenuRegistration = registerMenu(filterMenu, filterTrigger, filterPanel, () => {
+        /* Sized before focus: focusing a row inside an unsized panel scrolls it. */
+        sizeFilterPanel();
         (filters.find((filter) => !filter.disabled) ?? filters[0])?.focus();
       });
+
+      /* Passive and guarded by `hidden`, so a closed panel costs a comparison. Scroll
+         counts as well as resize: the panel travels with the page, and scrolling up
+         moves its top down and takes the room away again. */
+      const remeasure = () => sizeFilterPanel();
+      window.addEventListener('resize', remeasure, { passive: true });
+      window.addEventListener('scroll', remeasure, { passive: true });
     }
 
     if (sortMenu && sortTrigger && sortOptions) {
