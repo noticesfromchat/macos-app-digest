@@ -1,7 +1,7 @@
 ---
 name: Reeder
-description: A unified reading timeline for RSS feeds, articles, videos, podcasts and social posts with position syncing and iCloud-based organization.
-bestFor: People who follow recurring information streams and want one calm, thoughtfully designed place to read, listen and save links.
+description: Follow feeds and podcasts on one calm timeline that remembers your place across devices.
+bestFor: People who follow a lot of sources and want one calm place to catch up on them.
 tagline: unified reading timeline
 tags: [rss, reading, productivity]
 categories: [writing-notes-reading, productivity-workflow]

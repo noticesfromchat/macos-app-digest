@@ -1,6 +1,6 @@
 ---
 name: Radiant Canvas
-description: Generates artwork locally on the Mac with Apple Silicon acceleration, model controls and a privacy-first workflow for visual experiments.
+description: Generate artwork on your own Mac with Apple Silicon doing the work, so no prompt leaves the machine.
 bestFor: Creators who want local AI image generation without sending prompts and drafts to hosted services.
 tagline: local art generator
 tags: [ai, privacy, utility, local, images]

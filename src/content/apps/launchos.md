@@ -1,6 +1,6 @@
 ---
 name: LaunchOS
-description: Restores a Launchpad-style app grid to modern macOS with folders, pages, drag-and-drop organization, gestures, hot corners and keyboard activation.
+description: Bring back a Launchpad-style app grid with folders and pages, for anyone who went looking for Launchpad in current macOS.
 bestFor: Mac users who miss Launchpad but want a polished replacement that suits current macOS.
 tagline: Launchpad app grid
 tags: [launcher, productivity, customization, utility]

@@ -1,7 +1,7 @@
 :root {
   color-scheme: light;
-  --page: #e8ecf1;
-  --bg: #f4f6f9;
+  --page: #ffffff;
+  --bg: #ffffff;
   --surface: #ffffff;
   --surface-strong: #e3e8ee;
   --chip: #f0f3f7;
@@ -55,14 +55,15 @@
   --icon-sm: 16;
   --icon-md: 24;
   --icon-stroke: 1.5;
-  --header-bg: rgba(244, 246, 249, 0.96);
+  --header-bg: #ffffff;
   /* The scrim behind search, the nav menu and the subscribe dialog. It was a
      near-black navy in both themes, which is right on a dark page and turns a
      light one grey. Light gets Harbor Fog instead: the blur still obscures, the
      page stays bright, and the white panel keeps its shadow to separate on. */
   --scrim: rgba(232, 236, 241, 0.62);
-  --shadow: 0 18px 55px rgba(27, 35, 42, 0.08);
-  --shadow-hover: 0 26px 68px rgba(27, 35, 42, 0.11);
+  /* White cards on white paper: a faint edge and close, soft depth. */
+  --shadow: 0 0 0 1px rgba(9, 35, 66, 0.07), 0 2px 5px rgba(9, 35, 66, 0.025), 0 10px 28px rgba(9, 35, 66, 0.055);
+  --shadow-hover: 0 0 0 1px rgba(9, 35, 66, 0.08), 0 4px 8px rgba(9, 35, 66, 0.03), 0 16px 38px rgba(9, 35, 66, 0.075);
   /* A dialog lifts off a scrimmed page, so it needs more than card elevation. The
      vocabulary had no token for it and the three overlays each invented their own
      black. Light keeps the same ink the other shadows use rather than pure black. */
@@ -94,7 +95,7 @@
   --hero-space-bottom: var(--space-4);
   --footer-space: var(--space-6);
   --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
-  --display: "Iowan Old Style", "Baskerville", "Times New Roman", serif;
+  --display: "Vollkorn", "Iowan Old Style", "Baskerville", "Times New Roman", serif;
   --type-label: .75rem;
   --type-meta: .875rem;
   --type-subhead: clamp(1.375rem, 2.2vw, 1.75rem);
@@ -136,10 +137,10 @@
   --about-measure: 624px;
   --sea-ink: 9 35 66;
   --sea-alpha: .30;
-  --hero-fade-1: #e9edf2;
-  --hero-fade-2: #edf1f5;
-  --hero-fade-3: #f1f4f7;
-  --hero-fade-4: #f3f6f8;
+  --hero-fade-1: #ffffff;
+  --hero-fade-2: #ffffff;
+  --hero-fade-3: #ffffff;
+  --hero-fade-4: #ffffff;
 }
 
 :root[data-theme='dark'] {
@@ -159,7 +160,7 @@
   --accent: #57a2ff;
   --accent-hover: #81b8ff;
   --error: #ff8f86;
-  --header-bg: rgba(4, 20, 38, 0.96);
+  --header-bg: #041426;
   --scrim: rgba(2, 11, 24, 0.52);
   --shadow: 0 20px 60px rgba(0, 0, 0, 0.24);
   --shadow-hover: 0 28px 72px rgba(0, 0, 0, 0.42);
@@ -343,9 +344,9 @@ body {
 .site-footer-inner p { line-height: var(--leading-meta); }
 
 /* The footer's own nav links are left alone deliberately. Their line box is 21px, but
-   they are inline-flex with min-height 24px for WCAG 2.2 target size, so the rendered
-   box is 24px and already lands on the base. The line box is the wrong measure for a
-   flex item that carries its own height. */
+   they are inline-flex with a min-height set for target size rather than for type, 24px
+   in a row and 32px once the nav stacks, so the rendered box already lands on the base.
+   The line box is the wrong measure for a flex item that carries its own height. */
 .directory-count { line-height: var(--leading-label); }
 /* Grows to fill what the header and footer do not, and never shrinks below its content. */
 main { flex: 1 0 auto; }
@@ -396,8 +397,16 @@ a { color: inherit; }
   border-right: 0;
   border-left: 0;
   border-radius: 0;
+  /* Opaque, and no backdrop-filter. The band was 96% white over a 20px blur, which let
+     4% of the page bleed through: too little to read as glass, enough to smear whatever
+     was passing underneath into a soft wash that looked like an undrawn gradient — worst
+     over the Explore lanes, where it tracked the icons and labels on the left and faded
+     out on the right where only the counts sit. Each theme keeps its own hue and simply
+     loses the alpha, so the band renders the colour it already appeared to be with
+     nothing behind it, and scrolling loses a compositing pass. The scrims behind the
+     search, RSS and mobile-nav dialogs keep their blur: obscuring the page is what a
+     scrim is for. */
   background: var(--header-bg);
-  backdrop-filter: blur(20px) saturate(115%);
 }
 
 .mobile-nav-open .site-header { z-index: 95; }
@@ -2415,7 +2424,14 @@ h1.home-hero-number {
   background: var(--surface);
   box-shadow: var(--shadow);
 }
-.directory-select-options button {
+/* Scoped to `role="menu"`, which is what this rule always described: the sort menu's
+   item rows. The filter panel carries the same class for its shell but is a
+   `role="group"` of checkboxes, so an unscoped `button` descendant also caught its
+   Reset control — and beat `.filter-reset` on specificity, rendering a secondary action
+   full-width, left-aligned and at the row type size, with `.filter-actions`'
+   `justify-content: flex-end` left with nothing to justify. The class carries the
+   shell; the role carries the rows. */
+.directory-select-options[role="menu"] button {
   display: block;
   width: 100%;
   min-height: 40px;
@@ -2434,11 +2450,11 @@ h1.home-hero-number {
    attribute the markup and the script have always set, so the selected option had never
    taken this fill — the rule matched nothing. Found on 2026-09-07 by reading the rendered
    state rather than the stylesheet. */
-.directory-select-options button:hover,
-.directory-select-options button[aria-checked="true"] {
+.directory-select-options[role="menu"] button:hover,
+.directory-select-options[role="menu"] button[aria-checked="true"] {
   background: color-mix(in srgb, var(--accent) 12%, transparent);
 }
-.directory-select-options button:focus-visible {
+.directory-select-options[role="menu"] button:focus-visible {
   outline: var(--focus-ring);
   /* Inset, so the ring sits inside the panel rather than crossing its neighbours. */
   outline-offset: -2px;
@@ -2488,26 +2504,52 @@ h1.home-hero-number {
      the panel's right edge land exactly on Sort's. Snapping it to 16 breaks that
      alignment by 4px, so this is an exception to the base unit, not a miss. */
   width: calc(200% + 20px);
+  /* A column, so the list is the only thing that flexes and the actions row can never be
+     pushed past the fold. The height it flexes inside is the smaller of the room the
+     panel actually has and a ceiling chosen for the surface. */
+  display: flex;
+  flex-direction: column;
+  max-height: min(
+    var(--filter-panel-room, 100dvh),
+    var(--filter-panel-ceiling, 360px)
+  );
 }
+/* The room is the one term CSS cannot see: it depends on where the panel's own top
+   lands in the viewport, which is a scroll position, not a layout fact. The script
+   measures it on open and while open. `min(280px, 36vh)` was two numbers guessing at it
+   from opposite directions and agreeing with neither — on a 375x667 phone it sized a
+   307px panel into 298px of room and clipped the reset row 9px below the fold. */
 .filter-scroll {
-  max-height: min(280px, 42vh);
+  flex: 1 1 auto;
+  min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: var(--space-1) 0;
+  /* No top padding: the first group label's own 16px is the panel's opening inset, so
+     the interval above a heading is stated once. */
+  padding: 0 0 var(--space-1);
 }
-@media (max-width: 680px) {
-  .filter-scroll { max-height: min(280px, 36vh); }
-}
+.filter-actions { flex: none; }
 /* The rule divides one visible group from another, so the previous sibling has to be
    visible for it to apply. A `hidden` group is still a sibling to `+`, which left a rule
    drawn across the top of Tags whenever a filter narrowed Collections to nothing. */
 .filter-group:not([hidden]) + .filter-group {
-  margin-top: var(--space-1);
+  margin-top: var(--space-2);
   border-top: 1px solid var(--line);
 }
+/* Sticky, because the two groups run to 59 rows inside a window that shows five: scrolled
+   into Tags, every row looked the same as a collection row with no heading left on screen
+   to say otherwise. */
 .filter-group-label {
+  position: sticky;
+  top: 0;
+  z-index: 1;
   margin: 0;
-  padding: var(--space-1) 16px var(--space-1);
+  /* 16 above, 8 below. A heading belongs to the rows under it, and it was sitting on 8px
+     of each, equidistant between the group it names and the one it does not. With the
+     group rule's own 16px above, two groups now stand 32px apart around their hairline
+     while a heading binds to its list at 8: a four-to-one contrast where there was none. */
+  padding: var(--space-2) 16px var(--space-1);
+  background: var(--surface);
   color: var(--muted);
   font-size: var(--type-label);
   line-height: var(--leading-label);
@@ -2515,6 +2557,12 @@ h1.home-hero-number {
   letter-spacing: .1em;
   text-transform: uppercase;
 }
+/* Control Label, which this site delivers through `--type-meta` (see the note on the two
+   small roles). These rows were set at `--type-label`, the eyebrow size: the app names a
+   reader picks from were the smallest type in the panel, a step under the Filter trigger
+   that opens it, under the sort menu's own rows beside it, and under the Reset button that
+   discards the choice. 12px inside a 48px touch box is also what left the list reading as
+   air with text in it rather than as rows. */
 .filter-option {
   display: flex;
   min-height: 32px;
@@ -2522,9 +2570,9 @@ h1.home-hero-number {
   gap: var(--space-1) 8px;
   padding: 0 16px;
   color: var(--text);
-  font-size: var(--type-label);
-  line-height: var(--leading-label);
-  font-weight: 700;
+  font-size: var(--type-meta);
+  line-height: var(--leading-meta);
+  font-weight: 600;
   cursor: pointer;
 }
 .filter-option:hover,
@@ -2542,40 +2590,49 @@ h1.home-hero-number {
   min-width: 0;
   overflow-wrap: anywhere;
 }
+/* A count is metadata by the Surface Ink Rule, so it takes `--muted` rather than the
+   name's ink; it sits on the name's line box so the two read as one row. */
 .filter-option-count {
   flex: none;
-  color: var(--text);
-  font-size: .75rem;
+  color: var(--muted);
+  font-size: var(--type-meta);
+  line-height: var(--leading-meta);
   font-variant-numeric: tabular-nums;
 }
 .filter-actions {
   display: flex;
+  align-items: center;
   justify-content: flex-end;
   padding: var(--space-1) 16px;
   border-top: 1px solid var(--line);
 }
+/* A text link in the house idiom — accent, no underline, accent-hover — rather than a
+   bordered control. Undoing a selection is the minor action in this panel, and a boxed
+   button gave it more edge and weight than the checkboxes it discards. It keeps the
+   control-label type the rows use, so the panel's foot reads on the same voice as its
+   list. */
 .filter-reset {
-  min-height: 32px;
-  padding: 0 8px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-sm);
+  position: relative;
+  padding: 0;
+  border: 0;
   background: transparent;
-  color: var(--muted);
-  font: inherit;
-  font-size: .76rem;
-  font-weight: 700;
-  cursor: pointer;
-}
-.filter-reset:hover,
-.filter-reset:focus-visible {
-  border-color: color-mix(in srgb, var(--accent) 42%, var(--line));
   color: var(--accent);
+  font: inherit;
+  font-size: var(--type-meta);
+  line-height: var(--leading-meta);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 180ms ease;
 }
+.filter-reset:hover { color: var(--accent-hover); }
 /* Split out: the ring belongs to focus. It was firing on hover as well, which drew a
    keyboard indicator around a control the pointer was merely resting on. */
 .filter-reset:focus-visible {
   outline: var(--focus-ring);
   outline-offset: var(--focus-offset);
+  border-radius: var(--radius-sm);
+  color: var(--accent-hover);
 }
 /* The first-paint cap. The script removes the attribute and takes over with `hidden`, so
    this rule only ever governs the moment before the module runs, and the noscript block in
@@ -2797,6 +2854,10 @@ h1.home-hero-number {
   .directory-filter-bar {
     margin-top: 0;
   }
+  /* A phone has the vertical room a dropdown ceiling was withholding: the list is longer
+     here, not shorter, because the same options sit in a narrower column. The room term
+     still governs on a short phone, so this only lets a tall one show more. */
+  .directory-filter-panel { --filter-panel-ceiling: 520px; }
   .directory-search { gap: var(--space-1) 8px; padding: var(--space-1) 16px; }
   /* The magnifier is one size everywhere; this made it 24px on a phone. */
   .directory-query-input { font-size: 16px; }
@@ -2811,9 +2872,23 @@ h1.home-hero-number {
     height: 48px;
   }
   .collection-badge { min-height: 48px; }
-  .directory-select-options button,
-  .filter-option,
-  .filter-reset { min-height: 48px; }
+  .directory-select-options[role="menu"] button { min-height: 48px; }
+  /* 40, not 48. The same content — a mark, a label, a count — sits in a 32px row in the
+     Explore lanes directly above this panel on the same screen, so a 48px filter row put
+     two rhythms for one shape on one phone screen and read as the looser of the two.
+     The row is a full-width `label`, so its target is 40 x the panel's width, which is
+     comfortable well past the point where the box alone would not be; 40 is also the sort
+     menu's own base row, so the two menus in this toolbar agree. */
+  .filter-option { min-height: 40px; }
+  /* The Target Floor Rule again: the row takes the height and the link's own area grows
+     into it, so the text stays text. Bounded by the row on purpose — an unbounded
+     expansion would reach over the hairline into the last filter row's target. */
+  .filter-actions { min-height: 48px; }
+  .filter-reset::after {
+    content: '';
+    position: absolute;
+    inset: -14px -8px;
+  }
   /* The Target Floor Rule grows the area around a target that is too small rather than
      padding the target out, which is how the Editor's Pick mark already works. The chip
      stays 32px in both pointer worlds and expands through this layer, so the row reads

@@ -4,6 +4,9 @@ import PhosphorIcon from '../components/PhosphorIcon.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import { breadcrumbSchema, type Crumb } from '../data/breadcrumb';
 import { OG_SIZE, ogPath } from '../data/og';
+import '@fontsource/vollkorn/latin-400.css';
+import '@fontsource/vollkorn/latin-500.css';
+import '@fontsource/vollkorn/latin-600.css';
 import '../styles/global.css';
 import '../styles/search.css';
 
@@ -98,7 +101,7 @@ gtag('config', ${JSON.stringify(googleAnalyticsId)}, {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <meta name="robots" content="index, follow, max-image-preview:large" />
-    <meta name="theme-color" content="#e8ecf1" />
+    <meta name="theme-color" content="#ffffff" />
     <link rel="canonical" href={canonical} />
     <meta property="og:site_name" content="App Waypoint" />
     <meta property="og:type" content={type} />
@@ -126,16 +129,22 @@ gtag('config', ${JSON.stringify(googleAnalyticsId)}, {
          value, which is the honest default because dark is applied only by
          :root[data-theme='dark'] and so never applies without this script. Setting it
          here rather than with the toggle wiring at the end of the body is what keeps iOS
-         Safari from painting the status bar Harbor Fog above a dark page: that script
-         runs after the first paint, so the bar had already been drawn light. Both values
-         track --page in global.css. */
+         Safari from painting the status bar the wrong colour above a dark page: that
+         script runs after the first paint, so the bar had already been drawn light.
+
+         Both values track --header-bg, not --page. The browser's own chrome sits against
+         the sticky header, which is the element at the top of the page, so the header is
+         the colour it has to continue. The light value was Harbor Fog (#e8ecf1) until
+         2026-09-21, left behind when The Fog Rule turned the light page and header
+         white: iOS painted a grey bar above a white page and the seam read as a colour
+         change the site had not drawn. */
       (() => {
         const saved = localStorage.getItem('app-waypoint-theme');
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         const theme = saved || (prefersDark ? 'dark' : 'light');
         document.documentElement.dataset.theme = theme;
         const themeColor = document.querySelector('meta[name="theme-color"]');
-        if (themeColor) themeColor.setAttribute('content', theme === 'dark' ? '#091321' : '#e8ecf1');
+        if (themeColor) themeColor.setAttribute('content', theme === 'dark' ? '#041426' : '#ffffff');
       })();
     </script>
   </head>
@@ -330,7 +339,7 @@ gtag('config', ${JSON.stringify(googleAnalyticsId)}, {
           toggle.setAttribute('aria-label', label);
           toggle.setAttribute('title', label);
         }
-        if (themeColor) themeColor.setAttribute('content', dark ? '#091321' : '#e8ecf1');
+        if (themeColor) themeColor.setAttribute('content', dark ? '#041426' : '#ffffff');
         document.dispatchEvent(new CustomEvent('appwaypoint:themechange', { detail: { theme } }));
       };
 

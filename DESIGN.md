@@ -14,7 +14,7 @@ colors:
   line-water: "rgba(9, 35, 66, 0.2)"
   beacon-blue: "#0862d8"
   beacon-blue-hover: "#004caf"
-  header-fog: "rgba(244, 246, 249, 0.96)"
+  header-fog: "#ffffff"
   night-harbor: "#091321"
   abyss: "#020b18"
   midnight-surface: "#0b1c30"
@@ -26,7 +26,7 @@ colors:
   night-line: "rgba(217, 229, 240, 0.2)"
   buoy-blue: "#57a2ff"
   buoy-blue-hover: "#81b8ff"
-  night-header-fog: "rgba(4, 20, 38, 0.96)"
+  night-header-fog: "#041426"
   sea-ink-day: "9 35 66"
   sea-ink-night: "226 236 250"
 typography:
@@ -37,31 +37,31 @@ typography:
     lineHeight: 1.35
     letterSpacing: "0"
   display:
-    fontFamily: 'Iowan Old Style, Baskerville, "Times New Roman", serif'
+    fontFamily: 'Vollkorn, Iowan Old Style, Baskerville, "Times New Roman", serif'
     fontSize: "clamp(4rem, 8vw, 6rem)"
     fontWeight: 500
     lineHeight: 0.9
     letterSpacing: "0"
   headline:
-    fontFamily: 'Iowan Old Style, Baskerville, "Times New Roman", serif'
+    fontFamily: 'Vollkorn, Iowan Old Style, Baskerville, "Times New Roman", serif'
     fontSize: "clamp(3.25rem, 5.1vw, 4.25rem)"
     fontWeight: 500
     lineHeight: 0.96
     letterSpacing: "-0.035em"
   subhead:
-    fontFamily: 'Iowan Old Style, Baskerville, "Times New Roman", serif'
+    fontFamily: 'Vollkorn, Iowan Old Style, Baskerville, "Times New Roman", serif'
     fontSize: "clamp(1.9rem, 2.4vw, 2.35rem)"
     fontWeight: 600
     lineHeight: 1.1
     letterSpacing: "-0.02em"
   title:
-    fontFamily: 'Iowan Old Style, Baskerville, "Times New Roman", serif'
+    fontFamily: 'Vollkorn, Iowan Old Style, Baskerville, "Times New Roman", serif'
     fontSize: "1.4rem"
     fontWeight: 600
     lineHeight: 1.15
     letterSpacing: "-0.02em"
   sectionTitle:
-    fontFamily: 'Iowan Old Style, Baskerville, "Times New Roman", serif'
+    fontFamily: 'Vollkorn, Iowan Old Style, Baskerville, "Times New Roman", serif'
     fontSize: "clamp(2.2rem, 4vw, 3.8rem)"
     fontWeight: 500
     lineHeight: 1
@@ -91,13 +91,13 @@ typography:
     lineHeight: 1.45
     letterSpacing: ".02em"
   brand:
-    fontFamily: 'Iowan Old Style, Baskerville, "Times New Roman", serif'
+    fontFamily: 'Vollkorn, Iowan Old Style, Baskerville, "Times New Roman", serif'
     fontSize: "clamp(1.35rem, 2.45vw, 2rem)"
     fontWeight: 500
     lineHeight: 1
     letterSpacing: "0"
   displayAsset:
-    fontFamily: 'Iowan Old Style, Baskerville, "Times New Roman", serif'
+    fontFamily: 'Vollkorn, Iowan Old Style, Baskerville, "Times New Roman", serif'
     fontSize: "clamp(3.25rem, 5.1vw, 4.25rem)"
     fontWeight: 400
     lineHeight: 0.96
@@ -174,7 +174,7 @@ App Waypoint feels like a calm dock under overcast light: cool paper, deep-water
 The language prefers stable geometry, soft depth, and generous breathing room. Serif headlines carry the authority; the system sans supports the utility layers, controls, and metadata. The result is familiar and trustworthy, with enough atmosphere to feel considered but not styled for its own sake.
 
 **Key Characteristics:**
-- White paper on a cool fog-grey field, with navy ink.
+- White cards on a white page, with navy ink and soft cool edges.
 - Beacon blue reserved for actions and current states.
 - Serif headlines, system-sans utility.
 - Soft 10-18px radii and ambient shadows.
@@ -182,16 +182,16 @@ The language prefers stable geometry, soft depth, and generous breathing room. S
 
 ## Colors
 
-The palette is a two-mode harbor system: white paper on fog grey with navy ink by day, deep water and moon ink by night. The light-mode greys sit on Deep Sea's hue rather than on a neutral ramp, so the field reads as harbor weather instead of default UI grey. Blue is the only strong accent and stays carefully rationed.
+The palette is a two-mode harbor system: white paper with navy ink by day, deep water and moon ink by night. The page field is pure white. Supporting greys in chips, controls and overlay scrims stay on Deep Sea's hue. Blue is the only strong accent and stays carefully rationed.
 
 ### Primary
 - **Beacon Blue** (#0862d8): primary buttons, links, active states, and key affordances.
 - **Buoy Blue** (#57a2ff): the dark-theme accent and lighter emphasis layer.
 
 ### Neutral
-- **Harbor Fog** (#e8ecf1): the outer page field, a cool grey on the ink's own hue.
-- **Drift Mist** (#f4f6f9): header and footer atmosphere.
-- **Surf Foam** (#ffffff): the primary surface color for cards and panels. Foam is the brightest thing in the harbor, so the card surface is true white and every other light tone sits below it.
+- **Harbor Fog** (#e8ecf1): the cool grey used by the light overlay scrim.
+- **Drift Mist** (#f4f6f9): a supporting cool neutral; the header, hero and footer now use white.
+- **Surf Foam** (#ffffff): the page, hero, footer and primary surface color for cards and panels. Soft edge shadows separate white cards from the white page.
 - **Shell Strong** (#e3e8ee): the control fill — hover and focus feedback on icon buttons, nav items, search rows, and the filter count badge.
 - **Shell Quiet** (#f0f3f7): the chip fill, one step quieter than the control fill. Tag chips are metadata that should recede on a card, not controls asking to be pressed, so they sit at roughly half Shell Strong's distance from the card surface — the same step the night theme already gives them.
 - **Deep Sea** (#092443): the primary light-theme ink.
@@ -199,7 +199,7 @@ The palette is a two-mode harbor system: white paper on fog grey with navy ink b
 - **Harbor Body** (#40546a): light-theme reading copy below primary Deep Sea ink.
 - **Harbor Chip Ink** (#384d63): light-theme text carried by Shell Quiet chips.
 - **Line Water** (rgba(9, 35, 66, 0.2)): borders and separators.
-- **Header Fog** (rgba(244, 246, 249, 0.96)): the light sticky header.
+- **Header Fog** (#ffffff): the light sticky header, opaque since 2026-09-21.
 
 ### Night Shift
 - **Night Harbor** (#091321): the dark page field.
@@ -212,14 +212,14 @@ The palette is a two-mode harbor system: white paper on fog grey with navy ink b
 - **Moon Chip Ink** (#b0c0d2): dark-theme text carried by Midnight Surface Strong chips.
 - **Night Line** (rgba(217, 229, 240, 0.2)): borders and separators in dark mode.
 - **Buoy Blue Hover** (#81b8ff): the brighter dark-theme hover state.
-- **Night Header Fog** (rgba(4, 20, 38, 0.96)): the dark sticky header.
+- **Night Header Fog** (#041426): the dark sticky header, opaque since 2026-09-21.
 
 ### Atmosphere
 These are drawn, not printed: they exist only inside the homepage hero's canvas layers and never carry text, controls, or state.
 
 - **Sea Ink** (`9 35 66` by day, `226 236 250` at night): RGB triples rather than hex so the wave band and star field can vary alpha per line. They are Deep Sea and a pale moon tone, not new colours.
 
-**The Fog Rule.** Every light-mode neutral sits on Deep Sea's hue — OKLCH hue 253–258, the ink's own axis — at a chroma of 0.010 or less: Surf Foam 0.000, Drift Mist 0.005, Harbor Fog 0.008, Shell Strong 0.010, Shell Quiet 0.006. That is what keeps the field reading as harbor weather rather than default UI grey. A neutral off that axis, or any warm tone reintroduced into the light theme, breaks the day palette. The ink, the hairline, and the blue are shared with the old warm scheme and did not move.
+**The Fog Rule.** The light-mode page, hero and footer use pure white (`#ffffff`), and the sticky header uses the same white, opaque. Supporting chromatic neutrals stay on Deep Sea's hue, OKLCH 253–258, at a chroma of 0.010 or less. Harbor Fog remains the overlay scrim colour; it is not the page background. The header carried white at 96% over `backdrop-filter: blur(20px) saturate(115%)` until 2026-09-21. Four per cent is too little transmission to read as glass and enough to smear the page passing underneath into a wash that looked like a gradient nobody had drawn, strongest where the ink below it was densest. Each theme kept its hue and lost the alpha, so the band renders what it already appeared to be over an empty page. Blur survives where it obscures on purpose: the scrims behind the search, RSS and mobile-nav dialogs. The `theme-color` meta tracks the header for the same reason: iOS Safari paints its own chrome with it, that chrome sits against the sticky header, and the value was still Harbor Fog after the page and header went white, so a phone drew a grey bar above a white page. It is #ffffff by day and #041426 at night, set before first paint and again by the theme toggle. Keep chips and control fills cool, and do not reintroduce warm sand or cream. Dark-mode colours are unchanged.
 
 **The Beacon Rule.** Blue is reserved for actions, links, focus, and active states. It should not become page chrome or decorative noise. The palette carries no warm accent: a light wash behind the hero was tried and removed for drawing attention to itself rather than to the pick it sat behind.
 
@@ -233,9 +233,11 @@ labels. Every mapping clears AA on each surface where it appears.
 
 ## Typography
 
-**Display Font:** Iowan Old Style, Baskerville, "Times New Roman", serif
+**Display Font:** Vollkorn, Iowan Old Style, Baskerville, "Times New Roman", serif
 **Body Font:** -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif
 **Label Font:** -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif
+
+Vollkorn replaced Iowan Old Style as the primary serif on 2026-09-20 after an editor-reviewed site preview. See The Shared Serif Rule for loading and licensing.
 
 The type system is split between a classic editorial serif for the headlines and a practical system sans for everything that carries utility, metadata, or navigation. The App Waypoint wordmark uses the same editorial serif as the headline system so the brand voice stays consistent.
 
@@ -356,9 +358,10 @@ type grows out of it.
 Two kinds of text are exempt. Fluid display type sets its size with `clamp()` — the page
 title, section headings, the wordmark — so no single leading can sit on the base across the
 range; those keep their ratios. And an element that carries its own height is measured by
-its box, not its line box: the footer's nav links have a 21px line box inside a 24px
-`min-height` set for WCAG 2.2 target size, so the box already lands on the base and the
-line box inside it is the wrong thing to measure.
+its box, not its line box: the footer's nav links have a 21px line box inside a
+`min-height` set for target size rather than for type, 24px in a row and 32px stacked, so
+the box already lands on the base and the line box inside it is the wrong thing to
+measure.
 
 **The Radius Scale.** Three steps on the base, `--radius-sm` 8px, `--radius-md` 16px and
 `--radius-lg` 24px, with `--radius` aliasing the large one, plus the pill and the circle. A
@@ -435,7 +438,7 @@ not automatic behaviour.
 **What is on the grid, and what is not.** Field-aligned: the taxonomy rows, the directory
 toolbar including its search field and Filter panel, and the card grid. Deliberate editorial
 exceptions, within the same shell: the homepage hero, whose two columns are a .95/1.05 split
-because the pick card and the copy are not a card grid; the app-detail rail at a fixed 400px,
+because the pick card and the copy are not a card grid; the app-detail rail at a fixed 376px,
 sized from the tag sets it holds; and About's reading column, which is a measure decision
 rather than a grid one. Those three are exceptions because a page composed for reading is
 not a catalogue, not because the grid failed to reach them.
@@ -575,15 +578,15 @@ Prose everywhere runs to `--measure`, so the reading column is the same width in
 
 ## Elevation & Depth
 
-Depth is soft and ambient rather than structural. Surfaces stay flat at rest, then gain soft shadows, an inset accent ring, and subtle hover lift when they need separation. The sticky header and search overlay add atmosphere with blur and translucency, but the system never relies on hard offsets or gimmicky glow.
+Depth is soft and ambient rather than structural. White cards retain a faint cool edge and soft shading at rest; hover deepens the shadow and adds an inset accent ring without moving the card. The sticky header and search overlay add atmosphere with blur and translucency, but the system never relies on hard offsets or gimmicky glow.
 
 ### Shadow Vocabulary
-- **Ambient Card** (`box-shadow: 0 18px 55px rgba(27, 35, 42, 0.08)`): resting cards and surface containers.
-- **Hover Lift** (`box-shadow: 0 26px 68px rgba(27, 35, 42, 0.11)`): hovered cards and callout surfaces. The light-theme lift is deliberately shallow — a 1.4x step over the resting shadow rather than a new weight — because the white card already separates from the fog field on value alone.
+- **Ambient Card** (`box-shadow: 0 0 0 1px rgba(9, 35, 66, 0.07), 0 2px 5px rgba(9, 35, 66, 0.025), 0 10px 28px rgba(9, 35, 66, 0.055)`): resting cards and surface containers.
+- **Hover Lift** (`box-shadow: 0 0 0 1px rgba(9, 35, 66, 0.08), 0 4px 8px rgba(9, 35, 66, 0.03), 0 16px 38px rgba(9, 35, 66, 0.075)`): hovered cards and callout surfaces. The light-theme lift retains the faint edge and deepens the soft shading without moving the card.
 - **Night Ambient** (`box-shadow: 0 20px 60px rgba(0, 0, 0, 0.24)`): dark-theme resting surfaces.
 - **Night Hover** (`box-shadow: 0 28px 72px rgba(0, 0, 0, 0.42)`): dark-theme hover elevation.
 
-**The Soft Hull Rule.** Surfaces lift with a soft shadow and an inset ring, not with hard edges or dramatic offsets. The lift settles rather than snaps: cards cross to their hover state over 320ms on `cubic-bezier(.16, 1, .3, 1)`, an exponential ease-out. The header wordmark used to fade in on the same curve at 520ms; that wordmark was removed on 2026-09-06 and the curve is now stated by the cards alone.
+**The Soft Hull Rule.** White cards separate from the white page through a faint 1px cool edge in the shared shadow, close contact shading and soft ambient depth. Hover adds the existing inset accent ring without changing layout. Dark-mode surfaces and shadows remain unchanged. The lift settles rather than snaps: cards cross to their hover state over 320ms on `cubic-bezier(.16, 1, .3, 1)`, an exponential ease-out. The header wordmark used to fade in on the same curve at 520ms; that wordmark was removed on 2026-09-06 and the curve is now stated by the cards alone.
 
 ## Shapes
 
@@ -710,7 +713,10 @@ have a 48px minimum height with horizontal padding of 24px and no vertical paddi
 directory toolbar controls and collection badge rows are also 48px. Sort menu options
 are 40px, rising to 48px on coarse pointers. Tags, active-filter chips, category rows,
 filter options and reset controls use 32px; filter options and reset controls rise to
-48px on coarse pointers. Mobile directory search and sort controls use 56px. Active-filter
+48px on coarse pointers. Footer nav links are 24px in a row and rise to 48px on a coarse
+pointer, but the stacked footer nav below 680px is a 32px row instead, matching the
+Explore menu it repeats: the same four destinations were reading at two tempos depending
+on which page carried them. Mobile directory search and sort controls use 56px. Active-filter
 chips retain their visible height and expand their hit area through a pseudo-element.
 Standalone small targets have a 24px floor; links inside sentences remain inline.
 
@@ -725,8 +731,8 @@ above; it is not a recipe for new controls.
 
 ### Collection Badges
 The collection badge on an app detail page is a link to a curated collection, and it is the rarest fact on that page: six of a hundred apps carry one. It is an honour marker, not a chip. It was a 38px outlined pill sitting above the primary button, where it read as a second, weaker control; it now opens the detail rail.
-- **Style:** the collection's mark beside its name in ink at Metadata weight 700. Built exactly like a category row: no container, no ring, no fill, and the glyph simply inherits the row's colour and turns blue with it on hover. A ring around the mark made the mark the loud thing rather than the honour.
-- **Rank:** first item in the rail, above Categories and Tags. Rank comes from position and from the label sitting in ink at weight 700 where a category label sits muted at 600. The rows use the same 32px rhythm as category rows so the spacing inside the rail stays even. Never from a colour of its own.
+- **Style:** the collection's mark beside its name, set exactly like a category row and not merely built like one: muted at Metadata weight 600, no container, no ring, no fill, and the glyph simply inherits the row's colour and turns blue with it on hover. A ring around the mark made the mark the loud thing rather than the honour.
+- **Rank:** first item in the rail, above Categories and Tags, and that position is now the whole of it. The label carried ink at weight 700 against a category's muted 600 until 2026-09-11. Two surfaces show both groups as one list, the rail and the Explore menu, and in a list that contrast stopped saying "this one outranks" and started saying "this is a different kind of row". The eyebrow and the order say it instead, which is what names every other group in the rail. Never a colour of its own.
 - **Named, like its neighbours.** The group carries a `Collections` eyebrow and 18px of clear space beneath it. It was the only unlabelled group in the rail, which is why it read as orphaned: every other group on the site is named by an eyebrow, and this one had opted out of the house's own strongest device. Setting the names in the display serif at Title was tried for the same reason and rejected; the rail keeps one voice.
 - **Marks:** 24px (`--icon-md`) in the same 32px icon column as category marks. The shared glyph rule compensates for rendered size where stroked icons are used; Phosphor collection marks render as filled paths at the same glyph size.
 - **Separation:** space alone divides it from the taxonomy below. A rule there reads as a container seam and competes with the thing it is meant to set apart.
@@ -740,7 +746,7 @@ Tag chips are compact chips rather than buttons. They read as metadata first.
 ### Cards
 Cards are the primary container language for apps, readings, and archive entries. Apparatus and secondary matter are set under a hairline instead, so a card always means a thing worth looking at rather than a thing worth reading past. An app card carries three regions and nothing else: the summary, the best-for line, and the tags. Its single app destination is the generated detail page; the title link and stretched pointer overlay go to the same internal URL, while the official homepage lives on the detail page. It used to end with a source credit; that was provenance for the editor rather than information for the reader, and removing it took a whole region off every card.
 - **Corner Style:** `--radius` at 24px, the same as the card's inset.
-- **Background:** the surface color — white by day — with a soft shadow and no border.
+- **Background:** the surface color, white by day, with a faint shadow-drawn edge and soft shading; no layout border.
 - **Internal Padding:** 24px, which is also the card's corner radius.
 - **Summary Rhythm:** when an app icon is present, the description starts 24px below the
   icon-title row. The icon and title stay 16px apart inside that row.
@@ -749,11 +755,11 @@ An archive row is an app card in every respect that matters, and takes the same 
 and the same hover contract. It set `box-shadow: none` until 2026-09-05, which was correct
 while a border drew its edge and left it with no edge at all once borders went.
 
-**Cards carry no border.** The surface fill and the resting shadow already separate a card
-from the page; a hairline on top of both was a third signal saying the same thing. Adopted
-2026-09-05.
+**Cards carry no layout border.** On the white light-mode page, the shared shadow includes
+a faint 1px cool edge, a close contact shadow and soft ambient shading. This keeps cards
+legible without changing their dimensions. Dark mode retains its existing shadow treatment.
 
-The edge returns on hover, as an inset ring rather than a border. That is not a stylistic
+An accent edge appears on hover, as an inset ring rather than a border. That is not a stylistic
 preference: a border, even a transparent one held at rest, puts its 1px back into the
 card's row arithmetic, and at two of the three floors that 1px crosses a rounding step and
 costs 8px each — 16px of height on every card in the catalogue for an edge nobody sees
@@ -886,14 +892,18 @@ The primary `.button` is transparent at rest; its interaction tint arrives on ho
 keyboard focus. Describing it as filled at rest was an obsolete instruction, corrected
 on 2026-09-07 without changing the treatment.
 
-An **open** control stays lit. A dropdown trigger holds the accent, in its label and its
-chevron, for as long as its panel is showing, so the trigger and the menu it opened read as
-one object rather than two; it keeps a fill there as well, because a state that persists
-after the pointer has left cannot rely on a hover to carry it. Adopted 2026-09-06.
+**An open control is not a colour.** A dropdown trigger changes nothing but its chevron,
+which turns over to point at the panel it opened. It held the accent in its label and its
+chevron and carried a fill from 2026-09-06 to 2026-09-11, on the reasoning that a state
+outlasting the pointer cannot rely on a hover to carry it. The panel carries it: it is a
+large lit surface attached to the control, and with the chevron already turned the state
+was stated twice before the colour said it a third time. Colour also collided with the
+accent's one real job on that control, answering a pointer, which left an open menu
+looking permanently hovered. `aria-expanded` states it for anyone not reading the page.
 
 **The One Hover Rule.** Every card that leads somewhere shares one hover contract: rest at Ambient Card, move to Hover Lift and an inset ring of `color-mix(in srgb, var(--accent) 42%, var(--line))`, cross over 320ms on `cubic-bezier(.16, 1, .3, 1)`, and do it only under `(hover: hover) and (pointer: fine)`. App cards, feature cards, reading cards, archive rows, and category directory rows are all on it, the last two through `.archive-card`. A card that carries a category accent keeps that accent in its resting ring and gives it up on hover; nothing else about the contract changes per card type.
 
-Three things are deliberately outside it. The app-detail rail's category rows are links in a list rather than cards, so they answer the pointer with the accent over 180ms and take no lift; they were bordered cards until the rail replaced them. Cards that are containers rather than destinations — the explore utility and subscribe cards, which hold their own links and controls — stay flat, because a lift would promise a click the card does not accept.
+Three things are deliberately outside it. The app-detail rail's rows, category and collection alike, are links in a list rather than cards, so they answer the pointer with the accent over 180ms and take no lift; they were bordered cards until the rail replaced them. The Explore menu reuses those rows and keeps the colour response rather than the panel-row fill, which is argued for in the Explore Directory section above. Cards that are containers rather than destinations — the explore utility and subscribe cards, which hold their own links and controls — stay flat, because a lift would promise a click the card does not accept.
 
 ### Explore Directory
 
@@ -916,19 +926,54 @@ recommended. And the client renderer carried a hand-copied duplicate of `AppCard
 that had already drifted from it. Removing the shelves removed the renderer, and the
 renderer took both with it.
 
-- **Order:** categories, collections, then catalogue. The opening is one grouped
-  menu on the surface fill, with 32px insets and the shared radius. Each group has
-  an accent Label-scale heading with h2 semantics. Rows reuse the app detail rail's
-  sans-serif type and Phosphor marks: categories are muted at weight 600 and
-  collections use text ink at 700. Counts align at the right in muted tabular numerals;
-  their app unit remains available to screen readers.
-  Eight categories run alphabetically down three columns, then two below 1100px
-  and one below 680px. Collections use three columns, then one below 680px. Rows
-  have 32px minimum heights, 8px row gaps and 24px column gaps. Headings sit 8px
-  above their lists; groups are 16px apart. On mobile the panel inset is 24px.
-  The editor's September
-  11 mockups establish this grouped menu and detail-rail styling; descriptions stay
-  on category pages and tags in the directory filter.
+- **Order:** categories, collections, then catalogue. The opening is one grouped menu,
+  and it takes no surface of its own. An index is page structure rather than an object
+  placed on the page, and a card around it read as the first item in the directory below
+  rather than as the way into it; spacing does the separating, which is the argument that
+  took the hairlines off every other section here. It sits in a 24px boundary top and
+  bottom, held at `--space-3` rather than `--section-space`, which steps 24/32/40 and
+  would open this to 40 on a wide screen. The menu is passed through on the way to the
+  directory, not a section arguing for its own space, so it keeps the tightest step at
+  every width. That is a deliberate exception to the section ladder.
+
+  Each group has an accent Label-scale heading with h2 semantics, 8px above its list,
+  with 16px between the groups. Rows reuse the app detail rail's sans-serif type and
+  Phosphor marks, muted at weight 600. Collections are set exactly like categories: they
+  carried text ink at 700 until 2026-09-11, and in a list where both groups are visible
+  at once that contrast stopped reading as rank and started reading as two different
+  kinds of row. Rank comes from the eyebrow and the order.
+
+  **The menu sits on the card grid's own columns.** Three equal columns with a 16px gap
+  land on exactly the same edges as the twelve tracks below with each card spanning four,
+  provided both are measured across the full shell width. The gap is the load-bearing
+  part: at 24px the columns drifted +32, +13 and -5px against the three cards under them.
+  Rows take the card's 24px inset at both ends, so a row sits on the measure of the card
+  below it and the eyebrow hangs outside on the page margin.
+
+  Eight categories run alphabetically down three columns, then one below 920px.
+  Collections do the same. 920 is where `.grid > *` goes from span 4 to span 12 with
+  nothing in between, so a two-column taxonomy over a three-column card grid would be
+  misaligned by construction across that whole band. Rows are 32px on an 8px row gap in
+  three columns, and the gap closes in one column: the interval that sets a rhythm across
+  three short columns reads as slack down a single column of eleven rows. Stacked, the
+  pitch is the row.
+
+  **The count belongs to the name it counts.** In three columns it follows the name in
+  brackets, drawn with pseudo-elements rather than written into the markup so one
+  breakpoint can drop them. Nothing is right aligned there and the counts deliberately do
+  not form a column of their own. In one column the row runs the page width, so the count
+  goes to the far edge and the brackets come off: a number alone at the end of a full
+  width row is already read as that row's, the way a price is. The unit noun stays in the
+  screen reader copy at both widths.
+
+  **Hover here is colour, not fill.** These rows are the one named exception to the
+  panel-row fill in Colour is the hover language: the menu is a quiet index at the top of
+  the page, and a fill under every row the pointer crossed made it the loudest object on
+  a surface whose job is to be scanned. The focus ring insets to -2px so it does not
+  cross the row below.
+
+  The editor's September 11 and 12 direction establishes this menu; descriptions stay on
+  category pages and tags in the directory filter.
 - **The count is stated, once.** The directory's filter bar carries it and keeps it live as
   filters narrow. The hero carried it too until 2026-09-02, which meant the page opened by
   announcing a number and then restated it a screen later; the dek now describes what the
@@ -1171,7 +1216,11 @@ Search is a centered overlay over a frosted backdrop, with a bright, controlled 
 The detail page answers three questions in order: what is this, is it for me, and where do I get it. The masthead carries that path and the rail carries everything that files the app rather than describes it.
 - **Masthead:** the app's own icon and the page title form one lockup, the icon scaling from 56px to 80px against the title's cap height, with a corner of 25% of its own side. Then the dek, then Best For, then the single Homepage button. An app with no icon takes a category mark on the documented missing-icon colour, stable from the app ID so a card and its detail page always agree. Which category is the app's first by default, or whichever `iconCategory` names when the editor has directed otherwise.
 - **Opening gap:** the breadcrumb sits 16px above the icon/title lockup, matching the 16px step from that lockup to the dek, so the trail, the lockup and the dek run one even ladder. This was a scoped override for the taller lockup until 2026-09-09; it is now simply the site value under The One Page Title Rule, and the page carries no rule of its own for it.
-- **Rail:** a 400px column holding three labelled groups, Collections then Categories then Tags, each built the same way: an eyebrow, `--eyebrow-gap` beneath it, then its items at 2px. 24px separates the groups. Nothing is divided by a rule. It occupies what used to be empty space beside a 900px masthead on a 1160px page. The width is set by the tag chips: measured across all 102 apps a tag set needs 311px at the median and 399px at the 95th percentile, so 400px keeps 95% of the catalogue on a single line. The longest set needs 473px, and buying that last 2% would cost 60px of the prose column.
+- **Rail:** a 376px column holding three labelled groups, Collections then Categories then Tags, each built the same way: an eyebrow, `--eyebrow-gap` beneath it, then its items at 2px. 24px separates the groups. Nothing is divided by a rule, and nothing in it is indented: eyebrows, rows and tag chips all start on the column's own edge. An indent was tried on 2026-09-11, borrowing the Explore menu's hanging eyebrow, and read as a stagger rather than a hierarchy, because the rail is a single column of labels with nothing beside a row to make a second alignment mean anything. It occupies what used to be empty space beside a 900px masthead on a 1160px page.
+
+  **376px is one card.** The rail is right aligned in the shell, so its left edge is `shellRight - 376`, and a card's left edge is the same expression: the third card spans four of twelve tracks and ends at the shell. The two agree at every width without a breakpoint, whatever the fluid gap beside them is doing, which is why the number is a card width rather than a measured one.
+
+  It was 400px until 2026-09-11, set by the tag chips: measured across the catalogue a tag set needs 311px at the median and 399px at the 95th percentile, so 400px kept 95% on a single line, and the longest set needs 473px. Those 24px are the cost of the alignment and they are paid in tag wrapping rather than in the prose column, which does not move. Alfred, the widest set, wrapped before and still does; the five-tag sets nearest the old ceiling measure 334 and 336px and stay on one line.
 - **Taxonomy rank:** categories are the most generic fact an app carries and read at Metadata scale in muted ink, as 32px rows with their marks. They were 22.4px serif inside 80px bordered cards, which made the least meaningful metadata the largest thing on the page after the title. Tags stay chips at Label scale. Nothing here outranks the app's own name, dek or Best For.
 - **One axis:** every mark in the rail shares a centre and every label starts at the same x, because the badge and the category rows use the same 32px icon column and 8px gap. Their glyphs are both 24px.
 - **Related-app rhythm:** the gap from the related-app heading to the card grid is 24px, `--space-3`, the site value for a section header — see The Section Header Gap. The page carries no override of its own. `.section-heading`'s bottom margin and `.directory-grid`'s 16px top margin are adjacent siblings, so they collapse to the larger of the two rather than summing.
@@ -1268,15 +1317,27 @@ real signal rather than part of a standing count.
 
 ### Social Cards
 
-**The Borrowed Type Rule.** A social card is the only surface that cannot use the site's own
-typeface. Iowan Old Style is a macOS system font with no file to embed, so a build-time
-renderer has nothing to load. Vollkorn stands in: it is the closest embeddable face measured
-against Iowan on the two things that decide whether a line breaks the same way, x-height over
-cap at +0.010 and the width of `Hamburgefonstiv` within 0.1% at 100px, and unlike the Charter
-derivatives it ships the 500 and 600 weights this scale uses. Inter stands in for
-`-apple-system`. Both are SIL OFL 1.1 and carry the licence in their package, which is the
-standing condition for any font entering this repository: the Philippine files were deleted in
-September 2026 for arriving without one. Nothing else on the site may substitute a typeface.
+Social preview images use the current light-mode palette: a pure-white (`#ffffff`)
+background, Deep Sea ink and Beacon Blue accents. The shared `src/data/og-card.ts`
+renderer owns this palette for every card, including Open Graph and X previews.
+When the site's light-mode colours change, update these renderer tokens in the same
+pass; generated images do not inherit the site's CSS.
+
+**The Shared Serif Rule.** Vollkorn is the editorial serif on both the site and its
+social cards. The site self-hosts the Latin 400, 500, 600 and 700 normal weights through
+`@fontsource/vollkorn` imports in `BaseLayout.astro`, with `font-display: swap`. The 700
+face supports bold serif text such as archive links without synthetic bold. The shared
+`--display` token supplies headings, app names, search-result titles and the wordmark;
+Iowan Old Style, Baskerville and Times New Roman remain fallbacks only. Keep existing
+sizes, weights and line heights when changing the family. Social cards embed Vollkorn
+400, 500 and 600 from the same package; Inter substitutes for the site's system sans
+only in generated images.
+
+Both packages use SIL OFL 1.1 and include their licences. The deployed site also carries
+Vollkorn's copyright and licence at `/fonts/vollkorn-LICENSE.txt`, alongside the font
+files emitted by the build. Retain that notice when updating or redistributing the
+font. A new font must include its licence; the checker verifies the shared serif,
+its imported weights and the deployed licence against the installed package.
 
 Cards are 1200x630, drawn by `src/data/og-card.ts` and generated at build time by
 `src/pages/og/[slug].png.ts`, one for every URL in the sitemap: each issue, each app, each
@@ -1285,8 +1346,8 @@ is no shared fallback image any more. `harbor-hero-clean.webp`, a 1200x800 photo
 all 175 pages pointed at, was deleted on 2026-09-03: it had stopped being the homepage hero
 at the redesign and was the wrong shape for a social card, so a scraper cropped roughly 85px
 off the top and bottom of it. The layout's default is a generated card like any other. They are generated rather than authored so a Friday issue arrives
-with its own card and no separate asset step to forget. The composition is the page's own
-opening, in the page's own tokens: the buoy and wordmark, the eyebrow, the title, the buoy's
+with its own card and no separate asset step to forget. Issues and general pages keep the
+page-opening composition, in the page's own tokens: the buoy and wordmark, the eyebrow, the title, the buoy's
 wave in Beacon Blue, then the dek at the house measure over a hairline footer. The mark
 geometry comes from `src/data/mark.ts`, so a card and the site's header cannot drift.
 
@@ -1304,14 +1365,21 @@ archive critique asked for on the page itself. The titles and deks come from
 `src/data/lanes.ts`, which the lane pages themselves also read, so a card cannot name a lane
 something other than its own heading.
 
-**An app card is the detail page's identity block:** the icon on its plate, the name, what
-the app does, then who it is for. It carries no wave rule, because the icon is already the
-anchor and the Best For eyebrow already divides; a third device would be decoration on a
-card that has to read at thumbnail size. The mark is drawn at 112px rather than the ~160 the
-canvas would take, because app icons top out at 128px source and upscaling them would undo
-the payload work that put them there for a blurrier result. An icon-less app falls back to
-its first category's Phosphor mark on the same stable colour its cards use, read out of the
-`@phosphor-icons/core` package at build time rather than copied into this repository.
+**The Social Overlay Rule.** App, category, collection and tag cards share an editorial
+cover: the buoy and wordmark at the top, a 112px icon to the left of the large serif
+name, then the description at 36px. Keep the bottom clear for X's destination overlay;
+these cards have no footer, domain, wave rule or Best For section. The icon moves 9px
+up from its layout center to align optically with Vollkorn's visible letters. Titles
+step from 100px to 76px to 58px as their length increases. The description uses a 940px
+measure and may trim at 175 characters. Category, collection and tag cards retain their
+page type and live app count at the top right of the brand row.
+
+App icons stay at 112px because their source assets top out at 128px. Icon-less apps
+retain the same category mark and stable background colour as the site. Category and
+collection icons come from `src/data/categories.ts`; the editor-approved tag pairings
+live in `src/data/tag-icons.ts`. Taxonomy marks are unbacked, Deep Sea Phosphor Regular
+icons, read from `@phosphor-icons/core` at build time. Every tag in use must have an
+explicit pairing; content validation checks coverage and icon-file availability.
 
 **Titles are never truncated; the type gives way instead.** A longer title steps down the
 scale and takes a shorter dek with it. Deks may be trimmed at a word boundary, because a dek
@@ -1320,7 +1388,7 @@ is a standfirst and reads whole either way; a title is the editorial line itself
 ## Do's and Don'ts
 
 ### Do:
-- **Do** keep the fog-grey field, white paper, deep-sea text, and blue accent in a tight relationship.
+- **Do** keep the light-mode page white, cards softly defined, text deep-sea and blue reserved for actions.
 - **Do** assign prose, chip labels and metadata through `--body-text`, `--chip-text` and `--muted` by meaning rather than by page.
 - **Do** reuse the shared page shell so archive, tag, collection, about, and app pages line up.
 - **Do** keep shadows soft and ambient.
@@ -1335,7 +1403,7 @@ is a standfirst and reads whole either way; a title is the editorial line itself
 - **Don't** use neutral gray on colored surfaces; derive secondary ink from the surface hue and give each reading role one semantic token.
 - **Don't** make chips, filters, or buttons feel like separate UI worlds.
 - **Don't** let the brand wordmark typography spread into body copy.
-- **Don't** add a font to this repository without its licence file. See The Borrowed Type Rule.
+- **Don't** add a font to this repository without its licence file. See The Shared Serif Rule.
 - **Don't** use em dashes or en dashes in public editorial copy.
 - **Don't** let the Editor's Pick accent leave that one card, or reach a link, control or state. It is light, not a second accent.
 - **Don't** hand-write an `iconAccent`. Generate it so every pick lands in the same lightness and chroma band.

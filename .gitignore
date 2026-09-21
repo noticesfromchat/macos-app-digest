@@ -32,3 +32,16 @@ output/
 # Impeccable engine binaries. Platform-specific and ~12MB each; the launcher
 # fetches a checksum-verified copy into ~/.impeccable on demand.
 **/skills/impeccable/scripts/bin/
+
+# The local catalogue editor. It is a tool for editing this repository, not part of the
+# site: it never builds, never deploys, and binds only to 127.0.0.1. It stays in the
+# working tree and out of every commit, so it cannot reach a push or a preview.
+#
+# Ignored rather than deleted, which means `git clean -fdx` would remove it like any
+# other ignored file. Keep a copy outside the repository before running that.
+scripts/app-editor.mjs
+scripts/app-editor-lib.mjs
+scripts/app-editor.test.mjs
+scripts/taxonomy-editor-lib.mjs
+scripts/taxonomy-editor.test.mjs
+tools/app-editor/

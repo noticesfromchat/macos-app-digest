@@ -14,14 +14,13 @@ export type OgCard =
   /* The homepage takes the masthead itself: wordmark, water, tagline. */
   | { layout: 'brand'; dek: string }
   /* Issues and About open the way a page does, under an eyebrow. */
-  | { layout: 'page'; eyebrow: string; title: string; dek: string }
+  | { layout: 'page'; eyebrow: string; title: string; dek: string; icon?: string }
   /* An app page carries its own identity block: the icon on its plate, the name,
-     what it does, and who it is for. Every field is already in the app record. */
+     and what it does. Every field is already in the app record. */
   | {
       layout: 'app';
       name: string;
       description: string;
-      bestFor: string;
       icon: OgAppIcon;
     };
 

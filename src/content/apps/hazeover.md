@@ -1,6 +1,6 @@
 ---
 name: HazeOver
-description: Dims background windows automatically so the active app stays visually prominent without changing Spaces, desktops or window layouts.
+description: Dim every window except the one you are working in, without touching Spaces or your layout.
 bestFor: Mac users who want more focus while keeping several windows open on one screen.
 tagline: background window dimmer
 tags: [windows, productivity, utility, accessibility]

@@ -1,6 +1,6 @@
 ---
 name: Shortcuts Playground
-description: Federico Viticci's Claude Code and Codex plugin for generating, validating, signing and remixing Apple Shortcuts.
+description: Have Claude Code or Codex write an Apple Shortcut for you, then check and sign it, with a plugin from Federico Viticci.
 bestFor: Automation users who have ideas for Shortcuts but do not want to hand-build fragile action graphs from scratch.
 tagline: agent plugin
 tags: [automation, shortcuts, ai, open-source]

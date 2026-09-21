@@ -66,8 +66,8 @@ const { current = '' } = Astro.props;
   }
 
   /* A nav link is a target, not prose, so it carries one: 24px to clear WCAG 2.2's
-     minimum, and the 44px the design system already gives every control on a coarse
-     pointer. These were the text line box alone, 21px tall. */
+     minimum, raised on a coarse pointer below. These were the text line box alone,
+     21px tall. */
   .site-footer a,
   .site-footer nav button {
     display: inline-flex;
@@ -125,12 +125,21 @@ const { current = '' } = Astro.props;
       padding-bottom: var(--space-3);
     }
 
+    /* Stacked, the nav is the Explore menu's single column list and takes its rhythm
+       exactly: a 32px row against no gap, so the height of the target is the whole
+       interval. It ran 48px rows against an 8px gap, a 56px pitch for a 21px line, which
+       made the same list of destinations read at two different tempos depending on which
+       page it sat under. 32px clears the 24px floor the Target Floor Rule sets for a
+       standalone small target. The 48px lift stays wherever the nav is still a row. */
     .site-footer nav {
       width: 100%;
       flex-direction: column;
       align-items: flex-start;
-      gap: var(--space-1);
+      gap: 0;
       white-space: normal;
     }
+
+    .site-footer nav a,
+    .site-footer nav button { min-height: var(--space-4); }
   }
 </style>

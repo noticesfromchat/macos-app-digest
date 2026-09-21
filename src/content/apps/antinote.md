@@ -1,6 +1,6 @@
 ---
 name: Antinote
-description: A keyboard-first macOS scratchpad for temporary notes, contextual calculations, conversions, timers, clipboard capture and quick exports.
+description: Keep a keyboard-first scratchpad for notes you plan to throw away, with calculations and conversions worked out as you type.
 bestFor: People who need disposable working notes without turning every thought into permanent knowledge.
 tagline: keyboard-first scratchpad
 tags: [notes, productivity, utility, clipboard]

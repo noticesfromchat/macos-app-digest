@@ -1,6 +1,6 @@
 ---
 name: Cursor Crane
-description: Extends keyboard-driven Mac control across interface elements, windows and text editing with predictable hints, modes and scriptable command sequences.
+description: Click anything on screen from the keyboard using on-screen hints, and script the sequences you repeat.
 bestFor: Keyboard-first users who want to operate complex multi-window workflows with far less pointer travel.
 tagline: keyboard control
 tags: [keyboard, windows, automation, productivity, accessibility]

@@ -284,12 +284,12 @@
     "shadows": [
       {
         "name": "ambient-card",
-        "value": "0 18px 55px rgba(27, 35, 42, 0.08)",
+        "value": "0 0 0 1px rgba(9, 35, 66, 0.07), 0 2px 5px rgba(9, 35, 66, 0.025), 0 10px 28px rgba(9, 35, 66, 0.055)",
         "purpose": "Resting cards and surface containers."
       },
       {
         "name": "hover-lift",
-        "value": "0 26px 68px rgba(27, 35, 42, 0.11)",
+        "value": "0 0 0 1px rgba(9, 35, 66, 0.08), 0 4px 8px rgba(9, 35, 66, 0.03), 0 16px 38px rgba(9, 35, 66, 0.075)",
         "purpose": "Hovered cards and callout surfaces."
       },
       {
@@ -511,7 +511,7 @@
     "northStar": "Quiet harbor editorial",
     "overview": "App Waypoint feels like a calm dock under overcast light: cool paper, deep-water text, and a single reliable blue used sparingly so the page never shouts. It is editorial rather than promotional, organized like a magazine, but laid out like a utility. Dense information sits inside soft cards and quiet section breaks instead of loud banners.\n\nThe language prefers stable geometry, soft depth, and generous breathing room. Serif headlines carry the authority; the system sans supports the utility layers, controls, and metadata. The result is familiar and trustworthy, with enough atmosphere to feel considered but not styled for its own sake.",
     "keyCharacteristics": [
-      "White paper on a cool fog-grey field, with navy ink.",
+      "White cards on a white page, with navy ink and soft cool edges.",
       "Beacon blue reserved for actions and current states.",
       "Serif headlines, system-sans utility.",
       "Corners derived from component insets and nested geometry, with proportional app icon frames.",
@@ -520,7 +520,7 @@
     "rules": [
       {
         "name": "The Fog Rule",
-        "body": "Every light-mode neutral sits on Deep Sea's hue — OKLCH hue 253–258, the ink's own axis — at a chroma of 0.010 or less: Surf Foam 0.000, Drift Mist 0.005, Harbor Fog 0.008, Shell Strong 0.010. That is what keeps the field reading as harbor weather rather than default UI grey. A neutral off that axis, or any warm tone reintroduced into the light theme, breaks the day palette.",
+        "body": "The light-mode page, hero and footer use pure white (`#ffffff`), and the sticky header uses white at 96% opacity. Supporting chromatic neutrals stay on Deep Sea's hue, OKLCH 253–258, at a chroma of 0.010 or less. Harbor Fog remains the overlay scrim colour; it is not the page background. Keep chips and control fills cool, and do not reintroduce warm sand or cream. Dark-mode colours are unchanged.",
         "section": "colors"
       },
       {
@@ -555,7 +555,7 @@
       },
       {
         "name": "The Soft Hull Rule",
-        "body": "Surfaces lift with a soft shadow and a border change, not with hard edges or dramatic offsets.",
+        "body": "Light-mode page, hero, header and footer use white. White cards separate through a faint cool 1px edge in the shared shadow, close contact shading and soft ambient depth. Hover adds the existing inset accent ring without changing layout. Dark-mode surfaces and shadows remain unchanged.",
         "section": "elevation"
       },
       {
@@ -614,8 +614,13 @@
         "section": "motion"
       },
       {
-        "name": "The Borrowed Type Rule",
-        "body": "A social card is the only surface that cannot use the site's own typeface: Iowan Old Style is a macOS system font with no file to embed. Vollkorn stands in, as the closest embeddable face measured against Iowan (x-height over cap +0.010, the width of Hamburgefonstiv within 0.1% at 100px) and the only close match shipping the 500 and 600 weights this scale uses; Inter stands in for -apple-system. Both are SIL OFL 1.1 and carry their licence in the package, which is the standing condition for any font entering this repository. Nothing else on the site may substitute a typeface, and a card never truncates a title: the type steps down the scale instead.",
+        "name": "The Social Overlay Rule",
+        "body": "App, category, collection and tag social cards share a white editorial cover: brand at top, 112px icon left of the serif name with a -9px optical shift, then a 36px description at a 940px measure. Titles step through 100px, 76px and 58px without truncation. Keep the lower edge clear for X's destination overlay: no footer, domain, wave or Best For section. Taxonomy counts sit top right. Phosphor Regular category and collection marks come from categories.ts; explicit tag pairings come from tag-icons.ts and validation checks coverage and assets.",
+        "section": "components"
+      },
+      {
+        "name": "The Shared Serif Rule",
+        "body": "Vollkorn is the shared editorial serif for site headings, app names, search-result titles, the wordmark and social cards. The --display token uses Vollkorn with Iowan Old Style, Baskerville and Times New Roman fallbacks. BaseLayout self-hosts Latin normal weights 400, 500, 600 and 700 from @fontsource/vollkorn with font-display: swap; social cards embed 400, 500 and 600 from the same package. The site retains system sans; only social cards use Inter. Both fonts are SIL OFL 1.1. Ship the matching Vollkorn licence at /fonts/vollkorn-LICENSE.txt and preserve existing type sizes, weights and line heights.",
         "section": "components"
       },
       {
@@ -640,7 +645,7 @@
       }
     ],
     "dos": [
-      "Do keep the fog-grey field, white paper, deep-sea text, and blue accent in a tight relationship.",
+      "Do keep the light-mode page white, cards softly defined, text deep-sea and blue reserved for actions.",
       "Do assign prose, chip labels and metadata through --body-text, --chip-text and --muted by meaning rather than by page.",
       "Do reuse the shared page shell so archive, tag, collection, about, and app pages line up.",
       "Do keep shadows soft and ambient.",

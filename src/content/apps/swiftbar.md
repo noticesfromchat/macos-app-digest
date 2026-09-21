@@ -1,6 +1,6 @@
 ---
 name: SwiftBar
-description: Turns shell scripts and executable plugins into richly formatted menu bar items with actions, refresh schedules and community extensions.
+description: Turn any shell script into a menu bar item that refreshes on a schedule and does something when you click it.
 bestFor: Developers who want custom status displays and controls without building a complete Mac app.
 tagline: scripts in the menu bar
 tags: [menubar, developer, automation, open-source]

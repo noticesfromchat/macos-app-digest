@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
+    "editor": "node scripts/app-editor.mjs",
     "sync:categories": "node scripts/sync-app-categories.mjs",
     "audit:related-apps": "node scripts/audit-related-apps.mjs",
     "validate": "node scripts/check-private-paths.mjs && node scripts/check-editorial-style.mjs && node scripts/check-design-invariants.mjs && node scripts/validate-content.mjs",

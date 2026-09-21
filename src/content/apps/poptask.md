@@ -1,6 +1,6 @@
 ---
 name: PopTask
-description: Turns informal natural-language thoughts into scheduled tasks with dates, recurrence and reminders from the Mac menu bar.
+description: Type a thought the way you would say it and get back a scheduled task, recurrence included, from the menu bar.
 bestFor: People who capture commitments faster than they can complete traditional task forms.
 tagline: natural-language tasks
 tags: [tasks, menubar, productivity]

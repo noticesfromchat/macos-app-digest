@@ -1,7 +1,7 @@
 ---
 name: AgentPeek
-description: Shows live Claude Code, Codex, Cursor and other coding-agent sessions from the Mac notch or menu bar.
-bestFor: Developers running multiple local AI agents who need prompt approvals, token usage and dev servers at a glance.
+description: Watch every coding-agent session on the Mac, Claude Code and Codex included, from the notch or the menu bar.
+bestFor: Developers running several local AI agents who want to see which one is waiting for approval without switching windows.
 tagline: coding agent monitor
 tags: [ai, developer, menubar, local]
 categories: [ai-agents, developer-tools, mac-utilities-customization]

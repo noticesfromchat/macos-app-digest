@@ -1,6 +1,6 @@
 ---
 name: Muse
-description: A local-first visual bookmark manager that captures links, images, videos and notes, then organizes them with on-device tagging, OCR and semantic search.
+description: Save links and images to a visual library that tags and searches them on your Mac rather than on a server.
 bestFor: Designers and researchers who collect mixed media and want one private, searchable visual library.
 tagline: visual bookmark manager
 tags: [research, files, ai, local, productivity]

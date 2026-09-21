@@ -1,9 +1,9 @@
 ---
 name: Heard
-description: A macOS voice layer that turns Claude Code, Codex and Cursor activity into concise spoken updates, alerts and project-level summaries.
+description: Hear what your coding agents are doing as short spoken updates, so you can step away from the terminal and still know when one finishes.
 bestFor: Developers supervising parallel coding agents while working away from their terminal windows.
 tagline: spoken agent updates
-tags: [ai, developer, automation]
+tags: [ai, developer, automation, open-source]
 categories: [ai-agents, developer-tools, automation-shortcuts]
 source: Product Hunt launch, community discussion and official homepage
 homepage: https://heard.dev/

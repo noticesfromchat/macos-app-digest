@@ -1,6 +1,6 @@
 ---
 name: Nochi
-description: Turns the MacBook notch into a small companion surface for music, calendar, camera checks, files and quick AI answers.
+description: Turn the MacBook notch into a playful little surface for music and quick checks, without opening another window.
 bestFor: Notch Mac users who want a playful utility layer without opening another window.
 tagline: notch companion
 tags: [menubar, customization, productivity, ai]

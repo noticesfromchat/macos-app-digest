@@ -1,6 +1,6 @@
 ---
 name: AI Actions
-description: Adds GPT, Claude and OpenAI-compatible model actions to Apple Shortcuts, with API keys stored in the system keychain.
+description: Call GPT or Claude from inside Apple Shortcuts, with your API keys kept in the system keychain rather than pasted into an action.
 bestFor: Shortcuts builders who want model calls inside automations without hand-rolling API steps.
 tagline: adds AI to Shortcuts
 tags: [ai, automation, productivity, utility, shortcuts]

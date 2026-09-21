@@ -6,11 +6,9 @@
  * same buoy geometry and the same editorial fields the pages already carry, so a
  * card cannot drift from the publication it represents.
  *
- * The type is not the site's own: Iowan Old Style is a macOS system font with no
- * file to embed. Vollkorn is the closest embeddable stand-in measured against it
- * (x-height/cap +0.010, "Hamburgefonstiv" within 0.1% at 100px) and, unlike the
- * Charter derivatives, it ships the 500 and 600 weights this type scale uses.
- * Both faces here are SIL OFL 1.1 and carry their licence in the package.
+ * Vollkorn is also the site's editorial serif, loaded from the same Fontsource
+ * package. Inter stands in for the site's system sans in generated images.
+ * Both faces are SIL OFL 1.1 and carry their licence in the package.
  */
 import { Resvg } from '@resvg/resvg-js';
 import { readFileSync } from 'node:fs';
@@ -23,7 +21,7 @@ import { OG_SIZE, type OgAppIcon, type OgCard } from './og';
 
 /* Light-theme tokens from DESIGN.md. A card is one fixed image, so it cannot
    follow the reader's theme; it takes the day palette the site opens in. */
-const PAGE = '#e8ecf1';
+const PAGE = '#ffffff';
 const INK = '#092443';
 const MUTED = '#4d5762';
 const LINE = 'rgba(9, 35, 66, 0.2)';
@@ -92,17 +90,18 @@ const waveUri = svgUri(
  */
 const phosphorMarks = new Map<string, string>();
 
-function phosphorMark(name: string) {
-  const cached = phosphorMarks.get(name);
+function phosphorMark(name: string, color = '#ffffff') {
+  const key = `${name}:${color}`;
+  const cached = phosphorMarks.get(key);
   if (cached) return cached;
 
   const source = readFileSync(
     join(process.cwd(), 'node_modules', '@phosphor-icons', 'core', 'assets', 'regular', `${name}.svg`),
     'utf8'
   );
-  const svg = source.replace('fill="currentColor"', 'fill="#ffffff"');
+  const svg = source.replace('fill="currentColor"', `fill="${color}"`);
   const uri = `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`;
-  phosphorMarks.set(name, uri);
+  phosphorMarks.set(key, uri);
   return uri;
 }
 
@@ -207,7 +206,38 @@ const brandRow = () =>
     h('div', { style: { fontFamily: SERIF, fontWeight: 600, fontSize: 34, color: INK, letterSpacing: '-0.02em', marginLeft: 10 } }, 'App Waypoint')
   );
 
+function editorialDesign(card: Extract<OgCard, { layout: 'app' | 'page' }>): Node {
+  const title = card.layout === 'app' ? card.name : card.title;
+  const description = card.layout === 'app' ? card.description : card.dek;
+  const icon = card.layout === 'app' ? iconPlate(card.icon)
+    : h('img', { src: phosphorMark(card.icon!, INK), width: ICON, height: ICON });
+  const text = (copy: string, style: Record<string, unknown>) =>
+    h('div', { style: { fontFamily: SANS, color: INK, ...style } }, copy);
+  const name = (size: number) => text(title, {
+    fontFamily: SERIF, fontWeight: 600, fontSize: size, lineHeight: 1.04, letterSpacing: '-0.02em'
+  });
+  const root = (children: Node[], style: Record<string, unknown> = {}) => h('div', {
+    style: { display: 'flex', flexDirection: 'column', width: OG_SIZE.width, height: OG_SIZE.height,
+      backgroundColor: PAGE, padding: 56, ...style }
+  }, ...children);
+
+  return root([
+    h('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between' } },
+      brandRow(),
+      card.layout === 'page' && text(card.eyebrow, { fontSize: 20, color: MUTED })),
+    h('div', { style: { display: 'flex', alignItems: 'center', gap: 32, marginTop: 48 } },
+      // Vollkorn's visible capitals sit above the center of its line box.
+      h('div', { style: { display: 'flex', flexShrink: 0, transform: 'translateY(-9px)' } }, icon),
+      h('div', { style: { display: 'flex', flexDirection: 'column', width: 880 } },
+        name(title.length <= 18 ? 100 : title.length <= 30 ? 76 : 58))),
+    text(clamp(description, 175), { fontSize: 36, lineHeight: 1.4, color: MUTED, marginTop: 32, maxWidth: 940 }),
+    // Keep the lower edge clear for the destination overlay shown by X.
+    spacer(70)
+  ]);
+}
+
 function tree(card: OgCard): Node {
+  if (card.layout === 'app' || (card.layout === 'page' && card.icon)) return editorialDesign(card);
   const shell = (...children: (Node | false)[]) =>
     h('div', {
       style: {
@@ -230,46 +260,6 @@ function tree(card: OgCard): Node {
         }, card.dek)
       ),
       spacer(40),
-      footer()
-    );
-  }
-
-  /* An app card is the detail page's identity block: the icon on its plate, the
-     name, what the app does, then who it is for. It carries no wave rule. The
-     issue card needs one to separate a title from its dek; here the icon is
-     already the visual anchor and the Best For eyebrow already divides, so a
-     third device would be decoration on a card that has to read at thumbnail
-     size. */
-  if (card.layout === 'app') {
-    const nameSize = card.name.length <= 18 ? 62 : card.name.length <= 30 ? 50 : 40;
-
-    return shell(
-      brandRow(),
-      spacer(26),
-      h('div', { style: { display: 'flex', flexDirection: 'column' } },
-        h('div', { style: { display: 'flex', alignItems: 'center' } },
-          iconPlate(card.icon),
-          h('div', {
-            style: {
-              fontFamily: SERIF, fontWeight: 600, fontSize: nameSize, color: INK,
-              letterSpacing: '-0.02em', lineHeight: 1.04, marginLeft: 26, maxWidth: 900
-            }
-          }, card.name)
-        ),
-        h('div', {
-          style: { fontFamily: SANS, fontSize: 26, color: MUTED, lineHeight: 1.5, marginTop: 24, maxWidth: 900 }
-        }, clamp(card.description, 175))
-      ),
-      spacer(22),
-      h('div', { style: { display: 'flex', flexDirection: 'column' } },
-        h('div', {
-          style: { fontFamily: SANS, fontWeight: 500, fontSize: 19, letterSpacing: '0.14em', color: ACCENT, textTransform: 'uppercase' }
-        }, 'Best for'),
-        h('div', {
-          style: { fontFamily: SANS, fontSize: 24, color: INK, lineHeight: 1.45, marginTop: 11, maxWidth: 900 }
-        }, clamp(card.bestFor, 150))
-      ),
-      spacer(22),
       footer()
     );
   }

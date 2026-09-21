@@ -1,6 +1,6 @@
 ---
 name: Finalist
-description: A paper-inspired daily planner that combines tasks and notes across Mac, iPhone, iPad and Apple Watch with Markdown-friendly workflows.
+description: Plan each day on a paper-style page where the tasks and notes for that date live together, synced across your Apple devices.
 bestFor: People who prefer planning each day deliberately while keeping notes and tasks together in a calm, date-oriented interface.
 tagline: daily planner
 tags: [productivity, tasks, notes, writing]

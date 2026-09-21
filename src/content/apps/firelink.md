@@ -1,7 +1,7 @@
 ---
 name: FireLink
-description: A cross-platform download manager for direct files, browser handoffs, media, playlists, queues and scheduled transfers.
-bestFor: People whose download workflows have outgrown the browser and require queues, timing controls or media-aware handling.
+description: Hand downloads over from the browser to a proper queue that can schedule transfers and pull media from a playlist.
+bestFor: People whose downloads have outgrown the browser's own list.
 tagline: download manager
 tags: [downloads, utility, automation, open-source]
 categories: [files-research-documents, mac-utilities-customization, automation-shortcuts]

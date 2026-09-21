@@ -1,6 +1,6 @@
 ---
 name: Screenify Studio
-description: Records polished product videos and screen demos with layout controls, audio capture and presentation tools for quick publishing.
+description: Record product videos and screen demos that look finished enough to publish the same day.
 bestFor: Makers and educators who need clean app demos without opening a full video suite.
 tagline: screen recorder
 tags: [capture, audio, productivity, utility]

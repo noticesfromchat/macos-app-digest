@@ -1,6 +1,6 @@
 ---
 name: DotPeek
-description: Searches local image folders by text, meaning or appearance while handling duplicates, translation and object extraction.
+description: Search your own image folders by what is in the picture rather than the file name, with everything processed on your Mac.
 bestFor: Image-heavy users who want private visual search powered by their own Mac.
 tagline: local image search
 tags: [files, search, local, ai, images]

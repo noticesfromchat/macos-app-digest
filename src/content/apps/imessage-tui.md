@@ -1,6 +1,6 @@
 ---
 name: imessage-tui
-description: Browses the local macOS Messages database read-only, searches conversations and exports selected time ranges to human-readable Markdown.
+description: Search your Messages history read-only from the terminal and export any stretch of a conversation to Markdown.
 bestFor: Terminal users who need a focused, local way to inspect or archive portions of Messages history.
 tagline: Messages in terminal
 tags: [messages, terminal, privacy, open-source]

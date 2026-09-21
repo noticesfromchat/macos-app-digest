@@ -5,6 +5,7 @@ bestFor: Anyone who joins a lot of calls and wants one last look before the came
 tagline: camera check
 tags: [menubar, utility, productivity]
 categories: [mac-utilities-customization, productivity-workflow]
+collections: [hidden-gems]
 source: Hand Mirror Mac App Store listing
 homepage: https://apps.apple.com/nz/app/hand-mirror/id1502839586?mt=12
 icon: /app-icons/hand-mirror.png

@@ -1,6 +1,6 @@
 ---
 name: Shortcutie
-description: Extends Apple Shortcuts with more than 70 Mac-only actions for browsers, Finder, windows, audio devices and system settings.
+description: Add more than 70 Mac-only actions to Apple Shortcuts, mostly for the jobs the sandbox keeps Apple's own actions from doing.
 bestFor: Shortcuts builders who regularly hit the limits of Apple's sandboxed actions.
 tagline: 70+ Shortcuts actions
 tags: [automation, shortcuts, utility]

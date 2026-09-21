@@ -1,6 +1,6 @@
 ---
 name: TinyStart
-description: Opens apps, emoji, links and folders from one small launcher and handles quick calculations and unit conversions on the way.
+description: Open apps and folders from one small launcher that also does quick sums and unit conversions.
 bestFor: Anyone who needs a launcher for a handful of everyday actions and finds bigger tools sprawl too much.
 tagline: focused launcher
 tags: [launcher, productivity, utility]

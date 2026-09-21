@@ -1,6 +1,6 @@
 ---
 name: Islet
-description: A native Dynamic Island-style notch utility for charging status, media controls, Bluetooth connections and glanceable system information.
+description: Turn the MacBook notch into a Dynamic Island that shows charging and what is playing without a trip to the menu bar.
 bestFor: Notched MacBook owners who prefer polished status feedback near the top edge of the display.
 tagline: Dynamic Island notch
 tags: [utility, menubar, productivity, battery]

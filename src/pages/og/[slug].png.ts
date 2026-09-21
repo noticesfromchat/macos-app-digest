@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 
 import { renderOgCard } from '../../data/og-card';
+import { tagIcons } from '../../data/tag-icons';
 import {
   appOgSlug,
   categoryOgSlug,
@@ -11,7 +12,7 @@ import {
   type OgAppIcon,
   type OgCard
 } from '../../data/og';
-import { categories } from '../../data/categories';
+import { categories, collections as collectionMetadata } from '../../data/categories';
 import { collectionDek, collectionTitle, laneEyebrow, tagDek, tagTitle } from '../../data/lanes';
 import { issueLabel } from '../../data/issue';
 import { fallbackIconColor, fallbackIconCategory } from '../../data/app-icon';
@@ -129,6 +130,7 @@ export async function getStaticPaths() {
         layout: 'page' as const,
         eyebrow: laneEyebrow('Category', countBy((app) => app.data.categories.includes(category.slug))),
         title: category.title,
+        icon: category.icon,
         dek: category.description
       }
     })),
@@ -138,6 +140,7 @@ export async function getStaticPaths() {
         layout: 'page' as const,
         eyebrow: laneEyebrow('Collection', countBy((app) => app.data.collections?.includes(collection) ?? false)),
         title: collectionTitle(collection),
+        icon: collectionMetadata.find((item) => item.slug === collection)?.icon,
         dek: collectionDek(collection)
       }
     })),
@@ -147,6 +150,7 @@ export async function getStaticPaths() {
         layout: 'page' as const,
         eyebrow: laneEyebrow('Tag', countBy((app) => app.data.tags.includes(tag))),
         title: tagTitle(tag),
+        icon: tagIcons[tag],
         dek: tagDek(tag)
       }
     })),
@@ -156,7 +160,6 @@ export async function getStaticPaths() {
         layout: 'app' as const,
         name: app.data.name,
         description: app.data.description,
-        bestFor: app.data.bestFor,
         icon: appIcon(app)
       }
     })),

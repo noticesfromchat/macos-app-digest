@@ -1,6 +1,6 @@
 ---
 name: FileMaster
-description: Combines temporary file staging with local, citation-backed search plus PDF and image processing inside reusable floating workspaces.
+description: Ask questions of the files on your Mac and get answers that cite where they came from, without uploading anything.
 bestFor: Researchers and document-heavy workers who need verifiable local answers without uploading sensitive files.
 tagline: file staging and search
 tags: [files, ai, local, research, productivity, pdf]

@@ -1,10 +1,11 @@
 ---
 name: BetterZip
-description: A mature archive manager for inspecting, editing and extracting compressed files with Finder, Quick Look, Shortcuts and command-line integration.
-bestFor: Mac users who work with archives often enough to need selective extraction, presets and automation beyond Archive Utility.
+description: Look inside an archive and pull out only the files you need, straight from Finder or Quick Look, without extracting the whole thing first.
+bestFor: Mac users who open archives often enough to have outgrown Archive Utility.
 tagline: archive manager
 tags: [files, utility, automation, finder, quicklook]
 categories: [files-research-documents, mac-utilities-customization, automation-shortcuts]
+collections: [hidden-gems]
 source: r/macapps community discussion and official BetterZip 6 release information
 homepage: https://macitbetter.com/
 icon: /app-icons/betterzip.png

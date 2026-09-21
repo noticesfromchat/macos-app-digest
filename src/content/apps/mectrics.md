@@ -1,6 +1,6 @@
 ---
 name: mectrics
-description: Monitors CPU, memory, battery, network, disk, GPU, temperatures and fans from a compact menu bar view with sustained-threshold alerts.
+description: Watch your Mac's health from a compact menu bar view that only alerts you when a problem persists, not every time a number spikes.
 bestFor: Mac power users who want quiet health monitoring that surfaces persistent problems instead of constant raw numbers.
 tagline: system monitor
 tags: [menubar, monitoring, open-source, utility, battery]

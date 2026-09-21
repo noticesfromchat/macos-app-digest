@@ -1,7 +1,7 @@
 ---
 name: Shottr
-description: Captures screenshots with scrolling capture, markup tools, text recognition and measurement helpers built for fast visual notes.
-bestFor: Designers, writers and support teams who annotate screenshots throughout the day.
+description: Capture a whole scrolling page in one screenshot and mark it up in a small app built for quick visual notes.
+bestFor: Anyone who annotates screenshots all day and would rather not open an image editor to do it.
 tagline: screenshot annotation
 tags: [capture, productivity, utility, documents]
 collections: [community-favorites]

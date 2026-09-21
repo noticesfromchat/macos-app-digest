@@ -1,7 +1,7 @@
 ---
 name: MacWhisper
-description: Transcribes recordings, meetings and system audio with local speech models, then adds speaker labeling, translation, exports and automation.
-bestFor: Researchers, journalists and operators who need accurate, private transcription with flexible export and automation options.
+description: Transcribe recordings and meetings with speech models running on your Mac, then label who said what.
+bestFor: Journalists and researchers who need accurate transcripts of recordings that should never leave the Mac.
 tagline: local transcription
 tags: [transcription, ai, local, writing, automation]
 categories: [media-capture, ai-agents, writing-notes-reading, automation-shortcuts]

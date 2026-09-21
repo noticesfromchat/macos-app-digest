@@ -1,6 +1,6 @@
 ---
 name: TouchGrass
-description: A context-aware break timer that pauses for meetings and media, counts time away and adds blink, posture and typing-strain reminders.
+description: Take breaks on a timer that waits out meetings and videos before it asks.
 bestFor: Focused Mac users who want healthier work rhythms without rigid interruptions or invasive permissions.
 tagline: context-aware breaks
 tags: [productivity, health, utility, local]

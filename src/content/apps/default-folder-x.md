@@ -1,7 +1,7 @@
 ---
 name: Default Folder X
-description: Enhances Open and Save dialogs with instant folder navigation, recent files, Finder window recall and app-specific default locations.
-bestFor: People who work across deep folder structures and constantly open, save or attach files.
+description: Make every Open and Save dialog start in the folder you actually meant, with your recent files one click away.
+bestFor: People who dig through deep folder structures every time they save or attach a file.
 tagline: dialog enhancer
 tags: [files, finder, utility, productivity]
 categories: [files-research-documents, mac-utilities-customization, productivity-workflow]
