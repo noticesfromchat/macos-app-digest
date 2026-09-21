@@ -13,7 +13,9 @@ export const OG_SIZE = { width: 1200, height: 630 } as const;
 export type OgCard =
   /* The homepage takes the masthead itself: wordmark, water, tagline. */
   | { layout: 'brand'; dek: string }
-  /* Issues and About open the way a page does, under an eyebrow. */
+  /* Issues share the editorial cover without a taxonomy icon. */
+  | { layout: 'issue'; eyebrow: string; title: string; dek: string }
+  /* General pages open under an eyebrow; taxonomy pages add an icon. */
   | { layout: 'page'; eyebrow: string; title: string; dek: string; icon?: string }
   /* An app page carries its own identity block: the icon on its plate, the name,
      and what it does. Every field is already in the app record. */

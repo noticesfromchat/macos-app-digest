@@ -206,10 +206,10 @@ const brandRow = () =>
     h('div', { style: { fontFamily: SERIF, fontWeight: 600, fontSize: 34, color: INK, letterSpacing: '-0.02em', marginLeft: 10 } }, 'App Waypoint')
   );
 
-function editorialDesign(card: Extract<OgCard, { layout: 'app' | 'page' }>): Node {
+function editorialDesign(card: Extract<OgCard, { layout: 'app' | 'page' | 'issue' }>): Node {
   const title = card.layout === 'app' ? card.name : card.title;
   const description = card.layout === 'app' ? card.description : card.dek;
-  const icon = card.layout === 'app' ? iconPlate(card.icon)
+  const icon = card.layout === 'issue' ? null : card.layout === 'app' ? iconPlate(card.icon)
     : h('img', { src: phosphorMark(card.icon!, INK), width: ICON, height: ICON });
   const text = (copy: string, style: Record<string, unknown>) =>
     h('div', { style: { fontFamily: SANS, color: INK, ...style } }, copy);
@@ -224,12 +224,12 @@ function editorialDesign(card: Extract<OgCard, { layout: 'app' | 'page' }>): Nod
   return root([
     h('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between' } },
       brandRow(),
-      card.layout === 'page' && text(card.eyebrow, { fontSize: 20, color: MUTED })),
-    h('div', { style: { display: 'flex', alignItems: 'center', gap: 32, marginTop: 48 } },
+      card.layout !== 'app' && text(card.eyebrow, { fontSize: 20, color: MUTED })),
+    h('div', { style: { display: 'flex', alignItems: 'center', gap: 32, marginTop: 48, minHeight: ICON } },
       // Vollkorn's visible capitals sit above the center of its line box.
-      h('div', { style: { display: 'flex', flexShrink: 0, transform: 'translateY(-9px)' } }, icon),
-      h('div', { style: { display: 'flex', flexDirection: 'column', width: 880 } },
-        name(title.length <= 18 ? 100 : title.length <= 30 ? 76 : 58))),
+      icon && h('div', { style: { display: 'flex', flexShrink: 0, transform: 'translateY(-9px)' } }, icon),
+      h('div', { style: { display: 'flex', flexDirection: 'column', width: card.layout === 'issue' ? 1088 : 880 } },
+        name(card.layout === 'issue' ? fit(title).size : title.length <= 18 ? 100 : title.length <= 30 ? 76 : 58))),
     text(clamp(description, 175), { fontSize: 36, lineHeight: 1.4, color: MUTED, marginTop: 32, maxWidth: 940 }),
     // Keep the lower edge clear for the destination overlay shown by X.
     spacer(70)
@@ -237,7 +237,7 @@ function editorialDesign(card: Extract<OgCard, { layout: 'app' | 'page' }>): Nod
 }
 
 function tree(card: OgCard): Node {
-  if (card.layout === 'app' || (card.layout === 'page' && card.icon)) return editorialDesign(card);
+  if (card.layout === 'app' || card.layout === 'issue' || (card.layout === 'page' && card.icon)) return editorialDesign(card);
   const shell = (...children: (Node | false)[]) =>
     h('div', {
       style: {

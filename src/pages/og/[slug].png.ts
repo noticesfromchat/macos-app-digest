@@ -166,7 +166,7 @@ export async function getStaticPaths() {
     ...issues.map((issue) => ({
       slug: issueOgSlug(issue.data.number),
       card: {
-        layout: 'page' as const,
+        layout: 'issue' as const,
         eyebrow: `Issue ${issueLabel(issue.data.number)} · ${issue.data.date}`,
         title: issue.data.rss.title,
         dek: issue.data.dek

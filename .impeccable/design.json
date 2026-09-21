@@ -615,7 +615,7 @@
       },
       {
         "name": "The Social Overlay Rule",
-        "body": "App, category, collection and tag social cards share a white editorial cover: brand at top, 112px icon left of the serif name with a -9px optical shift, then a 36px description at a 940px measure. Titles step through 100px, 76px and 58px without truncation. Keep the lower edge clear for X's destination overlay: no footer, domain, wave or Best For section. Taxonomy counts sit top right. Phosphor Regular category and collection marks come from categories.ts; explicit tag pairings come from tag-icons.ts and validation checks coverage and assets.",
+        "body": "App, category, collection and tag social cards share a white editorial cover: brand at top, 112px icon left of the serif name with a -9px optical shift, then a 36px description at a 940px measure. Titles step through 100px, 76px and 58px without truncation. Keep the lower edge clear for X's destination overlay: no footer, domain, wave or Best For section. Taxonomy counts sit top right. Issues use the same cover without an icon, with issue number and date at top right, a full-width 1088px headline stepping through 72px, 60px and 50px, and the same description and clear lower edge. Phosphor Regular category and collection marks come from categories.ts; explicit tag pairings come from tag-icons.ts and validation checks coverage and assets.",
         "section": "components"
       },
       {

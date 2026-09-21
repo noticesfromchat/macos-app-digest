@@ -1346,7 +1346,7 @@ is no shared fallback image any more. `harbor-hero-clean.webp`, a 1200x800 photo
 all 175 pages pointed at, was deleted on 2026-09-03: it had stopped being the homepage hero
 at the redesign and was the wrong shape for a social card, so a scraper cropped roughly 85px
 off the top and bottom of it. The layout's default is a generated card like any other. They are generated rather than authored so a Friday issue arrives
-with its own card and no separate asset step to forget. Issues and general pages keep the
+with its own card and no separate asset step to forget. General pages keep the
 page-opening composition, in the page's own tokens: the buoy and wordmark, the eyebrow, the title, the buoy's
 wave in Beacon Blue, then the dek at the house measure over a hairline footer. The mark
 geometry comes from `src/data/mark.ts`, so a card and the site's header cannot drift.
@@ -1373,6 +1373,12 @@ up from its layout center to align optically with Vollkorn's visible letters. Ti
 step from 100px to 76px to 58px as their length increases. The description uses a 940px
 measure and may trim at 175 characters. Category, collection and tag cards retain their
 page type and live app count at the top right of the brand row.
+
+Issue cards use the same cover without an icon: the issue number and date sit at the
+top right, the headline uses the full 1088px content width and the description follows
+at 36px with the same 175-character limit. Headlines step through 72px, 60px and 50px
+so longer editorial titles stay whole. They carry no wave or footer, leaving the same
+clear lower edge for X's overlay.
 
 App icons stay at 112px because their source assets top out at 128px. Icon-less apps
 retain the same category mark and stable background colour as the site. Category and
