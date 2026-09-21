@@ -14,7 +14,7 @@ colors:
   line-water: "rgba(9, 35, 66, 0.2)"
   beacon-blue: "#0862d8"
   beacon-blue-hover: "#004caf"
-  header-fog: "rgba(255, 255, 255, 0.96)"
+  header-fog: "#ffffff"
   night-harbor: "#091321"
   abyss: "#020b18"
   midnight-surface: "#0b1c30"
@@ -26,7 +26,7 @@ colors:
   night-line: "rgba(217, 229, 240, 0.2)"
   buoy-blue: "#57a2ff"
   buoy-blue-hover: "#81b8ff"
-  night-header-fog: "rgba(4, 20, 38, 0.96)"
+  night-header-fog: "#041426"
   sea-ink-day: "9 35 66"
   sea-ink-night: "226 236 250"
 typography:
@@ -199,7 +199,7 @@ The palette is a two-mode harbor system: white paper with navy ink by day, deep 
 - **Harbor Body** (#40546a): light-theme reading copy below primary Deep Sea ink.
 - **Harbor Chip Ink** (#384d63): light-theme text carried by Shell Quiet chips.
 - **Line Water** (rgba(9, 35, 66, 0.2)): borders and separators.
-- **Header Fog** (rgba(255, 255, 255, 0.96)): the light sticky header.
+- **Header Fog** (#ffffff): the light sticky header, opaque since 2026-09-21.
 
 ### Night Shift
 - **Night Harbor** (#091321): the dark page field.
@@ -212,14 +212,14 @@ The palette is a two-mode harbor system: white paper with navy ink by day, deep 
 - **Moon Chip Ink** (#b0c0d2): dark-theme text carried by Midnight Surface Strong chips.
 - **Night Line** (rgba(217, 229, 240, 0.2)): borders and separators in dark mode.
 - **Buoy Blue Hover** (#81b8ff): the brighter dark-theme hover state.
-- **Night Header Fog** (rgba(4, 20, 38, 0.96)): the dark sticky header.
+- **Night Header Fog** (#041426): the dark sticky header, opaque since 2026-09-21.
 
 ### Atmosphere
 These are drawn, not printed: they exist only inside the homepage hero's canvas layers and never carry text, controls, or state.
 
 - **Sea Ink** (`9 35 66` by day, `226 236 250` at night): RGB triples rather than hex so the wave band and star field can vary alpha per line. They are Deep Sea and a pale moon tone, not new colours.
 
-**The Fog Rule.** The light-mode page, hero and footer use pure white (`#ffffff`), and the sticky header uses white at 96% opacity. Supporting chromatic neutrals stay on Deep Sea's hue, OKLCH 253–258, at a chroma of 0.010 or less. Harbor Fog remains the overlay scrim colour; it is not the page background. Keep chips and control fills cool, and do not reintroduce warm sand or cream. Dark-mode colours are unchanged.
+**The Fog Rule.** The light-mode page, hero and footer use pure white (`#ffffff`), and the sticky header uses the same white, opaque. Supporting chromatic neutrals stay on Deep Sea's hue, OKLCH 253–258, at a chroma of 0.010 or less. Harbor Fog remains the overlay scrim colour; it is not the page background. The header carried white at 96% over `backdrop-filter: blur(20px) saturate(115%)` until 2026-09-21. Four per cent is too little transmission to read as glass and enough to smear the page passing underneath into a wash that looked like a gradient nobody had drawn, strongest where the ink below it was densest. Each theme kept its hue and lost the alpha, so the band renders what it already appeared to be over an empty page. Blur survives where it obscures on purpose: the scrims behind the search, RSS and mobile-nav dialogs. Keep chips and control fills cool, and do not reintroduce warm sand or cream. Dark-mode colours are unchanged.
 
 **The Beacon Rule.** Blue is reserved for actions, links, focus, and active states. It should not become page chrome or decorative noise. The palette carries no warm accent: a light wash behind the hero was tried and removed for drawing attention to itself rather than to the pick it sat behind.
 

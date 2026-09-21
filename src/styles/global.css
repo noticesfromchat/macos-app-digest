@@ -55,7 +55,7 @@
   --icon-sm: 16;
   --icon-md: 24;
   --icon-stroke: 1.5;
-  --header-bg: rgba(255, 255, 255, 0.96);
+  --header-bg: #ffffff;
   /* The scrim behind search, the nav menu and the subscribe dialog. It was a
      near-black navy in both themes, which is right on a dark page and turns a
      light one grey. Light gets Harbor Fog instead: the blur still obscures, the
@@ -160,7 +160,7 @@
   --accent: #57a2ff;
   --accent-hover: #81b8ff;
   --error: #ff8f86;
-  --header-bg: rgba(4, 20, 38, 0.96);
+  --header-bg: #041426;
   --scrim: rgba(2, 11, 24, 0.52);
   --shadow: 0 20px 60px rgba(0, 0, 0, 0.24);
   --shadow-hover: 0 28px 72px rgba(0, 0, 0, 0.42);
@@ -397,8 +397,16 @@ a { color: inherit; }
   border-right: 0;
   border-left: 0;
   border-radius: 0;
+  /* Opaque, and no backdrop-filter. The band was 96% white over a 20px blur, which let
+     4% of the page bleed through: too little to read as glass, enough to smear whatever
+     was passing underneath into a soft wash that looked like an undrawn gradient — worst
+     over the Explore lanes, where it tracked the icons and labels on the left and faded
+     out on the right where only the counts sit. Each theme keeps its own hue and simply
+     loses the alpha, so the band renders the colour it already appeared to be with
+     nothing behind it, and scrolling loses a compositing pass. The scrims behind the
+     search, RSS and mobile-nav dialogs keep their blur: obscuring the page is what a
+     scrim is for. */
   background: var(--header-bg);
-  backdrop-filter: blur(20px) saturate(115%);
 }
 
 .mobile-nav-open .site-header { z-index: 95; }
@@ -2864,8 +2872,14 @@ h1.home-hero-number {
     height: 48px;
   }
   .collection-badge { min-height: 48px; }
-  .directory-select-options[role="menu"] button,
-  .filter-option { min-height: 48px; }
+  .directory-select-options[role="menu"] button { min-height: 48px; }
+  /* 40, not 48. The same content — a mark, a label, a count — sits in a 32px row in the
+     Explore lanes directly above this panel on the same screen, so a 48px filter row put
+     two rhythms for one shape on one phone screen and read as the looser of the two.
+     The row is a full-width `label`, so its target is 40 x the panel's width, which is
+     comfortable well past the point where the box alone would not be; 40 is also the sort
+     menu's own base row, so the two menus in this toolbar agree. */
+  .filter-option { min-height: 40px; }
   /* The Target Floor Rule again: the row takes the height and the link's own area grows
      into it, so the text stays text. Bounded by the row on purpose — an unbounded
      expansion would reach over the hairline into the last filter row's target. */
