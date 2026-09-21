@@ -37,7 +37,7 @@ export const categories: Category[] = [
   {
     slug: 'automation-shortcuts',
     title: "Automation & Shortcuts",
-    description: "Build Shortcuts, set rules and connect actions so your Mac can handle the work you repeat. Set it up once, then let the app remember it.",
+    description: "Build Shortcuts, set rules and connect actions so your Mac can handle the work you do over and over again.",
     mobileDescription: 'Shortcuts and rules for the work you repeat.',
     tags: ['automation', 'shortcuts'],
     icon: 'flow-arrow',
@@ -45,8 +45,8 @@ export const categories: Category[] = [
   },
   {
     slug: 'developer-tools',
-    title: 'Developer Tools',
-    description: 'The terminal you actually want, and the tools that sit around the code rather than in it.',
+    title: "Developer Tools",
+    description: "Mac apps that help you write, test, debug, monitor, build and deploy.",
     mobileDescription: 'Terminals and the tools that sit around the code.',
     tags: ['developer', 'terminal', 'database', 'cli'],
     icon: 'code-block',
@@ -55,7 +55,7 @@ export const categories: Category[] = [
   {
     slug: 'files-research-documents',
     title: "Files, Research & Documents",
-    description: "Finding what's on your disk, and turning up the thing you saved six months ago. Plus the filing and search tools that made it findable at all.",
+    description: "Open that file you saved six months ago. Plus the organization and search tools that made it findable at all.",
     mobileDescription: 'Finding files, and finding them again later.',
     tags: ['files', 'finder', 'documents', 'research', 'pdf', 'ebooks', 'backup', 'downloads', 'airdrop', 'quicklook'],
     icon: 'files',
@@ -64,7 +64,7 @@ export const categories: Category[] = [
   {
     slug: 'mac-utilities-customization',
     title: "Mac Utilities & Customization",
-    description: "Menu bar extras, window managers, launchers, even the small tweaks that make a Mac feel like yours instead of Apple's. Mostly small, mostly single-purpose.",
+    description: "Menu bar extras, window managers, launchers, even the small tweaks that make a Mac feel like yours instead of Apple's. Mostly small, single-purpose that do one job well.",
     mobileDescription: 'Menu bar extras and window managers that make a Mac yours.',
     tags: ['utility', 'menubar', 'customization', 'privacy', 'launcher', 'windows', 'keyboard', 'accessibility', 'network', 'monitoring', 'maintenance', 'battery', 'dashboard', 'remote', 'ios'],
     icon: 'sliders',
@@ -72,8 +72,8 @@ export const categories: Category[] = [
   },
   {
     slug: 'media-capture',
-    title: 'Media & Capture',
-    description: 'Capture the screen or record audio and video, then turn the recording into text you can actually search.',
+    title: "Media & Capture",
+    description: "Capture the screen or record audio or video and tools that help you work with media afterwards.",
     mobileDescription: 'Screen and audio capture, plus transcripts.',
     tags: ['capture', 'audio', 'video', 'images', 'transcription'],
     icon: 'camera',
