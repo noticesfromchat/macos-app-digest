@@ -744,7 +744,7 @@ Tag chips are compact chips rather than buttons. They read as metadata first.
 - **State:** hover and focus tint the chip toward blue without making it feel selected. The label takes the accent's *hover* value, not the accent itself, so the text still clears 4.5:1 against the tinted pill (5.50:1) — the plain accent lands at 3.89:1 there and is not legible enough.
 
 ### Cards
-Cards are the primary container language for apps, readings, and archive entries. Apparatus and secondary matter are set under a hairline instead, so a card always means a thing worth looking at rather than a thing worth reading past. An app card carries three regions and nothing else: the summary, the best-for line, and the tags. Its single app destination is the generated detail page; the title link and stretched pointer overlay go to the same internal URL, while the official homepage lives on the detail page. It used to end with a source credit; that was provenance for the editor rather than information for the reader, and removing it took a whole region off every card.
+Cards are the primary container language for apps, readings, and archive entries. Apparatus and secondary matter are set under a hairline instead, so a card always means a thing worth looking at rather than a thing worth reading past. A grid app card carries one region and nothing else: the summary, meaning the icon, the name and the description. Best For and the tags left the grid card on 2026-09-23 and live on the app's detail page, where a reader deciding about one app wants them; in a grid they doubled every card's height to repeat information the reader had not yet asked for. The hero Editor's Pick is the exception and keeps its reason, Best For and tags, because it is the one card an issue argues for rather than lists. Its single app destination is the generated detail page; the title link and stretched pointer overlay go to the same internal URL, while the official homepage lives on the detail page. It used to end with a source credit; that was provenance for the editor rather than information for the reader, and removing it took a whole region off every card.
 - **Corner Style:** `--radius` at 24px, the same as the card's inset.
 - **Background:** the surface color, white by day, with a faint shadow-drawn edge and soft shading; no layout border.
 - **Internal Padding:** 24px, which is also the card's corner radius.
@@ -770,23 +770,11 @@ interpolates one shadow layer against one rather than none against one. Without 
 fade stutters on the first frame.
 - **Behavior:** hover deepens the shadow and shifts the border toward blue on pointer devices, settling over 320ms rather than snapping.
 
-**The One Card Height Rule.** Every app card on a page is the same height, and the regions inside them line up across the whole grid rather than only within a row. The grid defines three repeating tracks and each card spans them as a subgrid, so a card agrees with the one beside it and the one two rows below it.
+**The One Row Height Rule.** App cards in a row are the same height, and their two parts line up across the row. The grid's rows come in pairs, the icon-and-name heading and the description, and each card spans a pair as a subgrid, so every description starts on the same line as its neighbours' even when a name wraps to two lines.
 
-The floors are what the tallest record in the catalogue actually needs, measured across all
-118: `232/120/136` where the three columns are narrowest, settling to `184/96/96` above
-1100px once the content column stops growing. Each is the measured maximum rounded up to
-the base, never down, because a floor below the true maximum lets that row outgrow it and
-the whole grid stops agreeing.
+This replaced **The One Card Height Rule** on 2026-09-23, which held every card on a page to one height with floors measured from the tallest record. Measured again for the compact card across all 166 records, those floors came to `80/144` above 1100px: fifteen five-line descriptions would have set a 240px card for everyone and left most of them half empty. The compact card was reviewed and approved at its row height, so rows now size to their own tallest card and a page can hold rows of different heights. If page-wide agreement comes back, it comes back by trimming the long descriptions, not by restoring the floors.
 
-They are re-measured, not adjusted. Any change to type, padding or the catalogue itself
-moves them, and on 2026-09-05 all three moved twice in one pass: once for the base unit
-and once for the line boxes. A single record can set them for everyone — MacWhisper's
-description was the only one of 118 running to five lines, which was adding 24px to every
-card until it was trimmed to four.
-
-**The floors only apply where the grid is multi-column.** Below 921px each card is its own height. A single column has no neighbour to agree with, so a floor buys nothing there and costs a great deal: the budgets are sized for a card about 270px wide, while a one-column card is 351px and wraps far less, so on a phone they were adding a median of 159px to every card and 17,000px of scrolling to the directory. The first and last include the card's 24px padding, because a subgrid item's padding comes out of the tracks it spans. They are `minmax(floor, auto)` rather than fixed heights, so a future record that outgrows its budget makes its own band taller instead of being clipped.
-
-This replaced a set of fixed `min-height` budgets on each region. Those were guesses, and any card that overflowed one — a second line of tags was the usual culprit — pushed everything below it out of step with the rest of the row.
+The subgrid replaced a set of fixed `min-height` budgets on each region. Those were guesses, and any card that overflowed one, a second line of tags being the usual culprit, pushed everything below it out of step with the rest of the row.
 
 **Reading cards are the exception, and align on their own terms.** They carry `.app-card` too, but hold three parts inside a wrapper rather than three children, so the card and the wrapper both subgrid onto the shared rows. They take no floors: a reading card should be as tall as the longest of the three and no taller. Their own `min-height` budgets were doing the same job far worse, reserving three lines of title space for a one-line headline and leaving the card half again as tall as it needed to be.
 

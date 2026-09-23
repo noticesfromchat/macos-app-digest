@@ -61,7 +61,10 @@ const directorySearchText = [
     </div>
     <p class="app-description">{app.description}</p>
   </div>
-  {isHero ? (
+  {/* A grid card is its summary and nothing else: icon, name, description. The hero
+     pick keeps the editor's reason, Best For and tags, because it is the one card an
+     issue argues for rather than lists. */}
+  {isHero && (
     <>
       {editorNote && (
         <div class="editor-note">
@@ -73,19 +76,9 @@ const directorySearchText = [
         <p class="editor-note-label">Best for</p>
         <p>{app.bestFor}</p>
       </div>
-    </>
-  ) : (
-    <>
-      <p class="best-for"><strong>Best for:</strong> {app.bestFor}</p>
-      {editorNote && (
-        <div class="editor-note">
-          <p class="editor-note-label">Why it was chosen</p>
-          <p>{editorNote}</p>
-        </div>
-      )}
+      <div class="tag-list" aria-label="App tags">
+        {app.tags.map((tag) => <a class="tag" href={`/tags/${tag}/`}>{tag}</a>)}
+      </div>
     </>
   )}
-  <div class="tag-list" aria-label="App tags">
-    {app.tags.map((tag) => <a class="tag" href={`/tags/${tag}/`}>{tag}</a>)}
-  </div>
 </article>

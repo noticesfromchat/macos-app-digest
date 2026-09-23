@@ -846,66 +846,28 @@ h1.home-hero-number {
 .grid > * { grid-column: span 4; }
 
 /* Cards in a row line up by sharing the row's tracks, not by guessing heights.
-   Each card spans three rows of the parent grid and adopts them as a subgrid, so
-   the description, the best-for line and the tags all start on the same line as
-   their neighbours however long the copy runs. The min-heights this replaces were
-   fixed budgets, and any card that overflowed one, a second line of tags being the
-   usual culprit, pushed everything below it out of step with the rest of the row.
-   Older engines keep the budgets through the @supports fallback. */
+   A grid card is its summary alone (icon, name, description; see AppCard), and the
+   summary's two parts become the card's two rows: it spans two rows of the parent grid
+   and adopts them as a subgrid, so every description starts on the same line as its
+   neighbours' even when a name wraps. Best For and the tags left the grid card on
+   2026-09-23 and live on the detail page; the three-track version they needed, and the
+   288px floor that went with it, went too. */
 @supports (grid-template-rows: subgrid) {
   .grid > .app-card:not(.reading-card) {
     display: grid;
-    grid-row: span 3;
+    grid-row: span 2;
     grid-template-rows: subgrid;
     row-gap: var(--space-2);
+    min-height: 0;
   }
 
-  .grid > .app-card:not(.reading-card) .app-summary,
-  .grid > .app-card:not(.reading-card) .best-for,
-  .grid > .app-card:not(.reading-card) .tag-list { min-height: 0; }
+  .grid > .app-card:not(.reading-card) .app-summary { display: contents; }
+  .grid > .app-card:not(.reading-card) .app-description { margin: 0; }
 
-  /* the row gap now carries the separation these were providing */
-  .grid > .app-card:not(.reading-card) .app-summary { margin-bottom: 0; }
-  .grid > .app-card:not(.reading-card) .tag-list { padding-top: 0; align-content: start; }
-
-  /* One card height per page, not just per row. Giving the parent's three repeating
-     tracks a floor makes every band match, so a card agrees with the one two rows
-     below it as well as the one beside it.
-
-     The floors are what the tallest record in the catalogue actually needs, measured
-     across all of them. Re-measured on 2026-09-04 against 118 records and the revised
-     type scale, by releasing the floors and reading what the content asked for: every
-     track was carrying about 25px more than it needed, roughly 50px of dead air per
-     card on the wide band, which read as a gap between the description and Best For.
-     They are numbers taken from the content, so they want re-measuring whenever the
-     type scale or the card padding moves, not adjusting by eye. Note the first and last include the card's 24px padding:
-     a subgrid item's padding comes out of the tracks it spans, so track one carries
-     the summary plus the top padding and track three the tags plus the bottom.
-
-     minmax rather than a fixed height, so a future record that outgrows its budget
-     makes its own band taller instead of being clipped.
-
-     Reading cards are excluded throughout. They carry .app-card as well, but hold a
-     single child rather than three, so spanning three rows left them with two empty
-     ones and a card half again as tall as the app cards beside them. */
-  /* Only where the grid is actually multi-column. A single column has no neighbour
-     to agree with, so a floor buys nothing and costs a great deal: the budgets are
-     sized for the narrowest three-column case, where a card is about 270px wide,
-     while a one-column card is 351px and wraps far less. Applied on a phone they
-     added a median of 159px to every card and 17,000px of scrolling to the
-     directory. Below 921px each card is its own height. */
-  @media (min-width: 921px) {
-    .grid:has(> .app-card:not(.reading-card)) {
-      grid-auto-rows: minmax(232px, auto) minmax(120px, auto) minmax(136px, auto);
-    }
-  }
-
-  /* Above 1100px the content column has stopped growing, so the budget settles. */
-  @media (min-width: 1100px) {
-    .grid:has(> .app-card:not(.reading-card)) {
-      grid-auto-rows: minmax(184px, auto) minmax(96px, auto) minmax(96px, auto);
-    }
-  }
+  /* One height per row, not per page. The tracks carry no floors: the page-wide floors
+     the three-region card used were measured on 2026-09-23 for this card (80/144 above
+     1100px) and made every card 240px tall to fit the fifteen five-line descriptions,
+     leaving most of them half empty. The compact card was approved at its row height. */
 
   /* Reading cards get the same treatment on their own terms. Their three parts sit
      inside a wrapper, so the card and the wrapper both subgrid onto the shared rows.
