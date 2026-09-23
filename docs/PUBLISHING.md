@@ -184,6 +184,16 @@ another issue. When the updated preview is ready, the task preparing it must inc
 resuming the pending social draft in its handoff. Resume that week's existing task
 and calendar rather than waiting until the next weekly run or creating a duplicate.
 
+Every drafted post gets an image, rendered by the shared `src/data/og-card.ts`
+renderer rather than made by hand. A post about one app uses the `feature` layout:
+the app's icon and name, then its record description and Best For. A post about an
+issue, category, tag or collection uses the `list` layout: the lane's mark and title
+over three of its apps, each icon beside its record description. Both are 1200px wide
+with no brand row, since they are attached to the post as media rather than shown
+as a link preview. Render each image from the same source commit as its post, attach
+it to that post's calendar entry, and re-render it whenever a revision changes the
+records it draws on.
+
 After any later editorial change, compare the social drafts with the updated issue
 and app records. Revise affected posts, verify their claims, links and character
 counts, record the new source commit and return changed copy for editor review.

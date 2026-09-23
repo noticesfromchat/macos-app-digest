@@ -17,6 +17,13 @@ export type OgCard =
   | { layout: 'issue'; eyebrow: string; title: string; dek: string }
   /* General pages open under an eyebrow; taxonomy pages add an icon. */
   | { layout: 'page'; eyebrow: string; title: string; dek: string; icon?: string }
+  /* A lane posted to X as media rather than as a link: its mark and name over a
+     portrait list of its apps, each icon beside its own description. It has no
+     page of its own and no overlay to clear, so it carries no brand row. */
+  | { layout: 'list'; title: string; icon: string; apps: { name: string; description: string; icon: OgAppIcon }[] }
+  /* An app posted to X as media: the list layout's header with the app's own
+     icon in place of a lane mark, then what it does and who it is for. */
+  | { layout: 'feature'; name: string; icon: OgAppIcon; description: string; bestFor: string }
   /* An app page carries its own identity block: the icon on its plate, the name,
      and what it does. Every field is already in the app record. */
   | {
@@ -28,7 +35,9 @@ export type OgCard =
 
 /** How an app's mark is drawn, mirroring `iconStyle` and the category fallback. */
 export type OgAppIcon =
-  | { kind: 'plain' | 'backed' | 'contain'; src: string }
+  /* `inset` is the transparent margin some sources draw around the icon, as a
+     fraction of the side. The plate crops it so every icon fills the same frame. */
+  | { kind: 'plain' | 'backed' | 'contain'; src: string; inset?: number }
   /* No icon of its own: the first category's mark, white on its stable colour. */
   | { kind: 'fallback'; phosphor: string; background: string };
 

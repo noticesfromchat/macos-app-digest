@@ -126,15 +126,15 @@ function assetUri(publicPath: string) {
   return `data:${type};base64,${file.toString('base64')}`;
 }
 
-function iconPlate(icon: OgAppIcon) {
+function iconPlate(icon: OgAppIcon, size = ICON) {
   const frame = {
-    display: 'flex', width: ICON, height: ICON, borderRadius: 20,
+    display: 'flex', width: size, height: size, borderRadius: size * 20 / ICON,
     alignItems: 'center', justifyContent: 'center', flexShrink: 0
   };
 
   if (icon.kind === 'fallback') {
     return h('div', { style: { ...frame, backgroundColor: icon.background } },
-      h('img', { src: phosphorMark(icon.phosphor), width: 56, height: 56 }));
+      h('img', { src: phosphorMark(icon.phosphor), width: size / 2, height: size / 2 }));
   }
 
   /* `backed` is transparent artwork that needs paper under it, `contain` is a
@@ -142,7 +142,8 @@ function iconPlate(icon: OgAppIcon) {
      same three cases the app card CSS handles. */
   const backed = icon.kind === 'backed';
   const src = assetUri(icon.src);
-  const inner = backed ? ICON - 14 : ICON;
+  /* A source with its own margin is scaled past the plate and cropped by it. */
+  const inner = backed ? size - 14 : Math.round(size / (1 - 2 * (icon.inset ?? 0)));
   return h('div', {
     style: { ...frame, backgroundColor: backed ? '#ffffff' : 'transparent', overflow: 'hidden' }
   },
@@ -150,7 +151,7 @@ function iconPlate(icon: OgAppIcon) {
       src,
       width: inner,
       height: inner,
-      style: { objectFit: icon.kind === 'plain' ? 'cover' : 'contain', borderRadius: backed ? 8 : 20 }
+      style: { flexShrink: 0, objectFit: icon.kind === 'plain' ? 'cover' : 'contain', borderRadius: backed ? 8 : icon.inset ? 0 : size * 20 / ICON }
     })
   );
 }
@@ -236,7 +237,53 @@ function editorialDesign(card: Extract<OgCard, { layout: 'app' | 'page' | 'issue
   ]);
 }
 
+/** The portrait list layout. Its height follows its rows, so it has no fixed size. */
+const LIST_WIDTH = 1200;
+const LIST_ICON = 128;
+
+/* A plate on the list layouts, lifted off the white page by the Ambient Card edge. */
+const listPlate = (icon: OgAppIcon) =>
+  h('div', {
+    style: { display: 'flex', flexShrink: 0, borderRadius: LIST_ICON * 20 / ICON,
+      boxShadow: '0 0 0 1px rgba(9, 35, 66, 0.07), 0 10px 28px rgba(9, 35, 66, 0.08)' }
+  }, iconPlate(icon, LIST_ICON));
+
+const listShell = (...children: Node[]) =>
+  h('div', {
+    style: { display: 'flex', flexDirection: 'column', width: LIST_WIDTH, backgroundColor: PAGE, padding: '96px 100px' }
+  }, ...children);
+
+const listHeader = (mark: Node, title: string) =>
+  h('div', { style: { display: 'flex', alignItems: 'center', gap: 28 } },
+    // Vollkorn's visible capitals sit above the center of its line box.
+    h('div', { style: { display: 'flex', flexShrink: 0, transform: 'translateY(-9px)' } }, mark),
+    h('div', { style: { fontFamily: SERIF, fontWeight: 600, fontSize: 100, color: INK, lineHeight: 1.04, letterSpacing: '-0.02em' } }, title));
+
+function listDesign(card: Extract<OgCard, { layout: 'list' }>): Node {
+  const row = (app: (typeof card.apps)[number]) =>
+    h('div', { style: { display: 'flex', alignItems: 'flex-start', gap: 48 } },
+      listPlate(app.icon),
+      h('div', { style: { display: 'flex', flexDirection: 'column', width: 820 } },
+        h('div', { style: { fontFamily: SERIF, fontWeight: 600, fontSize: 48, color: INK, lineHeight: 1.1, letterSpacing: '-0.02em' } }, app.name),
+        h('div', { style: { fontFamily: SANS, fontSize: 32, color: MUTED, lineHeight: 1.4, marginTop: 12 } }, app.description)));
+
+  return listShell(
+    listHeader(h('img', { src: phosphorMark(card.icon, INK), width: LIST_ICON, height: LIST_ICON }), card.title),
+    h('div', { style: { display: 'flex', flexDirection: 'column', gap: 72, marginTop: 88 } }, ...card.apps.map(row)));
+}
+
+function featureDesign(card: Extract<OgCard, { layout: 'feature' }>): Node {
+  return listShell(
+    listHeader(listPlate(card.icon), card.name),
+    h('div', { style: { fontFamily: SANS, fontSize: 40, color: INK, lineHeight: 1.4, marginTop: 64 } }, card.description),
+    h('div', { style: { display: 'flex', flexDirection: 'column', marginTop: 56, paddingTop: 40, borderTop: `1px solid ${LINE}` } },
+      h('div', { style: { fontFamily: SANS, fontWeight: 500, fontSize: 22, letterSpacing: '0.14em', color: MUTED, textTransform: 'uppercase' } }, 'Best for'),
+      h('div', { style: { fontFamily: SANS, fontSize: 32, color: MUTED, lineHeight: 1.4, marginTop: 14 } }, card.bestFor)));
+}
+
 function tree(card: OgCard): Node {
+  if (card.layout === 'list') return listDesign(card);
+  if (card.layout === 'feature') return featureDesign(card);
   if (card.layout === 'app' || card.layout === 'issue' || (card.layout === 'page' && card.icon)) return editorialDesign(card);
   const shell = (...children: (Node | false)[]) =>
     h('div', {
@@ -293,6 +340,7 @@ function tree(card: OgCard): Node {
 }
 
 export async function renderOgCard(card: OgCard): Promise<Buffer> {
-  const svg = await satori(tree(card), { width: OG_SIZE.width, height: OG_SIZE.height, fonts });
+  const size = card.layout === 'list' || card.layout === 'feature' ? { width: LIST_WIDTH } : OG_SIZE;
+  const svg = await satori(tree(card), { ...size, fonts });
   return new Resvg(svg, { fitTo: { mode: 'width', value: OG_SIZE.width } }).render().asPng();
 }
