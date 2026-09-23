@@ -159,7 +159,6 @@ gtag('config', ${JSON.stringify(googleAnalyticsId)}, {
         <div class="desktop-nav-links">
           <a href="/explore/" aria-current={current === 'explore' ? 'page' : undefined}>Explore Apps</a>
           <a href="/archive/" aria-current={current === 'archive' ? 'page' : undefined}>Archive</a>
-          <a href="/about/" aria-current={current === 'about' ? 'page' : undefined}>About</a>
         </div>
         <button
           class="desktop-search-button"
@@ -172,10 +171,6 @@ gtag('config', ${JSON.stringify(googleAnalyticsId)}, {
           data-search-open
         >
           <PhosphorIcon name="magnifying-glass" aria-hidden="true" />
-        </button>
-        <button class="theme-toggle nav-theme-toggle" type="button" aria-label="Switch to dark theme" data-theme-toggle>
-          <PhosphorIcon name="moon" data-theme-moon aria-hidden="true" />
-          <PhosphorIcon name="sun" data-theme-sun aria-hidden="true" hidden />
         </button>
         <button
           class="nav-menu-toggle"

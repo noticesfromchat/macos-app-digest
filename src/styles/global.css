@@ -2777,7 +2777,6 @@ h1.home-hero-number {
   .brand-mark { width: 40px; height: 40px; }
   .brand { gap: var(--space-1) 8px; }
   .site-header nav { gap: var(--space-1) 8px; }
-  .theme-toggle { width: 48px; height: 48px; }
   /* Too narrow for a column beside the title, so the search takes its own row under the
      dek rather than squeezing the opening. It is still not a control floating on an empty
      row: it sits directly above the list it filters, and the opening above it keeps the
@@ -2829,10 +2828,6 @@ h1.home-hero-number {
 }
 
 @media (pointer: coarse) {
-  .theme-toggle {
-    width: 48px;
-    height: 48px;
-  }
   .collection-badge { min-height: 48px; }
   .directory-select-options[role="menu"] button { min-height: 48px; }
   /* 40, not 48. The same content — a mark, a label, a count — sits in a 32px row in the
