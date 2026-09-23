@@ -365,7 +365,11 @@ a { color: inherit; }
   border: 1px solid var(--accent);
   border-radius: 999px;
   background: var(--surface);
-  box-shadow: var(--shadow-modal);
+  /* No shadow while parked. The link waits just above the viewport, and the modal
+     shadow (30px down, 90px blur) reached well past that edge: a fixed grey haze over
+     the top-left of the header on every page, in light mode most of all, which read as
+     the header not being white. It arrives with the link. Fixed 2026-09-23. */
+  box-shadow: none;
   color: var(--accent);
   font-size: var(--type-meta);
   line-height: var(--leading-meta);
@@ -378,6 +382,7 @@ a { color: inherit; }
 .skip-link:focus-visible {
   outline: var(--focus-ring);
   outline-offset: var(--focus-offset);
+  box-shadow: var(--shadow-modal);
   transform: translateY(0);
 }
 
