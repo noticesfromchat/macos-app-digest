@@ -172,7 +172,7 @@ export const tagDek = (tag: string) =>
   tagDescriptions[tag] ?? `Mac apps selected for their relevance to ${tagTitle(tag).toLowerCase()} workflows.`;
 
 export const tagMetaDescription = (tag: string) =>
-  `${tagDek(tag)} Each one comes with a short note on what it does and a link to its developer.`;
+  `${tagDek(tag)} Each Mac app has a short note on what it does and a link to its developer.`;
 
 const collectionDescriptions: Record<string, string> = {
   'editors-picks':
