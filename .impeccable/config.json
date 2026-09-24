@@ -14,5 +14,12 @@
         "createdAt": "2026-09-03T21:17:37.003Z"
       }
     ]
+  },
+  "hook": {
+    "enabled": true,
+    "limits": {
+      "maxFindings": 5,
+      "maxChars": 8000
+    }
   }
 }
