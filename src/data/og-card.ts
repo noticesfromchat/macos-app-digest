@@ -18,6 +18,7 @@ import satori from 'satori';
 
 import { MARK_BEACON, MARK_FRAME, MARK_WATERLINE, MARK_WAVE, MARK_WAVE_VIEWBOX } from './mark';
 import { OG_SIZE, type OgAppIcon, type OgCard } from './og';
+import { siteCopy } from './site-copy';
 
 /* Light-theme tokens from DESIGN.md. A card is one fixed image, so it cannot
    follow the reader's theme; it takes the day palette the site opens in. */
@@ -180,7 +181,7 @@ const footer = () =>
     }
   },
     h('div', { style: { display: 'flex' } }, 'appwaypoint.app'),
-    h('div', { style: { display: 'flex' } }, 'New issues published every Friday')
+    h('div', { style: { display: 'flex' } }, siteCopy['site.cardFooter'])
   );
 
 /**
@@ -242,33 +243,40 @@ const LIST_WIDTH = 1200;
 const LIST_ICON = 128;
 
 /* A plate on the list layouts, lifted off the white page by the Ambient Card edge. */
-const listPlate = (icon: OgAppIcon) =>
+/* `fade` scales the shadow with a row that is still arriving: Satori does not carry a
+   parent's opacity into box-shadow, so a hidden row left its plate's shadow behind. */
+const listPlate = (icon: OgAppIcon, fade = 1) =>
   h('div', {
     style: { display: 'flex', flexShrink: 0, borderRadius: LIST_ICON * 20 / ICON,
-      boxShadow: '0 0 0 1px rgba(9, 35, 66, 0.07), 0 10px 28px rgba(9, 35, 66, 0.08)' }
+      boxShadow: `0 0 0 1px rgba(9, 35, 66, ${0.07 * fade}), 0 10px 28px rgba(9, 35, 66, ${0.08 * fade})` }
   }, iconPlate(icon, LIST_ICON));
 
-const listShell = (...children: Node[]) =>
+const listShell = (...children: (Node | null)[]) =>
   h('div', {
-    style: { display: 'flex', flexDirection: 'column', width: LIST_WIDTH, backgroundColor: PAGE, padding: '96px 100px' }
+    style: { display: 'flex', flexDirection: 'column', width: LIST_WIDTH, height: '100%', backgroundColor: PAGE, padding: '96px 100px' }
   }, ...children);
 
-const listHeader = (mark: Node, title: string) =>
+const listHeader = (mark: Node | null, title: string) =>
   h('div', { style: { display: 'flex', alignItems: 'center', gap: 28 } },
     // Vollkorn's visible capitals sit above the center of its line box.
-    h('div', { style: { display: 'flex', flexShrink: 0, transform: 'translateY(-9px)' } }, mark),
+    mark && h('div', { style: { display: 'flex', flexShrink: 0, transform: 'translateY(-9px)' } }, mark),
     h('div', { style: { fontFamily: SERIF, fontWeight: 600, fontSize: 100, color: INK, lineHeight: 1.04, letterSpacing: '-0.02em' } }, title));
 
 function listDesign(card: Extract<OgCard, { layout: 'list' }>): Node {
   const row = (app: (typeof card.apps)[number]) =>
-    h('div', { style: { display: 'flex', alignItems: 'flex-start', gap: 48 } },
-      listPlate(app.icon),
+    h('div', { style: { display: 'flex', alignItems: 'flex-start', gap: 48,
+      opacity: app.opacity ?? 1, transform: `translateY(${app.rise ?? 0}px)` } },
+      listPlate(app.icon, app.opacity ?? 1),
       h('div', { style: { display: 'flex', flexDirection: 'column', width: 820 } },
         h('div', { style: { fontFamily: SERIF, fontWeight: 600, fontSize: 48, color: INK, lineHeight: 1.1, letterSpacing: '-0.02em' } }, app.name),
         h('div', { style: { fontFamily: SANS, fontSize: 32, color: MUTED, lineHeight: 1.4, marginTop: 12 } }, app.description)));
 
+  const mark = card.icon ? h('img', { src: phosphorMark(card.icon, INK), width: LIST_ICON, height: LIST_ICON }) : null;
+
   return listShell(
-    listHeader(h('img', { src: phosphorMark(card.icon, INK), width: LIST_ICON, height: LIST_ICON }), card.title),
+    /* The issue's label, set like the feature layout's "Best for". */
+    card.eyebrow ? h('div', { style: { fontFamily: SANS, fontWeight: 500, fontSize: 22, letterSpacing: '0.14em', color: MUTED, textTransform: 'uppercase', marginBottom: 24 } }, card.eyebrow) : null,
+    listHeader(mark, card.title),
     h('div', { style: { display: 'flex', flexDirection: 'column', gap: 72, marginTop: 88 } }, ...card.apps.map(row)));
 }
 
@@ -340,7 +348,9 @@ function tree(card: OgCard): Node {
 }
 
 export async function renderOgCard(card: OgCard): Promise<Buffer> {
-  const size = card.layout === 'list' || card.layout === 'feature' ? { width: LIST_WIDTH } : OG_SIZE;
+  const size = card.layout === 'list' || card.layout === 'feature'
+    ? { width: LIST_WIDTH, ...(card.layout === 'list' && card.height ? { height: card.height } : {}) }
+    : OG_SIZE;
   const svg = await satori(tree(card), { ...size, fonts });
   return new Resvg(svg, { fitTo: { mode: 'width', value: OG_SIZE.width } }).render().asPng();
 }

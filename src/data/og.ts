@@ -20,7 +20,18 @@ export type OgCard =
   /* A lane posted to X as media rather than as a link: its mark and name over a
      portrait list of its apps, each icon beside its own description. It has no
      page of its own and no overlay to clear, so it carries no brand row. */
-  | { layout: 'list'; title: string; icon: string; apps: { name: string; description: string; icon: OgAppIcon }[] }
+  /* An issue has no mark of its own, so it names itself instead: the issue number and
+     date in a small label above the headline. A fixed `height` and each app's
+     `opacity` and `rise` exist for the animated issue GIF, whose frames are this same
+     card with its rows part way into place; a still card sets none of them. */
+  | {
+      layout: 'list';
+      title: string;
+      icon?: string;
+      eyebrow?: string;
+      height?: number;
+      apps: { name: string; description: string; icon: OgAppIcon; opacity?: number; rise?: number }[];
+    }
   /* An app posted to X as media: the list layout's header with the app's own
      icon in place of a lane mark, then what it does and who it is for. */
   | { layout: 'feature'; name: string; icon: OgAppIcon; description: string; bestFor: string }
