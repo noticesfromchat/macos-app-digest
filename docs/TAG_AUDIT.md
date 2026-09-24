@@ -50,13 +50,14 @@ qualifies rather than to a handful.
 
 ## 3. Protected tags
 
-These tags carry a single app on purpose. Do not retire them in a routine audit, and do
-not stretch other records onto them to inflate the count. Removing one requires an
+These tags were created for a single app on purpose. Do not retire them in a routine
+audit, and do not stretch other records onto them to inflate the count. A tag that has
+since gained apps on its own merits keeps its protection. Removing one requires an
 explicit editorial decision recorded in the audit report.
 
 | Tag | Sole app | Why it is protected |
 | --- | --- | --- |
-| `health` | touchgrass | `netlify.toml` redirects the retired `/categories/thrive/` to `/tags/health/`. Retiring the tag turns a live 301 into a 404. |
+| `health` | touchgrass (now also lookaway, pandan) | `netlify.toml` redirects the retired `/categories/thrive/` to `/tags/health/`. Retiring the tag turns a live 301 into a 404. |
 | `finance` | stockdock | The only tag that states what the app is. Already excluded from `getPopularTags`, so it never crowds discovery surfaces. |
 | `maps` | mapos | The only tag that states what the app is. `STYLE_GUIDE.md` cites mapos as the worked example for `iconCategory`; the record is deliberately unusual. |
 | `database` | fluentdb | Precise, high reader intent, and an explicit member of Developer Tools. |
@@ -96,7 +97,7 @@ that adds tags must not quietly spend every record's headroom.
 When a record would reach six, name its weakest tag rather than accepting the ceiling.
 Rank weakness by:
 
-1. **Reach.** A tag on 45 of 102 apps carries far less discovery signal than one on 4.
+1. **Reach.** A tag on 73 of 166 apps carries far less discovery signal than one on 4.
    `utility` and `productivity` are the broadest tags in the catalog and are usually the
    weakest thing on any record holding them.
 2. **Redundancy.** A tag whose category is already reached by another tag on the same

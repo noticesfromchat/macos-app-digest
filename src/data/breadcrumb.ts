@@ -3,8 +3,8 @@
    purpose. Google's guidance is that structured data describes what a reader can see,
    and the only way to keep that true over time is to give the two one source.
 
-   App pages route through Explore rather than a category. 92 of the 102 apps carry more
-   than one category (up to four), and the `categories` array is derived from tags and
+   App pages route through Explore rather than a category. 148 of the 166 apps carry more
+   than one category (up to five, as of September 2026), and the `categories` array is derived from tags and
    rewritten by scripts/sync-app-categories.mjs, so its first entry carries no editorial
    meaning and would change under the page without anyone deciding it had. Explore is the
    honest parent: it is the one page that contains every app. */
