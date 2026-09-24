@@ -2,6 +2,8 @@
 import BrandMark from '../components/BrandMark.astro';
 import PhosphorIcon from '../components/PhosphorIcon.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import RichText from '../components/RichText.astro';
+import { siteCopy } from '../data/site-copy';
 import { breadcrumbSchema, type Crumb } from '../data/breadcrumb';
 import { OG_SIZE, ogPath } from '../data/og';
 import '@fontsource/vollkorn/latin-400.css';
@@ -11,13 +13,13 @@ import '../styles/global.css';
 import '../styles/search.css';
 
 const {
-  title = 'App Waypoint — Curated Mac Apps for Experienced Users',
-  description = 'App Waypoint is a human-curated weekly guide to exceptional Mac apps, productivity tools, automation utilities, AI software and worthwhile reading.',
+  title = `App Waypoint — ${siteCopy['home.titleTagline']}`,
+  description = siteCopy['site.description'],
   current = '',
   type = 'website',
   publishedTime,
   socialImage = ogPath('default'),
-  socialImageAlt = 'App Waypoint, a weekly guide to curated Mac apps for experienced users.',
+  socialImageAlt = siteCopy['site.socialAlt'],
   /* Every card is 1200x630, so the dimensions are the default rather than a prop a
      page has to remember. Override only if a page ever points `socialImage` at
      something a different shape: a scraper trusts this tag over the file itself. */
@@ -53,7 +55,7 @@ const graph = [
     '@id': new URL('/#website', Astro.site).href,
     name: 'App Waypoint',
     url: new URL('/', Astro.site).href,
-    description: 'App Waypoint is a human-curated weekly guide to exceptional Mac apps, productivity tools, automation utilities, AI software and worthwhile reading.',
+    description: siteCopy['site.description'],
     publisher: { '@id': new URL('/#publisher', Astro.site).href }
   },
   type === 'article'
@@ -279,14 +281,14 @@ gtag('config', ${JSON.stringify(googleAnalyticsId)}, {
         aria-describedby="rss-description"
       >
         <div class="rss-modal-topline">
-          <p class="rss-kicker">Subscribe</p>
+          <p class="rss-kicker">{siteCopy['subscribe.dialogKicker']}</p>
           <button class="rss-close" type="button" aria-label="Close RSS subscription dialog" data-rss-close>
             <PhosphorIcon name="x" aria-hidden="true" />
           </button>
         </div>
-        <h2 id="rss-title">App Waypoint RSS feed</h2>
+        <h2 id="rss-title">{siteCopy['subscribe.dialogTitle']}</h2>
         <p id="rss-description" class="rss-description">
-          We love <a href="/tags/rss/">RSS</a> too, and want to make it easy for you to subscribe. Copy the URL below and paste it into your favorite RSS reader to subscribe.
+          <RichText text={siteCopy['subscribe.dialogBody']} />
         </p>
         <div class="rss-url-card">
           <code class="rss-url-value" data-rss-url>{rssUrl.href}</code>

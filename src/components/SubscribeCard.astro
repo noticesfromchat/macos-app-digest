@@ -1,5 +1,7 @@
 ---
 import PhosphorIcon from './PhosphorIcon.astro';
+import RichText from './RichText.astro';
+import { siteCopy } from '../data/site-copy';
 
 /* The subscribe offer, in one place. It began as inline markup on the Explore page and
    now closes issue pages and the archive index instead: a reader who has just finished
@@ -19,10 +21,10 @@ const rssFeedUrl = new URL('/rss.xml', Astro.site).href;
     <span class="explore-subscribe-icon" aria-hidden="true">
       <PhosphorIcon name="rss-simple" />
     </span>
-    <Heading>Apps delivered every Friday</Heading>
+    <Heading>{siteCopy['subscribe.cardHeading']}</Heading>
   </div>
   <div class="explore-subscribe-content">
-    <p class="explore-subscribe-body">We love <a href="/tags/rss/">RSS</a> and want to make it easy for you to subscribe. Copy the URL and paste it into your favorite RSS reader to subscribe.</p>
+    <p class="explore-subscribe-body"><RichText text={siteCopy['subscribe.cardBody']} /></p>
     <div class="rss-url-card explore-subscribe-url">
       <code class="rss-url-value">{rssFeedUrl}</code>
       <button

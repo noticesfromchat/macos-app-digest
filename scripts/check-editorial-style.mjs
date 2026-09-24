@@ -6,7 +6,7 @@ import process from 'node:process';
 const root = process.cwd();
 const checkedRoots = ['src/content', 'src/pages', 'src/components', 'src/layouts', 'src/data'];
 const checkedExtensions = new Set(['.astro', '.md', '.ts']);
-const oxfordCommaPattern = /\b[\w'’-]+(?:\s+[\w'’-]+)*,\s+[^,\n]+,\s+(?:and|or)\b/i;
+export const oxfordCommaPattern = /\b[\w'’-]+(?:\s+[\w'’-]+)*,\s+[^,\n]+,\s+(?:and|or)\b/i;
 
 /* The Plain Dash Rule, checked wherever reader-facing copy is written rather than in
    `src/content` alone. Scanning only content used to stand in for the rule's three
@@ -25,12 +25,12 @@ const oxfordCommaPattern = /\b[\w'’-]+(?:\s+[\w'’-]+)*,\s+[^,\n]+,\s+(?:and|
 
    See The Plain Dash Rule in DESIGN.md and Editorial punctuation in
    docs/STYLE_GUIDE.md. */
-const editorialDashPattern = /[—–]/;
+export const editorialDashPattern = /[—–]/;
 /* The Two Digit Issue Rule. Records store the number three digits wide; published copy
    writes two. The rule was implemented three separate times and skipped in five more
    before it was written down, so it is checked here rather than trusted. `src/data/issue.ts`
    is the one place allowed to produce the label. */
-const issueNumberPattern = /\bIssue\s+\d{3}\b/;
+export const issueNumberPattern = /\bIssue\s+\d{3}\b/;
 /* The Catalog Spelling Rule. Public copy writes "catalog". The site carried both spellings
    on 2026-09-09: the 404 page's own controls read "Catalog" while the social card that
    page generates read "catalogue", and the two only met because a single change edited

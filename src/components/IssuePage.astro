@@ -8,6 +8,7 @@ import SubscribeCard from './SubscribeCard.astro';
 import WaveRule from './WaveRule.astro';
 import ReadingCard from './ReadingCard.astro';
 import { issueLabel } from '../data/issue';
+import { siteCopy } from '../data/site-copy';
 
 type Issue = CollectionEntry<'issues'>['data'];
 type AppEntry = CollectionEntry<'apps'>;
@@ -57,7 +58,7 @@ const IssueHeading = homepage ? 'p' : 'h1';
         <Wordmark class="home-hero-wordmark">App Waypoint</Wordmark>
         <WaveRule />
         <p class="home-hero-tagline">
-          Your weekly guide to Mac apps.<br />New issues published every Friday.
+          {siteCopy['home.heroLine1']}<br />{siteCopy['home.heroLine2']}
         </p>
       </div>
 

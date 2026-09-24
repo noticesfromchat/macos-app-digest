@@ -1,0 +1,15 @@
+---
+import { inlineSegments, type InlineSegment } from '../data/rich-text';
+
+/* Renders one line of site copy with its inline marks. Paragraph structure belongs to
+   the page, which knows whether a paragraph is a dek, a list item or an emphasis line. */
+const { text, segments } = Astro.props as { text?: string; segments?: InlineSegment[] };
+const parts = segments ?? inlineSegments(text ?? '');
+---
+{parts.map((part) =>
+  part.kind === 'link'
+    ? <a href={part.href} rel={part.external ? 'noopener' : undefined}>{part.text}</a>
+    : part.kind === 'strong'
+      ? <strong>{part.text}</strong>
+      : part.text
+)}

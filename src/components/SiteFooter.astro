@@ -1,12 +1,13 @@
 ---
 import PhosphorIcon from './PhosphorIcon.astro';
+import { siteCopy } from '../data/site-copy';
 
 const { current = '' } = Astro.props;
 ---
 
 <footer id="site-footer" class="site-footer">
   <div class="site-footer-inner page-shell">
-    <p>Your weekly guide to Mac apps.</p>
+    <p>{siteCopy['footer.tagline']}</p>
     <nav aria-label="Footer navigation">
       <a href="/explore/" aria-current={current === 'explore' ? 'page' : undefined}>Explore Apps</a>
       <a href="/archive/" aria-current={current === 'archive' ? 'page' : undefined}>Archive</a>

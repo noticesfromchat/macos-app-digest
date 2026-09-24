@@ -31,8 +31,8 @@ const sentences = (value) => (String(value ?? '').trim().match(/[.!?](?:["')\]]+
    time and a message a writer can act on. */
 const oxfordComma = /\b[\w'’-]+(?:\s+[\w'’-]+)*,\s+[^,\n]+,\s+(?:and|or)\b/i;
 
-function styleProblem(value) {
-  if (/[—–]/.test(value)) return 'Use a comma, a colon or parentheses rather than a dash.';
+function styleProblem(value, { externalTitle = false } = {}) {
+  if (!externalTitle && /[—–]/.test(value)) return 'Use a comma, a colon or parentheses rather than a dash.';
   if (/[‘’“”]/.test(value)) return 'Use straight quotes and apostrophes.';
   if (/catalogue/i.test(value)) return 'Write "catalog" in reader-facing copy.';
   if (oxfordComma.test(value)) return 'Drop the comma before "and" or "or" in a list.';
@@ -41,6 +41,7 @@ function styleProblem(value) {
 
 export const issueLimits = {
   dek: { chars: [80, 320], words: [18, 45], label: 'Dek' },
+  metaDescription: { chars: [70, 160], label: 'Search description' },
   rssTitle: { chars: [4, 90], label: 'RSS title' },
   sectionTitle: { chars: [1, 100], label: 'Section title' },
   reason: { chars: [40, 280], words: [12, 45], label: "Editor's Pick reason" },
@@ -68,7 +69,9 @@ function checkField(value, limitKey) {
       return `${limit.label} must be ${minWords} to ${maxWords} words. It is ${count}.`;
     }
   }
-  return styleProblem(trimmed);
+  /* A reading or video title is the source's own, and keeps its own punctuation: the
+     checker exempts every `title:` line for the same reason. */
+  return styleProblem(trimmed, { externalTitle: limitKey === 'readingTitle' || limitKey === 'videoTitle' });
 }
 
 /* `{rss.title} — Issue {label} — App Waypoint`, the same assembly validate-content.mjs
@@ -88,6 +91,9 @@ export function validateIssueInput(input, issue) {
   const add = (key, message) => { if (message) errors[key] = message; };
 
   add('dek', checkField(input?.dek, 'dek'));
+  /* Optional, as in the schema: empty means the dek stands in for it. */
+  if (typeof input?.metaDescription !== 'string') errors.metaDescription = 'Search description must be text.';
+  else if (input.metaDescription.trim()) add('metaDescription', checkField(input.metaDescription, 'metaDescription'));
   add('rssTitle', checkField(input?.rssTitle, 'rssTitle') ?? pageTitleProblem(String(input?.rssTitle ?? '').trim(), issue.number));
 
   const sections = Array.isArray(input?.sections) ? input.sections : [];
@@ -134,6 +140,7 @@ function readIssue(source, id) {
     name: `Issue ${String(data.number ?? '').replace(/^0+(?=\d\d)/, '')} · ${data.date ?? id}`,
     date: data.date ?? '',
     dek: data.dek ?? '',
+    metaDescription: data.metaDescription ?? '',
     rssTitle: data.rss?.title ?? '',
     sections: (data.sections ?? []).map((section) => ({ eyebrow: section.eyebrow, title: section.title })),
     pickApp: data.editorsPick?.app ?? null,
@@ -236,6 +243,21 @@ export function applyIssueEdits(source, id, input, issue) {
   const lines = body.split('\n');
 
   setValue(lines, findTopLevel(lines, 'dek'), 'dek', input.dek.trim(), issue.dek);
+
+  /* The one optional top level line. Written before `rss:` when it is new, and removed
+     rather than emptied when it is cleared, which is what the schema's optional means. */
+  const metaDescription = input.metaDescription.trim();
+  const metaIndex = lines.findIndex((line) => /^metaDescription:/.test(line));
+  if (metaIndex !== -1 && metaIndex + 1 < lines.length && /^\s+\S/.test(lines[metaIndex + 1])) {
+    throw new Error('metaDescription runs over several lines. Edit it in the issue file.');
+  }
+  if (metaDescription && metaIndex !== -1) {
+    setValue(lines, metaIndex, 'metaDescription', metaDescription, issue.metaDescription);
+  } else if (metaDescription) {
+    lines.splice(findTopLevel(lines, 'rss'), 0, `metaDescription: ${scalar(metaDescription)}`);
+  } else if (metaIndex !== -1) {
+    lines.splice(metaIndex, 1);
+  }
   setValue(lines, childLine(lines, 'rss', 'title'), 'title', input.rssTitle.trim(), issue.rssTitle);
 
   sequenceItems(lines, 'sections').forEach((itemLines, index) => {

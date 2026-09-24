@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import { OG_SIZE, ogPath } from '../../data/og';
+import { siteCopy } from '../../data/site-copy';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import { topLevelTrail, itemListSchema } from '../../data/breadcrumb';
@@ -53,18 +54,15 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
   title="Explore Mac Apps — App Waypoint"
   socialImage={ogPath('explore')}
   socialImageSize={OG_SIZE}
-  socialImageAlt="Explore every Mac app App Waypoint has recommended, by category, collection or tag."
-  description="Browse every Mac app App Waypoint has recommended, by category, collection or tag, with the full catalog filterable and sortable on one page."
+  socialImageAlt={siteCopy['explore.socialAlt']}
+  description={siteCopy['explore.metaDescription']}
   current="explore"
 >
   <section class="page-shell archive-page explore-page">
     <Breadcrumb trail={trail} />
     <header class="explore-hero">
       <h1>Explore Apps</h1>
-      <p class="dek">
-        Hand-picked Mac apps from every issue, browsable by category, collection or tag.
-        Apps selected and added every Friday.
-      </p>
+      <p class="dek">{siteCopy['explore.dek']}</p>
     </header>
 
     <div class="explore-taxonomy">

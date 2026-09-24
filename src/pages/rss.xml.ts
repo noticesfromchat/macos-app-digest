@@ -1,6 +1,7 @@
 import { getCollection } from 'astro:content';
 
 import { issueName } from '../data/issue';
+import { siteCopy } from '../data/site-copy';
 
 const escapeXml = (value: string) =>
   value
@@ -48,7 +49,7 @@ export async function GET(context: { site?: URL }) {
   const feedLink = new URL('/rss.xml', site).href;
   const homeLink = new URL('/', site).href;
   const imageUrl = new URL('/icon-512.png', site).href;
-  const description = 'App Waypoint is a curated weekly guide to exceptional Mac apps, productivity tools, automation utilities, AI software and worthwhile reading.';
+  const description = siteCopy['site.feedDescription'];
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
