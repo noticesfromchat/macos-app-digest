@@ -1,13 +1,16 @@
 ---
+import PhosphorIcon from './PhosphorIcon.astro';
+import { siteCopy } from '../data/site-copy';
+
 const { current = '' } = Astro.props;
 ---
 
 <footer id="site-footer" class="site-footer">
   <div class="site-footer-inner page-shell">
-    <p>Your weekly guide to Mac apps.</p>
+    <p>{siteCopy['footer.tagline']}</p>
     <nav aria-label="Footer navigation">
       <a href="/explore/" aria-current={current === 'explore' ? 'page' : undefined}>Explore Apps</a>
-      <a href="/archive/" aria-current={current === 'archive' ? 'page' : undefined}>Archive</a>
+      <a href="/issues/" aria-current={current === 'archive' ? 'page' : undefined}>Issues</a>
       <a href="/about/" aria-current={current === 'about' ? 'page' : undefined}>About</a>
       <button
         type="button"
@@ -16,6 +19,12 @@ const { current = '' } = Astro.props;
         aria-controls="rss-feed-modal"
         data-rss-open
       >Subscribe</button>
+      {/* Beside the X mark on a row, above it once the nav stacks. BaseLayout's theme
+          script finds it by data-theme-toggle and keeps the label and glyph current. */}
+      <button class="theme-toggle footer-theme-toggle" type="button" aria-label="Switch to dark theme" data-theme-toggle>
+        <PhosphorIcon name="moon" data-theme-moon aria-hidden="true" />
+        <PhosphorIcon name="sun" data-theme-sun aria-hidden="true" hidden />
+      </button>
       <a
         class="footer-social-link"
         href="https://x.com/macappwaypoint"
@@ -103,6 +112,26 @@ const { current = '' } = Astro.props;
     width: 24px;
     justify-content: center;
   }
+
+  /* The theme toggle takes the X mark's box: a 24px-wide target at the footer's row
+     height. The .theme-toggle base in
+     global.css is the header's 40px disc; this outranks it.
+
+     Matched by drawn height, not by box. The X path fills 90.4% of its viewBox, so at
+     16px it draws 14.5px; Phosphor's moon fills 79.7% and the sun 93.8%, so at the
+     same 16px box the moon drew 12.7px and the sun 15px. Each box is sized so its glyph
+     lands at the X's 14.5px: 14.47 / 0.797 and 14.47 / 0.9375. */
+  .footer-theme-toggle {
+    display: inline-flex;
+    width: 24px;
+    height: auto;
+    justify-content: center;
+    color: var(--text);
+  }
+
+  /* The moon's path sits high in its viewBox; this lands its top and bottom on the X's. */
+  .footer-theme-toggle :global([data-theme-moon]) { --icon-size: 18.17; transform: translateY(.43px); }
+  .footer-theme-toggle :global([data-theme-sun]) { --icon-size: 15.43; }
 
   .footer-social-link svg {
     width: 16px;

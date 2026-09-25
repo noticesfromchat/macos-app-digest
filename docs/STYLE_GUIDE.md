@@ -181,7 +181,7 @@ it. See Issue Subscribe Card in `DESIGN.md` for the structure and the reasoning.
   archive lists and navigation callouts may use its full width.
 - New standalone pages must adopt the shared shell so responsive gutters remain
   consistent across the publication.
-- The global header exposes Explore Apps, Archive, About, an icon-only Phosphor Search
+- The global header exposes Explore Apps, Issues, About, an icon-only Phosphor Search
   control and the icon-only theme toggle on desktop. Mobile keeps those destinations in
   the navigation dialog.
 - Every page includes one keyboard skip link from the top of the document to the main

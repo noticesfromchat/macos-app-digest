@@ -8,4 +8,7 @@ categories: [mac-utilities-customization, files-research-documents, developer-to
 collections: [editors-picks, community-favorites]
 source: r/macapps discussion, current GitHub activity and canonical repository
 homepage: https://github.com/tw93/Mole
+icon: /app-icons/mole.png
+iconStyle: plain
+iconAccent: "#b67800"
 ---

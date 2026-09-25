@@ -17,7 +17,7 @@
  * something that passes here and fails `npm run validate`. An editor that can break the
  * build is worse than no editor.
  */
-import { readFile, readdir, writeFile } from 'node:fs/promises';
+import { access, readFile, readdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { parse } from 'yaml';
 
@@ -31,8 +31,8 @@ const sentences = (value) => (String(value ?? '').trim().match(/[.!?](?:["')\]]+
    time and a message a writer can act on. */
 const oxfordComma = /\b[\w'’-]+(?:\s+[\w'’-]+)*,\s+[^,\n]+,\s+(?:and|or)\b/i;
 
-function styleProblem(value) {
-  if (/[—–]/.test(value)) return 'Use a comma, a colon or parentheses rather than a dash.';
+function styleProblem(value, { externalTitle = false } = {}) {
+  if (!externalTitle && /[—–]/.test(value)) return 'Use a comma, a colon or parentheses rather than a dash.';
   if (/[‘’“”]/.test(value)) return 'Use straight quotes and apostrophes.';
   if (/catalogue/i.test(value)) return 'Write "catalog" in reader-facing copy.';
   if (oxfordComma.test(value)) return 'Drop the comma before "and" or "or" in a list.';
@@ -41,7 +41,8 @@ function styleProblem(value) {
 
 export const issueLimits = {
   dek: { chars: [80, 320], words: [18, 45], label: 'Dek' },
-  rssTitle: { chars: [4, 90], label: 'RSS title' },
+  metaDescription: { chars: [70, 160], label: 'Search description' },
+  rssTitle: { chars: [4, 90], label: 'Issue title' },
   sectionTitle: { chars: [1, 100], label: 'Section title' },
   reason: { chars: [40, 280], words: [12, 45], label: "Editor's Pick reason" },
   videoTitle: { chars: [1, 140], label: 'Video title' },
@@ -68,7 +69,9 @@ function checkField(value, limitKey) {
       return `${limit.label} must be ${minWords} to ${maxWords} words. It is ${count}.`;
     }
   }
-  return styleProblem(trimmed);
+  /* A reading or video title is the source's own, and keeps its own punctuation: the
+     checker exempts every `title:` line for the same reason. */
+  return styleProblem(trimmed, { externalTitle: limitKey === 'readingTitle' || limitKey === 'videoTitle' });
 }
 
 /* `{rss.title} — Issue {label} — App Waypoint`, the same assembly validate-content.mjs
@@ -79,16 +82,29 @@ function pageTitleProblem(rssTitle, number) {
   if (assembled.length >= 60) {
     return `With "Issue ${label} — App Waypoint" this makes a ${assembled.length} character page title. It must stay under 60.`;
   }
-  if (/[.]$/.test(rssTitle)) return 'An RSS title is a headline, not a sentence, so it takes no full stop.';
+  if (/[.]$/.test(rssTitle)) return 'An issue title is a headline, not a sentence, so it takes no full stop.';
   return null;
 }
+
+const iconNamePattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 export function validateIssueInput(input, issue) {
   const errors = {};
   const add = (key, message) => { if (message) errors[key] = message; };
 
   add('dek', checkField(input?.dek, 'dek'));
+  /* Optional, as in the schema: empty means the dek stands in for it. */
+  if (typeof input?.metaDescription !== 'string') errors.metaDescription = 'Search description must be text.';
+  else if (input.metaDescription.trim()) add('metaDescription', checkField(input.metaDescription, 'metaDescription'));
   add('rssTitle', checkField(input?.rssTitle, 'rssTitle') ?? pageTitleProblem(String(input?.rssTitle ?? '').trim(), issue.number));
+  /* Optional, as in the schema. Empty removes it and the homepage shows the archive box.
+     Whether the name exists in the icon set is checked on save, against the files. */
+  if (input?.icon !== undefined) {
+    if (typeof input.icon !== 'string') errors.icon = 'Icon must be text.';
+    else if (input.icon.trim() && !iconNamePattern.test(input.icon.trim())) {
+      errors.icon = 'Write a Phosphor icon name in lowercase with hyphens, such as flower-lotus.';
+    }
+  }
 
   const sections = Array.isArray(input?.sections) ? input.sections : [];
   if (sections.length !== issue.sections.length) {
@@ -134,6 +150,8 @@ function readIssue(source, id) {
     name: `Issue ${String(data.number ?? '').replace(/^0+(?=\d\d)/, '')} · ${data.date ?? id}`,
     date: data.date ?? '',
     dek: data.dek ?? '',
+    metaDescription: data.metaDescription ?? '',
+    icon: data.icon ?? '',
     rssTitle: data.rss?.title ?? '',
     sections: (data.sections ?? []).map((section) => ({ eyebrow: section.eyebrow, title: section.title })),
     pickApp: data.editorsPick?.app ?? null,
@@ -236,6 +254,30 @@ export function applyIssueEdits(source, id, input, issue) {
   const lines = body.split('\n');
 
   setValue(lines, findTopLevel(lines, 'dek'), 'dek', input.dek.trim(), issue.dek);
+
+  /* The one optional top level line. Written before `rss:` when it is new, and removed
+     rather than emptied when it is cleared, which is what the schema's optional means. */
+  const metaDescription = input.metaDescription.trim();
+  const metaIndex = lines.findIndex((line) => /^metaDescription:/.test(line));
+  if (metaIndex !== -1 && metaIndex + 1 < lines.length && /^\s+\S/.test(lines[metaIndex + 1])) {
+    throw new Error('metaDescription runs over several lines. Edit it in the issue file.');
+  }
+  if (metaDescription && metaIndex !== -1) {
+    setValue(lines, metaIndex, 'metaDescription', metaDescription, issue.metaDescription);
+  } else if (metaDescription) {
+    lines.splice(findTopLevel(lines, 'rss'), 0, `metaDescription: ${scalar(metaDescription)}`);
+  } else if (metaIndex !== -1) {
+    lines.splice(metaIndex, 1);
+  }
+  /* The other optional top level line, handled the same way: written before `rss:` when
+     new, removed when cleared. A request without the field leaves the file alone. */
+  if (input.icon !== undefined) {
+    const icon = input.icon.trim();
+    const iconIndex = lines.findIndex((line) => /^icon:/.test(line));
+    if (icon && iconIndex !== -1) setValue(lines, iconIndex, 'icon', icon, issue.icon);
+    else if (icon) lines.splice(findTopLevel(lines, 'rss'), 0, `icon: ${scalar(icon)}`);
+    else if (iconIndex !== -1) lines.splice(iconIndex, 1);
+  }
   setValue(lines, childLine(lines, 'rss', 'title'), 'title', input.rssTitle.trim(), issue.rssTitle);
 
   sequenceItems(lines, 'sections').forEach((itemLines, index) => {
@@ -275,6 +317,14 @@ export async function saveIssueRecord(root, id, input) {
 
   const issue = readIssue(source, id);
   const errors = validateIssueInput(input, issue);
+  const icon = typeof input?.icon === 'string' ? input.icon.trim() : '';
+  if (!errors.icon && icon) {
+    try {
+      await access(path.join(root, 'node_modules/@phosphor-icons/core/assets/regular', `${icon}.svg`));
+    } catch {
+      errors.icon = `"${icon}" is not in the Phosphor icon set. Browse the names at phosphoricons.com.`;
+    }
+  }
   if (Object.keys(errors).length) {
     throw Object.assign(new Error('Please correct the highlighted fields.'), {
       statusCode: 422,

@@ -44,4 +44,6 @@ scripts/app-editor-lib.mjs
 scripts/app-editor.test.mjs
 scripts/taxonomy-editor-lib.mjs
 scripts/taxonomy-editor.test.mjs
+scripts/site-copy-editor-lib.mjs
+scripts/site-copy-editor.test.mjs
 tools/app-editor/

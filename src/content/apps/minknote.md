@@ -7,4 +7,6 @@ tags: [notes, markdown, local, writing]
 categories: [writing-notes-reading]
 source: Product Hunt launch and official homepage
 homepage: https://muse23.com/apps/minknote/
+icon: /app-icons/minknote.png
+iconStyle: plain
 ---

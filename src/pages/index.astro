@@ -1,20 +1,16 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import IssuePage from '../components/IssuePage.astro';
+import HomePage from '../components/HomePage.astro';
 import { OG_SIZE, ogPath } from '../data/og';
-
-const issues = await getCollection('issues');
-const apps = await getCollection('apps');
-const latestIssue = [...issues].sort((a, b) => b.data.slug.localeCompare(a.data.slug))[0];
+import { siteCopy } from '../data/site-copy';
 ---
 <BaseLayout
-  title="App Waypoint — Curated Mac Apps for Experienced Users"
-  description="App Waypoint is a human-curated weekly guide to exceptional Mac apps, productivity tools, automation utilities, AI software and worthwhile reading."
+  title={`App Waypoint — ${siteCopy['home.titleTagline']}`}
+  description={siteCopy['site.description']}
   current="issue"
   socialImage={ogPath('home')}
   socialImageSize={OG_SIZE}
-  socialImageAlt="App Waypoint: a weekly guide to the Mac apps, tools and reading worth an experienced user's attention."
+  socialImageAlt={siteCopy['home.socialAlt']}
 >
-  <IssuePage homepage={true} issue={latestIssue.data} appEntries={apps} />
+  <HomePage />
 </BaseLayout>

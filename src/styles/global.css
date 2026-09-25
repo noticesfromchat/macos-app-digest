@@ -351,7 +351,10 @@ body {
 /* Grows to fill what the header and footer do not, and never shrinks below its content. */
 main { flex: 1 0 auto; }
 
-a { color: inherit; }
+/* The site draws no underlines, so no link starts with one. Every role below sets its own
+   colour; this only removes the browser's underline, which a link without a role used to
+   pick up on its own. */
+a { color: inherit; text-decoration: none; }
 
 .skip-link {
   position: fixed;
@@ -365,7 +368,11 @@ a { color: inherit; }
   border: 1px solid var(--accent);
   border-radius: 999px;
   background: var(--surface);
-  box-shadow: var(--shadow-modal);
+  /* No shadow while parked. The link waits just above the viewport, and the modal
+     shadow (30px down, 90px blur) reached well past that edge: a fixed grey haze over
+     the top-left of the header on every page, in light mode most of all, which read as
+     the header not being white. It arrives with the link. Fixed 2026-09-23. */
+  box-shadow: none;
   color: var(--accent);
   font-size: var(--type-meta);
   line-height: var(--leading-meta);
@@ -378,6 +385,7 @@ a { color: inherit; }
 .skip-link:focus-visible {
   outline: var(--focus-ring);
   outline-offset: var(--focus-offset);
+  box-shadow: var(--shadow-modal);
   transform: translateY(0);
 }
 
@@ -554,6 +562,7 @@ svg.phosphor-icon {
 }
 
 .hero-rule {
+  display: block;
   width: 144px;
   height: 32px;
   margin: var(--space-1) 0 0;
@@ -846,66 +855,28 @@ h1.home-hero-number {
 .grid > * { grid-column: span 4; }
 
 /* Cards in a row line up by sharing the row's tracks, not by guessing heights.
-   Each card spans three rows of the parent grid and adopts them as a subgrid, so
-   the description, the best-for line and the tags all start on the same line as
-   their neighbours however long the copy runs. The min-heights this replaces were
-   fixed budgets, and any card that overflowed one, a second line of tags being the
-   usual culprit, pushed everything below it out of step with the rest of the row.
-   Older engines keep the budgets through the @supports fallback. */
+   A grid card is its summary alone (icon, name, description; see AppCard), and the
+   summary's two parts become the card's two rows: it spans two rows of the parent grid
+   and adopts them as a subgrid, so every description starts on the same line as its
+   neighbours' even when a name wraps. Best For and the tags left the grid card on
+   2026-09-23 and live on the detail page; the three-track version they needed, and the
+   288px floor that went with it, went too. */
 @supports (grid-template-rows: subgrid) {
   .grid > .app-card:not(.reading-card) {
     display: grid;
-    grid-row: span 3;
+    grid-row: span 2;
     grid-template-rows: subgrid;
     row-gap: var(--space-2);
+    min-height: 0;
   }
 
-  .grid > .app-card:not(.reading-card) .app-summary,
-  .grid > .app-card:not(.reading-card) .best-for,
-  .grid > .app-card:not(.reading-card) .tag-list { min-height: 0; }
+  .grid > .app-card:not(.reading-card) .app-summary { display: contents; }
+  .grid > .app-card:not(.reading-card) .app-description { margin: 0; }
 
-  /* the row gap now carries the separation these were providing */
-  .grid > .app-card:not(.reading-card) .app-summary { margin-bottom: 0; }
-  .grid > .app-card:not(.reading-card) .tag-list { padding-top: 0; align-content: start; }
-
-  /* One card height per page, not just per row. Giving the parent's three repeating
-     tracks a floor makes every band match, so a card agrees with the one two rows
-     below it as well as the one beside it.
-
-     The floors are what the tallest record in the catalogue actually needs, measured
-     across all of them. Re-measured on 2026-09-04 against 118 records and the revised
-     type scale, by releasing the floors and reading what the content asked for: every
-     track was carrying about 25px more than it needed, roughly 50px of dead air per
-     card on the wide band, which read as a gap between the description and Best For.
-     They are numbers taken from the content, so they want re-measuring whenever the
-     type scale or the card padding moves, not adjusting by eye. Note the first and last include the card's 24px padding:
-     a subgrid item's padding comes out of the tracks it spans, so track one carries
-     the summary plus the top padding and track three the tags plus the bottom.
-
-     minmax rather than a fixed height, so a future record that outgrows its budget
-     makes its own band taller instead of being clipped.
-
-     Reading cards are excluded throughout. They carry .app-card as well, but hold a
-     single child rather than three, so spanning three rows left them with two empty
-     ones and a card half again as tall as the app cards beside them. */
-  /* Only where the grid is actually multi-column. A single column has no neighbour
-     to agree with, so a floor buys nothing and costs a great deal: the budgets are
-     sized for the narrowest three-column case, where a card is about 270px wide,
-     while a one-column card is 351px and wraps far less. Applied on a phone they
-     added a median of 159px to every card and 17,000px of scrolling to the
-     directory. Below 921px each card is its own height. */
-  @media (min-width: 921px) {
-    .grid:has(> .app-card:not(.reading-card)) {
-      grid-auto-rows: minmax(232px, auto) minmax(120px, auto) minmax(136px, auto);
-    }
-  }
-
-  /* Above 1100px the content column has stopped growing, so the budget settles. */
-  @media (min-width: 1100px) {
-    .grid:has(> .app-card:not(.reading-card)) {
-      grid-auto-rows: minmax(184px, auto) minmax(96px, auto) minmax(96px, auto);
-    }
-  }
+  /* One height per row, not per page. The tracks carry no floors: the page-wide floors
+     the three-region card used were measured on 2026-09-23 for this card (80/144 above
+     1100px) and made every card 240px tall to fit the fifteen five-line descriptions,
+     leaving most of them half empty. The compact card was approved at its row height. */
 
   /* Reading cards get the same treatment on their own terms. Their three parts sit
      inside a wrapper, so the card and the wrapper both subgrid onto the shared rows.
@@ -1271,18 +1242,37 @@ h1.home-hero-number {
 /* The standalone-action role: a link on its own line, doing the job of a button without
    being one. Accent and bold at rest, which is why it needs a hover that is not simply
    "turn accent" — it deepens instead, the same move the primary button makes. It had no
-   hover rule at all until 2026-09-07. */
+   hover rule at all until 2026-09-07.
+
+   One class, `.action-link`, so every such link on the site is the same object; the video
+   card's link joins it by selector. Set at the Metadata step rather than inheriting its
+   size: at body size these read as loud as the copy they point from. The target is grown
+   with a layer, not the box. A 48px box around a 20px line put 14px of empty space above
+   and below the words, which read as a gap belonging to nothing; the layer reaches 24px
+   everywhere and 48px on touch without moving anything around it. */
+.action-link,
 .feature-card a {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  min-height: 24px;
   color: var(--accent);
+  font-size: var(--type-meta);
+  line-height: var(--leading-meta);
   font-weight: 700;
   text-decoration: none;
   transition: color 180ms ease;
 }
+.action-link::before,
+.feature-card a::before {
+  content: "";
+  position: absolute;
+  inset: -2px -4px;
+}
+.action-link:hover,
+.action-link:focus-visible,
 .feature-card a:hover,
 .feature-card a:focus-visible { color: var(--accent-hover); }
+.action-link:focus-visible,
 .feature-card a:focus-visible {
   outline: var(--focus-ring);
   outline-offset: var(--focus-offset);
@@ -1498,6 +1488,9 @@ h1.home-hero-number {
   padding-top: clamp(24px, 3vw, 32px);
   padding-bottom: 0;
 }
+/* The homepage links straight to the app list at `/explore/#all-apps`. The header is
+   sticky, so the jump stops the header's height short and the heading lands in view. */
+#all-apps { scroll-margin-top: 80px; }
 .explore-utility-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1811,7 +1804,8 @@ h1.home-hero-number {
   border-top: 0;
 }
 @media (pointer: coarse) {
-  .feature-card a { min-height: 48px; }
+  .action-link::before,
+  .feature-card a::before { inset: -14px -8px; }
 }
 
 /* The measure belongs to the prose, not to the page: About's headings and
@@ -2810,12 +2804,12 @@ h1.home-hero-number {
 @media (max-width: 680px) {
   :root { --content-inset: 24px; }
   .site-header { position: sticky; top: 0; width: 100%; min-height: 72px; margin: 0; padding: 0; }
+  #all-apps { scroll-margin-top: 72px; }
   .site-header-inner { gap: var(--space-1) 8px; }
   .issue > .section { width: min(var(--content-width), calc(100% - var(--content-inset))); }
   .brand-mark { width: 40px; height: 40px; }
   .brand { gap: var(--space-1) 8px; }
   .site-header nav { gap: var(--space-1) 8px; }
-  .theme-toggle { width: 48px; height: 48px; }
   /* Too narrow for a column beside the title, so the search takes its own row under the
      dek rather than squeezing the opening. It is still not a control floating on an empty
      row: it sits directly above the list it filters, and the opening above it keeps the
@@ -2867,10 +2861,6 @@ h1.home-hero-number {
 }
 
 @media (pointer: coarse) {
-  .theme-toggle {
-    width: 48px;
-    height: 48px;
-  }
   .collection-badge { min-height: 48px; }
   .directory-select-options[role="menu"] button { min-height: 48px; }
   /* 40, not 48. The same content — a mark, a label, a count — sits in a 32px row in the

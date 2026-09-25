@@ -28,7 +28,7 @@ export const categories: Category[] = [
   {
     slug: 'ai-agents',
     title: 'AI & Agents',
-    description: "Assistants and coding agents, plus the growing pile of tools for watching what they're up to. Some run on your Mac, some call out to a server.",
+    description: "Mac apps for assistants and coding agents, plus the growing pile of tools for watching what they're up to. Some run locally, some call out to a server.",
     mobileDescription: 'Assistants and coding agents, plus tools to watch them.',
     tags: ['ai', 'agents', 'search'],
     icon: 'robot',
@@ -55,7 +55,7 @@ export const categories: Category[] = [
   {
     slug: 'files-research-documents',
     title: "Files, Research & Documents",
-    description: "Open that file you saved six months ago. Plus the organization and search tools that made it findable at all.",
+    description: "Mac apps for opening that file you saved six months ago, plus the organization and search tools that made it findable at all.",
     mobileDescription: 'Finding files, and finding them again later.',
     tags: ['files', 'finder', 'documents', 'research', 'pdf', 'ebooks', 'backup', 'downloads', 'airdrop', 'quicklook'],
     icon: 'files',
@@ -64,7 +64,7 @@ export const categories: Category[] = [
   {
     slug: 'mac-utilities-customization',
     title: "Mac Utilities & Customization",
-    description: "Menu bar extras, window managers, launchers, even the small tweaks that make a Mac feel like yours instead of Apple's. Mostly small, single-purpose that do one job well.",
+    description: "Menu bar extras, window managers, launchers and small tweaks that make a Mac feel like yours, not Apple's. Mostly single-purpose tools that do one job well.",
     mobileDescription: 'Menu bar extras and window managers that make a Mac yours.',
     tags: ['utility', 'menubar', 'customization', 'privacy', 'launcher', 'windows', 'keyboard', 'accessibility', 'network', 'monitoring', 'maintenance', 'battery', 'dashboard', 'remote', 'ios'],
     icon: 'sliders',
@@ -73,7 +73,7 @@ export const categories: Category[] = [
   {
     slug: 'media-capture',
     title: "Media & Capture",
-    description: "Capture the screen or record audio or video and tools that help you work with media afterwards.",
+    description: "Mac apps to capture the screen, record audio or video and work with the media afterwards.",
     mobileDescription: 'Screen and audio capture, plus transcripts.',
     tags: ['capture', 'audio', 'video', 'images', 'transcription'],
     icon: 'camera',
@@ -82,7 +82,7 @@ export const categories: Category[] = [
   {
     slug: 'productivity-workflow',
     title: "Productivity & Workflow",
-    description: "Task managers, reminders and calendars for the work you are trying to keep track of. A place for you to put it down so you can stop carrying it around.",
+    description: "Mac apps for task lists, reminders and calendars: a place to put down the work you're keeping track of so you can stop carrying it around.",
     mobileDescription: 'Tasks and reminders for the work you track.',
     tags: ['productivity', 'tasks', 'reminders', 'calendar'],
     icon: 'list-checks',
@@ -91,7 +91,7 @@ export const categories: Category[] = [
   {
     slug: 'writing-notes-reading',
     title: "Writing, Notes & Reading",
-    description: "For anyone whose day is mostly text: somewhere to draft it, catch it before it's gone, dictate it or read it back somewhere quieter for later on.",
+    description: "Mac apps for anyone whose day is mostly text: somewhere to draft it, catch it before it's gone, dictate it or read it back later.",
     mobileDescription: 'Somewhere to write it down, and somewhere to read it later.',
     tags: ['writing', 'notes', 'markdown', 'dictation', 'clipboard', 'messages', 'reading', 'rss'],
     icon: 'notepad',
@@ -157,7 +157,7 @@ export function getPopularTags(
        `finance` are protected single-app tags. `local` and `open-source` are
        deliberate attributes carried by every record that qualifies. `utility` and
        `productivity` are here for the opposite reason: they are the two broadest
-       tags in the catalogue, on 45 and 54 of 102 records, so they took the top two
+       tags in the catalogue, on 73 and 77 of 166 records in September 2026, so they took the top two
        chips on merit and told a reader nothing. They still work as tags and as tag
        pages; they just no longer lead the list. See the retirement project. */
     exclude = ['health', 'finance', 'local', 'open-source', 'utility', 'productivity'],

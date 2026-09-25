@@ -9,6 +9,8 @@ import { applyIssueEdits, loadIssues, validateIssueInput } from './issue-editor-
 const root = process.cwd();
 const identity = (issue) => ({
   dek: issue.dek,
+  metaDescription: issue.metaDescription,
+  icon: issue.icon,
   rssTitle: issue.rssTitle,
   sections: issue.sections.map((section) => section.title),
   reason: issue.reason,
@@ -53,6 +55,7 @@ test('a rewritten value stays valid YAML when it opens with a quote', () => {
   const issue = {
     id: '2026-01-02',
     dek: "A dek that is long enough to be plausible and says something about the week ahead.",
+    metaDescription: '',
     rssTitle: 'Something',
     sections: [{ eyebrow: 'New Discoveries', title: 'A title' }],
     reason: null,
@@ -95,4 +98,95 @@ test('the limits that would break the build are rejected', async () => {
   assert.match(dashed.dek, /dash/);
 
   assert.deepEqual(validateIssueInput(identity(issue), issue), {});
+});
+
+test('a search description is added before rss, rewritten in place and removed when cleared', () => {
+  const source = [
+    '---',
+    'dek: A dek that is long enough to be plausible and says something about the week ahead.',
+    'rss:',
+    '  title: Something',
+    'sections:',
+    '  - eyebrow: New Discoveries',
+    '    title: A title',
+    '    apps: [one]',
+    'readings: []',
+    '---',
+    ''
+  ].join('\n');
+  const issue = {
+    id: '2026-01-02',
+    dek: 'A dek that is long enough to be plausible and says something about the week ahead.',
+    metaDescription: '',
+    rssTitle: 'Something',
+    sections: [{ eyebrow: 'New Discoveries', title: 'A title' }],
+    reason: null,
+    video: null,
+    readings: []
+  };
+  const meta = 'A search description that is long enough to clear the seventy character floor.';
+
+  const added = applyIssueEdits(source, issue.id, { ...identity(issue), metaDescription: meta }, issue);
+  assert.match(added, new RegExp(`^metaDescription: ${meta}\\nrss:$`, 'm'));
+
+  const rewritten = applyIssueEdits(added, issue.id, { ...identity(issue), metaDescription: `${meta} Again.` }, { ...issue, metaDescription: meta });
+  assert.equal(rewritten.match(/^metaDescription:/gm).length, 1);
+  assert.match(rewritten, /Again\.$/m);
+
+  const cleared = applyIssueEdits(added, issue.id, identity(issue), { ...issue, metaDescription: meta });
+  assert.equal(cleared, source);
+});
+
+test('a quoted reading or video title keeps its own dash, as the build allows', async () => {
+  const [issue] = await loadIssues(root);
+  const readings = issue.readings.map((reading, index) => index === 0 ? { ...reading, title: 'Mac Apps \u2014 A Source Title' } : reading);
+  assert.deepEqual(validateIssueInput({ ...identity(issue), readings }, issue), {});
+});
+
+test('an icon is added before rss, rewritten in place and removed when cleared', () => {
+  const source = [
+    '---',
+    'dek: A dek that is long enough to be plausible and says something about the week ahead.',
+    'rss:',
+    '  title: Something',
+    'sections:',
+    '  - eyebrow: New Discoveries',
+    '    title: A title',
+    '    apps: [one]',
+    'readings: []',
+    '---',
+    ''
+  ].join('\n');
+  const issue = {
+    id: '2026-01-02',
+    dek: 'A dek that is long enough to be plausible and says something about the week ahead.',
+    metaDescription: '',
+    icon: '',
+    rssTitle: 'Something',
+    sections: [{ eyebrow: 'New Discoveries', title: 'A title' }],
+    reason: null,
+    video: null,
+    readings: []
+  };
+
+  const added = applyIssueEdits(source, issue.id, { ...identity(issue), icon: 'flower-lotus' }, issue);
+  assert.match(added, /^icon: flower-lotus\nrss:$/m);
+
+  const rewritten = applyIssueEdits(added, issue.id, { ...identity(issue), icon: 'gear' }, { ...issue, icon: 'flower-lotus' });
+  assert.equal(rewritten.match(/^icon:/gm).length, 1);
+  assert.match(rewritten, /^icon: gear$/m);
+
+  const cleared = applyIssueEdits(added, issue.id, { ...identity(issue), icon: '' }, { ...issue, icon: 'flower-lotus' });
+  assert.equal(cleared, source);
+
+  /* A client too old to send the field leaves the file alone. */
+  const { icon, ...withoutIcon } = identity({ ...issue, icon: 'flower-lotus' });
+  assert.equal(applyIssueEdits(added, issue.id, withoutIcon, { ...issue, icon: 'flower-lotus' }), added);
+});
+
+test('an icon must be written as a Phosphor name', async () => {
+  const [issue] = await loadIssues(root);
+  assert.match(validateIssueInput({ ...identity(issue), icon: 'Flower Lotus' }, issue).icon, /lowercase with hyphens/);
+  assert.equal(validateIssueInput({ ...identity(issue), icon: 'flower-lotus' }, issue).icon, undefined);
+  assert.equal(validateIssueInput({ ...identity(issue), icon: '' }, issue).icon, undefined);
 });

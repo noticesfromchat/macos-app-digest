@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import { OG_SIZE, ogPath } from '../../data/og';
+import { siteCopy } from '../../data/site-copy';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import { topLevelTrail, itemListSchema } from '../../data/breadcrumb';
@@ -53,18 +54,15 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
   title="Explore Mac Apps — App Waypoint"
   socialImage={ogPath('explore')}
   socialImageSize={OG_SIZE}
-  socialImageAlt="Explore every Mac app App Waypoint has recommended, by category, collection or tag."
-  description="Browse every Mac app App Waypoint has recommended, by category, collection or tag, with the full catalog filterable and sortable on one page."
+  socialImageAlt={siteCopy['explore.socialAlt']}
+  description={siteCopy['explore.metaDescription']}
   current="explore"
 >
   <section class="page-shell archive-page explore-page">
     <Breadcrumb trail={trail} />
     <header class="explore-hero">
-      <h1>Explore Apps</h1>
-      <p class="dek">
-        Hand-picked Mac apps from every issue, browsable by category, collection or tag.
-        Apps selected and added every Friday.
-      </p>
+      <h1>Explore Mac Apps</h1>
+      <p class="dek">{siteCopy['explore.dek']}</p>
     </header>
 
     <div class="explore-taxonomy">
@@ -101,7 +99,7 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
       </section>
     </div>
 
-    <section class="section explore-section explore-directory-section">
+    <section class="section explore-section explore-directory-section" id="all-apps">
       <AppDirectory apps={apps} heading="All apps" />
     </section>
 
@@ -216,3 +214,28 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
     .explore-lane-count-value::after { content: none; }
   }
 </style>
+
+<script>
+  /* Links from elsewhere land on the app list at `#all-apps`. The browser makes that jump
+     before the page has settled: styles, the display face and the directory's own trimming
+     of the list all arrive after it, and each can move the section, so the heading could
+     end up anywhere. Once everything has loaded, set the anchored section at the top once
+     more, unless the reader has already started scrolling. */
+  const target = location.hash ? document.getElementById(decodeURIComponent(location.hash.slice(1))) : null;
+
+  if (target) {
+    let readerMoved = false;
+    const stop = () => { readerMoved = true; };
+    const events = ['wheel', 'touchstart', 'keydown', 'pointerdown'] as const;
+    events.forEach((type) => window.addEventListener(type, stop, { once: true, passive: true }));
+
+    const settle = () => {
+      events.forEach((type) => window.removeEventListener(type, stop));
+      if (!readerMoved) target.scrollIntoView({ block: 'start', behavior: 'instant' });
+    };
+    const whenLoaded = document.readyState === 'complete'
+      ? Promise.resolve()
+      : new Promise((resolve) => window.addEventListener('load', resolve, { once: true }));
+    whenLoaded.then(() => document.fonts?.ready).then(settle);
+  }
+</script>

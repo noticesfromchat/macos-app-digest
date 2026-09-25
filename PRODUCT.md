@@ -64,3 +64,7 @@ Confirmed brand assets include the App Waypoint logo and the existing visual sys
 - Keep the editorial process human-led, even when AI helps with research and organization.
 - Favor consistency and repeatability in the weekly issue format.
 - Serve experienced Mac users with software that fits real workflows.
+
+## Accessibility & Inclusion
+
+Target WCAG 2.2 AA. Every change must preserve light and dark modes, the mobile reading flow, full keyboard access and reduced-motion behavior.

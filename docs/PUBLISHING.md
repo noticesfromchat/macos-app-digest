@@ -135,6 +135,10 @@ instruction.
 16. Include the issue `rss` block with a short issue-specific title and the standard
     `Read this issue` CTA. The feed summary is generated from the issue `dek`, so do
     not duplicate that summary in the `rss` block.
+    The `rss.title` is the issue's title everywhere it appears: the issue page's heading,
+    the homepage's current issue and the Issues page. Also set `icon` to a Phosphor icon
+    name chosen for the issue's theme; it marks the issue in the homepage's issue list from
+    the following Friday. Both can be edited on the editor's Issues tab.
 17. Write `sourceNotes` in concise editorial language that explains where the issue's
     app selections and supporting links came from. Include all selected apps, grouped
     by source type when useful. Avoid internal agent or process wording such as
@@ -174,8 +178,10 @@ meaningful review or release milestone.
 
 Social copy is drafted from the selected release-candidate PR after the editor's
 Notion changes have been applied and its updated Deploy Preview is ready for review.
-Follow the editor's current guidance on post count, voice and format. Record the
-issue date, PR URL and source commit in the weekly Notion social calendar.
+Follow the editor's current guidance on post count, voice and format. Build the
+week's page from the **Social Week Template** page under Social Media Calendar in
+Notion, which fixes the layout: post copy as plain text, the link on a Reply line,
+and the PR, commit and preview under a collapsed Sources toggle.
 
 Thursday at 3 p.m. Pacific is the planned drafting start, not a readiness deadline.
 If the updated issue is not ready, record social drafting as waiting on the issue
@@ -183,6 +189,34 @@ and report the specific dependency. Do not draft from stale content or substitut
 another issue. When the updated preview is ready, the task preparing it must include
 resuming the pending social draft in its handoff. Resume that week's existing task
 and calendar rather than waiting until the next weekly run or creating a duplicate.
+
+Every drafted post gets an image, rendered by the shared `src/data/og-card.ts`
+renderer rather than made by hand. A post about one app uses the `feature` layout:
+the app's icon and name, then its record description and Best For. A post about a
+category, tag or collection uses the `list` layout: the lane's mark and title over
+three of its apps, each icon beside its record description. Both are 1200px wide
+with no brand row, since they are attached to the post as media rather than shown
+as a link preview. Render each image from the same source commit as its post, attach
+it to that post's calendar entry, and re-render it whenever a revision changes the
+records it draws on.
+
+The new-issue post is an animated GIF built from the same `list` layout. An issue has
+no mark, so the header is the issue label (`Issue 12 · September 25, 2026`) above the
+issue's `rss.title`. It runs three slides of three apps from the issue, with the
+header held still throughout. On each slide the apps settle into place one at a time,
+half a second apart: a 28px rise and fade over 480ms on the site's `ease-settle`
+curve. The complete slide then holds for six seconds and fades out over 280ms. The
+first frame is slide one fully built, so a reader with autoplay off still sees a whole
+card. Every frame comes from the shared renderer, and the GIF is scaled to fit X's
+1280 by 1080 limit.
+
+Posts carry no link in their own text. The destination goes in a threaded reply on
+both X and Bluesky, introduced by a line written for that post about what the reader
+will find there, never a stock phrase repeated from week to week. Draft from the
+selected PR's latest Deploy Preview once its check has passed on the PR's latest
+commit, since that is the content the editor reviews. Agents may enter the week's posts
+in Buffer as drafts with their planned times; the editor attaches or checks media and
+schedules them.
 
 After any later editorial change, compare the social drafts with the updated issue
 and app records. Revise affected posts, verify their claims, links and character

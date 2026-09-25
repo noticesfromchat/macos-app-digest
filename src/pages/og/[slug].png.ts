@@ -15,6 +15,7 @@ import {
 import { categories, collections as collectionMetadata } from '../../data/categories';
 import { collectionDek, collectionTitle, laneEyebrow, tagDek, tagTitle } from '../../data/lanes';
 import { issueLabel } from '../../data/issue';
+import { siteCopy } from '../../data/site-copy';
 import { fallbackIconColor, fallbackIconCategory } from '../../data/app-icon';
 
 /**
@@ -68,9 +69,9 @@ export async function getStaticPaths() {
       slug: 'home',
       card: {
         layout: 'brand',
-        /* Not the homepage's own tagline: its second sentence is the line the card
-           footer already carries, and a card should not say Friday twice. */
-        dek: "A weekly guide to the Mac apps, tools and reading worth an experienced user's attention."
+        /* Not the homepage's own tagline. The card has no footer, so its dek carries
+           the Friday cadence itself. */
+        dek: siteCopy['home.cardDek']
       }
     },
     {
@@ -80,8 +81,8 @@ export async function getStaticPaths() {
         eyebrow: 'About',
         /* Both lines are claims the About page actually makes today. It does not
            yet publish a selection rubric, so this card must not promise one. */
-        title: 'Curated one app at a time',
-        dek: 'A weekly editorial publication for experienced Mac users. AI helps with the research; the selections, the emphasis and the recommendations stay human-led.'
+        title: siteCopy['about.cardTitle'],
+        dek: siteCopy['about.cardDek']
       }
     },
     {
@@ -91,7 +92,7 @@ export async function getStaticPaths() {
       slug: 'default',
       card: {
         layout: 'brand' as const,
-        dek: "A weekly guide to the Mac apps, tools and reading worth an experienced user's attention."
+        dek: siteCopy['home.cardDek']
       }
     },
     {
@@ -103,7 +104,7 @@ export async function getStaticPaths() {
            fact. The dek stays written for a card seen without the page, where "the links
            below" names nothing. */
         title: 'Page not found',
-        dek: 'That page is not here. Explore the catalog, browse the archive or search from any page on the site.'
+        dek: siteCopy['notFound.cardDek']
       }
     },
     {
@@ -111,17 +112,17 @@ export async function getStaticPaths() {
       card: {
         layout: 'page' as const,
         eyebrow: laneEyebrow('Explore', apps.length),
-        title: 'Every app, one page',
-        dek: 'Browse every Mac app App Waypoint has recommended, by category, collection or tag, filterable and sortable in one place.'
+        title: siteCopy['explore.cardTitle'],
+        dek: siteCopy['explore.cardDek']
       }
     },
     {
       slug: 'archive',
       card: {
         layout: 'page' as const,
-        eyebrow: laneEyebrow('Archive', issues.length, 'issue'),
-        title: 'Every issue so far',
-        dek: 'Browse every published issue of App Waypoint, a weekly editorial guide to thoughtfully selected Mac apps and reading.'
+        eyebrow: laneEyebrow('Issues', issues.length, 'issue'),
+        title: siteCopy['archive.cardTitle'],
+        dek: siteCopy['archive.cardDek']
       }
     },
     ...categories.map((category) => ({
@@ -166,7 +167,7 @@ export async function getStaticPaths() {
     ...issues.map((issue) => ({
       slug: issueOgSlug(issue.data.number),
       card: {
-        layout: 'page' as const,
+        layout: 'issue' as const,
         eyebrow: `Issue ${issueLabel(issue.data.number)} · ${issue.data.date}`,
         title: issue.data.rss.title,
         dek: issue.data.dek

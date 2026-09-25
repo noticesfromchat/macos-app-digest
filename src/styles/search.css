@@ -38,8 +38,7 @@
   transition: color 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
 }
 
-.desktop-search-button svg,
-.nav-theme-toggle svg { --icon-size: var(--icon-md); }
+.desktop-search-button svg { --icon-size: var(--icon-md); }
 
 .desktop-search-button { margin-left: 16px; }
 
@@ -62,20 +61,7 @@
   color: var(--accent);
 }
 
-.nav-theme-toggle {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-}
-
-/* No hover rule of its own: `.theme-toggle` in global.css already turns it accent, which
-   is now the whole contract. */
-.nav-theme-toggle:focus-visible {
-  outline: var(--focus-ring);
-  outline-offset: var(--focus-offset);
-}
-
-/* Keep the closed bars and open cross centred in the same glyph box as the theme icon. */
+/* Keep the closed bars and open cross centred in the header's 24px glyph box. */
 .nav-menu-toggle-lines {
   position: relative;
   display: block;

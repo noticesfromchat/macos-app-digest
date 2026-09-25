@@ -102,8 +102,8 @@ export const tagTagline = (tag: string) => tagTaglines[tag];
 
 /** The same, for the two collection lanes. */
 const collectionTaglines: Record<string, string> = {
-  'editors-picks': 'standout software',
-  'community-favorites': 'reader picks',
+  "editors-picks": "best of each week",
+  "community-favorites": "popular picks",
   'hidden-gems': 'underrated tools'
 };
 
@@ -172,12 +172,12 @@ export const tagDek = (tag: string) =>
   tagDescriptions[tag] ?? `Mac apps selected for their relevance to ${tagTitle(tag).toLowerCase()} workflows.`;
 
 export const tagMetaDescription = (tag: string) =>
-  `${tagDek(tag)} Each one comes with a short note on what it does and a link to its developer.`;
+  `${tagDek(tag)} Each Mac app has a short note on what it does and a link to its developer.`;
 
 const collectionDescriptions: Record<string, string> = {
   'editors-picks':
     'Explore Mac apps the editor singled out for doing a familiar job in a way worth switching for.',
-  "community-favorites": "Explore Mac apps the community keeps recommending.",
+  "community-favorites": "Popular Mac apps the community keeps recommending, each with a short note on what it does and why people keep coming back to it.",
   'hidden-gems':
     'Explore Mac apps worth more attention than they get: small, well made tools that solve a real problem without a marketing budget behind them.'
 };

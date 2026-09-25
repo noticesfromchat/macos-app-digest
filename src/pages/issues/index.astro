@@ -1,11 +1,12 @@
 ---
 import { getCollection } from 'astro:content';
-import { OG_SIZE, ogPath } from '../data/og';
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Breadcrumb from '../components/Breadcrumb.astro';
-import SubscribeCard from '../components/SubscribeCard.astro';
-import { topLevelTrail, itemListSchema } from '../data/breadcrumb';
-import { issueLabel, issueName } from '../data/issue';
+import { OG_SIZE, ogPath } from '../../data/og';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import SubscribeCard from '../../components/SubscribeCard.astro';
+import { topLevelTrail, itemListSchema } from '../../data/breadcrumb';
+import { issueLabel, issueName } from '../../data/issue';
+import { siteCopy } from '../../data/site-copy';
 
 /* The archive is the one page on this site that is genuinely a sequence, so it is
    drawn as a route: a hairline running the length of the page, each issue a stop
@@ -67,7 +68,7 @@ const DISCLOSURE_THRESHOLD = 12;
 const collapsed = issues.length > DISCLOSURE_THRESHOLD;
 const alwaysVisible = collapsed ? DISCLOSURE_THRESHOLD : issues.length;
 
-const trail = topLevelTrail('Archive');
+const trail = topLevelTrail('Issues');
 
 const listSchema = itemListSchema(
   issues.map((issue) => ({
@@ -82,11 +83,11 @@ let stopIndex = 0;
 <BaseLayout
   structuredData={[listSchema]}
   breadcrumb={trail}
-  title="Archive — App Waypoint"
+  title="Issues — App Waypoint"
   socialImage={ogPath('archive')}
   socialImageSize={OG_SIZE}
-  socialImageAlt="Every published issue of App Waypoint."
-  description="Browse every issue of App Waypoint, a weekly editorial guide to thoughtfully selected Mac apps, automation tools, AI software and Mac-focused reading."
+  socialImageAlt={siteCopy['archive.socialAlt']}
+  description={siteCopy['archive.metaDescription']}
   current="archive"
 >
   <section class="page-shell archive-page">
@@ -101,8 +102,8 @@ let stopIndex = 0;
         pushed the dek away from it, so the archive opened on different steps from Explore
         and About. */}
     <div class="archive-masthead">
-      <h1>Archive</h1>
-      <p class="dek">Every issue published so far, newest first, back to where it started.</p>
+      <h1>Issues</h1>
+      <p class="dek">{siteCopy['archive.dek']}</p>
       {issues.length > 0 && (
         <div class="directory-search archive-search">
           <svg
@@ -172,10 +173,12 @@ let stopIndex = 0;
                       data-archive-haystack={haystack(issue)}
                       hidden={beyond}
                     >
+                      {/* The issue's own title leads, as it does on the issue page; the number
+                          and date follow as its metadata. */}
                       <a class="archive-card" href={`/issues/${issue.data.slug}/`}>
-                        <strong>{issueName(issue.data.number)}</strong>
+                        <strong>{issue.data.rss.title}</strong>
                         <span class="archive-card-date">
-                          <time datetime={issue.data.slug}>{issue.data.date}</time>
+                          {issueName(issue.data.number)} · <time datetime={issue.data.slug}>{issue.data.date}</time>
                         </span>
                         <p class="archive-card-dek">{issue.data.dek}</p>
                         <p class="archive-card-scent">
@@ -199,16 +202,15 @@ let stopIndex = 0;
           </button>
         )}
 
-        <p class="archive-empty" data-archive-empty hidden>
-          No issue matches that search. Every issue is still here; try an app name, a
-          topic or an issue number.
-        </p>
+        <p class="archive-empty" data-archive-empty hidden>{siteCopy['archive.noResults']}</p>
 
         <section class="archive-origin" data-archive-origin aria-labelledby="archive-origin-heading">
           <div class="archive-origin-body has-pick-accent">
-            <h2 id="archive-origin-heading">Where it started</h2>
+            <h2 id="archive-origin-heading">{siteCopy['archive.originHeading']}</h2>
             <p>
-              {issueName(issues[issues.length - 1].data.number)} went out on {issues[issues.length - 1].data.date}. Every Friday since has been filled with great apps.
+              {siteCopy['archive.originBody']
+                .replace('{issue}', issueName(issues[issues.length - 1].data.number))
+                .replace('{date}', issues[issues.length - 1].data.date)}
             </p>
           </div>
         </section>
@@ -220,11 +222,8 @@ let stopIndex = 0;
     ) : (
       <section class="archive-origin archive-origin--empty">
         <div class="archive-origin-body">
-          <h2>The first issue is on its way</h2>
-          <p>
-            App Waypoint publishes every Friday. Nothing is in the archive yet, and this
-            page fills in as issues go out.
-          </p>
+          <h2>{siteCopy['archive.emptyHeading']}</h2>
+          <p>{siteCopy['archive.emptyBody']}</p>
         </div>
       </section>
     )}

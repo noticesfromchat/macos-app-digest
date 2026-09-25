@@ -18,6 +18,7 @@ import satori from 'satori';
 
 import { MARK_BEACON, MARK_FRAME, MARK_WATERLINE, MARK_WAVE, MARK_WAVE_VIEWBOX } from './mark';
 import { OG_SIZE, type OgAppIcon, type OgCard } from './og';
+import { siteCopy } from './site-copy';
 
 /* Light-theme tokens from DESIGN.md. A card is one fixed image, so it cannot
    follow the reader's theme; it takes the day palette the site opens in. */
@@ -126,15 +127,15 @@ function assetUri(publicPath: string) {
   return `data:${type};base64,${file.toString('base64')}`;
 }
 
-function iconPlate(icon: OgAppIcon) {
+function iconPlate(icon: OgAppIcon, size = ICON) {
   const frame = {
-    display: 'flex', width: ICON, height: ICON, borderRadius: 20,
+    display: 'flex', width: size, height: size, borderRadius: size * 20 / ICON,
     alignItems: 'center', justifyContent: 'center', flexShrink: 0
   };
 
   if (icon.kind === 'fallback') {
     return h('div', { style: { ...frame, backgroundColor: icon.background } },
-      h('img', { src: phosphorMark(icon.phosphor), width: 56, height: 56 }));
+      h('img', { src: phosphorMark(icon.phosphor), width: size / 2, height: size / 2 }));
   }
 
   /* `backed` is transparent artwork that needs paper under it, `contain` is a
@@ -142,7 +143,8 @@ function iconPlate(icon: OgAppIcon) {
      same three cases the app card CSS handles. */
   const backed = icon.kind === 'backed';
   const src = assetUri(icon.src);
-  const inner = backed ? ICON - 14 : ICON;
+  /* A source with its own margin is scaled past the plate and cropped by it. */
+  const inner = backed ? size - 14 : Math.round(size / (1 - 2 * (icon.inset ?? 0)));
   return h('div', {
     style: { ...frame, backgroundColor: backed ? '#ffffff' : 'transparent', overflow: 'hidden' }
   },
@@ -150,7 +152,7 @@ function iconPlate(icon: OgAppIcon) {
       src,
       width: inner,
       height: inner,
-      style: { objectFit: icon.kind === 'plain' ? 'cover' : 'contain', borderRadius: backed ? 8 : 20 }
+      style: { flexShrink: 0, objectFit: icon.kind === 'plain' ? 'cover' : 'contain', borderRadius: backed ? 8 : icon.inset ? 0 : size * 20 / ICON }
     })
   );
 }
@@ -179,7 +181,7 @@ const footer = () =>
     }
   },
     h('div', { style: { display: 'flex' } }, 'appwaypoint.app'),
-    h('div', { style: { display: 'flex' } }, 'New issues published every Friday')
+    h('div', { style: { display: 'flex' } }, siteCopy['site.cardFooter'])
   );
 
 /**
@@ -206,10 +208,10 @@ const brandRow = () =>
     h('div', { style: { fontFamily: SERIF, fontWeight: 600, fontSize: 34, color: INK, letterSpacing: '-0.02em', marginLeft: 10 } }, 'App Waypoint')
   );
 
-function editorialDesign(card: Extract<OgCard, { layout: 'app' | 'page' }>): Node {
+function editorialDesign(card: Extract<OgCard, { layout: 'app' | 'page' | 'issue' }>): Node {
   const title = card.layout === 'app' ? card.name : card.title;
   const description = card.layout === 'app' ? card.description : card.dek;
-  const icon = card.layout === 'app' ? iconPlate(card.icon)
+  const icon = card.layout === 'issue' ? null : card.layout === 'app' ? iconPlate(card.icon)
     : h('img', { src: phosphorMark(card.icon!, INK), width: ICON, height: ICON });
   const text = (copy: string, style: Record<string, unknown>) =>
     h('div', { style: { fontFamily: SANS, color: INK, ...style } }, copy);
@@ -224,20 +226,73 @@ function editorialDesign(card: Extract<OgCard, { layout: 'app' | 'page' }>): Nod
   return root([
     h('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between' } },
       brandRow(),
-      card.layout === 'page' && text(card.eyebrow, { fontSize: 20, color: MUTED })),
-    h('div', { style: { display: 'flex', alignItems: 'center', gap: 32, marginTop: 48 } },
+      card.layout !== 'app' && text(card.eyebrow, { fontSize: 20, color: MUTED })),
+    h('div', { style: { display: 'flex', alignItems: 'center', gap: 32, marginTop: 48, minHeight: ICON } },
       // Vollkorn's visible capitals sit above the center of its line box.
-      h('div', { style: { display: 'flex', flexShrink: 0, transform: 'translateY(-9px)' } }, icon),
-      h('div', { style: { display: 'flex', flexDirection: 'column', width: 880 } },
-        name(title.length <= 18 ? 100 : title.length <= 30 ? 76 : 58))),
+      icon && h('div', { style: { display: 'flex', flexShrink: 0, transform: 'translateY(-9px)' } }, icon),
+      h('div', { style: { display: 'flex', flexDirection: 'column', width: card.layout === 'issue' ? 1088 : 880 } },
+        name(card.layout === 'issue' ? fit(title).size : title.length <= 18 ? 100 : title.length <= 30 ? 76 : 58))),
     text(clamp(description, 175), { fontSize: 36, lineHeight: 1.4, color: MUTED, marginTop: 32, maxWidth: 940 }),
     // Keep the lower edge clear for the destination overlay shown by X.
     spacer(70)
   ]);
 }
 
+/** The portrait list layout. Its height follows its rows, so it has no fixed size. */
+const LIST_WIDTH = 1200;
+const LIST_ICON = 128;
+
+/* A plate on the list layouts, lifted off the white page by the Ambient Card edge. */
+/* `fade` scales the shadow with a row that is still arriving: Satori does not carry a
+   parent's opacity into box-shadow, so a hidden row left its plate's shadow behind. */
+const listPlate = (icon: OgAppIcon, fade = 1) =>
+  h('div', {
+    style: { display: 'flex', flexShrink: 0, borderRadius: LIST_ICON * 20 / ICON,
+      boxShadow: `0 0 0 1px rgba(9, 35, 66, ${0.07 * fade}), 0 10px 28px rgba(9, 35, 66, ${0.08 * fade})` }
+  }, iconPlate(icon, LIST_ICON));
+
+const listShell = (...children: (Node | null)[]) =>
+  h('div', {
+    style: { display: 'flex', flexDirection: 'column', width: LIST_WIDTH, height: '100%', backgroundColor: PAGE, padding: '96px 100px' }
+  }, ...children);
+
+const listHeader = (mark: Node | null, title: string) =>
+  h('div', { style: { display: 'flex', alignItems: 'center', gap: 28 } },
+    // Vollkorn's visible capitals sit above the center of its line box.
+    mark && h('div', { style: { display: 'flex', flexShrink: 0, transform: 'translateY(-9px)' } }, mark),
+    h('div', { style: { fontFamily: SERIF, fontWeight: 600, fontSize: 100, color: INK, lineHeight: 1.04, letterSpacing: '-0.02em' } }, title));
+
+function listDesign(card: Extract<OgCard, { layout: 'list' }>): Node {
+  const row = (app: (typeof card.apps)[number]) =>
+    h('div', { style: { display: 'flex', alignItems: 'flex-start', gap: 48,
+      opacity: app.opacity ?? 1, transform: `translateY(${app.rise ?? 0}px)` } },
+      listPlate(app.icon, app.opacity ?? 1),
+      h('div', { style: { display: 'flex', flexDirection: 'column', width: 820 } },
+        h('div', { style: { fontFamily: SERIF, fontWeight: 600, fontSize: 48, color: INK, lineHeight: 1.1, letterSpacing: '-0.02em' } }, app.name),
+        h('div', { style: { fontFamily: SANS, fontSize: 32, color: MUTED, lineHeight: 1.4, marginTop: 12 } }, app.description)));
+
+  const mark = card.icon ? h('img', { src: phosphorMark(card.icon, INK), width: LIST_ICON, height: LIST_ICON }) : null;
+
+  return listShell(
+    /* The issue's label, set like the feature layout's "Best for". */
+    card.eyebrow ? h('div', { style: { fontFamily: SANS, fontWeight: 500, fontSize: 22, letterSpacing: '0.14em', color: MUTED, textTransform: 'uppercase', marginBottom: 24 } }, card.eyebrow) : null,
+    listHeader(mark, card.title),
+    h('div', { style: { display: 'flex', flexDirection: 'column', gap: 72, marginTop: 88 } }, ...card.apps.map(row)));
+}
+
+function featureDesign(card: Extract<OgCard, { layout: 'feature' }>): Node {
+  return listShell(
+    listHeader(listPlate(card.icon), card.name),
+    h('div', { style: { fontFamily: SANS, fontSize: 40, color: INK, lineHeight: 1.4, marginTop: 64 } }, card.description),
+    h('div', { style: { display: 'flex', flexDirection: 'column', marginTop: 56, paddingTop: 40, borderTop: `1px solid ${LINE}` } },
+      h('div', { style: { fontFamily: SANS, fontWeight: 500, fontSize: 22, letterSpacing: '0.14em', color: MUTED, textTransform: 'uppercase' } }, 'Best for'),
+      h('div', { style: { fontFamily: SANS, fontSize: 32, color: MUTED, lineHeight: 1.4, marginTop: 14 } }, card.bestFor)));
+}
+
 function tree(card: OgCard): Node {
-  if (card.layout === 'app' || (card.layout === 'page' && card.icon)) return editorialDesign(card);
+  if (card.layout === 'list') return listDesign(card);
+  if (card.layout === 'feature') return featureDesign(card);
+  if (card.layout === 'app' || card.layout === 'issue' || (card.layout === 'page' && card.icon)) return editorialDesign(card);
   const shell = (...children: (Node | false)[]) =>
     h('div', {
       style: {
@@ -249,18 +304,20 @@ function tree(card: OgCard): Node {
   /* The homepage hero is a wordmark over the buoy's water, and nothing else. The
      mark is not repeated above it: the wave under the wordmark is already the
      buoy's own, and stacking the two reads as two bodies of water. */
+  /* It follows the editorial cards rather than the page cards: the description is set at
+     their size and there is no footer, so the lower edge stays clear for the destination
+     overlay X lays over it. The Friday cadence the footer carried is in the dek instead. */
   if (card.layout === 'brand') {
     return shell(
-      spacer(40),
+      spacer(24),
       h('div', { style: { display: 'flex', flexDirection: 'column' } },
         wordmark(112),
         wave(226),
         h('div', {
-          style: { fontFamily: SANS, fontSize: 28, color: MUTED, lineHeight: 1.5, marginTop: 30, maxWidth: 780 }
+          style: { fontFamily: SANS, fontSize: 36, color: MUTED, lineHeight: 1.4, marginTop: 32, maxWidth: 940 }
         }, card.dek)
       ),
-      spacer(40),
-      footer()
+      spacer(70)
     );
   }
 
@@ -293,6 +350,9 @@ function tree(card: OgCard): Node {
 }
 
 export async function renderOgCard(card: OgCard): Promise<Buffer> {
-  const svg = await satori(tree(card), { width: OG_SIZE.width, height: OG_SIZE.height, fonts });
+  const size = card.layout === 'list' || card.layout === 'feature'
+    ? { width: LIST_WIDTH, ...(card.layout === 'list' && card.height ? { height: card.height } : {}) }
+    : OG_SIZE;
+  const svg = await satori(tree(card), { ...size, fonts });
   return new Resvg(svg, { fitTo: { mode: 'width', value: OG_SIZE.width } }).render().asPng();
 }

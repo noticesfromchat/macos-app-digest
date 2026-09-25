@@ -45,11 +45,20 @@ which is the better outcome only because it is visible.
 Run `npm run editor` to open the private catalogue editor at
 `http://127.0.0.1:4319`. It binds only to the local Mac and is not part of the Astro
 site or its production build. Its Apps tab loads current values from
-`src/content/apps/*.md` and can update descriptions, Best for text, tags and
-collections. Tag changes derive and update the record's categories automatically.
-The Categories, Collections and Tags tabs edit the public names and descriptions in
-`src/data/categories.ts` and `src/data/lanes.ts`; slugs, icons, mappings and app
-assignments remain protected.
+`src/content/apps/*.md` and can update descriptions, Best for text, taglines, search
+descriptions, tags and collections. Tag changes derive and update the record's
+categories automatically. The Categories, Collections and Tags tabs edit the public
+names and descriptions in `src/data/categories.ts` and `src/data/lanes.ts`, plus the
+taglines of tags and collections; slugs, icons, mappings and app assignments remain
+protected. The Issues tab edits an issue's prose, including its optional search
+description.
+
+The Misc tab edits the copy that belongs to no record: the subscribe dialog and card,
+the homepage and footer taglines, the Explore, Archive and 404 introductions, the About
+page, and the search, feed and social card lines for those pages. It writes
+`src/data/site-copy.ts`, which every template reads, so site-wide copy is edited there
+rather than in a component. Values may carry `[label](/path/)` links and `**bold**`;
+page titles, headings that name a page and interface labels stay in the templates.
 
 Stop the editor with Control-C when the editing session is complete. Run the normal
 validation and build checks before committing edited records.

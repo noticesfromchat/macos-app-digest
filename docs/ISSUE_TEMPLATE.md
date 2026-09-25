@@ -24,10 +24,14 @@ number: '002'
 slug: 2026-07-17
 date: July 17, 2026
 dek: Write one concise 18-45 word sentence that previews the issue without listing every item.
+# Optional. A Phosphor icon name chosen for the issue's theme; it marks the issue in the
+# homepage's issue list. Without one the homepage shows the archive box.
+icon: flower-lotus
 rss:
-  # A headline, not a sentence: title case, no full stop. It is also the issue page
-  # title, so `{title} — Issue NN — App Waypoint` must stay under 60 characters.
-  title: Short issue-specific RSS title aligned with the issue theme
+  # The issue's title: a headline, not a sentence, in title case with no full stop. It is
+  # the issue page's heading and browser title, so `{title} — Issue NN — App Waypoint`
+  # must stay under 60 characters.
+  title: Short issue-specific title aligned with the issue theme
   cta: Read this issue
 sections:
   - eyebrow: New Discoveries
@@ -157,10 +161,16 @@ These limits protect card alignment and are not optional unless the complete car
   Also the body copy of the issue's social card, where it is trimmed at a word
   boundary to roughly 205 characters. A dek whose first sentence stands alone reads
   best in a feed.
-- `rss.title`: 4–90 characters. No longer a feed-only string: it is the issue's
-  headline on its social card, set at up to 72px. Nothing breaks at any allowed
+- `rss.title`: 4–90 characters. The issue's title, and no longer a feed-only string:
+  it is the heading of the issue page, the title of the current issue on the homepage,
+  the lead line of the issue's card on the Issues page and in the homepage's issue list,
+  and the headline on its social card, set at up to 72px. The editor's Issues tab calls
+  it Issue title. Nothing breaks at any allowed
   length, because the card steps the type down rather than truncating a title, but
   a title under about 34 characters gets the full display size.
+- `icon`: optional, a Phosphor icon name in lowercase with hyphens, such as
+  `flower-lotus`. Validation checks the name exists in the icon set. Set it on the
+  editor's Issues tab.
 - Section eyebrow: 1–4 words; hard maximum 30 characters.
 - Section title: preferably 4–10 words; hard maximum 70 characters.
 - Video title: hard maximum 100 characters.
@@ -191,8 +201,13 @@ section such as a utility bench, productivity group or themed catchall. If the s
 lacks three eligible apps for a required section, keep the required section name and
 ask the editor for replacements before preview work continues.
 
-Each issue should include an `rss` block. `rss.title` is a short, issue-specific
-headline for feed readers. It may be polished, lightly witty or occasionally framed
+The homepage depends on that spine. Its Trending row draws from the `Trending` sections of
+the latest two issues and its Recently featured row from every section of the latest
+three, so a renamed eyebrow would empty a row rather than break the build.
+
+Each issue should include an `rss` block. `rss.title` is the issue's short,
+issue-specific title, shown on the issue page, the homepage and the Issues page as well
+as in feed readers. It may be polished, lightly witty or occasionally framed
 as a question, but it must match the issue theme and avoid clickbait. `rss.cta`
 should stay `Read this issue` unless the feed format is intentionally revised.
 The RSS summary uses the existing issue `dek`, prefixed with the issue number, so do
