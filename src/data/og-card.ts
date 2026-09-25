@@ -304,18 +304,20 @@ function tree(card: OgCard): Node {
   /* The homepage hero is a wordmark over the buoy's water, and nothing else. The
      mark is not repeated above it: the wave under the wordmark is already the
      buoy's own, and stacking the two reads as two bodies of water. */
+  /* It follows the editorial cards rather than the page cards: the description is set at
+     their size and there is no footer, so the lower edge stays clear for the destination
+     overlay X lays over it. The Friday cadence the footer carried is in the dek instead. */
   if (card.layout === 'brand') {
     return shell(
-      spacer(40),
+      spacer(24),
       h('div', { style: { display: 'flex', flexDirection: 'column' } },
         wordmark(112),
         wave(226),
         h('div', {
-          style: { fontFamily: SANS, fontSize: 28, color: MUTED, lineHeight: 1.5, marginTop: 30, maxWidth: 780 }
+          style: { fontFamily: SANS, fontSize: 36, color: MUTED, lineHeight: 1.4, marginTop: 32, maxWidth: 940 }
         }, card.dek)
       ),
-      spacer(40),
-      footer()
+      spacer(70)
     );
   }
 

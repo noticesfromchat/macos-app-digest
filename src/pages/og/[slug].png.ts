@@ -69,8 +69,8 @@ export async function getStaticPaths() {
       slug: 'home',
       card: {
         layout: 'brand',
-        /* Not the homepage's own tagline: its second sentence is the line the card
-           footer already carries, and a card should not say Friday twice. */
+        /* Not the homepage's own tagline. The card has no footer, so its dek carries
+           the Friday cadence itself. */
         dek: siteCopy['home.cardDek']
       }
     },

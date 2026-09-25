@@ -1427,6 +1427,11 @@ at 36px with the same 175-character limit. Headlines step through 72px, 60px and
 so longer editorial titles stay whole. They carry no wave or footer, leaving the same
 clear lower edge for X's overlay.
 
+The homepage card, which is also the layout's default, keeps its masthead: the 112px
+wordmark over the buoy's wave, with no brand row above it. Since 2026-09-25 it follows
+the same rule below that, with the description at 36px on the 940px measure and no
+footer. The Friday cadence the footer used to carry is the dek's last sentence.
+
 App icons stay at 112px because their source assets top out at 128px. Icon-less apps
 retain the same category mark and stable background colour as the site. Category and
 collection icons come from `src/data/categories.ts`; the editor-approved tag pairings
