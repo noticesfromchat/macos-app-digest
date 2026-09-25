@@ -13,9 +13,11 @@
  * end renders as the About page's emphasis line. `{issue}` and `{date}` in
  * `archive.originBody` are filled with the first issue's name and date.
  *
- * Page titles, headings that name a page (Archive, Explore Apps, About) and interface
+ * Page titles, headings that name a page (Issues, Explore Apps, About) and interface
  * labels (buttons, filters, navigation) stay in the templates: they are structure that
- * other pages, breadcrumbs and routes agree with, not prose.
+ * other pages, breadcrumbs and routes agree with, not prose. The homepage is the one
+ * exception. Its row headings, labels and buttons are the page's editorial voice and change
+ * with it, so they live here under `home.*` and the editor's Home tab writes them.
  */
 export const siteCopy = {
   "subscribe.dialogKicker": "Subscribe",
@@ -23,8 +25,33 @@ export const siteCopy = {
   "subscribe.dialogBody": "We love [RSS](/tags/rss/) and want to make it easy for you to subscribe. Copy the URL below and paste it into your favorite RSS reader.",
   "subscribe.cardHeading": "Apps delivered every Friday",
   "subscribe.cardBody": "We love [RSS](/tags/rss/) and want to make it easy for you to subscribe. Copy the URL and paste it into your favorite RSS reader.",
-  "home.heroLine1": "Your weekly guide to Mac apps.",
-  "home.heroLine2": "New issues published every Friday.",
+  "home.heroLine1": "Find your next favorite Mac app.",
+  "home.heroLine2": "New issues filled with hand-picked apps every Friday.",
+  "home.latestButton": "Latest Issue",
+  "home.exploreButton": "Explore Apps",
+  "home.currentLabel": "Current issue",
+  "home.pickLabel": "This Week's Editor's Pick",
+  "home.readIssue": "Read Issue",
+  "home.trendingLabel": "Trending",
+  "home.trendingHeading": "What Mac users are talking about",
+  "home.recentLabel": "Recently featured",
+  "home.recentHeading": "In case you missed them",
+  "home.recentLink": "Recently Featured Apps",
+  "home.favoritesLabel": "Favorites from the community",
+  "home.favoritesHeading": "Favorites for good reason",
+  "home.favoritesLink": "Community Favorite Apps",
+  "home.picksLabel": "Editor's Picks",
+  "home.picksHeading": "Top of the list, week after week",
+  "home.picksLink": "Editor's Picks",
+  "home.exploreLabel": "Keep Exploring",
+  "home.exploreHeading": "Chart your own course",
+  "home.catalogTitle": "Explore the catalog",
+  "home.catalogButton": "Explore Apps",
+  "home.archiveTitle": "Browse the issue archive",
+  "home.archiveButton": "View All Issues",
+  "issue.heroLine1": "Your weekly guide to Mac apps.",
+  "issue.heroLine2": "New issues published every Friday.",
+  "issue.label": "In This Issue",
   "home.titleTagline": "New and Notable Mac Apps Every Friday",
   "home.socialAlt": "App Waypoint: a weekly guide to the Mac apps, tools and reading worth an experienced user's attention.",
   "home.cardDek": "A weekly guide to the Mac apps, tools and reading worth an experienced user's attention.",
@@ -69,11 +96,11 @@ export const siteCopy = {
   "notFound.searchBody": "Find an app, tag or collection directly.",
   "notFound.exploreTitle": "Explore Apps",
   "notFound.exploreBody": "Browse the app catalog consisting of every app featured from every issue to date.",
-  "notFound.archiveTitle": "View the Archive",
+  "notFound.archiveTitle": "View All Issues",
   "notFound.archiveBody": "Browse every published issue of App Waypoint.",
   "notFound.aboutTitle": "Learn About App Waypoint",
   "notFound.aboutBody": "How issues are researched, chosen and published.",
-  "notFound.metaDescription": "That page is not here. Search the catalog, or use the links to Explore, Archive and About.",
+  "notFound.metaDescription": "That page is not here. Search the catalog, or use the links to Explore, Issues and About.",
   "notFound.socialAlt": "Page not found on App Waypoint.",
   "notFound.cardDek": "That page is not here. Explore the catalog, browse the archive or search from any page on the site.",
 };

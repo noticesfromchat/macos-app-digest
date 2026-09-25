@@ -1,12 +1,12 @@
 ---
 import { getCollection } from 'astro:content';
-import { OG_SIZE, ogPath } from '../data/og';
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Breadcrumb from '../components/Breadcrumb.astro';
-import SubscribeCard from '../components/SubscribeCard.astro';
-import { topLevelTrail, itemListSchema } from '../data/breadcrumb';
-import { issueLabel, issueName } from '../data/issue';
-import { siteCopy } from '../data/site-copy';
+import { OG_SIZE, ogPath } from '../../data/og';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import SubscribeCard from '../../components/SubscribeCard.astro';
+import { topLevelTrail, itemListSchema } from '../../data/breadcrumb';
+import { issueLabel, issueName } from '../../data/issue';
+import { siteCopy } from '../../data/site-copy';
 
 /* The archive is the one page on this site that is genuinely a sequence, so it is
    drawn as a route: a hairline running the length of the page, each issue a stop
@@ -68,7 +68,7 @@ const DISCLOSURE_THRESHOLD = 12;
 const collapsed = issues.length > DISCLOSURE_THRESHOLD;
 const alwaysVisible = collapsed ? DISCLOSURE_THRESHOLD : issues.length;
 
-const trail = topLevelTrail('Archive');
+const trail = topLevelTrail('Issues');
 
 const listSchema = itemListSchema(
   issues.map((issue) => ({
@@ -83,7 +83,7 @@ let stopIndex = 0;
 <BaseLayout
   structuredData={[listSchema]}
   breadcrumb={trail}
-  title="Archive — App Waypoint"
+  title="Issues — App Waypoint"
   socialImage={ogPath('archive')}
   socialImageSize={OG_SIZE}
   socialImageAlt={siteCopy['archive.socialAlt']}
@@ -102,7 +102,7 @@ let stopIndex = 0;
         pushed the dek away from it, so the archive opened on different steps from Explore
         and About. */}
     <div class="archive-masthead">
-      <h1>Archive</h1>
+      <h1>Issues</h1>
       <p class="dek">{siteCopy['archive.dek']}</p>
       {issues.length > 0 && (
         <div class="directory-search archive-search">
@@ -173,10 +173,12 @@ let stopIndex = 0;
                       data-archive-haystack={haystack(issue)}
                       hidden={beyond}
                     >
+                      {/* The issue's own title leads, as it does on the issue page; the number
+                          and date follow as its metadata. */}
                       <a class="archive-card" href={`/issues/${issue.data.slug}/`}>
-                        <strong>{issueName(issue.data.number)}</strong>
+                        <strong>{issue.data.rss.title}</strong>
                         <span class="archive-card-date">
-                          <time datetime={issue.data.slug}>{issue.data.date}</time>
+                          {issueName(issue.data.number)} · <time datetime={issue.data.slug}>{issue.data.date}</time>
                         </span>
                         <p class="archive-card-dek">{issue.data.dek}</p>
                         <p class="archive-card-scent">

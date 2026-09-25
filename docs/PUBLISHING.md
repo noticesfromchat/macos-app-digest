@@ -135,6 +135,10 @@ instruction.
 16. Include the issue `rss` block with a short issue-specific title and the standard
     `Read this issue` CTA. The feed summary is generated from the issue `dek`, so do
     not duplicate that summary in the `rss` block.
+    The `rss.title` is the issue's title everywhere it appears: the issue page's heading,
+    the homepage's current issue and the Issues page. Also set `icon` to a Phosphor icon
+    name chosen for the issue's theme; it marks the issue in the homepage's issue list from
+    the following Friday. Both can be edited on the editor's Issues tab.
 17. Write `sourceNotes` in concise editorial language that explains where the issue's
     app selections and supporting links came from. Include all selected apps, grouped
     by source type when useful. Avoid internal agent or process wording such as

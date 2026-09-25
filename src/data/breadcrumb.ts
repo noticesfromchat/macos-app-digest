@@ -19,7 +19,7 @@ export type Crumb = {
 
 const HOME: Crumb = { label: 'Home', href: '/' };
 const EXPLORE: Crumb = { label: 'Explore', href: '/explore/' };
-const ARCHIVE: Crumb = { label: 'Archive', href: '/archive/' };
+const ARCHIVE: Crumb = { label: 'Issues', href: '/issues/' };
 
 export const appTrail = (name: string): Crumb[] => [HOME, EXPLORE, { label: name }];
 

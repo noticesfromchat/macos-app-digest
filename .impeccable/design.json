@@ -476,7 +476,7 @@
         "caret-bearing text fields",
         "programmatically focused mobile navigation dialog container"
       ],
-      "standaloneAction": "Accent at rest, accent-hover on interaction, no underline; shared focus ring"
+      "standaloneAction": "One class, .action-link: accent and bold at the Metadata step (14px on 20px), accent-hover on interaction, no underline; shared focus ring; 24px target, 48px on coarse pointers, grown by a layer rather than the box"
     },
     "componentExampleMeta": {
       "status": "retired; no active handwritten previews",

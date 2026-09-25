@@ -1,0 +1,399 @@
+---
+/* The homepage: a stable front door rather than a copy of the latest issue. The issue has
+   its own page; this one names the publication, points at the current issue and its pick,
+   then opens the catalog through four rows drawn for the UTC day and a way into every
+   category and every past issue. Its words live in `site-copy.ts` under `home.*` and the
+   editor's Home tab writes them. */
+import { getCollection } from 'astro:content';
+import AppCard from './AppCard.astro';
+import SubscribeCard from './SubscribeCard.astro';
+import WaveRule from './WaveRule.astro';
+import MetaIcon from './MetaIcon.astro';
+import PhosphorIcon from './PhosphorIcon.astro';
+import { categories } from '../data/categories';
+import { issueLabel } from '../data/issue';
+import { siteCopy } from '../data/site-copy';
+import { homePools } from '../data/home-pools';
+import { drawRows, utcDay } from '../data/daily-rows';
+
+const issues = [...await getCollection('issues')].sort((a, b) => b.data.slug.localeCompare(a.data.slug));
+const apps = await getCollection('apps');
+const byId = new Map(apps.map((entry) => [entry.id, entry]));
+
+const latest = issues[0].data;
+const label = issueLabel(latest.number);
+const issueUrl = `/issues/${latest.slug}/`;
+const pick = latest.editorsPick ? byId.get(latest.editorsPick.app) : undefined;
+
+/* A hyphenated word never breaks at its hyphen: "hand-" alone at the end of a balanced
+   line reads as a mistake. Each such word is kept whole. */
+const unbrokenWords = (line: string) => line.split(/(\S+-\S+)/).filter(Boolean)
+  .map((part) => ({ text: part, whole: /\S-\S/.test(part) }));
+const taglines = [siteCopy['home.heroLine1'], siteCopy['home.heroLine2']].map(unbrokenWords);
+
+/* The four rows are drawn for the UTC day, none repeating an app already on the page. The
+   build renders its own day's draw so the page is whole without JavaScript; the browser
+   redraws for today once the reader nears the rows. The order is the draw's claim order. */
+const { pools, cards: poolCards, pickId } = await homePools();
+const buildDay = utcDay();
+const drawn = drawRows(pools, pickId, buildDay);
+const entriesFor = (ids: string[]) => ids.map((id) => byId.get(id)).filter((entry) => entry !== undefined);
+
+type Row = { key: string; eyebrow: string; title: string; link?: { label: string; href: string }; apps: typeof apps };
+const rows: Row[] = [
+  { key: 'trending', eyebrow: siteCopy['home.trendingLabel'], title: siteCopy['home.trendingHeading'], apps: entriesFor(drawn.trending) },
+  { key: 'recent', eyebrow: siteCopy['home.recentLabel'], title: siteCopy['home.recentHeading'], link: { label: siteCopy['home.recentLink'], href: '/explore/#all-apps' }, apps: entriesFor(drawn.recent) },
+  { key: 'favorites', eyebrow: siteCopy['home.favoritesLabel'], title: siteCopy['home.favoritesHeading'], link: { label: siteCopy['home.favoritesLink'], href: '/collections/community-favorites/' }, apps: entriesFor(drawn.favorites) },
+  { key: 'picks', eyebrow: siteCopy['home.picksLabel'], title: siteCopy['home.picksHeading'], link: { label: siteCopy['home.picksLink'], href: '/collections/editors-picks/' }, apps: entriesFor(drawn.picks) }
+];
+/* The category marks an icon-less candidate can fall back to, rendered once so a swapped
+   card draws the same SVG the build does. */
+const fallbackIcons = [...new Set(Object.values(poolCards).flatMap((card) => card.fallback ? [card.fallback.icon] : []))];
+
+const categoryCount = (slug: string) => apps.filter((entry) => entry.data.categories.includes(slug as never)).length;
+const topCategories = [...categories]
+  .sort((a, b) => categoryCount(b.slug) - categoryCount(a.slug))
+  .slice(0, 3);
+
+/* The three issues before the current one, each with the mark its record names. */
+const pastPreview = issues.slice(1, 4);
+const shortDate = (slug: string) => new Date(`${slug}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
+---
+
+<div class="issue home-page">
+  <header class="home-hero home-hero-centred">
+    <canvas class="home-hero-sky" aria-hidden="true"></canvas>
+    <canvas class="home-hero-sea" aria-hidden="true"></canvas>
+
+    {/* The traditional opening: the name, the wave and two lines of promise, centred on one
+        axis, then the one action that matters and a quieter second one. The issue and its
+        pick follow below the water, their top edge showing at the fold. */}
+    <div class="home-hero-inner home-hero-centred-inner">
+      <div class="home-hero-copy home-hero-centred-copy">
+        {/* The heading carries the name and the promise together, so the page's h1 says what
+            the site is as well as what it is called. It looks exactly as the wordmark, wave and
+            first tagline line always did; only the second line sits outside it. */}
+        <h1 class="home-hero-heading">
+          <span class="home-hero-wordmark">App Waypoint</span>{' '}
+          <WaveRule as="span" />
+          <span class="home-hero-tagline"><span>{taglines[0].map((part) => part.whole ? <span class="home-nowrap">{part.text}</span> : part.text)}</span></span>
+        </h1>
+        <p class="home-hero-tagline home-hero-tagline-rest">
+          <span>{taglines[1].map((part) => part.whole ? <span class="home-nowrap">{part.text}</span> : part.text)}</span>
+        </p>
+        <div class="home-hero-actions">
+          <a class="button" href={issueUrl}>{siteCopy['home.latestButton']}</a>
+          <a class="button secondary" href="/explore/">{siteCopy['home.exploreButton']}</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="section home-week-section" aria-labelledby="home-week-title">
+    <div class="home-week">
+      <div class="home-hero-issue">
+        <p class="eyebrow">{siteCopy['home.currentLabel']}</p>
+        <h2 class="home-hero-number" id="home-week-title">{latest.rss.title}</h2>
+        <p class="home-hero-date">Issue {label} · Published <time datetime={latest.slug}>{latest.date}</time></p>
+        <p class="home-hero-dek">{latest.dek}</p>
+        <a class="button home-week-cta" href={issueUrl}>{siteCopy['home.readIssue']}</a>
+      </div>
+      {pick && (
+        <div class="home-hero-pick" id="editors-pick">
+          <h3 class="home-hero-pick-title">{siteCopy['home.pickLabel']}</h3>
+          <AppCard app={pick.data} appId={pick.id} editorNote={latest.editorsPick?.reason} variant="hero" showBestFor={false} showTags={false} />
+        </div>
+      )}
+    </div>
+  </section>
+
+  {rows.map((row) => (
+    <section class="section" data-daily-row={row.key}>
+      <div class="section-heading home-row-heading">
+        <div>
+          <p class="eyebrow">{row.eyebrow}</p>
+          <h2>{row.title}</h2>
+        </div>
+        {row.link && <a class="action-link home-row-link" href={row.link.href}>{row.link.label}</a>}
+      </div>
+      <div class="grid">
+        {row.apps.map((entry) => <AppCard app={entry.data} appId={entry.id} />)}
+      </div>
+      {/* Stacked, the link follows the cards it opens rather than crowding the heading.
+          Only one of the two is ever displayed, so only one is ever announced. */}
+      {row.link && <p class="home-row-after"><a class="action-link" href={row.link.href}>{row.link.label}</a></p>}
+    </section>
+  ))}
+
+  <section class="section">
+    <div class="section-heading">
+      <p class="eyebrow">{siteCopy['home.exploreLabel']}</p>
+      <h2>{siteCopy['home.exploreHeading']}</h2>
+    </div>
+    <div class="home-doors">
+      <div class="card home-door">
+        <h3 class="home-door-title">{siteCopy['home.catalogTitle']}</h3>
+        <ul class="home-door-list">
+          {topCategories.map((category) => (
+            <li><a class="app-detail-category-row home-lane" href={`/categories/${category.slug}/`}>
+              <span class="app-detail-category-mark" aria-hidden="true"><MetaIcon name={category.icon} /></span>
+              <span>{category.title}</span>
+              <span class="home-lane-count"><span class="home-lane-count-value">{categoryCount(category.slug)}</span><span class="sr-only"> apps</span></span>
+            </a></li>
+          ))}
+        </ul>
+        <a class="button secondary" href="/explore/">{siteCopy['home.catalogButton']}</a>
+      </div>
+      <div class="card home-door">
+        <h3 class="home-door-title">{siteCopy['home.archiveTitle']}</h3>
+        <ul class="home-door-list">
+          {pastPreview.map((issue) => (
+            <li><a class="app-detail-category-row home-lane" href={`/issues/${issue.data.slug}/`}>
+              <span class="app-detail-category-mark" aria-hidden="true"><PhosphorIcon name={issue.data.icon ?? 'archive'} /></span>
+              <span>Issue {issueLabel(issue.data.number)} - {issue.data.rss.title}</span>
+              <span class="home-lane-meta"><time datetime={issue.data.slug}>{shortDate(issue.data.slug)}</time></span>
+            </a></li>
+          ))}
+        </ul>
+        <a class="button secondary" href="/issues/">{siteCopy['home.archiveButton']}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section issue-subscribe">
+    <SubscribeCard />
+  </section>
+
+  {/* What the browser needs to redraw the rows for its own UTC day: the day the build drew
+      for, where the pools live, and the fallback marks a swapped card may need. */}
+  <div hidden data-daily-config data-day={buildDay} data-src="/home-pools.json"></div>
+  <template data-daily-fallback-icons>
+    {fallbackIcons.map((name) => <span data-icon={name}><MetaIcon name={name} /></span>)}
+  </template>
+</div>
+
+<style>
+  /* The hero: one centred column, the wordmark at the Display role. */
+  .home-hero-centred-inner { grid-template-columns: minmax(0, 1fr); row-gap: 0; }
+  .home-hero-centred-copy { align-items: center; gap: 0; text-align: center; }
+  .home-hero-centred-copy .home-hero-wordmark { font-size: clamp(4rem, 8vw, 6rem); line-height: .9; }
+  .home-hero-centred-copy :global(.hero-rule) { margin-inline: auto; }
+  /* The heading is a container here: each part keeps the role it had as its own element. */
+  .home-hero-heading { margin: 0; font-weight: 400; }
+  .home-hero-heading > .home-hero-wordmark,
+  .home-hero-heading > .home-hero-tagline { display: block; }
+  .home-hero-centred-copy .home-hero-tagline { max-width: none; }
+  .home-hero-centred-copy .home-hero-tagline-rest { margin-top: 0; }
+  /* Each line its own block, so a narrow screen balances the line that wraps instead of
+     leaving its last word alone. */
+  .home-hero-centred-copy .home-hero-tagline > span { display: block; text-wrap: balance; }
+  .home-nowrap { white-space: nowrap; }
+  /* The main action takes the accent, the second the quiet outline: the house's own two
+     button weights, so the pair ranks itself without a filled button. */
+  .home-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-2) 16px;
+    margin-top: var(--space-4);
+  }
+
+  /* The current issue and its pick: the issue page's .95/1.05 split and gap, both columns
+     opening on one line. */
+  .home-week {
+    display: grid;
+    grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
+    gap: var(--space-4) clamp(24px, 2.8vw, 40px);
+    align-items: stretch;
+  }
+  /* Both columns close on one line too: the button sits on the pick card's last line of
+     text, the space above it taken up by the column rather than set. */
+  .home-week .home-hero-issue { display: flex; flex-direction: column; align-items: flex-start; }
+  .home-week-cta { margin-top: auto; }
+  @media (min-width: 921px) {
+    /* The column keeps back the card's own bottom inset, so the button meets the card's
+       last line of text rather than its outer edge. */
+    .home-week .home-hero-issue { padding-bottom: var(--space-4); }
+  }
+  /* Title, when it ran, then the summary: the date sits one step under the title it
+     belongs to, and the button's minimum gap is held under the summary. */
+  .home-week .home-hero-date { margin: var(--space-1) 0 0; }
+  .home-week .home-hero-dek { margin: var(--space-2) 0 var(--space-3); }
+  /* Subhead role at its own leading: `.section h2` would otherwise set it solid at 1. */
+  .home-week .home-hero-number { margin: 0; font-size: var(--type-subhead); line-height: 1.1; }
+
+  .home-row-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    column-gap: 16px;
+  }
+  .home-row-link { white-space: nowrap; }
+  /* Two base units under the cards, the grid's own gap, so the link reads as part of the
+     row it opens rather than the start of the next. */
+  .home-row-after { display: none; margin: var(--space-2) 0 0; }
+
+  .home-doors {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2) 16px;
+  }
+  .home-door {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    align-items: flex-start;
+    padding: var(--space-3) 24px;
+  }
+  .home-door-title {
+    margin: 0;
+    font-family: var(--display);
+    font-size: var(--type-subhead);
+    line-height: 1.1;
+    font-weight: 500;
+  }
+  .home-door-list { display: grid; gap: var(--space-1); width: 100%; margin: 0; padding: 0; list-style: none; flex: 1; }
+  .home-lane {
+    grid-template-columns: 32px minmax(0, 1fr) auto;
+    min-height: 32px;
+    height: 100%;
+    column-gap: 12px;
+    font-family: var(--sans);
+  }
+  .home-lane:focus-visible { border-radius: var(--radius-sm); outline-offset: -2px; }
+  .home-lane-count,
+  .home-lane-meta {
+    justify-self: end;
+    color: inherit;
+    font-size: var(--type-meta);
+    line-height: var(--leading-meta);
+    white-space: nowrap;
+  }
+  .home-lane-count { font-weight: 600; font-variant-numeric: tabular-nums; }
+  .home-lane-meta { color: var(--muted); }
+  .home-lane-count-value::before { content: "("; }
+  .home-lane-count-value::after { content: ")"; }
+  @media (pointer: coarse) {
+    .home-lane { min-height: 48px; }
+  }
+
+  @media (max-width: 920px) {
+    .home-doors,
+    .home-week { grid-template-columns: minmax(0, 1fr); }
+    .home-week > .home-hero-pick { width: auto; margin-top: 0; }
+    .home-row-heading .home-row-link { display: none; }
+    .home-row-after { display: flex; justify-content: center; }
+    /* Stacked, the issue titles need the full row; the date waits on the issue page. */
+    .home-lane-meta { display: none; }
+    .home-lane-count-value::before,
+    .home-lane-count-value::after { content: none; }
+    /* Stacked, the issue page keeps its pick inside the hero, 32px under the water. Here
+       the next block is its own section, so the hero's 64px close and the section's 24px
+       open would stack to 88. The section is pulled up by the difference, and lifted above
+       the hero's closing fade so its text is not dimmed. */
+    .home-week-section {
+      position: relative;
+      z-index: 1;
+      margin-top: calc(var(--space-4) - var(--space-8) - var(--space-3));
+    }
+  }
+</style>
+
+<script>
+  import { initHeroAtmosphere } from '../scripts/hero-atmosphere';
+  initHeroAtmosphere();
+</script>
+
+<script>
+  /* Daily rows. The build rendered its own UTC day's draw; this redraws for today, so the
+     rows change every day without a deploy. The pools arrive only when the reader nears the
+     first row, which sits below the first screen, and cards are replaced before they are
+     reached. If today is the build's day, nothing is fetched. */
+  import { drawRows, utcDay, ROW_ORDER } from '../data/daily-rows';
+
+  type CardData = { name: string; description: string; icon?: string; iconStyle?: string; fallback?: { color: string; icon: string } };
+
+  const config = document.querySelector<HTMLElement>('[data-daily-config]');
+  const rows = [...document.querySelectorAll<HTMLElement>('[data-daily-row]')];
+  const today = utcDay();
+
+  const fallbackIcon = (name: string) =>
+    document.querySelector<HTMLTemplateElement>('[data-daily-fallback-icons]')
+      ?.content.querySelector(`[data-icon="${name}"] svg`)?.cloneNode(true);
+
+  /* Mirrors AppCard's default card: icon, name, description. Built with DOM calls so no
+     app text is ever parsed as markup. */
+  const buildCard = (id: string, card: CardData) => {
+    const article = document.createElement('article');
+    article.className = 'card app-card';
+    if (card.icon) article.classList.add(`app-icon-${card.iconStyle ?? 'plain'}`);
+    if (card.fallback) article.classList.add('app-icon-fallback', `app-icon-color-${card.fallback.color}`);
+    article.dataset.appName = card.name;
+
+    const href = `/apps/${id}/`;
+    const cover = document.createElement('a');
+    cover.className = 'app-card-link';
+    cover.href = href;
+    cover.tabIndex = -1;
+    cover.setAttribute('aria-hidden', 'true');
+
+    const summary = document.createElement('div');
+    summary.className = 'app-summary has-app-icon';
+    const heading = document.createElement('div');
+    heading.className = 'app-summary-heading';
+    const frame = document.createElement('div');
+    frame.className = card.icon ? 'app-icon-frame' : 'app-icon-frame missing-app-icon-frame';
+    frame.setAttribute('aria-hidden', 'true');
+    if (card.icon) {
+      const img = document.createElement('img');
+      Object.assign(img, { className: 'app-icon', src: card.icon, alt: '', width: 44, height: 44, loading: 'lazy', decoding: 'async' });
+      frame.append(img);
+    } else if (card.fallback) {
+      const svg = fallbackIcon(card.fallback.icon);
+      if (svg) frame.append(svg);
+    }
+    const title = document.createElement('h3');
+    const link = document.createElement('a');
+    link.href = href;
+    link.textContent = card.name;
+    title.append(link);
+    heading.append(frame, title);
+    const description = document.createElement('p');
+    description.className = 'app-description';
+    description.textContent = card.description;
+    summary.append(heading, description);
+    article.append(cover, summary);
+    return article;
+  };
+
+  const cardId = (card: Element) => card.querySelector('a.app-card-link')?.getAttribute('href')?.split('/')[2];
+
+  const redraw = async () => {
+    const response = await fetch(config!.dataset.src!);
+    if (!response.ok) return;
+    const { pools, cards, pickId } = await response.json();
+    const drawn = drawRows(pools, pickId, today);
+    for (const key of ROW_ORDER) {
+      const grid = rows.find((row) => row.dataset.dailyRow === key)?.querySelector('.grid');
+      if (!grid) continue;
+      const current = [...grid.children];
+      drawn[key].forEach((id, index) => {
+        if (cardId(current[index]) === id || !cards[id]) return;
+        current[index].replaceWith(buildCard(id, cards[id]));
+      });
+    }
+  };
+
+  if (config && rows.length && today !== config.dataset.day) {
+    if ('IntersectionObserver' in window) {
+      const nearing = new IntersectionObserver((entries, observer) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        observer.disconnect();
+        redraw();
+      }, { rootMargin: '800px 0px' });
+      nearing.observe(rows[0]);
+    } else {
+      redraw();
+    }
+  }
+</script>

@@ -7,12 +7,20 @@
 
 [[redirects]]
   from = "/archive.html"
-  to = "/archive/"
+  to = "/issues/"
   status = 301
 
 [[redirects]]
   from = "/apps/"
   to = "/explore/"
+  status = 301
+
+# The issue list moved from /archive/ to /issues/ on 2026-09-24, when the navigation
+# renamed it Issues: every issue already lived at /issues/<date>/, so the list now sits at
+# the address its label and its children imply.
+[[redirects]]
+  from = "/archive/"
+  to = "/issues/"
   status = 301
 
 [[redirects]]

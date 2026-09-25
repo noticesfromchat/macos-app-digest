@@ -499,8 +499,8 @@ briefly on two rhythms while the base was 32. That override is gone; the page in
 contributes information the other cannot**. A fixed rubric above an issue-specific
 editorial angle earns both: across 37 sections in nine issues there are five eyebrows and
 37 titles that never repeat, so the eyebrow is the index a returning reader navigates by
-and the title is what this week's three apps have in common. Current or archived issue over
-the issue number earns both the same way, status over identity. The app detail rail's four
+and the title is what this week's three apps have in common. *In This Issue* over an issue's
+title earns both the same way: where the reader is, over what this issue is about. The app detail rail's four
 labels are a single level by construction: nothing sits beneath them but the block they
 name.
 
@@ -629,6 +629,8 @@ Four things hold it inside the design system:
 
 Because the card rests at Hover Lift rather than Ambient Card, it cannot answer the pointer with elevation the way The One Hover Rule describes. It answers with light instead: an accent-tinted depth under the card. Both loops pause when the card is off screen and stop entirely under reduced motion.
 
+**The Night Sky Rule.** At night the hero's stars scintillate: each drifts between 65% and 100% of its own brightness on its own period of four to nine seconds, so the sky breathes rather than blinks in step, and the six brightest show a faint four-point glint at the top of their cycle. Once every 20 to 40 seconds a single faint meteor crosses the upper sky toward the water, lit for 0.8s, striking quickly and fading slowly like the buoy's own light. It is the one flourish the sky is allowed, chosen by the editor on 2026-09-24 and kept rare so it never competes with the headline. It shares the sea's loop and rules: only while the hero is on screen, only with the tab visible, never by day, and the still sky of old under reduced motion.
+
 **The buoy stays the one authored moment.** The mark on the content divider flashes once as the reader passes it. That is deliberate: it marks the passage the divider stands for, and it sits alongside the light on the Editor's Pick card. The old archive timeline in the removed `Keep Exploring` closer retired with that section on 2026-09-01, leaving the issue page calmer at the finish.
 
 **The archive carried a route and a pilot until 2026-09-05.** Its issue cards sat in a
@@ -698,6 +700,16 @@ from the text they are entering. The exception covers text inputs only. Every co
 without a caret, which is every button, chip, link and checkbox on the site, keeps its
 outline, because for those colour alone is not a focus indicator.
 - **Secondary:** transparent fill, ink text, and a borderless or low-border utility presence.
+
+**The Action Link.** A link on its own line doing the job of a button, such as a row's
+*Community Favorite Apps* or the video card's *Watch on YouTube*, is one class, `.action-link`
+(the video card's link joins it by selector). Accent and bold at the Metadata step, 14px on a
+20px line, rather than the size of the text around it; at body size these read as loud as the
+copy they point from. It deepens on hover, carries the shared focus ring and never an underline.
+Its target is grown with a layer rather than the box: 24px everywhere and 48px on coarse
+pointers. A 48px box around a 20px line put 14px of empty space above and below the words,
+which read as a gap belonging to nothing. On the homepage, stacked, a row's link moves from
+beside its heading to 16px under its cards, centred.
 - **Icon Buttons:** the header search and theme controls are 48px circles on desktop, mobile and coarse-pointer devices.
 
 **The Target Floor Rule.** Standalone small targets have a 24px floor; links inside
@@ -1080,9 +1092,8 @@ badges or decorative clutter, and a September critique scored Visibility of Syst
   do: the opening is one shape across the site, and Archive is already a parent in the
   issue trail, so a bare Archive page without one read as an oversight.
 - **The homepage and the 404 have none.** The root has nowhere to point, and a not-found
-  page is not in the hierarchy. The homepage renders through the same `IssuePage` component
-  as an archived issue, so its trail is gated on the component's `homepage` flag rather
-  than on the route.
+  page is not in the hierarchy. The homepage has its own component, `HomePage`, which
+  simply renders no trail; every issue page renders one through `IssuePage`.
 - **The visible trail and the JSON-LD are one array.** `src/data/breadcrumb.ts` builds it,
   the page passes it to both `BaseLayout` (which emits `BreadcrumbList` into the graph) and
   the component. Google's guidance is that structured data describes what a reader can see,
@@ -1215,32 +1226,79 @@ The detail page answers three questions in order: what is this, is it for me, an
 - **Related-app rhythm:** the gap from the related-app heading to the card grid is 24px, `--space-3`, the site value for a section header — see The Section Header Gap. The page carries no override of its own. `.section-heading`'s bottom margin and `.directory-grid`'s 16px top margin are adjacent siblings, so they collapse to the larger of the two rather than summing.
 - **Collapse:** at 920px, where the whole site drops to one column, the rail stacks under the masthead and keeps its DOM order, so reading and focus order do not change. No rule divides them, and none divides the badge from the taxonomy: inside the rail the separation is space. The hero used to close against the related apps on a rule; since 2026-09-05 that boundary is 32px of the section's own top padding, and the page draws no rule at all.
 
-### Homepage Hero
+### Homepage
 
-There is one hero. Issue pages render the same composition as the homepage; the only difference is which element carries the `h1` and whether the eyebrow reads *Current* or *Archived issue*.
-A full-bleed band whose content sits on the shared page shell, so the wordmark aligns with every section heading below it. It carries no artwork.
+The homepage stopped being a copy of the latest issue on 2026-09-24. It had rendered the whole
+issue through `IssuePage`, so the root and `/issues/<latest>/` carried the same content, and
+the domain's most important URL changed subject every Friday. It is now a front door with its
+own component, `HomePage.astro`, and its words live in `site-copy.ts` under `home.*`, written
+by the editor's Home tab.
 
-- **Structure:** identity (wordmark, wave rule, tagline) over a hairline, then the issue block; the Editor's Pick renders beside it as a real `AppCard`, the only card in the fold.
-- **Atmosphere:** two drawn layers — a star field (night only) and an engraved wave band. The stars stop at the water, and the horizon is measured from the sea canvas rather than taken as a fraction of the hero's height. Below 920px the sea stops being absolutely positioned and becomes a block in the flow with the Editor's Pick beneath it, so a fixed fraction put stars under the waterline on every phone. All canvas, no image request, painted once and repainted only on theme change or resize. The day sky above the water stays empty; a cloud bank was drawn there and removed for adding noise rather than calm.
+- **Hero:** a centred column. The `h1` holds the App Waypoint wordmark at the Display role, the
+  wave rule and the first tagline line, so the heading says what the site is as well as what it
+  is called ("App Waypoint Find your next favorite Mac app.") while looking exactly as the three
+  separate elements did; the second line sits under it as a paragraph. Then two buttons: the latest issue in the primary weight,
+  Explore in the secondary, so the pair ranks itself without a filled button. A hyphenated word
+  in the tagline never breaks at its hyphen, and each line balances on its own.
+- **Current issue:** below the water, the issue page's `.95/1.05` split. The issue's title at
+  Subhead, `Issue NN · Published <date>`, the dek, and a Read Issue button that lands on the
+  pick card's last line of text rather than its outer edge. The pick beside it keeps its reason
+  and drops Best For and the tags, which stay on the issue page. Stacked, the section is pulled
+  up so the water is followed by 32px, the same as on an issue page.
+- **Four app rows, drawn daily:** Trending, Recently featured, Favorites from the community and
+  Editor's Picks, three standard grid cards each. See The Daily Draw Rule below.
+- **Keep exploring:** the three largest categories with their counts, and the three issues
+  before the newest, each marked by the icon its record names (`icon`, set on the Issues tab)
+  or the archive box. Stacked, the dates drop so each title keeps one line.
+- **Closes on the subscribe card**, like every issue page.
+
+**The Daily Draw Rule.** Each row is three apps drawn from a pool, and no app appears twice on
+the page: the Editor's Pick is claimed first, then Trending, Recently featured, Favorites and
+Editor's Picks, each skipping anything already shown. The pools are the Trending sections of
+the latest two issues, every section of the latest three, the Community Favorites collection
+and the Editor's Picks collection. The draw is a shuffle seeded by the UTC day, so every reader
+sees the same apps all day and the rows change at midnight UTC without a deploy. The build
+renders its own day's draw, so the page is whole without JavaScript and search engines read real
+cards; once the reader nears the first row, the browser fetches `/home-pools.json` (about 6 KB
+compressed) and redraws for today, replacing cards before they are reached. The build and the
+browser run one file, `src/data/daily-rows.ts`, so they cannot disagree. Neighbours from an
+alphabetical list were tried first and read as an A to Z walk; a seeded shuffle does not.
+
+### Issue Hero
+
+One template for every issue, newest or oldest. There is no *Current* or *Archived* state to go
+stale: an issue page said *Archived issue* in its own week until 2026-09-24.
+
+- **Identity over the issue.** The wordmark (styled, not a heading), the wave rule and the issue
+  pages' own tagline (`issue.heroLine1`, `issue.heroLine2`), then the issue block: the label
+  *In This Issue*, the issue's title as the `h1` at Subhead, `Issue NN · Published <date>`, and
+  the dek. The copy column spreads the two apart so it closes level with the pick card.
+- **The pick** is labelled *Editor's Pick* and keeps its reason and Best For; its tags stay on
+  the app's page. Stacked, Best For drops too, and the first section is pulled up so the gap
+  under the pick is the 48px of every other section break.
+- **Atmosphere:** two drawn layers, shared with the homepage through
+  `src/scripts/hero-atmosphere.ts`: a star field (night only) and an engraved wave band. The
+  stars stop at the water, and the horizon is measured from the sea canvas rather than taken as
+  a fraction of the hero's height. All canvas, no image request. The day sky above the water
+  stays empty; a cloud bank was drawn there and removed for adding noise rather than calm.
 - **The waterline.** The band's ground fades to the page colour across the wave band and the strokes taper to nothing, so the hero ends on the colour the next section begins with. A single `--sea-h` drives the canvas height, the bottom padding, and the fade distance.
 - **The fade is eased at both ends, not just aimed at the right colour.** Landing on the page colour is what keeps the hero from ending on a step; easing out of it is what keeps the hero from ending on a *line*. A linear ramp meeting a flat field agrees with it in value and disagrees in slope, and the eye reads that corner as an edge — light mode showed a hairline under the water on phones while the hero's last row and the page's first row were both `--page`, which is why it survived a check that only compared the two colours. The ramp is a smoothstep, so its slope reaches zero at each end. Light mode also has only twelve levels of ink to spend across the fade, few enough to band in 8-bit; the easing puts the closest-spaced steps mid-fade where the water gives them texture to hide in, and the fade runs `--sea-h` plus 96px rather than 38px to buy back the steepness the easing adds there. Fixed 2026-09-09.
-- **Motion:** the star field is painted once and never moves, and there is no load-in entrance. The waterline swells under The Swell Rule, quietly enough that it reads as atmosphere rather than as animation. The Editor's Pick card is the one thing in the fold that moves for attention, under The Struck Light Rule, and it earns that by being the app the issue is arguing for.
-- **The pick carries one visible heading at every width.** `.home-hero-pick-title` is an
-  `h2` set in the accent Label role, reading *This Week's Editor's Pick* on the homepage and
-  *Editor's Pick* on an archived issue, with `--eyebrow-gap` beneath it to the card. It
-  takes the Label role rather than Section Title because it names one featured card inside
-  the hero and the app's own name is that block's identity; see The Two Level Rule.
-  Until 2026-09-09 this was an eyebrow paragraph above a *clipped* h2 reading `One app worth
-  a closer look`. That clip was the right answer to the wrong question: removing the h2 had
-  run the desktop homepage from h1 to the app card's h3, so the clip kept the level in the
-  outline, but it also left sighted readers and heading navigation with two different labels
-  for one block above 920px, and below 920px the filler heading appeared at subhead scale and
-  tied the app's own name. **A heading that orders the outline stays in the outline at every
-  width, and the words it announces are the words on the screen.**
+- **Motion:** no load-in entrance. The waterline swells under The Swell Rule and the night sky
+  moves under The Night Sky Rule, both quietly enough to read as atmosphere rather than as
+  animation. The Editor's Pick card is the one thing in the fold that moves for attention, under
+  The Struck Light Rule, and it earns that by being the app the issue is arguing for.
+- **The pick carries one visible heading at every width.** `.home-hero-pick-title` is set in
+  the accent Label role, reading *This Week's Editor's Pick* on the homepage and *Editor's
+  Pick* on an issue page, with `--eyebrow-gap` beneath it to the card. It takes the Label role
+  rather than Section Title because it names one featured card and the app's own name is that
+  block's identity; see The Two Level Rule. Until 2026-09-09 this was an eyebrow paragraph above
+  a *clipped* h2 reading `One app worth a closer look`, which left sighted readers and heading
+  navigation with two different labels for one block. **A heading that orders the outline stays
+  in the outline at every width, and the words it announces are the words on the screen.**
 
 ### Issue Subscribe Card
 
-Every issue page, including the homepage and archived issues, closes with the shared RSS
+Every issue page, and the homepage, closes with the shared RSS
 subscribe card after `Weekend Reading`, and the archive index closes with the same object.
 The reader's question is the same in both places: when does the next issue arrive, and what
 URL goes into an RSS reader?

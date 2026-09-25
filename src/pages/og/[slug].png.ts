@@ -120,7 +120,7 @@ export async function getStaticPaths() {
       slug: 'archive',
       card: {
         layout: 'page' as const,
-        eyebrow: laneEyebrow('Archive', issues.length, 'issue'),
+        eyebrow: laneEyebrow('Issues', issues.length, 'issue'),
         title: siteCopy['archive.cardTitle'],
         dek: siteCopy['archive.cardDek']
       }

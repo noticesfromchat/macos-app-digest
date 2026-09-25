@@ -247,6 +247,20 @@ for (const filename of issueFiles) {
     continue;
   }
 
+  /* The homepage's issue list draws this mark; a name missing from the icon set would
+     render nothing at all rather than the archive-box fallback. */
+  if (data.icon !== undefined) {
+    if (typeof data.icon !== 'string' || !/^[a-z0-9-]+$/.test(data.icon)) {
+      errors.push(`${relative}: icon must be a Phosphor icon name such as "flower-lotus"`);
+    } else {
+      try {
+        await access(path.join(root, 'node_modules/@phosphor-icons/core/assets/regular', `${data.icon}.svg`));
+      } catch {
+        errors.push(`${relative}: icon "${data.icon}" is not in the Phosphor icon set`);
+      }
+    }
+  }
+
   if (typeof data.slug === 'string' && data.slug >= standardIssueSectionStartSlug) {
     const sectionEyebrows = data.sections.map((section) => String(section.eyebrow ?? '').trim());
     if (sectionEyebrows.join('|') !== standardIssueSectionEyebrows.join('|')) {

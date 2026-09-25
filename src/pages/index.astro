@@ -1,13 +1,8 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import IssuePage from '../components/IssuePage.astro';
+import HomePage from '../components/HomePage.astro';
 import { OG_SIZE, ogPath } from '../data/og';
 import { siteCopy } from '../data/site-copy';
-
-const issues = await getCollection('issues');
-const apps = await getCollection('apps');
-const latestIssue = [...issues].sort((a, b) => b.data.slug.localeCompare(a.data.slug))[0];
 ---
 <BaseLayout
   title={`App Waypoint — ${siteCopy['home.titleTagline']}`}
@@ -17,5 +12,5 @@ const latestIssue = [...issues].sort((a, b) => b.data.slug.localeCompare(a.data.
   socialImageSize={OG_SIZE}
   socialImageAlt={siteCopy['home.socialAlt']}
 >
-  <IssuePage homepage={true} issue={latestIssue.data} appEntries={apps} />
+  <HomePage />
 </BaseLayout>

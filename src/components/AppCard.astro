@@ -4,12 +4,17 @@ import MetaIcon from './MetaIcon.astro';
 import { fallbackIconColor, fallbackIconCategory } from '../data/app-icon';
 
 type App = CollectionEntry<'apps'>['data'];
-const { app, appId, editorNote, featuredDate, variant = 'default' } = Astro.props as {
+const { app, appId, editorNote, featuredDate, variant = 'default', showBestFor = true, showTags = true } = Astro.props as {
   app: App;
   appId?: string;
   editorNote?: string;
   featuredDate?: string;
   variant?: 'default' | 'hero';
+  /* The hero card's optional regions. A page that does not show them leaves them out of
+     the markup rather than hiding them with CSS, so no text or link sits in the page that a
+     reader cannot see. */
+  showBestFor?: boolean;
+  showTags?: boolean;
 };
 const isHero = variant === 'hero';
 const fallbackColor = fallbackIconColor(appId ?? app.name);
@@ -72,13 +77,17 @@ const directorySearchText = [
           <p>{editorNote}</p>
         </div>
       )}
-      <div class="best-for">
-        <p class="editor-note-label">Best for</p>
-        <p>{app.bestFor}</p>
-      </div>
-      <div class="tag-list" aria-label="App tags">
-        {app.tags.map((tag) => <a class="tag" href={`/tags/${tag}/`}>{tag}</a>)}
-      </div>
+      {showBestFor && (
+        <div class="best-for">
+          <p class="editor-note-label">Best for</p>
+          <p>{app.bestFor}</p>
+        </div>
+      )}
+      {showTags && (
+        <div class="tag-list" aria-label="App tags">
+          {app.tags.map((tag) => <a class="tag" href={`/tags/${tag}/`}>{tag}</a>)}
+        </div>
+      )}
     </>
   )}
 </article>

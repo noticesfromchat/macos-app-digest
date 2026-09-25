@@ -7,7 +7,7 @@ viewport widths. Paths are relative to the site origin.
 | Component | Markup source | Style source | Where to review |
 | --- | --- | --- | --- |
 | Primary button | `src/pages/apps/[app].astro` | `src/styles/global.css` (`.button`) | `/apps/cleanshot/`, app actions |
-| Secondary button | `src/pages/archive.astro` | `src/styles/global.css` (`.button.secondary`, `.archive-more`) | `/archive/`, Load More when further issues are available |
+| Secondary button | `src/pages/issues/index.astro` | `src/styles/global.css` (`.button.secondary`, `.archive-more`) | `/issues/`, Load More when further issues are available |
 | Tag chip | `src/components/AppCard.astro` | `src/styles/global.css` (`.tag`) | `/explore/`, app card tags |
 | App card | `src/components/AppCard.astro` | `src/styles/global.css` (`.app-card`) | `/explore/`, app grid |
 | Site header | `src/layouts/BaseLayout.astro` | `src/styles/global.css`, `src/styles/search.css` | Any route; desktop navigation and mobile menu |

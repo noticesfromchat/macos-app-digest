@@ -57,6 +57,10 @@ const issues = defineCollection({
        standfirst copy and is not shortened to suit a search result; this carries the
        shorter form instead. Same contract as an app's metaDescription. */
     metaDescription: z.string().min(70).max(160).optional(),
+    /* The mark an issue carries in the homepage's issue list: a Phosphor icon name chosen
+       for the issue's theme. Optional; an issue without one shows the archive box.
+       validate-content.mjs checks the name exists in the icon set. */
+    icon: z.string().regex(/^[a-z0-9-]+$/).optional(),
     rss: z.object({
       title: z.string().min(4).max(90),
       cta: z.string().min(4).max(40).default('Read this issue')

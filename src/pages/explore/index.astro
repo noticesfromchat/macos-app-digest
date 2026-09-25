@@ -99,7 +99,7 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
       </section>
     </div>
 
-    <section class="section explore-section explore-directory-section">
+    <section class="section explore-section explore-directory-section" id="all-apps">
       <AppDirectory apps={apps} heading="All apps" />
     </section>
 
@@ -214,3 +214,28 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
     .explore-lane-count-value::after { content: none; }
   }
 </style>
+
+<script>
+  /* Links from elsewhere land on the app list at `#all-apps`. The browser makes that jump
+     before the page has settled: styles, the display face and the directory's own trimming
+     of the list all arrive after it, and each can move the section, so the heading could
+     end up anywhere. Once everything has loaded, set the anchored section at the top once
+     more, unless the reader has already started scrolling. */
+  const target = location.hash ? document.getElementById(decodeURIComponent(location.hash.slice(1))) : null;
+
+  if (target) {
+    let readerMoved = false;
+    const stop = () => { readerMoved = true; };
+    const events = ['wheel', 'touchstart', 'keydown', 'pointerdown'] as const;
+    events.forEach((type) => window.addEventListener(type, stop, { once: true, passive: true }));
+
+    const settle = () => {
+      events.forEach((type) => window.removeEventListener(type, stop));
+      if (!readerMoved) target.scrollIntoView({ block: 'start', behavior: 'instant' });
+    };
+    const whenLoaded = document.readyState === 'complete'
+      ? Promise.resolve()
+      : new Promise((resolve) => window.addEventListener('load', resolve, { once: true }));
+    whenLoaded.then(() => document.fonts?.ready).then(settle);
+  }
+</script>

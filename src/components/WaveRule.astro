@@ -1,10 +1,14 @@
 ---
 import { MARK_WAVE, MARK_WAVE_VIEWBOX } from '../data/mark';
+
+/* A span where it has to sit inside a heading, which may only hold phrasing content; it
+   draws the same either way, because `.hero-rule` is a block. */
+const { as: Tag = 'div' } = Astro.props as { as?: 'div' | 'span' };
 ---
 {/* The buoy's own wave, drawn on its own: the rule under the wordmark is the
     same water as the mark, at a slightly finer weight. */}
-<div class="hero-rule" aria-hidden="true">
+<Tag class="hero-rule" aria-hidden="true">
   <svg viewBox={MARK_WAVE_VIEWBOX} role="presentation">
     <path d={MARK_WAVE} />
   </svg>
-</div>
+</Tag>
