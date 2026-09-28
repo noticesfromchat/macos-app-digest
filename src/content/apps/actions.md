@@ -5,6 +5,7 @@ bestFor: Shortcuts users who want richer building blocks without installing a he
 tagline: Shortcuts action library
 tags: [automation, productivity, utility, ios, shortcuts]
 categories: [automation-shortcuts, productivity-workflow, mac-utilities-customization]
+collections: [free-worth-keeping]
 source: Official Actions product information
 homepage: https://sindresorhus.com/actions
 icon: /app-icons/actions.png

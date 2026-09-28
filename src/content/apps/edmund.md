@@ -5,6 +5,7 @@ bestFor: Writers who want a lightweight native editor without moving documents i
 tagline: native Markdown editor
 tags: [markdown, writing, local, utility, open-source]
 categories: [writing-notes-reading, mac-utilities-customization]
+collections: [free-worth-keeping]
 source: r/macapps App Pile submission and official homepage
 homepage: https://edmund.md/
 icon: /app-icons/edmund.png

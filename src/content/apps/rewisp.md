@@ -5,6 +5,7 @@ bestFor: Researchers and operators who repeatedly need to recover details seen a
 tagline: on-screen memory recall
 tags: [ai, search, local, open-source]
 categories: [ai-agents]
+collections: [free-worth-keeping]
 source: Product Hunt launch, GitHub and official homepage
 homepage: https://yashmitb.github.io/Rewisp/
 icon: /app-icons/rewisp.svg

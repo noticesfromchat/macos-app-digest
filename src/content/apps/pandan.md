@@ -5,7 +5,7 @@ bestFor: Anyone who loses an afternoon to the screen and would rather be told ab
 tagline: active-time timer
 tags: [menubar, productivity, utility, health]
 categories: [mac-utilities-customization, productivity-workflow]
-collections: [hidden-gems]
+collections: [hidden-gems, free-worth-keeping]
 source: App Selections note, official homepage and Mac App Store
 homepage: https://sindresorhus.com/pandan
 icon: /app-icons/pandan.png

@@ -5,6 +5,7 @@ bestFor: Mac power users who want quiet health monitoring that surfaces persiste
 tagline: system monitor
 tags: [menubar, monitoring, open-source, utility, battery]
 categories: [mac-utilities-customization]
+collections: [free-worth-keeping]
 source: Product Hunt recent Mac launch and official homepage
 homepage: https://mectrics.app/
 icon: /app-icons/mectrics.png

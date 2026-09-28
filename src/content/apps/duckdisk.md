@@ -5,6 +5,7 @@ bestFor: People managing storage across a Mac and remote services who need one v
 tagline: storage analyzer
 tags: [files, utility, open-source]
 categories: [files-research-documents, mac-utilities-customization]
+collections: [free-worth-keeping]
 source: r/macapps August App Pile moderator pick and official homepage
 homepage: https://duckdisk.com/
 icon: /app-icons/duckdisk.png

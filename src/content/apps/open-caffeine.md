@@ -5,6 +5,7 @@ bestFor: Presentations and long downloads that should not be interrupted by syst
 tagline: keep-awake timer
 tags: [menubar, utility, open-source, battery]
 categories: [mac-utilities-customization]
+collections: [free-worth-keeping]
 source: Product Hunt, GitHub releases and official repository
 homepage: https://github.com/sapsaldog/open-caffeine
 icon: /app-icons/open-caffeine.png

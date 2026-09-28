@@ -5,6 +5,7 @@ bestFor: Codex users who want lightweight usage visibility without browser acces
 tagline: Codex usage tracker
 tags: [menubar, developer, ai, open-source]
 categories: [mac-utilities-customization, developer-tools, ai-agents]
+collections: [free-worth-keeping]
 source: Product Hunt recent Mac launch and official homepage
 homepage: https://getcodexbar.xyz/
 icon: /app-icons/codexbar-lite.png

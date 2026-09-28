@@ -5,6 +5,7 @@ bestFor: Readers who own their ebook files and want a lighter, private alternati
 tagline: EPUB and PDF library
 tags: [ebooks, files, privacy, reading, pdf, open-source]
 categories: [files-research-documents, mac-utilities-customization, writing-notes-reading]
+collections: [free-worth-keeping]
 source: r/macapps App Pile top-three selection and official homepage
 homepage: https://tomolibrary.com/
 icon: /app-icons/tomo.png

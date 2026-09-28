@@ -5,6 +5,7 @@ bestFor: Developers supervising several coding agents who need waiting sessions 
 tagline: notch agent tracker
 tags: [ai, developer, utility, open-source]
 categories: [ai-agents, developer-tools, mac-utilities-customization]
+collections: [free-worth-keeping]
 source: Product Hunt launch, GitHub and official homepage
 homepage: https://kraten.github.io/chimlo/
 icon: /app-icons/chimlo.png

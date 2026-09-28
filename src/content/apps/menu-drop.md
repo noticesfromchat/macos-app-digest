@@ -5,7 +5,7 @@ bestFor: Mac users who send things between Apple devices constantly and want Air
 tagline: menu bar AirDrop
 tags: [menubar, airdrop, files, utility]
 categories: [mac-utilities-customization, files-research-documents]
-collections: [hidden-gems]
+collections: [hidden-gems, free-worth-keeping]
 source: Mac Power Users #854 and official homepage
 homepage: https://sindresorhus.com/menu-drop
 icon: /app-icons/menu-drop.png

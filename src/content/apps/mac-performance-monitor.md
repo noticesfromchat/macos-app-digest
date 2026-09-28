@@ -5,6 +5,7 @@ bestFor: Apple silicon users chasing intermittent slowdowns that disappear befor
 tagline: CPU graphs
 tags: [monitoring, menubar, local, open-source]
 categories: [mac-utilities-customization]
+collections: [free-worth-keeping]
 source: r/macapps; official Mac Performance Monitor product information
 homepage: https://macperformancemonitor.com/
 icon: /app-icons/mac-performance-monitor.png

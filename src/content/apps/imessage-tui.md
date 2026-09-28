@@ -5,6 +5,7 @@ bestFor: Terminal users who need a focused, local way to inspect or archive port
 tagline: Messages in terminal
 tags: [messages, terminal, privacy, open-source]
 categories: [writing-notes-reading, developer-tools, mac-utilities-customization]
+collections: [free-worth-keeping]
 source: r/macapps July 2026 App Pile and canonical GitHub repository
 homepage: https://github.com/rsheyd/imessage-tui
 ---

@@ -5,6 +5,7 @@ bestFor: Context-switchers who want repeatable project workspaces without buildi
 tagline: project workspaces
 tags: [productivity, launcher, automation, utility, open-source]
 categories: [productivity-workflow, mac-utilities-customization, automation-shortcuts]
+collections: [free-worth-keeping]
 source: Official Freeter product information
 homepage: https://freeter.io/
 icon: /app-icons/freeter.png

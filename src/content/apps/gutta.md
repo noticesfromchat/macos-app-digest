@@ -5,6 +5,7 @@ bestFor: Focused Mac users who want fast task capture without opening a project 
 tagline: menu bar task manager
 tags: [productivity, menubar, tasks, local, open-source]
 categories: [productivity-workflow, mac-utilities-customization]
+collections: [free-worth-keeping]
 source: Product Hunt Mac recent launches and canonical GitHub repository
 homepage: https://github.com/vkpdeveloper/gutta
 icon: /app-icons/gutta.png

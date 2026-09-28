@@ -5,6 +5,7 @@ bestFor: Listeners and audio tinkerers who want deeper system-wide processing th
 tagline: system audio effects
 tags: [audio, utility, open-source, customization]
 categories: [media-capture, mac-utilities-customization]
+collections: [free-worth-keeping]
 source: r/macapps July 2026 App Pile and official homepage
 homepage: https://www.sonexis.ink/
 icon: /app-icons/sonexis.png

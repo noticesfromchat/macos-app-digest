@@ -5,6 +5,7 @@ bestFor: Astro users who like editing visually but refuse to give up the source 
 tagline: visual Astro editor
 tags: [developer, productivity, local, open-source]
 categories: [developer-tools, productivity-workflow]
+collections: [free-worth-keeping]
 source: App Selections note, Stacki homepage and GitHub repository
 homepage: https://stacki.build/
 icon: /app-icons/stacki.png

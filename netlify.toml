@@ -5,6 +5,19 @@
 [build.environment]
   NODE_VERSION = "22"
 
+# Plausible analytics, proxied through this domain so the script and its events are
+# first-party requests. The script path is this site's own Plausible script; if the
+# snippet in the Plausible dashboard changes, update the pa- file name here.
+[[redirects]]
+  from = "/pulse/js/script.js"
+  to = "https://plausible.io/js/pa-vjz0R3PYugwGSiVridiSf.js"
+  status = 200
+
+[[redirects]]
+  from = "/pulse/api/event"
+  to = "https://plausible.io/api/event"
+  status = 200
+
 [[redirects]]
   from = "/archive.html"
   to = "/issues/"
