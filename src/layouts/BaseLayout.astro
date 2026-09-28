@@ -34,10 +34,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 const socialImageUrl = new URL(socialImage, Astro.site);
 const rssUrl = new URL('/rss.xml', Astro.site);
 const searchIndexUrl = new URL('/search-index.json', Astro.site);
-const googleAnalyticsId = 'G-1WLLER0K5L';
 // Netlify sets CONTEXT to production, deploy-preview or branch-deploy, and leaves it
 // undefined for `astro dev`. Analytics loads only for the real site, so preview builds
-// and local development stay out of the property.
+// and local development stay out of the stats.
 const isProduction = process.env.CONTEXT === 'production';
 const graph = [
   {
@@ -87,15 +86,13 @@ const graph = [
   <head>
     {isProduction && (
       <>
-        <script async src={`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}`}></script>
+        {/* Plausible, served from this domain. netlify.toml rewrites /pulse/ to
+            plausible.io, so the script and its events are first-party requests. */}
+        <script is:inline async src="/pulse/js/script.js"></script>
         <script
           is:inline
-          set:html={`window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', ${JSON.stringify(googleAnalyticsId)}, {
-  debug_mode: new URLSearchParams(window.location.search).has('_dbg')
-});`}
+          set:html={`window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+plausible.init({ endpoint: '/pulse/api/event' });`}
         />
       </>
     )}
