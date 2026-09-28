@@ -51,3 +51,21 @@ export const richLines = (value: string) =>
 /* The same copy with its marks removed, for places that take plain text. */
 export const plainText = (value: string) =>
   inlineSegments(value).map((segment) => segment.text).join('');
+
+export type RichSection = { heading?: string; paragraphs: RichParagraph[] };
+
+/* A long page written as one value, such as the privacy policy. A paragraph that opens
+   with `## ` is a section heading and starts a new section; the paragraphs before the
+   first heading form a section with no heading. Headings are plain text, with no marks. */
+export function richSections(value: string): RichSection[] {
+  const sections: RichSection[] = [{ paragraphs: [] }];
+  for (const paragraph of richParagraphs(value)) {
+    const first = paragraph.segments[0];
+    if (paragraph.segments.length === 1 && first.kind === 'text' && first.text.startsWith('## ')) {
+      sections.push({ heading: first.text.slice(3).trim(), paragraphs: [] });
+    } else {
+      sections[sections.length - 1].paragraphs.push(paragraph);
+    }
+  }
+  return sections.filter((section) => section.heading || section.paragraphs.length);
+}

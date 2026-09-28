@@ -19,6 +19,7 @@ const { current = '' } = Astro.props;
         aria-controls="rss-feed-modal"
         data-rss-open
       >Subscribe</button>
+      <a href="/privacy/" aria-current={current === 'privacy' ? 'page' : undefined}>Privacy</a>
       {/* Beside the X mark on a row, above it once the nav stacks. BaseLayout's theme
           script finds it by data-theme-toggle and keeps the label and glyph current. */}
       <button class="theme-toggle footer-theme-toggle" type="button" aria-label="Switch to dark theme" data-theme-toggle>
