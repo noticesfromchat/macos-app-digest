@@ -5,6 +5,7 @@ bestFor: Demos and walkthroughs that need to look edited without anyone actually
 tagline: screen recorder
 tags: [capture, video, open-source]
 categories: [media-capture]
+collections: [free-worth-keeping]
 source: Issue 11 selection list and official homepage
 homepage: https://recordly.dev/
 icon: /app-icons/recordly.png

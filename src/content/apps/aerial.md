@@ -5,7 +5,7 @@ bestFor: Mac users who have let the Apple TV sit on its screensaver rather than 
 tagline: Apple TV screensaver
 tags: [customization, utility, open-source]
 categories: [mac-utilities-customization]
-collections: [community-favorites]
+collections: [community-favorites, free-worth-keeping]
 source: Issue 11 selection list and project homepage
 homepage: https://aerialscreensaver.github.io/
 icon: /app-icons/aerial.png

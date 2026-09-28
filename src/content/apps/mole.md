@@ -5,7 +5,7 @@ bestFor: Terminal-comfortable Mac users who want a transparent, broad cleanup ro
 tagline: command-line maintenance
 tags: [utility, files, terminal, open-source, maintenance]
 categories: [mac-utilities-customization, files-research-documents, developer-tools]
-collections: [editors-picks, community-favorites]
+collections: [editors-picks, community-favorites, free-worth-keeping]
 source: r/macapps discussion, current GitHub activity and canonical repository
 homepage: https://github.com/tw93/Mole
 icon: /app-icons/mole.png

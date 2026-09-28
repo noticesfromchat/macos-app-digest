@@ -5,6 +5,7 @@ bestFor: Developers who want custom status displays and controls without buildin
 tagline: scripts in the menu bar
 tags: [menubar, developer, automation, open-source]
 categories: [mac-utilities-customization, developer-tools, automation-shortcuts]
+collections: [free-worth-keeping]
 source: GitHub activity, community adoption and official homepage
 homepage: https://swiftbar.app/
 icon: /app-icons/swiftbar.png

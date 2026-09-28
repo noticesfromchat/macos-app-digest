@@ -5,6 +5,7 @@ bestFor: Anyone with too many windows open who needs better switching but likes 
 tagline: Dock window previews
 tags: [windows, productivity, utility, open-source]
 categories: [mac-utilities-customization, productivity-workflow]
+collections: [free-worth-keeping]
 source: DockDoor homepage and GitHub repository
 homepage: https://dockdoor.net/
 icon: /app-icons/dockdoor.png

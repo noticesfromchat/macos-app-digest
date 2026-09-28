@@ -19,7 +19,7 @@ export type Category = {
 };
 
 export type CollectionMeta = {
-  slug: 'community-favorites' | 'editors-picks' | 'hidden-gems';
+  slug: 'community-favorites' | 'editors-picks' | 'hidden-gems' | 'free-worth-keeping';
   title: string;
   icon: string;
 };
@@ -114,6 +114,11 @@ export const collections: CollectionMeta[] = [
     slug: 'hidden-gems',
     title: 'Hidden Gems',
     icon: 'treasure-chest'
+  },
+  {
+    slug: 'free-worth-keeping',
+    title: 'Free & Worth Keeping',
+    icon: 'gift'
   }
 ];
 

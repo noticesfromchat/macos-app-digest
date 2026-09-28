@@ -5,7 +5,7 @@ bestFor: Podcast edits and voice cleanup by people who are not about to start pa
 tagline: audio editor
 tags: [audio, capture, open-source]
 categories: [media-capture]
-collections: [community-favorites]
+collections: [community-favorites, free-worth-keeping]
 source: Issue 11 selection list and official homepage
 homepage: https://www.audacityteam.org/
 icon: /app-icons/audacity.png

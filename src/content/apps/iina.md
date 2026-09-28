@@ -5,7 +5,7 @@ bestFor: Mac users who want a capable local video player that feels at home on m
 tagline: open-source video player
 tags: [video, open-source, local, utility]
 categories: [media-capture, mac-utilities-customization]
-collections: [community-favorites]
+collections: [community-favorites, free-worth-keeping]
 source: Official IINA homepage and canonical repository
 homepage: https://iina.io/
 icon: /app-icons/iina.png

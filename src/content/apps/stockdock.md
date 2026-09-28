@@ -5,6 +5,7 @@ bestFor: Market watchers who want prices at a glance without signing up for anyt
 tagline: menu bar stock ticker
 tags: [menubar, finance, open-source, privacy]
 categories: [mac-utilities-customization]
+collections: [free-worth-keeping]
 source: GitHub activity, release notes and official repository
 homepage: https://github.com/simonsruggi/StockDock
 icon: /app-icons/stockdock.png

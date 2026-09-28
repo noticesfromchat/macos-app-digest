@@ -100,11 +100,12 @@ const tagTaglines: Record<string, string> = {
 
 export const tagTagline = (tag: string) => tagTaglines[tag];
 
-/** The same, for the two collection lanes. */
+/** The same, for the collection lanes. */
 const collectionTaglines: Record<string, string> = {
   "editors-picks": "best of each week",
   "community-favorites": "popular picks",
-  'hidden-gems': 'underrated tools'
+  'hidden-gems': 'underrated tools',
+  'free-worth-keeping': 'no strings'
 };
 
 export const collectionTagline = (slug: string) => collectionTaglines[slug];
@@ -179,7 +180,8 @@ const collectionDescriptions: Record<string, string> = {
     'Explore Mac apps the editor singled out for doing a familiar job in a way worth switching for.',
   "community-favorites": "Popular Mac apps the community keeps recommending, each with a short note on what it does and why people keep coming back to it.",
   'hidden-gems':
-    'Explore Mac apps worth more attention than they get: small, well made tools that solve a real problem without a marketing budget behind them.'
+    'Explore Mac apps worth more attention than they get: small, well made tools that solve a real problem without a marketing budget behind them.',
+  "free-worth-keeping": "Mac apps that cost nothing: no trial, no paid tier, no watermark and no feature saved for an upgrade. The only thing they'll cost you is disk space.",
 };
 
 export const collectionTitle = (slug: string) =>

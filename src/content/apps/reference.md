@@ -5,6 +5,7 @@ bestFor: Developers who want coding agents to retrieve precise project context w
 tagline: semantic code search
 tags: [ai, search, developer, local, automation]
 categories: [ai-agents, developer-tools, automation-shortcuts]
+collections: [free-worth-keeping]
 source: Product Hunt recent Mac launch and official homepage
 homepage: https://tryreference.com/
 icon: /app-icons/reference.png

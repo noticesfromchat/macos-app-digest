@@ -5,6 +5,7 @@ bestFor: Terminal and automation users who need deeper Reminders access than App
 tagline: Reminders on the CLI
 tags: [automation, reminders, cli, open-source]
 categories: [automation-shortcuts, productivity-workflow, developer-tools]
+collections: [free-worth-keeping]
 source: MacStories and official GitHub repository
 homepage: https://github.com/viticci/remctl
 icon: /app-icons/remctl.png

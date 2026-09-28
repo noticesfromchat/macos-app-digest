@@ -5,6 +5,7 @@ bestFor: Developers running several agents who need one local place to spot bloc
 tagline: agent session inbox
 tags: [ai, agents, developer, menubar, local, open-source]
 categories: [ai-agents, developer-tools, mac-utilities-customization]
+collections: [free-worth-keeping]
 source: r/macapps App Pile moderator pick and official repository
 homepage: https://github.com/dwmkerr/signalbox
 icon: /app-icons/signalbox.png

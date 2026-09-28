@@ -264,6 +264,14 @@ it. See Issue Subscribe Card in `DESIGN.md` for the structure and the reasoning.
   and how to keep `src/data/categories.ts` and the Netlify redirects in step.
 - Some single-app tags are protected and must not be retired in a routine audit. The
   list and the reason for each is in `docs/TAG_AUDIT.md`.
+- **Free & Worth Keeping (`free-worth-keeping`) means completely free.** An app
+  qualifies only when its own site shows no trial, no price, no paid tier, no watermark
+  and no feature held back for an upgrade. "Free for X, then $" and "free during the
+  beta" both disqualify it, and so does a paid cosmetic unlock. A separate paid product
+  from the same developer does not count against it, and neither does a tip that
+  unlocks nothing or a feature that runs on the reader's own API key. Check the homepage
+  and its pricing page before adding an app, and recheck the collection during each tag
+  audit, because small apps add paid tiers. Adopted 2026-09-27, when 47 of the catalog's apps passed.
 
 ## 6. App detail pages
 

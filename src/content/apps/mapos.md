@@ -5,6 +5,7 @@ bestFor: Researchers and planners who want their map data in files they own, rea
 tagline: local-first Markdown map
 tags: [maps, local, ai, automation, markdown, open-source]
 categories: [ai-agents, automation-shortcuts, writing-notes-reading]
+collections: [free-worth-keeping]
 source: r/macapps August App Pile and official homepage
 homepage: https://mapos.md/
 icon: /app-icons/mapos.png

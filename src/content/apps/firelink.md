@@ -5,6 +5,7 @@ bestFor: People whose downloads have outgrown the browser's own list.
 tagline: download manager
 tags: [downloads, utility, automation, open-source]
 categories: [files-research-documents, mac-utilities-customization, automation-shortcuts]
+collections: [free-worth-keeping]
 source: r/macapps August App Pile moderator pick and canonical GitHub repository
 homepage: https://github.com/nimbold/Firelink
 icon: /app-icons/firelink.png

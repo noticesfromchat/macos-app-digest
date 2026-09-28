@@ -5,6 +5,7 @@ bestFor: Shortcuts builders who want model calls inside automations without hand
 tagline: adds AI to Shortcuts
 tags: [ai, automation, productivity, utility, shortcuts]
 categories: [ai-agents, automation-shortcuts, productivity-workflow, mac-utilities-customization]
+collections: [free-worth-keeping]
 source: Official AI Actions product information
 homepage: https://sindresorhus.com/ai-actions
 icon: /app-icons/ai-actions.png
