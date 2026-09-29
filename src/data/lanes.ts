@@ -157,7 +157,7 @@ const tagDescriptions: Record<string, string> = {
   "reminders": "Being told the thing at the moment you can actually do something about it.",
   "remote": "Your Mac on another screen, or another device's apps on yours.",
   "research": "Collecting sources and remembering where they came from.",
-  "rss": "Readers and feed tools. The open web, still working the way it used to.",
+  "rss": "Readers and feed tools. The open web, still working the way it's supposed to.",
   "search": "Find the file, or the sentence inside it, without remembering where you put it.",
   "shortcuts": "Extra actions and better tooling for Apple's Shortcuts app.",
   "tasks": "Lists that hold up once the list gets long.",
