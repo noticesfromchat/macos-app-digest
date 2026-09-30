@@ -5,6 +5,7 @@ bestFor: "People who keep a dozen windows open and are tired of clicking an app 
 tagline: Dock window previews
 tags: [windows, utility, menubar]
 categories: [mac-utilities-customization]
+collections: [available-on-homebrew]
 source: "Six Colors App Report and official homepage"
 homepage: https://docktorapp.com/
 icon: /app-icons/docktor.png

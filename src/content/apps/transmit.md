@@ -5,7 +5,7 @@ bestFor: People who still touch servers and storage buckets often enough to want
 tagline: file transfer
 tags: [files, developer, utility]
 categories: [files-research-documents, developer-tools, mac-utilities-customization]
-collections: [community-favorites]
+collections: [community-favorites, available-on-homebrew]
 source: Panic Transmit product page
 homepage: https://panic.com/transmit/
 icon: /app-icons/transmit.png

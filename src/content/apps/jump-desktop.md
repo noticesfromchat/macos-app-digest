@@ -5,6 +5,7 @@ bestFor: Developers and admins who spend real hours on a remote machine, not the
 tagline: remote desktop
 tags: [remote, utility, productivity]
 categories: [mac-utilities-customization, productivity-workflow]
+collections: [available-on-homebrew]
 source: Issue 11 selection list and official homepage
 homepage: https://jumpdesktop.com/
 icon: /app-icons/jump-desktop.png

@@ -5,7 +5,7 @@ bestFor: Menu bar maximalists who need reliable organization across notched lapt
 tagline: menu bar organizer
 tags: [menubar, utility, open-source, customization]
 categories: [mac-utilities-customization]
-collections: [community-favorites, free-worth-keeping]
+collections: [community-favorites, free-worth-keeping, available-on-homebrew]
 source: GitHub activity, community interest and official repository
 homepage: https://github.com/stonerl/Thaw
 ---

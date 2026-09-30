@@ -5,6 +5,7 @@ bestFor: Raycast users and automation-minded teams who want tiny internal tools 
 tagline: AI app builder
 tags: [ai, automation, developer, productivity]
 categories: [ai-agents, automation-shortcuts, developer-tools, productivity-workflow]
+collections: [available-on-homebrew]
 source: Product Hunt, Raycast and official homepage
 homepage: https://www.glaze.app/
 icon: /app-icons/glaze-by-raycast.png

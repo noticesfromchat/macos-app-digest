@@ -5,7 +5,7 @@ bestFor: People moving lots of files to servers who want local and remote folder
 tagline: two-pane file manager
 tags: [files, finder, remote]
 categories: [files-research-documents, mac-utilities-customization]
-collections: [community-favorites]
+collections: [community-favorites, available-on-homebrew]
 source: BinaryNights; official ForkLift product information
 homepage: https://binarynights.com/
 icon: /app-icons/forklift.png

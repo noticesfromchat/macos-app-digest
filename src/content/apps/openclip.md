@@ -5,7 +5,7 @@ bestFor: Keyboard-heavy Mac users who like PopClip-style text actions but want o
 tagline: text-action popup
 tags: [clipboard, automation, productivity, open-source]
 categories: [writing-notes-reading, automation-shortcuts, productivity-workflow]
-collections: [free-worth-keeping]
+collections: [free-worth-keeping, available-on-homebrew]
 source: Editor direct instruction and OpenClip GitHub repository
 homepage: https://github.com/ganeshmshetty/openclip
 icon: /app-icons/openclip.png

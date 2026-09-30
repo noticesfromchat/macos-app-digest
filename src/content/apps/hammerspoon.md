@@ -5,7 +5,7 @@ bestFor: People comfortable writing a little code who want automation shaped aro
 tagline: Lua automation
 tags: [automation, developer, open-source]
 categories: [automation-shortcuts, developer-tools]
-collections: [free-worth-keeping]
+collections: [free-worth-keeping, available-on-homebrew]
 source: Hammerspoon project; official Hammerspoon product information
 homepage: https://www.hammerspoon.org/
 icon: /app-icons/hammerspoon.png

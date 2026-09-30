@@ -5,7 +5,7 @@ bestFor: Writers and developers who want one text app for everything, the messy 
 tagline: plain-text editor
 tags: [developer, writing, local]
 categories: [developer-tools, writing-notes-reading]
-collections: [community-favorites]
+collections: [community-favorites, available-on-homebrew]
 source: Bare Bones BBEdit product page
 homepage: https://www.barebones.com/products/bbedit/
 icon: /app-icons/bbedit.png

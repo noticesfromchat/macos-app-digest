@@ -5,7 +5,7 @@ bestFor: People running long jobs or headless Macs who want sleep to wait until 
 tagline: keep-awake rules
 tags: [menubar, automation, utility, open-source, developer]
 categories: [mac-utilities-customization, automation-shortcuts, developer-tools]
-collections: [free-worth-keeping]
+collections: [free-worth-keeping, available-on-homebrew]
 source: Product Hunt Mac launch and official homepage
 homepage: https://keepresso.com/
 icon: /app-icons/keepresso.png

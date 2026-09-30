@@ -5,6 +5,7 @@ bestFor: Multitaskers who want one layer for arranging and switching busy window
 tagline: window snapping
 tags: [windows, productivity, utility]
 categories: [mac-utilities-customization, productivity-workflow]
+collections: [available-on-homebrew]
 source: Product Hunt launch, release coverage and official homepage
 homepage: https://wins.cool/
 icon: /app-icons/wins.png

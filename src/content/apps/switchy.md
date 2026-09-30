@@ -5,6 +5,7 @@ bestFor: Multi-Mac desks that share Apple input devices and need faster handoffs
 tagline: keyboard and mouse sharing
 tags: [menubar, utility, productivity, network]
 categories: [mac-utilities-customization, productivity-workflow]
+collections: [available-on-homebrew]
 source: Product Hunt recent Mac launches and official homepage
 homepage: https://mangobuns.com/switchy/
 icon: /app-icons/switchy.png

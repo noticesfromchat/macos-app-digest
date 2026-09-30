@@ -5,6 +5,7 @@ bestFor: Mac users who miss Launchpad but want a polished replacement that suits
 tagline: Launchpad app grid
 tags: [launcher, productivity, customization, utility]
 categories: [mac-utilities-customization, productivity-workflow]
+collections: [available-on-homebrew]
 source: Product Hunt Mac launch and official homepage
 homepage: https://launchosapp.com/
 icon: /app-icons/launchos.svg

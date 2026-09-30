@@ -5,7 +5,7 @@ bestFor: Writers and developers who want something in between TextEdit and a ful
 tagline: plain-text editor
 tags: [writing, developer, local, open-source]
 categories: [writing-notes-reading, developer-tools]
-collections: [community-favorites, free-worth-keeping]
+collections: [community-favorites, free-worth-keeping, available-on-homebrew]
 source: Issue 11 selection list and official homepage
 homepage: https://coteditor.com/
 icon: /app-icons/coteditor.png

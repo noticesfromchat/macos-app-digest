@@ -5,7 +5,7 @@ bestFor: Developers juggling several repositories and coding agents from one key
 tagline: terminal with workspaces
 tags: [terminal, developer, automation, open-source]
 categories: [developer-tools, automation-shortcuts]
-collections: [hidden-gems]
+collections: [hidden-gems, available-on-homebrew]
 source: AppStories, community discussion and official homepage
 homepage: https://cmux.com/
 icon: /app-icons/cmux.png

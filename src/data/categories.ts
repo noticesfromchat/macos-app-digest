@@ -19,7 +19,7 @@ export type Category = {
 };
 
 export type CollectionMeta = {
-  slug: 'community-favorites' | 'editors-picks' | 'hidden-gems' | 'free-worth-keeping';
+  slug: 'community-favorites' | 'editors-picks' | 'hidden-gems' | 'free-worth-keeping' | 'available-on-homebrew';
   title: string;
   icon: string;
 };
@@ -57,7 +57,7 @@ export const categories: Category[] = [
     title: "Files, Research & Documents",
     description: "Mac apps for opening that file you saved six months ago, plus the organization and search tools that made it findable at all.",
     mobileDescription: 'Finding files, and finding them again later.',
-    tags: ['files', 'finder', 'documents', 'research', 'pdf', 'ebooks', 'backup', 'downloads', 'airdrop', 'quicklook'],
+    tags: ['files', 'finder', 'documents', 'research', 'pdf', 'backup', 'downloads', 'airdrop', 'quicklook'],
     icon: 'files',
     accent: 'color-mix(in srgb, var(--accent) 8%, var(--surface-strong))'
   },
@@ -119,6 +119,11 @@ export const collections: CollectionMeta[] = [
     slug: 'free-worth-keeping',
     title: 'Free & Worth Keeping',
     icon: 'gift'
+  },
+  {
+    slug: 'available-on-homebrew',
+    title: 'Available on Homebrew',
+    icon: 'beer-stein'
   }
 ];
 

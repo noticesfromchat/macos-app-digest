@@ -5,6 +5,7 @@ bestFor: Agent-assisted email workflows that need local context across several a
 tagline: email with agent skills
 tags: [ai, automation, productivity, messages, cli, calendar]
 categories: [ai-agents, automation-shortcuts, productivity-workflow, writing-notes-reading, developer-tools]
+collections: [available-on-homebrew]
 source: MacStories review, Spark CLI documentation and official homepage
 homepage: https://sparkmailapp.com/
 icon: /app-icons/spark-mail.png

@@ -5,7 +5,7 @@ bestFor: Anyone who types all day and wants AI help without leaving the text fie
 tagline: local autocomplete
 tags: [writing, ai, local, productivity]
 categories: [writing-notes-reading, ai-agents, productivity-workflow]
-collections: [community-favorites]
+collections: [community-favorites, available-on-homebrew]
 source: Mac Power Users #854 and official homepage
 homepage: https://cotypist.app/
 icon: /app-icons/cotypist.png

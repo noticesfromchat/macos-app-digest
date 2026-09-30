@@ -5,7 +5,7 @@ bestFor: "People who select text all day and are tired of the copy, switch apps 
 tagline: text selection actions
 tags: [utility, writing, automation]
 categories: [mac-utilities-customization, writing-notes-reading, automation-shortcuts]
-collections: [community-favorites]
+collections: [community-favorites, available-on-homebrew]
 source: "Editor's App Selections and official homepage"
 homepage: https://www.popclip.app/
 icon: /app-icons/popclip.png

@@ -5,7 +5,7 @@ bestFor: Anyone who needs to grab a call or a bit of app audio without setting u
 tagline: one-click recorder
 tags: [audio, capture, utility]
 categories: [media-capture, mac-utilities-customization]
-collections: [editors-picks]
+collections: [editors-picks, available-on-homebrew]
 source: Editor's Picks note and Rogue Amoeba homepage
 homepage: https://rogueamoeba.com/piezo/
 icon: /app-icons/piezo.png

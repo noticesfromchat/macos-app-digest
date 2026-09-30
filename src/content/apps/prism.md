@@ -5,6 +5,7 @@ bestFor: AI power users who want one Mac-native place for all of it.
 tagline: multi-provider AI chat
 tags: [ai, local, developer]
 categories: [ai-agents, developer-tools]
+collections: [available-on-homebrew]
 source: Product Hunt and official homepage
 homepage: https://prism-app.tech/
 icon: /app-icons/prism.png

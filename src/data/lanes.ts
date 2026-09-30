@@ -59,7 +59,6 @@ const tagTaglines: Record<string, string> = {
   dictation: 'speech to text',
   documents: 'files and PDFs',
   downloads: 'managers and queues',
-  ebooks: 'readers and libraries',
   files: 'managers and finders',
   finance: 'money and markets',
   finder: 'Finder enhancements',
@@ -105,7 +104,8 @@ const collectionTaglines: Record<string, string> = {
   "editors-picks": "best of each week",
   "community-favorites": "popular picks",
   'hidden-gems': 'underrated tools',
-  'free-worth-keeping': 'no strings'
+  'free-worth-keeping': 'no strings',
+  'available-on-homebrew': 'via brew'
 };
 
 export const collectionTagline = (slug: string) => collectionTaglines[slug];
@@ -130,7 +130,6 @@ const tagDescriptions: Record<string, string> = {
   "dictation": "Turning speech into text, and the tools for delivering it out loud.",
   "documents": "Reading and editing the files people email you.",
   "downloads": "Queues and scheduling, for when the browser's own downloads aren't enough.",
-  "ebooks": "A library of your own files rather than one you're renting from a store.",
   "files": "Finding what's on your disk, and clearing out what shouldn't be.",
   "finance": "Money and markets on your desktop instead of your phone.",
   "finder": "Fixes for the app you use more than any other and think about least.",
@@ -176,6 +175,8 @@ export const tagMetaDescription = (tag: string) =>
   `${tagDek(tag)} Each Mac app has a short note on what it does and a link to its developer.`;
 
 const collectionDescriptions: Record<string, string> = {
+  'available-on-homebrew':
+    'Mac apps you can install with Homebrew, through its official packages or developer-maintained taps. Some apps still require a paid license.',
   'editors-picks':
     'Explore Mac apps the editor singled out for doing a familiar job in a way worth switching for.',
   "community-favorites": "Popular Mac apps the community keeps recommending, each with a short note on what it does and why people keep coming back to it.",

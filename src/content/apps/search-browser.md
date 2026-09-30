@@ -5,7 +5,7 @@ bestFor: People who want a minimalist browser that stays out of the way.
 tagline: minimal browser
 tags: [utility, local, open-source]
 categories: [mac-utilities-customization]
-collections: [free-worth-keeping]
+collections: [free-worth-keeping, available-on-homebrew]
 source: Editor-selected; official Search repository README
 homepage: https://officecommun.com/search
 icon: /app-icons/search-browser.png

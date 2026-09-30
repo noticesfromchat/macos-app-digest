@@ -5,7 +5,7 @@ bestFor: Power users who want one utility to reshape how every input device beha
 tagline: input customizer
 tags: [automation, customization, keyboard, utility]
 categories: [automation-shortcuts, mac-utilities-customization]
-collections: [community-favorites]
+collections: [community-favorites, available-on-homebrew]
 source: Official BetterTouchTool homepage
 homepage: https://folivora.ai/
 icon: /app-icons/bettertouchtool.png
