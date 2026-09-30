@@ -76,7 +76,7 @@ export const siteCopy = {
   "archive.cardTitle": "Every issue so far",
   "archive.cardDek": "Browse every published issue of App Waypoint, a weekly editorial guide to thoughtfully selected Mac apps and reading.",
   "about.dek": "I love Mac apps. I like trying them out, tinkering and using them to help me be more productive. To help me organize. To make my everyday tasks as a communicator, manager and leader that much more enjoyable to do.",
-  "about.intro": "Hey, I'm Zac. The editor.\n\nApp Waypoint is a little project I've been working on that highlights apps every Friday while building up a [database](/explore/) that is browsable, filterable and sortable. My goal with this project is to help you find that one tool or utility that you feel like has been missing.",
+  "about.intro": "Hey, I'm Zac. The editor.\n\nApp Waypoint is a little project I've been working on that highlights apps every Friday while building up a [database](/explore/) that is browsable, filterable and sortable. My goal with this project is to help you find that one app that you feel like has been missing.",
   "about.criteriaHeading": "What earns a spot",
   "about.criteriaIntro": "Five things I'm looking for when selecting apps:",
   "about.criteria": "**It's actually useful**\n**People are actually recommending it**\n**It's well made**\n**It's actively being developed or maintained**\n**It has a point of view**",
