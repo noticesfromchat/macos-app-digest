@@ -42,9 +42,14 @@ which is the better outcome only because it is visible.
 
 ### Local catalogue editor
 
-Run `npm run editor` to open the private catalogue editor at
-`http://127.0.0.1:4319`. It binds only to the local Mac and is not part of the Astro
-site or its production build. It is laid out like a CMS: sections down the left, the
+While `npm run dev` is running, the private catalogue editor is at
+`http://localhost:4321/edit`, on the same server as the site. Nothing else is needed. It
+answers this Mac only, never appears in `astro build`, and is missing on a clone or a
+Netlify build that lacks its untracked files. Changing `astro.config.mjs` needs a dev
+server restart before `/edit` appears.
+
+To run it without the site, use `npm run editor` and open `http://127.0.0.1:4319`. It
+binds only to the local Mac and is not part of the Astro site or its production build. It is laid out like a CMS: sections down the left, the
 whole right side a content area. Apps lists every app and opens one on its own edit
 screen, where descriptions, Best for text, taglines, search descriptions, tags and
 collections write directly to the app record. Collections are a checkbox list of every
@@ -55,7 +60,7 @@ remain protected. Issues edits an issue's prose, including its optional search
 description.
 
 The Home section edits the homepage's own words. Each remaining Site copy item (Subscribe,
-Issue pages, Footer, and so on) edits one group of copy that belongs to no record: the
+Footer, and so on) edits one group of copy that belongs to no record: the
 subscribe dialog and card, the homepage and footer taglines, the Explore, Archive and 404
 introductions, the About page, and the search, feed and social card lines for those
 pages. Both write `src/data/site-copy.ts`, which every template reads, so site-wide copy

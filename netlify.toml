@@ -100,7 +100,12 @@
 
 [[redirects]]
   from = "/tags/library/"
-  to = "/tags/ebooks/"
+  to = "/tags/reading/"
+  status = 301
+
+[[redirects]]
+  from = "/tags/ebooks/"
+  to = "/tags/reading/"
   status = 301
 
 [[redirects]]
@@ -134,3 +139,8 @@
     X-Frame-Options = "DENY"
     Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
     Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+
+[[redirects]]
+  from = "/apps/filemaster/"
+  to = "/categories/files-research-documents/"
+  status = 301

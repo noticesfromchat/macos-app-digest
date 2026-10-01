@@ -63,14 +63,13 @@ explicit editorial decision recorded in the audit report.
 | `database` | fluentdb | Precise, high reader intent, and an explicit member of Developer Tools. |
 | `backup` | superduper | Durable reader intent with an obvious growth path. Backup tools are a standing Mac category. |
 | `downloads` | firelink | As above. Do not stretch it onto apps that merely mention downloads as a trigger condition. |
-| `ebooks` | tomo | Precise where a broader tag would be vague. Monitor: if still a single app after two audits, consider folding into `reading`. |
 
 A protected tag is not permanent. It is a tag whose single-app status has already been
 argued and settled, so a later audit does not relitigate it by default.
 
 ## 4. Retired tags
 
-These tags were retired by the 2026-09-01 audit. No app carries them, they are out of
+These tags were retired by the 2026-09-01 and 2026-09-29 audits. No app carries them, they are out of
 `src/data/categories.ts`, and `netlify.toml` redirects their old routes. Do not add one
 to a new app record without an explicit editorial reason recorded in the pull request.
 The replacement column is the tag to reach for instead; in most cases the reader intent
@@ -79,11 +78,12 @@ is already covered.
 | Retired tag | Why | Use instead |
 | --- | --- | --- |
 | `agent` | A singular duplicate of `agents`, which already existed and mapped to the same category. Two spellings split one idea across two tag pages. | `agents` |
-| `library` | Vague. It could mean an ebook library, a bookmark library or a media library, and the app holding it already carried the precise tag. | `ebooks`, `reading`, or `research` |
+| `library` | Vague. It could mean an ebook library, a bookmark library or a media library, and the app holding it already carried the precise tag. | `reading` or `research` |
 | `documentation` | One letter from `documents`, which means something else. Two tags that near-collide are a navigation problem, not a taxonomy. | `capture` for workflow-capture tools; `documents` for document handling |
 | `export` | A feature, not an identity. Many apps export something; tagging one of them for it describes the release notes, not the app. | Nothing. Tag what the app *is* |
 | `cloud` | Vague, and it half-collides with `icloud`. A local-first catalog will not grow it. | `files` |
 | `icloud` | Plumbing, not identity, and applied inconsistently: only two records carried it while `finalist` syncs across Mac, iPhone, iPad and Watch, and `hyperduck`, `choclift` and `raindrop` are all cross-device, none of them tagged. Sync is how an app works, not what it is. | Nothing. Tag what the app *is* |
+| `ebooks` | One app carried it (`tomo`, which already carries `reading`), so it never supported a discovery page of its own. Retired by the 2026-09-29 audit after the two-audit watch. | `reading` |
 
 Removing a tag from one record is not retirement. A tag is retired only when no app
 carries it and it has been removed from `src/data/categories.ts`. When that happens, add
@@ -144,6 +144,13 @@ drift and icon-fallback impact — a decision sheet offers verified changes, not
 Work through it in one pass afterwards, and **delete the sheet once every decision is
 resolved**; a sheet still showing decisions that have shipped misleads the next reader.
 
+The report and its decision sheet live in Notion, not in the repo. Add a page to the
+[Audits](https://app.notion.com/p/Audits-3e5d6482d47f8086a0c5fa9afb91a3aa) database,
+named for the audit and its date, for example "Tag audit, September 28, 2026". Put a
+tickable **Actions once approved** list at the top, one line per approved change, with
+the census and the decision sheet below it. Keep the page current as items ship, and set
+its **Complete** tag when every action is done. Leave no report file in the repository.
+
 Once approved:
 
 ```bash
@@ -154,3 +161,41 @@ npm run build
 
 `sync:categories` rewrites every `categories:` line from tags, so it runs after both the
 app-record edits and the `categories.ts` edits, never between them.
+
+## 9. Recheck the Homebrew collection
+
+The `available-on-homebrew` collection is a claim about the outside world, and Homebrew
+changes without notice: Mic Drop's cask was disabled when the app moved to the Mac App
+Store. Recheck membership at every audit, and whenever a new app joins the catalog.
+
+An app belongs when a documented Homebrew command installs that app, either from the
+official cask or formula catalogue or from a tap its developer maintains. It does not
+belong when:
+
+- the only match is a **name collision** (`bloop`, `muse`, `prism`, `remctl`, `sidekick`
+  and `workbench` all name a different product);
+- the package is **disabled or deprecated**;
+- the command installs only a **CLI companion**, as `keypak` does for KeyOpera;
+- the package cannot be tied to the app by developer domain or repository.
+
+A formula for a CLI app counts when the CLI is the app, as with Mole. Availability says
+nothing about price or compatibility, and the collection page says so.
+
+Method:
+
+1. Download the current [cask](https://formulae.brew.sh/api/cask.json) and
+   [formula](https://formulae.brew.sh/api/formula.json) catalogues.
+2. For every member, confirm the token exists, is not disabled or deprecated, and
+   installs from the developer's own site or repository. A homepage on a different
+   domain is not a failure, but read the download URL before accepting it.
+3. For every non-member, search both catalogues for an equal name or token and for the
+   same developer domain. Read each hit; most are name collisions.
+4. Load each tap definition to confirm the tap still exists.
+5. Compare the result with the collection's `collections:` lines, and with the live
+   sitemap so unpublished apps are reported separately from published ones.
+
+Report it on the same Audits page as the tag audit (section 8), under its own heading
+with the checked date. The last full review is the Notion
+[Brew note](https://app.notion.com/p/Brew-3ead6482d47f8134ae3bc4dadc97a262), checked
+September 28, 2026. Apply approved changes to each record's `collections:` line
+only, then run `npm run validate` and `npm run build`.

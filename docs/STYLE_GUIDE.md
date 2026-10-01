@@ -106,6 +106,14 @@ eligible apps for any required section, the issue is not ready for preview. Ask 
 editor to select replacements or approve specific app-record changes before building
 the release candidate.
 
+An app removed from the catalogue keeps its place in any published issue that named it.
+Delete its record and icon, add its id to `src/data/removed-apps.ts`, and leave the id in
+the issue's section. The section then still shows three cards, and the removed one draws
+as the removed-app card: a standard app card with a grey wrench icon that says the app was removed
+and links to "What earns a spot" on the About page. Add a 301 for `/apps/{id}/` in
+`netlify.toml` to the most relevant category or tag. The validator rejects an id on the
+removed list that still has a record.
+
 The optional `editorsPick` module is the only app feature outside the regular
 section spine. When present, it renders between `Trending` and `Old Favorites`.
 

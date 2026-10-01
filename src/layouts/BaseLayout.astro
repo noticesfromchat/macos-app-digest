@@ -6,6 +6,7 @@ import RichText from '../components/RichText.astro';
 import { siteCopy } from '../data/site-copy';
 import { breadcrumbSchema, type Crumb } from '../data/breadcrumb';
 import { OG_SIZE, ogPath } from '../data/og';
+import { editorHash } from '../data/editor-target';
 import '@fontsource/vollkorn/latin-400.css';
 import '@fontsource/vollkorn/latin-500.css';
 import '@fontsource/vollkorn/latin-600.css';
@@ -399,16 +400,28 @@ plausible.init({ endpoint: '/pulse/api/event' });`}
           ...(app.tags || [])
         ].join(' '));
 
+        /* A resting pointer sits over the first row when results appear and would light it
+           up as though it were selected. Hover only counts once the pointer really moves. */
+        results.addEventListener('pointermove', (event) => {
+          if (event.movementX || event.movementY) results.setAttribute('data-hover', '');
+        });
+
         const render = () => {
+          results.removeAttribute('data-hover');
           const appList = apps || [];
           const query = normalize(input.value);
-          const matches = query
-            ? appList.filter((app) => searchableText(app).includes(query))
-            : appList;
+          if (!query) {
+            count.textContent = '';
+            results.innerHTML = '';
+            return;
+          }
+          if (!apps) {
+            count.textContent = 'Searching...';
+            return;
+          }
+          const matches = appList.filter((app) => searchableText(app).includes(query));
 
-          count.textContent = query
-            ? `${matches.length} matching ${matches.length === 1 ? 'app' : 'apps'}`
-            : `${matches.length} apps`;
+          count.textContent = `${matches.length} matching ${matches.length === 1 ? 'app' : 'apps'}`;
 
           if (!matches.length) {
             results.innerHTML = '<p class="search-empty">No matching apps found.</p>';
@@ -439,19 +452,19 @@ plausible.init({ endpoint: '/pulse/api/event' });`}
           overlay.hidden = false;
           openButtons.forEach((button) => button.setAttribute('aria-expanded', 'true'));
           input.value = '';
-          count.textContent = 'Loading apps...';
-          results.innerHTML = '<p class="search-empty">Loading search index...</p>';
+          count.textContent = '';
+          results.innerHTML = '';
+          try {
+            input.focus({ preventScroll: true });
+          } catch {
+            input.focus();
+          }
           try {
             await loadApps();
             render();
           } catch {
             count.textContent = 'Search unavailable';
             results.innerHTML = '<p class="search-empty">Search is temporarily unavailable.</p>';
-          }
-          try {
-            input.focus({ preventScroll: true });
-          } catch {
-            input.focus();
           }
         };
 
@@ -465,6 +478,13 @@ plausible.init({ endpoint: '/pulse/api/event' });`}
         mobileSearchButton?.addEventListener('click', openSearch);
         closeButtons.forEach((button) => button.addEventListener('click', closeSearch));
         input.addEventListener('input', render);
+        input.addEventListener('keydown', (event) => {
+          if (event.key !== 'Enter' || event.isComposing) return;
+          const query = input.value.trim();
+          if (!query) return;
+          event.preventDefault();
+          window.location.assign(`/explore/?q=${encodeURIComponent(query.slice(0, 100))}#all-apps`);
+        });
         overlay.addEventListener('click', (event) => {
           if (event.target === overlay) closeSearch();
         });
@@ -730,5 +750,21 @@ plausible.init({ endpoint: '/pulse/api/event' });`}
         });
       })();
     </script>
+    {/* Dev server only, and only when the catalog editor is mounted: `astro.config.mjs` sets
+        CATALOGUE_EDITOR on `astro dev`, so this never reaches a build. It floats in the
+        corner, unlike anything in the header, so it reads as a tool and not as navigation. It opens
+        the editor at the record or screen behind the current page, in one named tab that later
+        clicks reuse. */}
+    {import.meta.env.DEV && import.meta.env.CATALOGUE_EDITOR && (
+      <a
+        class="dev-editor-fab"
+        href={`/edit${editorHash(Astro.url.pathname)}`}
+        target="app-waypoint-editor"
+        aria-label="Edit this page in the catalog editor"
+        title="Edit this page (dev server only)"
+      >
+        <PhosphorIcon name="pencil-simple" aria-hidden="true" />
+      </a>
+    )}
   </body>
 </html>

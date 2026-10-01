@@ -4,6 +4,7 @@ import process from 'node:process';
 import { parse } from 'yaml';
 import { categories, categorySlugs, getCategoriesForTags } from '../src/data/categories.ts';
 import { tagIcons } from '../src/data/tag-icons.ts';
+import { removedApps } from '../src/data/removed-apps.ts';
 
 const root = process.cwd();
 const appsDir = path.join(root, 'src/content/apps');
@@ -86,6 +87,12 @@ function checkLength(filename, label, value, minWords, maxWords) {
 
 const appFiles = await markdownFiles(appsDir);
 const appIds = new Set(appFiles.map((filename) => path.basename(filename, '.md')));
+
+/* A removed app leaves no record behind. An id on the removed list that still has one would
+   draw the removed-app card over a live app. */
+for (const id of Object.keys(removedApps)) {
+  if (appIds.has(id)) errors.push(`src/data/removed-apps.ts: "${id}" is listed as removed but src/content/apps/${id}.md still exists`);
+}
 const appsById = new Map();
 
 for (const filename of appFiles) {
@@ -277,7 +284,7 @@ for (const filename of issueFiles) {
 
     for (const appId of section.apps) {
       referencedApps.push(appId);
-      if (!appIds.has(appId)) errors.push(`${relative}: unknown app ID "${appId}"`);
+      if (!appIds.has(appId) && !(appId in removedApps)) errors.push(`${relative}: unknown app ID "${appId}"`);
     }
 
     const sectionEyebrow = String(section.eyebrow ?? '').trim().toLowerCase();

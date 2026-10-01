@@ -40,6 +40,8 @@ output/
 # Ignored rather than deleted, which means `git clean -fdx` would remove it like any
 # other ignored file. Keep a copy outside the repository before running that.
 scripts/app-editor.mjs
+scripts/app-editor-handler.mjs
+scripts/git-editor-lib.mjs
 scripts/app-editor-lib.mjs
 scripts/app-editor.test.mjs
 scripts/taxonomy-editor-lib.mjs

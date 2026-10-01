@@ -18,8 +18,10 @@ const latestIssue = [...issues].sort((a, b) => b.data.slug.localeCompare(a.data.
 
 /* Each section is a heading and its prose from src/data/site-copy.ts, where the editor's
    Misc tab writes them. The order and the shape of the page stay here. */
-const sections: { heading: SiteCopyKey; lead?: SiteCopyKey; list?: SiteCopyKey; prose?: SiteCopyKey; cta?: boolean }[] = [
-  { heading: 'about.criteriaHeading', lead: 'about.criteriaIntro', list: 'about.criteria' },
+/* `id` gives a section a stable anchor that does not follow its editable heading, so a link
+   such as the removed-app card's `/about/#what-earns-a-spot` survives a reworded title. */
+const sections: { id?: string; heading: SiteCopyKey; lead?: SiteCopyKey; list?: SiteCopyKey; prose?: SiteCopyKey; cta?: boolean }[] = [
+  { id: 'what-earns-a-spot', heading: 'about.criteriaHeading', lead: 'about.criteriaIntro', list: 'about.criteria' },
   { heading: 'about.sourcesHeading', prose: 'about.sources' },
   { heading: 'about.aiHeading', prose: 'about.ai' },
   { heading: 'about.supportHeading', prose: 'about.support', cta: true }
@@ -52,7 +54,7 @@ const sections: { heading: SiteCopyKey; lead?: SiteCopyKey; list?: SiteCopyKey; 
         section rather than forming their own, because a section of their own drew a rule
         across the page for what is the same thought finishing. */}
     {sections.map((section) => (
-      <section class="section">
+      <section class="section" id={section.id}>
         <div class="section-heading">
           <h2 class="section-title">{siteCopy[section.heading]}</h2>
         </div>

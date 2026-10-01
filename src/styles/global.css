@@ -1203,6 +1203,9 @@ h1.home-hero-number {
 .app-icon-color-blue { --missing-icon-bg: #2f75d6; }
 .app-icon-color-purple { --missing-icon-bg: #8b5cc7; }
 .app-icon-color-pink { --missing-icon-bg: #c24b7a; }
+/* The removed-app card is the standard app card. Only its icon frame differs, a grey one in
+   place of an app icon, so it reads as a place-holder without a surface of its own. */
+.removed-app-card { --missing-icon-bg: #5f6670; }
 .app-card p { margin: 0; color: var(--body-text); }
 .app-card .reading-source { color: var(--muted); }
 /* This follows the generic paragraph rule deliberately: the Editor's Pick labels
@@ -1491,6 +1494,8 @@ h1.home-hero-number {
 /* The homepage links straight to the app list at `/explore/#all-apps`. The header is
    sticky, so the jump stops the header's height short and the heading lands in view. */
 #all-apps { scroll-margin-top: 80px; }
+/* The sticky header would cover an anchored About section's heading. */
+.about-page .section[id] { scroll-margin-top: 96px; }
 .explore-utility-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2944,3 +2949,27 @@ h1.home-hero-number {
   .has-pick-accent::before,
   .has-pick-accent::after { animation: none; }
 }
+
+/* The dev-only catalog editor button. It is a fixed corner control, ringed and filled on
+   hover, so it looks like a tool laid over the page and not like part of the navigation. */
+.dev-editor-fab {
+  position: fixed;
+  z-index: 60;
+  right: 20px;
+  bottom: 20px;
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--accent);
+  background: var(--surface);
+  box-shadow: var(--shadow-hover), inset 0 0 0 1.5px var(--accent);
+  text-decoration: none;
+  transition: color 180ms ease, background-color 180ms ease;
+}
+.dev-editor-fab svg { --icon-size: var(--icon-md); }
+.dev-editor-fab:hover { color: var(--surface); background: var(--accent); }
+.dev-editor-fab:focus-visible { outline: var(--focus-ring); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .dev-editor-fab { transition: none; } }
+@media print { .dev-editor-fab { display: none; } }

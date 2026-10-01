@@ -19,7 +19,6 @@ export const tagIcons: Record<string, string> = {
   "dictation": "microphone",
   "documents": "file-text",
   "downloads": "download-simple",
-  "ebooks": "books",
   "files": "files",
   "finance": "chart-line-up",
   "finder": "folder-simple",
