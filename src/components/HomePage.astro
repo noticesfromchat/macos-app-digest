@@ -90,21 +90,34 @@ const shortDate = (slug: string) => new Date(`${slug}T12:00:00Z`).toLocaleDateSt
   </header>
 
   <section class="section home-week-section" aria-labelledby="home-week-title">
-    <div class="home-week">
+    {/* One card for the issue: its cover copy on the left and the one app it argues for on
+        the right, with the editor's reason. The issue's other apps wait on the issue page. */}
+    <div class="card home-week">
       <div class="home-hero-issue">
         <p class="eyebrow">{siteCopy['home.currentLabel']}</p>
-        <h2 class="home-hero-number" id="home-week-title">{latest.rss.title}</h2>
+        <h2 class="home-hero-number" id="home-week-title"><a href={issueUrl}>{latest.rss.title}</a></h2>
         <p class="home-hero-date">Issue {label} · Published <time datetime={latest.slug}>{latest.date}</time></p>
         <p class="home-hero-dek">{latest.dek}</p>
         <a class="button home-week-cta" href={issueUrl}>{siteCopy['home.readIssue']}</a>
       </div>
       {pick && (
-        <div class="home-hero-pick" id="editors-pick">
+        <div class="home-pick" id="editors-pick">
           <h3 class="home-hero-pick-title">{siteCopy['home.pickLabel']}</h3>
-          <AppCard app={pick.data} appId={pick.id} editorNote={latest.editorsPick?.reason} variant="hero" showBestFor={false} showTags={false} />
+          <a class="home-pick-app" href={`/apps/${pick.id}/`}>
+            <span class:list={['home-pick-icon', `home-pick-${pick.data.iconStyle}`]} aria-hidden="true">
+              {pick.data.icon && <img src={pick.data.icon} alt="" width="48" height="48" loading="lazy" decoding="async" />}
+            </span>
+            <span class="home-pick-name">{pick.data.name}</span>
+          </a>
+          <p class="home-pick-description">{pick.data.description}</p>
+          {latest.editorsPick?.reason && (
+            <div class="home-pick-reason">
+              <p class="editor-note-label">Why it was chosen</p>
+              <p>{latest.editorsPick.reason}</p>
+            </div>
+          )}
         </div>
       )}
-    </div>
   </section>
 
   {rows.map((row) => (
@@ -253,29 +266,92 @@ const shortDate = (slug: string) => new Date(`${slug}T12:00:00Z`).toLocaleDateSt
     .home-hero-actions .button:first-child::after { animation: none; }
   }
 
-  /* The current issue and its pick: the issue page's .95/1.05 split and gap, both columns
-     opening on one line. */
+  /* The current issue as one card: the cover copy and the pick share a top, a hairline
+     between them. The card takes the pick card's 32px inset, because it is the one object
+     this block is about. */
   .home-week {
     display: grid;
     grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
     gap: var(--space-4) clamp(24px, 2.8vw, 40px);
     align-items: stretch;
+    padding: var(--space-4) clamp(24px, 3.2vw, 48px);
+    border-radius: var(--space-4);
   }
-  /* Both columns close on one line too: the button sits on the pick card's last line of
-     text, the space above it taken up by the column rather than set. */
   .home-week .home-hero-issue { display: flex; flex-direction: column; align-items: flex-start; }
   .home-week-cta { margin-top: auto; }
-  @media (min-width: 921px) {
-    /* The column keeps back the card's own bottom inset, so the button meets the card's
-       last line of text rather than its outer edge. */
-    .home-week .home-hero-issue { padding-bottom: var(--space-4); }
-  }
-  /* Title, when it ran, then the summary: the date sits one step under the title it
-     belongs to, and the button's minimum gap is held under the summary. */
-  .home-week .home-hero-date { margin: var(--space-1) 0 0; }
+  /* The date sits straight under the title, the title's 48px line box standing in for the
+     gap; the summary follows 16px under the date, and the button's minimum gap is held under
+     the summary. */
+  .home-week .home-hero-date { margin: 0; }
   .home-week .home-hero-dek { margin: var(--space-2) 0 var(--space-3); }
-  /* Subhead role at its own leading: `.section h2` would otherwise set it solid at 1. */
-  .home-week .home-hero-number { margin: 0; font-size: var(--type-subhead); line-height: 1.1; }
+  /* Subhead role in a fixed 48px line box, the height of an app icon, so the title shares its
+     centre line with the pick's icon and name opposite at every width. */
+  .home-week .home-hero-number { margin: 0; font-size: var(--type-subhead); line-height: 48px; }
+  /* The title links to the issue with an app card title's treatment: colour on hover, never
+     an underline, and the house focus ring. */
+  .home-hero-number a { color: var(--text); text-decoration: none; transition: color 180ms ease; }
+  .home-hero-number a:hover,
+  .home-hero-number a:focus-visible { color: var(--accent); }
+  .home-hero-number a:focus-visible { outline: var(--focus-ring); outline-offset: var(--focus-offset); border-radius: var(--radius-sm); }
+
+  /* The pick: its label, the app's icon and name as one link, its description at the
+     summary's body size, then the editor's reason under the accent label the issue page's
+     pick card uses. A hairline divides it from the issue copy the way the card's two halves
+     are ruled. */
+  .home-pick {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding-left: clamp(24px, 2.8vw, 40px);
+    border-left: 1px solid var(--line);
+  }
+  /* An app card's icon row: the standard 48px icon with the name centred beside it. The
+     title opposite sits in a 48px line, so icon, name and title share one centre line. */
+  .home-pick-app {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: inherit;
+    text-decoration: none;
+  }
+  .home-pick-app:focus-visible { outline: var(--focus-ring); outline-offset: var(--focus-offset); border-radius: var(--radius-sm); }
+  /* App artwork at 25% of its own side, the house corner for a rendered macOS mark. */
+  .home-pick-icon {
+    display: block;
+    flex: none;
+    width: 48px;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: 25%;
+  }
+  .home-pick-icon img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .home-pick-backed { padding: var(--space-1); background: #fff; }
+  .home-pick-backed img,
+  .home-pick-contain img { object-fit: contain; }
+  .home-pick-name {
+    color: var(--text);
+    font-family: var(--display);
+    font-size: var(--type-subhead);
+    font-weight: 600;
+    letter-spacing: -.02em;
+    line-height: 48px;
+    transition: color 180ms ease;
+  }
+  .home-pick-app:hover .home-pick-name,
+  .home-pick-app:focus-visible .home-pick-name { color: var(--accent); }
+  /* The columns share their label and their 48px name row; under it the pick takes an app
+     card's 16px. The date opposite adds a line there, so the description starts a line above
+     the summary rather than on it: matching it needed 36px under the icon, which read as a
+     hole. The reason's label takes a whole 24px line, keeping the column on a 24px rhythm. */
+  .home-pick-description { margin: var(--space-2) 0 0; color: var(--body-text); line-height: var(--leading-body); }
+  .home-pick-reason { margin-top: var(--space-3); }
+  .home-pick-reason p { margin: 0; }
+  .home-pick-reason .editor-note-label { line-height: 24px; }
+  .home-pick-reason p + p { color: var(--body-text); line-height: var(--leading-body); }
+  @media (prefers-reduced-motion: reduce) {
+    .home-pick-name,
+    .home-hero-number a { transition: none; }
+  }
 
   .home-row-heading {
     display: flex;
@@ -335,7 +411,18 @@ const shortDate = (slug: string) => new Date(`${slug}T12:00:00Z`).toLocaleDateSt
   @media (max-width: 920px) {
     .home-doors,
     .home-week { grid-template-columns: minmax(0, 1fr); }
-    .home-week > .home-hero-pick { width: auto; margin-top: 0; }
+    .home-week { padding: var(--space-3); }
+    /* Stacked, the pick follows the button with no rule: the card's row gap already
+       separates them, and a hairline there divided space that was dividing itself. */
+    /* Stacked there is no line opposite to meet, and the title can wrap, so it takes its
+       ordinary leading back and the date its 8px gap: a 48px box per line doubled the space
+       inside a two-line title. */
+    .home-week .home-hero-number { line-height: 1.1; }
+    .home-week .home-hero-date { margin-top: var(--space-1); }
+    /* Stacked, the pick leads: on a phone it is the one thing above the fold worth stopping
+       at, and the issue copy follows it. The markup keeps the issue first, because the issue
+       title is the section's h2 and the pick's label its h3. */
+    .home-pick { order: -1; padding: 0; border-left: 0; }
     .home-row-heading .home-row-link { display: none; }
     .home-row-after { display: flex; justify-content: center; }
     /* Stacked, the issue titles need the full row; the date waits on the issue page. */
