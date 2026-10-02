@@ -216,14 +216,15 @@ const shortDate = (slug: string) => new Date(`${slug}T12:00:00Z`).toLocaleDateSt
     to { opacity: 1; filter: brightness(1) blur(0); }
   }
   /* The two actions arrive as equals, both in the quiet outline. Once they have landed
-     (1450ms plus 900ms, held a beat) Latest issue takes the accent, border and label
-     together over 600ms, and once it is blue a single ring goes out from it: the beacon the
+     (1450ms plus 900ms) Latest issue takes the accent, border and label together over
+     600ms with no pause, and a single ring is released halfway through the change, so the
+     colour and the pulse read as one movement: the beacon the
      wave under the name belongs to, signalling where to go. It fires once and does not
      repeat. The resting state of the button is the accent one,
      so a browser that never runs the animation shows the finished page. */
   .home-hero-actions .button:first-child {
     position: relative;
-    animation: hero-latest-lit 600ms cubic-bezier(.4, 0, .2, 1) 2500ms backwards;
+    animation: hero-latest-lit 600ms cubic-bezier(.4, 0, .2, 1) 2350ms backwards;
   }
   .home-hero-actions .button:first-child::after {
     content: '';
@@ -233,7 +234,7 @@ const shortDate = (slug: string) => new Date(`${slug}T12:00:00Z`).toLocaleDateSt
     border-radius: inherit;
     opacity: 0;
     pointer-events: none;
-    animation: hero-latest-ping 1600ms ease-out 3100ms;
+    animation: hero-latest-ping 3200ms ease-out 2650ms;
   }
   @keyframes hero-latest-lit {
     from { border-color: var(--line); color: var(--text); }
@@ -241,7 +242,8 @@ const shortDate = (slug: string) => new Date(`${slug}T12:00:00Z`).toLocaleDateSt
   }
   @keyframes hero-latest-ping {
     0% { opacity: .7; transform: scale(1); }
-    75%, 100% { opacity: 0; transform: scale(1.22, 1.55); }
+    55% { opacity: .22; }
+    100% { opacity: 0; transform: scale(1.3, 1.75); }
   }
   @media (prefers-reduced-motion: reduce) {
     .home-hero-heading .home-hero-tagline,
