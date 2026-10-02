@@ -2865,6 +2865,52 @@ h1.home-hero-number {
   .directory-sort { min-height: 56px; }
 }
 
+/* Phone: the controls share one row. The field takes what is left and Filter and Sort
+   shrink to icon buttons, so the toolbar is the heading and a single line of controls
+   instead of a heading, a field and a pair. The words stay for assistive technology. */
+.directory-control-icon { display: none; }
+
+@media (max-width: 680px) {
+  .directory-filter-bar,
+  .directory-filter-bar--no-filters {
+    grid-template-columns: minmax(0, 1fr) 56px 56px;
+    gap: var(--space-2) 8px;
+  }
+  .directory-filter-bar--no-filters { grid-template-columns: minmax(0, 1fr) 56px; }
+  .directory-filter-bar > .directory-heading { grid-column: 1 / -1; }
+  .directory-filter-bar > .directory-search { grid-column: 1; }
+  .directory-filter-bar > .directory-filter { grid-column: 2; }
+  .directory-filter-bar > .directory-sort { grid-column: 3; }
+  .directory-filter-bar--no-filters > .directory-sort { grid-column: 2; }
+
+  .directory-select-trigger { justify-content: center; padding: 0; }
+  .directory-select-trigger > svg:not(.directory-control-icon) { display: none; }
+  .directory-select-trigger .directory-control-icon { display: block; color: var(--text); --icon-size: var(--icon-md); }
+  .directory-trigger-text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* The filter count sits on the icon's corner as a badge. */
+  .directory-filter .directory-select-trigger { position: relative; }
+  .directory-filter-label { position: absolute; top: 6px; right: 6px; }
+  .directory-filter-count { min-width: 18px; height: 18px; padding: 0 5px; }
+
+  /* The panels open under the row at the width of the whole bar: Filter's reaches left to
+     the field's edge, Sort's right-aligns to the end. */
+  .directory-filter-panel {
+    left: auto;
+    right: calc(-1 * (56px + 8px) - 1px);
+    width: calc(100vw - var(--content-inset));
+  }
+  .directory-filter-bar--no-filters > .directory-sort .directory-select-options { width: 200px; }
+  .directory-sort .directory-select-options { right: 0; width: 200px; }
+}
+
 @media (pointer: coarse) {
   .collection-badge { min-height: 48px; }
   .directory-select-options[role="menu"] button { min-height: 48px; }
