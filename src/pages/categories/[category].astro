@@ -33,7 +33,7 @@ const listSchema = itemListSchema(apps.map((entry) => ({ name: entry.data.name, 
 <BaseLayout
   structuredData={[listSchema]}
   breadcrumb={trail}
-  title={`${resolvedCategory.title} Mac Apps — App Waypoint`}
+  title={`${resolvedCategory.title} ${/^Mac /.test(resolvedCategory.title) ? 'Apps' : 'Mac Apps'} — App Waypoint`}
   socialImage={ogPath(categoryOgSlug(resolvedCategory.slug))}
   socialImageSize={OG_SIZE}
   socialImageAlt={`${resolvedCategory.title} Mac apps on App Waypoint. ${resolvedCategory.description}`}

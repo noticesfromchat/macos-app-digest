@@ -208,9 +208,21 @@ it. See Issue Subscribe Card in `DESIGN.md` for the structure and the reasoning.
   `{lane} Mac Apps — {tagline} — App Waypoint`. Tag titles ran between 26 and 37
   characters against the roughly 60 a search result shows, the widest gap of any page
   type here. Both maps live in `src/data/lanes.ts` beside the titles they extend.
-- **Categories deliberately have none.** `Mac Utilities & Customization Mac Apps —
-  App Waypoint` is already 53 characters, so four of the six have no room for one.
-  Adding it to the two that do would make the page type inconsistent for little gain.
+- **A lane's title says the phrase people search, not only its own name.** Where the
+  lane's name is not that phrase (`Windows Mac Apps` reads as Windows software), the
+  maps `tagSearchTitles` and `collectionSearchTitles` in `lanes.ts` give the whole
+  title before ` — App Waypoint`, descriptor included, under 60 characters in total.
+  Only the title tag changes: the heading, breadcrumb and social card keep the lane's
+  own name. Source: the search intent audit of 2026-10-02 in Notion.
+- **A tag's search description does not end on the shared sentence.** The line ending
+  "Each Mac app has a short note on what it does and a link to its developer." spent
+  about half of every tag's result snippet on words that could not differ between
+  pages. A tag with an entry in `tagMetaDescriptions` says what it is in the phrase
+  people search; write the rest the same way, one at a time.
+- **Categories deliberately have none.** `Mac Utilities & Customization Apps —
+  App Waypoint` is 49 characters, so four of the six have no room for a tagline. A
+  category whose name already starts with "Mac" takes `Apps`, not `Mac Apps`.
+  Adding a tagline to the two that do would make the page type inconsistent for little gain.
 - **A tag's display name is not its slug sentence-cased.** Initialisms and product
   names spelled a particular way are held in `tagDisplayNames`: `ai` is AI, `ios` is
   iOS, `quicklook` is Quick Look. Until 2026-09-04 only `rss` was handled and the rest
