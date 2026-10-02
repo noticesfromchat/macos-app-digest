@@ -5,7 +5,7 @@ bestFor: Researchers and collectors who need a durable, organized home for links
 tagline: bookmark manager
 tags: [research, reading, productivity, files, pdf, open-source]
 categories: [files-research-documents, writing-notes-reading, productivity-workflow]
-collections: [editors-picks]
+collections: [editors-picks, available-on-homebrew]
 source: Editor selection and official Raindrop product information
 homepage: https://raindrop.io/
 icon: /app-icons/raindrop.png

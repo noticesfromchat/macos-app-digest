@@ -5,7 +5,7 @@ bestFor: Mac users who want inspectable file copies and resilient backup automat
 tagline: bootable backups
 tags: [backup, files, automation, utility]
 categories: [files-research-documents, automation-shortcuts, mac-utilities-customization]
-collections: [community-favorites]
+collections: [community-favorites, available-on-homebrew]
 source: 512 Pixels coverage and official SuperDuper 4 homepage
 homepage: https://www.shirt-pocket.com/superduper4.php
 icon: /app-icons/superduper.png

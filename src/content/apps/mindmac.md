@@ -5,6 +5,7 @@ bestFor: Mac users who switch between models often and would rather not build th
 tagline: multi-model chat
 tags: [ai, local, productivity]
 categories: [ai-agents, productivity-workflow]
+collections: [available-on-homebrew]
 source: MindMac homepage and documentation
 homepage: https://mindmac.app/
 icon: /app-icons/mindmac.png

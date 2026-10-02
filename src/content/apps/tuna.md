@@ -5,7 +5,7 @@ bestFor: Keyboard-first Mac users who miss Quicksilver and want its ideas in som
 tagline: launcher and commands
 tags: [launcher, productivity, automation, dictation]
 categories: [mac-utilities-customization, productivity-workflow, automation-shortcuts, writing-notes-reading]
-collections: [editors-picks, hidden-gems]
+collections: [editors-picks, hidden-gems, available-on-homebrew]
 source: Editor selection and official Tuna product information
 homepage: https://tunaformac.com/
 icon: /app-icons/tuna.png

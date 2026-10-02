@@ -6,6 +6,8 @@ import type { CollectionEntry } from 'astro:content';
 import Breadcrumb from './Breadcrumb.astro';
 import type { Crumb } from '../data/breadcrumb';
 import AppCard from './AppCard.astro';
+import RemovedAppCard from './RemovedAppCard.astro';
+import { isRemovedApp } from '../data/removed-apps';
 import BrandMark from './BrandMark.astro';
 import SubscribeCard from './SubscribeCard.astro';
 import ReadingCard from './ReadingCard.astro';
@@ -102,7 +104,7 @@ const videoCta = issue.video.url.includes('developer.apple.com/videos')
         <div class="grid">
           {section.apps.map((appId) => {
             const app = appsById.get(appId);
-            return app ? <AppCard app={app.data} appId={app.id} /> : null;
+            return app ? <AppCard app={app.data} appId={app.id} /> : isRemovedApp(appId) ? <RemovedAppCard /> : null;
           })}
         </div>
       </section>

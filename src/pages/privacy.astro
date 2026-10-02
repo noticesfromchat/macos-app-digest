@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import { topLevelTrail } from '../data/breadcrumb';
+import RichText from '../components/RichText.astro';
+import { richSections } from '../data/rich-text';
+import { siteCopy } from '../data/site-copy';
+
+const trail = topLevelTrail('Privacy');
+
+/* The policy is one value in src/data/site-copy.ts, written on the editor's Misc tab. A
+   paragraph opening with `## ` becomes a section heading, so a section can be added or
+   renamed there without touching this page. It borrows the About page's reading column,
+   the other page on the site written to be read rather than browsed. Linked only from the
+   footer. */
+const [lead, ...sections] = richSections(siteCopy['privacy.body']);
+---
+<BaseLayout
+  breadcrumb={trail}
+  title="Privacy Policy — App Waypoint"
+  description={siteCopy['privacy.metaDescription']}
+  current="privacy"
+>
+  <article class="page-shell archive-page about-page privacy-page">
+    <Breadcrumb trail={trail} />
+    <h1>Privacy Policy</h1>
+    <p class="dek"><RichText text={siteCopy['privacy.dek']} /></p>
+
+    {lead && !lead.heading && (
+      <div class="about-content">
+        {lead.paragraphs.map((paragraph) => <p><RichText segments={paragraph.segments} /></p>)}
+      </div>
+    )}
+
+    {(lead?.heading ? [lead, ...sections] : sections).map((section) => (
+      <section class="section">
+        <div class="section-heading">
+          <h2 class="section-title">{section.heading}</h2>
+        </div>
+        {section.paragraphs.map((paragraph) => <p><RichText segments={paragraph.segments} /></p>)}
+      </section>
+    ))}
+  </article>
+</BaseLayout>

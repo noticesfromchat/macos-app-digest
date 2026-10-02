@@ -5,7 +5,7 @@ bestFor: Mac users who rely on screenshots and screen recordings to explain work
 tagline: screenshot capture
 tags: [capture, productivity, utility, video]
 categories: [media-capture, productivity-workflow, mac-utilities-customization]
-collections: [editors-picks]
+collections: [editors-picks, available-on-homebrew]
 source: Editor selection and official CleanShot homepage
 homepage: https://cleanshot.com/
 icon: /app-icons/cleanshot.png

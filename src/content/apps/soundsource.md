@@ -5,6 +5,7 @@ bestFor: People juggling speakers and headphones who need more control than the 
 tagline: per-app audio control
 tags: [audio, menubar, utility]
 categories: [media-capture, mac-utilities-customization]
+collections: [available-on-homebrew]
 source: Six Colors; official SoundSource product information
 homepage: https://rogueamoeba.com/soundsource/
 icon: /app-icons/soundsource.png

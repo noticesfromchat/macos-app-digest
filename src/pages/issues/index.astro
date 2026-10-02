@@ -19,16 +19,19 @@ import { siteCopy } from '../../data/site-copy';
    critique's finding that this page's character should come from editorial
    structure rather than added nautical decoration. */
 
+import { isRemovedApp } from '../../data/removed-apps';
 const issues = [...await getCollection('issues')].sort((a, b) => b.data.slug.localeCompare(a.data.slug));
 const apps = await getCollection('apps');
 const appName = (id: string) => apps.find((entry) => entry.id === id)?.data.name ?? id;
+/* A removed app has no name to show, so it drops out of an issue's scent and search text. */
+const liveApps = (ids: string[]) => ids.filter((id) => !isRemovedApp(id));
 
 /* The information scent. Experienced readers choose an issue by what is in it, and
    the page said only "Issue 08, August 28". The Editor's Pick is the strongest
    single fact an issue carries, but issues 01 and 02 predate the feature, so the
    line falls back to the apps that open the issue rather than rendering empty. */
 const scentFor = (issue: (typeof issues)[number]) => {
-  const sectionApps = issue.data.sections.flatMap((section) => section.apps);
+  const sectionApps = liveApps(issue.data.sections.flatMap((section) => section.apps));
   const total = sectionApps.length + (issue.data.editorsPick ? 1 : 0);
   return {
     pick: issue.data.editorsPick ? appName(issue.data.editorsPick.app) : null,
@@ -47,7 +50,7 @@ const haystack = (issue: (typeof issues)[number]) => [
   issue.data.date,
   issue.data.dek,
   issue.data.rss.title,
-  ...issue.data.sections.flatMap((section) => [section.title, ...section.apps.map(appName)]),
+  ...issue.data.sections.flatMap((section) => [section.title, ...liveApps(section.apps).map(appName)]),
   ...(issue.data.editorsPick ? [appName(issue.data.editorsPick.app)] : []),
   ...issue.data.readings.map((reading) => `${reading.title} ${reading.publication}`)
 ].join(' ').toLowerCase();

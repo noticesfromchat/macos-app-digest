@@ -5,7 +5,7 @@ bestFor: Power users who want customizable, open-source file management without 
 tagline: keyboard-first files
 tags: [finder, files, utility, open-source, terminal]
 categories: [files-research-documents, mac-utilities-customization, developer-tools]
-collections: [free-worth-keeping]
+collections: [free-worth-keeping, available-on-homebrew]
 source: r/macapps App Pile top-three selection and official homepage
 homepage: https://tryrascal.org/
 icon: /app-icons/rascal.svg

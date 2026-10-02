@@ -5,7 +5,7 @@ bestFor: Terminal-heavy users who want speed and polish without leaving native M
 tagline: GPU terminal
 tags: [terminal, developer, open-source, utility]
 categories: [developer-tools, mac-utilities-customization]
-collections: [community-favorites, free-worth-keeping]
+collections: [community-favorites, free-worth-keeping, available-on-homebrew]
 source: Official Ghostty homepage and canonical repository
 homepage: https://ghostty.org/
 icon: /app-icons/ghostty.png

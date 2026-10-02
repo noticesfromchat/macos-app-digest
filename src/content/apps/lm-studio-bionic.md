@@ -5,6 +5,7 @@ bestFor: Power users who want agents running on their own models and their own h
 tagline: open-model agents
 tags: [ai, local, developer, productivity]
 categories: [ai-agents, developer-tools, productivity-workflow]
+collections: [available-on-homebrew]
 source: LM Studio launch announcement and official documentation
 homepage: https://lmstudio.ai/
 icon: /app-icons/lm-studio-bionic.png

@@ -30,6 +30,10 @@ deployment. It combines candidate research, app metadata review, tag maintenance
 Editor's Pick collection, release-candidate coordination, validation and Deploy
 Preview review.
 
+Every fourth issue, also run the tag audit in `docs/TAG_AUDIT.md`, which includes the
+recheck of the Available on Homebrew collection (section 9). Add any new app that has a
+Homebrew install route to that collection when it joins the catalog.
+
 ### Overnight draft and Thursday approval gates
 
 The selection task starts Thursday at 12:00 a.m. Pacific, preparing the upcoming

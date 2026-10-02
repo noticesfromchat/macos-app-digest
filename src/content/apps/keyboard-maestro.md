@@ -5,7 +5,7 @@ bestFor: People repeating the same sequence of clicks who want to turn it into a
 tagline: workflow macros
 tags: [automation, keyboard, utility]
 categories: [automation-shortcuts, mac-utilities-customization]
-collections: [community-favorites]
+collections: [community-favorites, available-on-homebrew]
 source: MacSparky; official Keyboard Maestro product information
 homepage: https://www.keyboardmaestro.com/main/
 icon: /app-icons/keyboard-maestro.png

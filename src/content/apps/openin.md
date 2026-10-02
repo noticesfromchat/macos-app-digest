@@ -5,6 +5,7 @@ bestFor: Professionals who have clicked a work link and watched it open in a per
 tagline: link routing rules
 tags: [automation, utility, shortcuts]
 categories: [automation-shortcuts, mac-utilities-customization]
+collections: [available-on-homebrew]
 source: Issue 11 selection list and official homepage
 homepage: https://loshadki.app/openin4/#description
 icon: /app-icons/openin.png

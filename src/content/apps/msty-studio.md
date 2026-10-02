@@ -5,6 +5,7 @@ bestFor: Anyone testing local models who likes seeing the installs and runtime s
 tagline: local model studio
 tags: [ai, local, developer, productivity]
 categories: [ai-agents, developer-tools, productivity-workflow]
+collections: [available-on-homebrew]
 source: Msty Studio documentation
 homepage: https://msty.ai/
 icon: /app-icons/msty-studio.png

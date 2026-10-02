@@ -5,7 +5,7 @@ bestFor: Journalists and researchers who need accurate transcripts of recordings
 tagline: local transcription
 tags: [transcription, ai, local, writing, automation]
 categories: [media-capture, ai-agents, writing-notes-reading, automation-shortcuts]
-collections: [community-favorites]
+collections: [community-favorites, available-on-homebrew]
 metaDescription: Transcribes recordings, meetings and system audio with local speech models, then handles speaker labeling, translation and structured exports.
 source: 9to5Mac workflow coverage and official homepage
 homepage: https://www.macwhisper.com/

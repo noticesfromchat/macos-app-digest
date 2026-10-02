@@ -150,6 +150,72 @@ export function initHeroAtmosphere() {
       ctx.stroke();
     };
 
+    /* The homepage's one scripted moment in the sky: after the wave has drawn, the text and
+       buttons have lit and the Latest Issue ring has gone out (about 5.9s from load), a comet
+       crosses the upper sky once, left to right and a little downhill, with a bright head
+       and a long tapering tail. It is slower and larger than the meteor and does not repeat.
+       Only the homepage runs it, only at night and only if the hero is on screen close to its
+       time; a reader who arrives at the sky later, or turns the theme dark long after, is not
+       shown it late. Nothing runs under reduced motion because the loop itself does not. */
+    const COMET_AT = 5900;
+    const COMET_MS = 2800;
+    const COMET_GRACE = 6000;
+    const cometWanted = Boolean(document.querySelector('.home-hero-actions'));
+    let cometDone = !cometWanted;
+    let comet = null;
+
+    const drawComet = (ctx, ink) => {
+      if (cometDone) return;
+      const now = performance.now();
+      if (!comet) {
+        if (now < COMET_AT) return;
+        if (now > COMET_AT + COMET_GRACE || horizonY <= 0) { cometDone = true; return; }
+        const c = surfaceFor(sky);
+        const length = Math.min(260, c.w * 0.4);
+        comet = {
+          start: now,
+          length,
+          x0: -length * 0.2,
+          x1: c.w + length * 1.2,
+          y0: horizonY * 0.14,
+          y1: horizonY * 0.5
+        };
+      }
+      const t = (now - comet.start) / COMET_MS;
+      if (t >= 1) { cometDone = true; comet = null; return; }
+      /* Comes up out of the dark and goes back into it: the head is strongest mid-sky. */
+      const fade = Math.min(1, t / 0.12, (1 - t) / 0.3);
+      const headX = comet.x0 + (comet.x1 - comet.x0) * t;
+      const headY = comet.y0 + (comet.y1 - comet.y0) * t;
+      const span = Math.hypot(comet.x1 - comet.x0, comet.y1 - comet.y0);
+      const dx = (comet.x1 - comet.x0) / span;
+      const dy = (comet.y1 - comet.y0) / span;
+      ctx.lineCap = 'round';
+      /* The tail is a run of short strokes thinning and fading away from the head. */
+      const steps = 28;
+      for (let i = steps; i >= 1; i -= 1) {
+        const f = i / steps;
+        const a = (1 - f) ** 1.6;
+        ctx.beginPath();
+        ctx.moveTo(headX - dx * comet.length * f, headY - dy * comet.length * f);
+        ctx.lineTo(headX - dx * comet.length * (f - 1 / steps), headY - dy * comet.length * (f - 1 / steps));
+        ctx.strokeStyle = `rgb(${ink} / ${0.55 * a * fade})`;
+        ctx.lineWidth = 0.4 + 2 * (1 - f);
+        ctx.stroke();
+      }
+      const glow = ctx.createRadialGradient(headX, headY, 0, headX, headY, 11);
+      glow.addColorStop(0, `rgb(${ink} / ${0.5 * fade})`);
+      glow.addColorStop(1, `rgb(${ink} / 0)`);
+      ctx.fillStyle = glow;
+      ctx.beginPath();
+      ctx.arc(headX, headY, 11, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = `rgb(${ink} / ${0.95 * fade})`;
+      ctx.beginPath();
+      ctx.arc(headX, headY, 1.8, 0, Math.PI * 2);
+      ctx.fill();
+    };
+
     /* Stars belong to night only; by day the wave band carries the hero alone. With no
        `seconds` the sky is drawn still, exactly as it was before it learned to sparkle: that
        is the reduced-motion sky and the first paint. */
@@ -184,7 +250,7 @@ export function initHeroAtmosphere() {
           c.ctx.stroke();
         }
       }
-      if (live) drawMeteor(c.ctx, ink, seconds);
+      if (live) { drawMeteor(c.ctx, ink, seconds); drawComet(c.ctx, ink); }
     };
 
     /* Layered sine lines: amplitude decays with depth, wavelength grows, and a

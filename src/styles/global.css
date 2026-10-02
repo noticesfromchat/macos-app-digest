@@ -578,6 +578,24 @@ svg.phosphor-icon {
   stroke-width: 17;
 }
 
+/* The homepage wave draws itself in once, left to right, as the hero arrives: the one
+   moment the page has earned, the water appearing under the name. `pathLength="1"` makes
+   the dash a fraction of the line, so the start offset is 1 plus enough to hide the round
+   cap (half the 17-unit stroke over the roughly 600-unit line is about .014) and never
+   shows a dot before the stroke begins. The finished state is the ordinary line, so
+   nothing is hidden if the animation never runs. */
+.home-hero-heading .hero-rule path {
+  stroke-dasharray: 1 2;
+  animation: hero-rule-draw 1200ms cubic-bezier(.4, 0, .2, 1) 250ms both;
+}
+@keyframes hero-rule-draw {
+  from { stroke-dashoffset: 1.03; }
+  to { stroke-dashoffset: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-hero-heading .hero-rule path { animation: none; stroke-dasharray: none; }
+}
+
 .dek {
   max-width: var(--measure);
   margin: var(--space-2) 0 0;
@@ -1203,6 +1221,9 @@ h1.home-hero-number {
 .app-icon-color-blue { --missing-icon-bg: #2f75d6; }
 .app-icon-color-purple { --missing-icon-bg: #8b5cc7; }
 .app-icon-color-pink { --missing-icon-bg: #c24b7a; }
+/* The removed-app card is the standard app card. Only its icon frame differs, a grey one in
+   place of an app icon, so it reads as a place-holder without a surface of its own. */
+.removed-app-card { --missing-icon-bg: #5f6670; }
 .app-card p { margin: 0; color: var(--body-text); }
 .app-card .reading-source { color: var(--muted); }
 /* This follows the generic paragraph rule deliberately: the Editor's Pick labels
@@ -1491,6 +1512,8 @@ h1.home-hero-number {
 /* The homepage links straight to the app list at `/explore/#all-apps`. The header is
    sticky, so the jump stops the header's height short and the heading lands in view. */
 #all-apps { scroll-margin-top: 80px; }
+/* The sticky header would cover an anchored About section's heading. */
+.about-page .section[id] { scroll-margin-top: 96px; }
 .explore-utility-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2860,6 +2883,52 @@ h1.home-hero-number {
   .directory-sort { min-height: 56px; }
 }
 
+/* Phone: the controls share one row. The field takes what is left and Filter and Sort
+   shrink to icon buttons, so the toolbar is the heading and a single line of controls
+   instead of a heading, a field and a pair. The words stay for assistive technology. */
+.directory-control-icon { display: none; }
+
+@media (max-width: 680px) {
+  .directory-filter-bar,
+  .directory-filter-bar--no-filters {
+    grid-template-columns: minmax(0, 1fr) 56px 56px;
+    gap: var(--space-2) 8px;
+  }
+  .directory-filter-bar--no-filters { grid-template-columns: minmax(0, 1fr) 56px; }
+  .directory-filter-bar > .directory-heading { grid-column: 1 / -1; }
+  .directory-filter-bar > .directory-search { grid-column: 1; }
+  .directory-filter-bar > .directory-filter { grid-column: 2; }
+  .directory-filter-bar > .directory-sort { grid-column: 3; }
+  .directory-filter-bar--no-filters > .directory-sort { grid-column: 2; }
+
+  .directory-select-trigger { justify-content: center; padding: 0; }
+  .directory-select-trigger > svg:not(.directory-control-icon) { display: none; }
+  .directory-select-trigger .directory-control-icon { display: block; color: var(--text); --icon-size: var(--icon-md); }
+  .directory-trigger-text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* The filter count sits on the icon's corner as a badge. */
+  .directory-filter .directory-select-trigger { position: relative; }
+  .directory-filter-label { position: absolute; top: 6px; right: 6px; }
+  .directory-filter-count { min-width: 18px; height: 18px; padding: 0 5px; }
+
+  /* The panels open under the row at the width of the whole bar: Filter's reaches left to
+     the field's edge, Sort's right-aligns to the end. */
+  .directory-filter-panel {
+    left: auto;
+    right: calc(-1 * (56px + 8px) - 1px);
+    width: calc(100vw - var(--content-inset));
+  }
+  .directory-filter-bar--no-filters > .directory-sort .directory-select-options { width: 200px; }
+  .directory-sort .directory-select-options { right: 0; width: 200px; }
+}
+
 @media (pointer: coarse) {
   .collection-badge { min-height: 48px; }
   .directory-select-options[role="menu"] button { min-height: 48px; }
@@ -2944,3 +3013,27 @@ h1.home-hero-number {
   .has-pick-accent::before,
   .has-pick-accent::after { animation: none; }
 }
+
+/* The dev-only catalog editor button. It is a fixed corner control, ringed and filled on
+   hover, so it looks like a tool laid over the page and not like part of the navigation. */
+.dev-editor-fab {
+  position: fixed;
+  z-index: 60;
+  right: 20px;
+  bottom: 20px;
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--accent);
+  background: var(--surface);
+  box-shadow: var(--shadow-hover), inset 0 0 0 1.5px var(--accent);
+  text-decoration: none;
+  transition: color 180ms ease, background-color 180ms ease;
+}
+.dev-editor-fab svg { --icon-size: var(--icon-md); }
+.dev-editor-fab:hover { color: var(--surface); background: var(--accent); }
+.dev-editor-fab:focus-visible { outline: var(--focus-ring); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .dev-editor-fab { transition: none; } }
+@media print { .dev-editor-fab { display: none; } }

@@ -5,6 +5,7 @@ bestFor: Power users who already know their model stack and just need a native M
 tagline: AI chat client
 tags: [ai, local, productivity]
 categories: [ai-agents, productivity-workflow]
+collections: [available-on-homebrew]
 source: BoltAI homepage
 homepage: https://boltai.com/
 icon: /app-icons/boltai.png

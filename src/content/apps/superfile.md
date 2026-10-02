@@ -5,7 +5,7 @@ bestFor: Developers who want visual file management without leaving a terminal o
 tagline: terminal file manager
 tags: [files, terminal, open-source, developer]
 categories: [files-research-documents, developer-tools]
-collections: [editors-picks, hidden-gems, free-worth-keeping]
+collections: [editors-picks, hidden-gems, free-worth-keeping, available-on-homebrew]
 source: User Editor's Pick and official homepage
 homepage: https://superfile.dev/
 icon: /app-icons/superfile.svg

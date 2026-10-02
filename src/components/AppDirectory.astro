@@ -1,6 +1,7 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import AppCard from './AppCard.astro';
+import PhosphorIcon from './PhosphorIcon.astro';
 import { collectionLabels } from '../data/categories';
 
 type FilterType = 'tag' | 'collection';
@@ -171,8 +172,11 @@ const sortedApps = [...apps].sort((a, b) =>
           aria-expanded="false"
           data-filter-trigger
         >
+          {/* On a phone the trigger is an icon button: the word is visually hidden, the
+              count badge stays, and the icon carries the control. */}
+          <PhosphorIcon name="sliders-horizontal" class="directory-control-icon" aria-hidden="true" />
           <span class="directory-filter-label">
-            Filter
+            <span class="directory-trigger-text">Filter</span>
             <span class="directory-filter-count" hidden data-filter-count></span>
           </span>
           <svg
@@ -253,7 +257,8 @@ const sortedApps = [...apps].sort((a, b) =>
               the span before it, which keeps the button announcing "Sort by A-Z". It
               ships the order the server actually rendered, so the control is not
               claiming one order while the grid shows another. */}
-          <span><span class="sr-only">Sort by </span><span data-sort-label>{SORT_LABELS[initialSort]}</span></span>
+          <PhosphorIcon name="arrows-down-up" class="directory-control-icon" aria-hidden="true" />
+          <span class="directory-trigger-text"><span class="sr-only">Sort by </span><span data-sort-label>{SORT_LABELS[initialSort]}</span></span>
           <svg
             class="icon"
             aria-hidden="true"

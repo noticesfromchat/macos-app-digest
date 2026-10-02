@@ -5,7 +5,7 @@ bestFor: Privacy-minded Mac users who would rather see the traffic first and dec
 tagline: network monitor
 tags: [privacy, network, menubar]
 categories: [mac-utilities-customization]
-collections: [community-favorites]
+collections: [community-favorites, available-on-homebrew]
 source: Objective Development Little Snitch product page
 homepage: https://www.obdev.at/products/littlesnitch/index.html
 icon: /app-icons/little-snitch.png

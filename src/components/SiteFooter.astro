@@ -9,8 +9,6 @@ const { current = '' } = Astro.props;
   <div class="site-footer-inner page-shell">
     <p>{siteCopy['footer.tagline']}</p>
     <nav aria-label="Footer navigation">
-      <a href="/explore/" aria-current={current === 'explore' ? 'page' : undefined}>Explore Apps</a>
-      <a href="/issues/" aria-current={current === 'archive' ? 'page' : undefined}>Issues</a>
       <a href="/about/" aria-current={current === 'about' ? 'page' : undefined}>About</a>
       <button
         type="button"
@@ -19,6 +17,7 @@ const { current = '' } = Astro.props;
         aria-controls="rss-feed-modal"
         data-rss-open
       >Subscribe</button>
+      <a href="/privacy/" aria-current={current === 'privacy' ? 'page' : undefined}>Privacy</a>
       {/* Beside the X mark on a row, above it once the nav stacks. BaseLayout's theme
           script finds it by data-theme-toggle and keeps the label and glyph current. */}
       <button class="theme-toggle footer-theme-toggle" type="button" aria-label="Switch to dark theme" data-theme-toggle>

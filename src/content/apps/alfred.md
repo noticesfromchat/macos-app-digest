@@ -5,7 +5,7 @@ bestFor: Keyboard-focused Mac users who want a mature, customizable automation l
 tagline: launcher and workflows
 tags: [launcher, automation, productivity, keyboard, customization]
 categories: [mac-utilities-customization, automation-shortcuts, productivity-workflow]
-collections: [community-favorites]
+collections: [community-favorites, available-on-homebrew]
 source: Long-running Mac community recommendations and official homepage
 homepage: https://www.alfredapp.com/
 icon: /app-icons/alfred.png

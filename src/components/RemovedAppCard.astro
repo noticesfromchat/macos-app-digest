@@ -1,0 +1,21 @@
+---
+/* The card that stands where a removed app was. It follows the app card template: an icon
+   frame, a name and a description in the same regions, so a row of three stays three. It
+   has no app page to lead to, so its one destination is the selection criteria on the
+   About page, and the whole card is that link. */
+import PhosphorIcon from './PhosphorIcon.astro';
+
+const criteria = '/about/#what-earns-a-spot';
+---
+<article class="card app-card removed-app-card">
+  <a class="app-card-link" href={criteria} tabindex="-1" aria-hidden="true"></a>
+  <div class="app-summary has-app-icon">
+    <div class="app-summary-heading">
+      <div class="app-icon-frame missing-app-icon-frame" aria-hidden="true">
+        <PhosphorIcon name="wrench" />
+      </div>
+      <h3><a href={criteria}>App removed</a></h3>
+    </div>
+    <p class="app-description">This app has been removed. As part of our efforts to maintain a quality app database, we review apps and their websites to ensure the apps meet our selection criteria.</p>
+  </div>
+</article>

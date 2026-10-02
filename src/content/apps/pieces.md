@@ -5,6 +5,7 @@ bestFor: People who remember seeing something and cannot remember where.
 tagline: work-memory search
 tags: [ai, research, local, productivity]
 categories: [ai-agents, files-research-documents, productivity-workflow]
+collections: [available-on-homebrew]
 source: Pieces official homepage
 homepage: https://pieces.app/
 icon: /app-icons/pieces.png

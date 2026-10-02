@@ -198,6 +198,61 @@ const shortDate = (slug: string) => new Date(`${slug}T12:00:00Z`).toLocaleDateSt
     margin-top: var(--space-4);
   }
 
+  /* Once the wave has finished drawing (250ms delay plus 1200ms, so 1450ms), the two lines
+     of promise and the actions come up out of the dark together, as if the light the wave marks had reached them:
+     opacity and a short pull into focus, with a dimmer start at night so the text is lit
+     rather than merely faded. `backwards` fill, not `both`, so nothing keeps a filter once
+     it has arrived and the buttons answer hover exactly as before. All three start on the same
+     frame and take 900ms, so the sequence ends about 2.35s after load. */
+  .home-hero-centred-copy { --hero-from: brightness(1) blur(3px); }
+  :global(:root[data-theme='dark']) .home-hero-centred-copy { --hero-from: brightness(.55) blur(3px); }
+  .home-hero-heading .home-hero-tagline,
+  .home-hero-centred-copy .home-hero-tagline-rest,
+  .home-hero-actions {
+    animation: hero-light 900ms cubic-bezier(.4, 0, .2, 1) 1450ms backwards;
+  }
+  @keyframes hero-light {
+    from { opacity: 0; filter: var(--hero-from); }
+    to { opacity: 1; filter: brightness(1) blur(0); }
+  }
+  /* The two actions arrive as equals, both in the quiet outline. Once they have landed
+     (1450ms plus 900ms) Latest issue takes the accent, border and label together over
+     600ms with no pause, and a single ring is released halfway through the change, so the
+     colour and the pulse read as one movement: the beacon the
+     wave under the name belongs to, signalling where to go. It fires once and does not
+     repeat. The resting state of the button is the accent one,
+     so a browser that never runs the animation shows the finished page. */
+  .home-hero-actions .button:first-child {
+    position: relative;
+    animation: hero-latest-lit 600ms cubic-bezier(.4, 0, .2, 1) 2350ms backwards;
+  }
+  .home-hero-actions .button:first-child::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border: 1.5px solid color-mix(in srgb, var(--accent) 60%, transparent);
+    border-radius: inherit;
+    opacity: 0;
+    pointer-events: none;
+    animation: hero-latest-ping 3200ms ease-out 2650ms;
+  }
+  @keyframes hero-latest-lit {
+    from { border-color: var(--line); color: var(--text); }
+    to { border-color: var(--accent); color: var(--accent); }
+  }
+  @keyframes hero-latest-ping {
+    0% { opacity: .7; transform: scale(1); }
+    55% { opacity: .22; }
+    100% { opacity: 0; transform: scale(1.3, 1.75); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .home-hero-heading .home-hero-tagline,
+    .home-hero-centred-copy .home-hero-tagline-rest,
+    .home-hero-actions,
+    .home-hero-actions .button:first-child,
+    .home-hero-actions .button:first-child::after { animation: none; }
+  }
+
   /* The current issue and its pick: the issue page's .95/1.05 split and gap, both columns
      opening on one line. */
   .home-week {

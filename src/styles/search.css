@@ -428,6 +428,12 @@
   padding: 0 var(--search-inset) var(--search-inset);
 }
 
+/* Nothing is listed until a query is typed, so the count and results collapse
+   and the field's divider goes with them. */
+.search-count:empty,
+.search-results:empty { display: none; }
+.search-modal:has(.search-results:empty) .search-input-wrap { border-bottom: 0; }
+
 .search-result {
   display: grid;
   align-items: center;
@@ -438,7 +444,7 @@
   transition: background-color 120ms ease, color 120ms ease;
 }
 
-.search-result:hover,
+.search-results[data-hover] .search-result:hover,
 .search-result:focus-visible {
   background: color-mix(in srgb, var(--surface-strong) 80%, var(--accent) 7%);
 }
