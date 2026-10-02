@@ -578,6 +578,24 @@ svg.phosphor-icon {
   stroke-width: 17;
 }
 
+/* The homepage wave draws itself in once, left to right, as the hero arrives: the one
+   moment the page has earned, the water appearing under the name. `pathLength="1"` makes
+   the dash a fraction of the line, so the start offset is 1 plus enough to hide the round
+   cap (half the 17-unit stroke over the roughly 600-unit line is about .014) and never
+   shows a dot before the stroke begins. The finished state is the ordinary line, so
+   nothing is hidden if the animation never runs. */
+.home-hero-heading .hero-rule path {
+  stroke-dasharray: 1 2;
+  animation: hero-rule-draw 1200ms cubic-bezier(.4, 0, .2, 1) 250ms both;
+}
+@keyframes hero-rule-draw {
+  from { stroke-dashoffset: 1.03; }
+  to { stroke-dashoffset: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-hero-heading .hero-rule path { animation: none; stroke-dasharray: none; }
+}
+
 .dek {
   max-width: var(--measure);
   margin: var(--space-2) 0 0;

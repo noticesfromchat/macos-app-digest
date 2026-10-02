@@ -9,6 +9,6 @@ const { as: Tag = 'div' } = Astro.props as { as?: 'div' | 'span' };
     same water as the mark, at a slightly finer weight. */}
 <Tag class="hero-rule" aria-hidden="true">
   <svg viewBox={MARK_WAVE_VIEWBOX} role="presentation">
-    <path d={MARK_WAVE} />
+    <path d={MARK_WAVE} pathLength="1" />
   </svg>
 </Tag>
