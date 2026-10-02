@@ -7,6 +7,8 @@ import { siteCopy } from '../data/site-copy';
 import { breadcrumbSchema, type Crumb } from '../data/breadcrumb';
 import { OG_SIZE, ogPath } from '../data/og';
 import { editorHash } from '../data/editor-target';
+import vollkorn500 from '@fontsource/vollkorn/files/vollkorn-latin-500-normal.woff2?url';
+import vollkorn600 from '@fontsource/vollkorn/files/vollkorn-latin-600-normal.woff2?url';
 import '@fontsource/vollkorn/latin-400.css';
 import '@fontsource/vollkorn/latin-500.css';
 import '@fontsource/vollkorn/latin-600.css';
@@ -85,6 +87,11 @@ const graph = [
 <!doctype html>
 <html lang="en">
   <head>
+    {/* The two Vollkorn weights every page's headings use, requested with the HTML instead
+        of after the stylesheet is parsed. Found late, they arrived after the first paint and
+        titles swapped from the fallback font a moment after loading. */}
+    <link rel="preload" href={vollkorn500} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={vollkorn600} as="font" type="font/woff2" crossorigin />
     {isProduction && (
       <>
         {/* Plausible, served from this domain. netlify.toml rewrites /pulse/ to
