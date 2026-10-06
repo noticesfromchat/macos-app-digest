@@ -663,6 +663,11 @@ const sortedApps = [...apps].sort((a, b) =>
 
       renderActiveFilters();
 
+      /* Marked only when the order on screen is one the reader chose over the one this
+         state would pick, the same test that puts `sort` in the URL. Explore going to A-Z
+         by itself on narrowing is not a choice, so it does not light the control. */
+      sortMenu?.classList.toggle('has-custom-sort', selectedSort !== derivedSort());
+
       filters.forEach((filter, index) => {
         const row = filterRows[index];
         if (!row) return;
