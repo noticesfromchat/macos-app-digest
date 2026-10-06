@@ -2,7 +2,7 @@
 name: MindMac
 description: Run hosted and local models side by side in one Mac app, with the big providers and OpenRouter to choose from.
 bestFor: Mac users who switch between models often and would rather not build the day around one hosted assistant.
-tagline: multi-model chat
+tagline: Multi-model chat
 tags: [ai, local, productivity]
 categories: [ai-agents, productivity-workflow]
 collections: [available-on-homebrew]

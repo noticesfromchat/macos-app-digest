@@ -2,7 +2,7 @@
 name: Reeder
 description: Follow feeds and podcasts on one calm timeline that remembers your place across devices.
 bestFor: People who follow a lot of sources and want one calm place to catch up on them.
-tagline: unified reading timeline
+tagline: Feed and podcast reader
 tags: [rss, reading, productivity]
 categories: [writing-notes-reading, productivity-workflow]
 collections: [editors-picks]

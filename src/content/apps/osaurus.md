@@ -2,7 +2,7 @@
 name: Osaurus
 description: Run local or cloud models inside a native Mac agent harness that remembers context from one job to the next.
 bestFor: Apple Silicon users building private agents that need to work offline.
-tagline: local model agent
+tagline: AI agent workspace
 tags: [ai, local, agents, open-source]
 categories: [ai-agents]
 collections: [community-favorites, available-on-homebrew]

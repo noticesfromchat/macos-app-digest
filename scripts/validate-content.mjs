@@ -129,6 +129,17 @@ for (const filename of appFiles) {
     if (/\bmac\b/i.test(data.tagline)) {
       errors.push(`${relative}: tagline repeats "Mac", which the title already carries ("${data.tagline}")`);
     }
+    /* Stored capitalized and bare. The title uses the field as it is, where a period
+       would land mid-title; a component that shows a tagline as its own line adds the
+       period there. A word rather than a numeral leads, so a count cannot go stale in
+       the first position. Apple's lowercase-first names are proper nouns, not a
+       lowercase start, so they pass. */
+    if (!/^(?:[A-Z]|(?:iPhone|iPad|iCloud|iMessage|macOS|watchOS|visionOS)\b)/.test(data.tagline)) {
+      errors.push(`${relative}: tagline must start with a capital letter ("${data.tagline}")`);
+    }
+    if (/[.!?;:,]$/.test(data.tagline)) {
+      errors.push(`${relative}: tagline is stored without final punctuation; display adds the period ("${data.tagline}")`);
+    }
   }
 
   if (!Array.isArray(data.tags) || data.tags.length < 2 || data.tags.length > 6) {

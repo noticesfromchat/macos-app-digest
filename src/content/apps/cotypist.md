@@ -2,7 +2,7 @@
 name: Cotypist
 description: A local Apple Silicon autocomplete layer that predicts the next words inside everyday Mac apps.
 bestFor: Anyone who types all day and wants AI help without leaving the text field, prompt writers especially.
-tagline: local autocomplete
+tagline: Local autocomplete
 tags: [writing, ai, local, productivity]
 categories: [writing-notes-reading, ai-agents, productivity-workflow]
 collections: [community-favorites, available-on-homebrew]

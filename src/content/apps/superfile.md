@@ -2,7 +2,7 @@
 name: Superfile
 description: Manage files in the terminal with multiple panels and previews, including over a remote shell.
 bestFor: Developers who want visual file management without leaving a terminal or remote shell.
-tagline: terminal file manager
+tagline: Terminal file manager
 tags: [files, terminal, open-source, developer]
 categories: [files-research-documents, developer-tools]
 collections: [editors-picks, hidden-gems, free-worth-keeping, available-on-homebrew]

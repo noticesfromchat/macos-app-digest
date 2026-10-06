@@ -2,7 +2,7 @@
 name: Rascal
 description: Replace Finder with a keyboard-first file manager built around multiple panes and a command palette.
 bestFor: Power users who want customizable, open-source file management without abandoning native Mac performance.
-tagline: keyboard-first files
+tagline: Keyboard file manager
 tags: [finder, files, utility, open-source, terminal]
 categories: [files-research-documents, mac-utilities-customization, developer-tools]
 collections: [free-worth-keeping, available-on-homebrew]

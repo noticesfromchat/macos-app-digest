@@ -342,6 +342,17 @@ it. See Issue Subscribe Card in `DESIGN.md` for the structure and the reasoning.
   wastes a third of the line. Aim to land between 50 and 60 characters assembled, and
   never on 60 exactly, because the real limit is pixel width rather than a character
   count.
+- **Store it capitalized and bare: `File archiver`.** Sentence case, keeping proper nouns
+  and acronyms as they are (Apple TV, Markdown, AI, MCP), led by a word rather than a
+  numeral, so a count such as "70+" cannot go stale in the first position. A noun phrase
+  is enough; it does not need to be a sentence. There is no final period in the field:
+  the title uses it as it is, `Keka for Mac — File archiver — App Waypoint`, where a
+  period would land mid-title. Any component that shows a tagline as its own line of
+  text adds the period there. The page title is the only place a tagline appears today.
+  Apple's lowercase-first names (iPhone, iPad, macOS) are proper nouns and may lead, but
+  rephrasing usually reads better: `Touch launcher on iPhone`. The validator enforces the
+  capital and the absence of final punctuation. Adopted by the October 6, 2026 tagline
+  audit.
 
 ## 7. Weekend Reading
 

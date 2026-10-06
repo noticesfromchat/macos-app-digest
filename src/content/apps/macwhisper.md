@@ -2,7 +2,7 @@
 name: MacWhisper
 description: Transcribe recordings and meetings with speech models running on your Mac, then label who said what.
 bestFor: Journalists and researchers who need accurate transcripts of recordings that should never leave the Mac.
-tagline: local transcription
+tagline: Local transcription
 tags: [transcription, ai, local, writing, automation]
 categories: [media-capture, ai-agents, writing-notes-reading, automation-shortcuts]
 collections: [community-favorites, available-on-homebrew]
