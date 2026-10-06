@@ -1447,6 +1447,16 @@ at 36px with the same 175-character limit. Headlines step through 72px, 60px and
 so longer editorial titles stay whole. They carry no wave or footer, leaving the same
 clear lower edge for X's overlay.
 
+**The feed image shows what the text does not.** Each issue also gets
+`/og/issue-NNN-apps.png`, the lead image of its `/rss.xml` item and nobody's `og:image`.
+A reader prints the item's title and dek beside it, so the issue cover there only
+repeated them. This one has no title or dek: the issue label, then the Editor's Pick at
+196px with its name, a hairline, and the sections as labelled columns of icons in the
+issue's order. Icons are 104px and shrink only if an issue has more sections or apps than
+fit. With no Editor's Pick the columns center on the full width. Plain icons have their
+transparent margin measured and cropped at build time (3% to 12% of the side), so a row
+of fifteen reads as one set rather than fifteen frames.
+
 The homepage card, which is also the layout's default, keeps its masthead: the 112px
 wordmark over the buoy's wave, with no brand row above it. Since 2026-09-25 it follows
 the same rule below that, with the description at 36px on the 940px measure and no

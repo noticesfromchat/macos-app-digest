@@ -137,8 +137,11 @@ instruction.
 15. For every app in the required `Old Favorites` section, add `community-favorites` to the app
     record's `collections` array while preserving any existing collection entries.
 16. Include the issue `rss` block with a short issue-specific title and the standard
-    `Read this issue` CTA. The feed summary is generated from the issue `dek`, so do
-    not duplicate that summary in the `rss` block.
+    `Read this issue` CTA. The feed item is generated from the issue record: the
+    `dek`, then the Editor's Pick by name, then each section's eyebrow, title
+    and app names linked to their pages here, a line naming the video and reading, and
+    the CTA. Its lead image is `/og/issue-NNN-apps.png`. So do not duplicate any of it
+    in the `rss` block.
     The `rss.title` is the issue's title everywhere it appears: the issue page's heading,
     the homepage's current issue and the Issues page. Also set `icon` to a Phosphor icon
     name chosen for the issue's theme; it marks the issue in the homepage's issue list from
@@ -166,7 +169,9 @@ instruction.
     generated from the issue's number, date, `rss.title` and `dek`, so there is no
     asset to prepare and nothing to author. Confirm the title fits the card and the
     dek still reads as a sentence where it is trimmed. If either is wrong, fix the
-    issue record rather than the card. See Social Cards in `DESIGN.md`.
+    issue record rather than the card. Review `/og/issue-NNN-apps.png` beside it, the
+    feed's lead image: every section's icons are present and none shows a white frame
+    or reads as blurry. See Social Cards in `DESIGN.md`.
 21. Push the release candidate once, wait for required GitHub checks and the Netlify
     Deploy Preview to succeed, then review the Deploy Preview.
 22. Ask the editor for final approval to use that reviewed release candidate for

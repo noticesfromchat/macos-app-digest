@@ -32,6 +32,16 @@ export type OgCard =
       height?: number;
       apps: { name: string; description: string; icon: OgAppIcon; opacity?: number; rise?: number }[];
     }
+  /* The lead image of an issue's feed item. A feed reader shows the item's title and
+     dek beside its image, so the image carries what the text does not: the apps.
+     The Editor's Pick stands on the left and the sections follow as columns of
+     icons, in the issue's own order. Neither the pick nor any count is fixed. */
+  | {
+      layout: 'issue-apps';
+      eyebrow: string;
+      pick?: { name: string; icon: OgAppIcon };
+      sections: { eyebrow: string; icons: OgAppIcon[] }[];
+    }
   /* An app posted to X as media: the list layout's header with the app's own
      icon in place of a lane mark, then what it does and who it is for. */
   | { layout: 'feature'; name: string; icon: OgAppIcon; description: string; bestFor: string }
@@ -63,3 +73,4 @@ export const categoryOgSlug = (slug: string) => `category-${slug}`;
 export const collectionOgSlug = (slug: string) => `collection-${slug}`;
 
 export const issueOgSlug = (number: string) => `issue-${number}`;
+export const issueAppsOgSlug = (number: string) => `issue-${number}-apps`;
