@@ -331,6 +331,8 @@ const sortedApps = [...apps].sort((a, b) =>
 </div>
 
 <script>
+  import { track } from '../scripts/analytics';
+
   type ClientFilterType = 'tag' | 'collection';
 
   const collator = new Intl.Collator(undefined, {
@@ -382,6 +384,8 @@ const sortedApps = [...apps].sort((a, b) =>
        under them. */
     let selectedSort = 'a-z';
     let sortExplicit = false;
+    /* The match count of the last filter pass, for the search event below. */
+    let lastMatchCount = 0;
 
     /* CSS owns the first-paint cap. Once the module runs, `hidden` becomes the single
        visibility mechanism and the query field becomes interactive. */
@@ -624,6 +628,7 @@ const sortedApps = [...apps].sort((a, b) =>
         if (withinLimit) shownCount += 1;
       });
 
+      lastMatchCount = matchCount;
       const remaining = matchCount - shownCount;
 
       if (directoryCount) {
@@ -819,6 +824,7 @@ const sortedApps = [...apps].sort((a, b) =>
           selectedSort = allowedSorts.has(nextSort) ? nextSort : derivedSort();
           sortExplicit = true;
           sortCards();
+          track('Sort', { order: selectedSort });
           closeMenu(sortMenuRegistration, true);
         });
       });
@@ -828,6 +834,9 @@ const sortedApps = [...apps].sort((a, b) =>
       filter.addEventListener('change', () => {
         visibleLimit = batchSize;
         refilter();
+        if (filter.checked && !isDefaultFilter(filter)) {
+          track('Filter', { kind: filter.dataset.filterType ?? '', value: filter.value });
+        }
         if (
           filterMenuRegistration
           && filter.dataset.filterType === 'tag'
@@ -880,13 +889,29 @@ const sortedApps = [...apps].sort((a, b) =>
       else queryInput?.focus();
     });
 
+    /* One search event per settled query, not one per keystroke: a query is reported
+       once it has rested for a second, or straight away on Enter. The match count is the
+       useful half, because a search that finds nothing names an app readers expected. */
+    let searchTimer: number | undefined;
+    let reportedQuery = '';
+    const reportSearch = () => {
+      window.clearTimeout(searchTimer);
+      const query = queryValue().toLowerCase();
+      if (!query || query === reportedQuery) return;
+      reportedQuery = query;
+      track('Explore search', { query, results: String(lastMatchCount) });
+    };
+
     queryInput?.addEventListener('input', () => {
       visibleLimit = batchSize;
       refilter();
+      window.clearTimeout(searchTimer);
+      searchTimer = window.setTimeout(reportSearch, 1000);
     });
     queryInput?.addEventListener('keydown', (event) => {
       if (event.key !== 'Enter') return;
       event.preventDefault();
+      reportSearch();
       queryInput.blur();
     });
     queryReset?.addEventListener('click', () => {
@@ -908,6 +933,7 @@ const sortedApps = [...apps].sort((a, b) =>
     });
 
     moreButton?.addEventListener('click', () => {
+      track('Show more');
       const previouslyVisible = new Set(cards.filter((card) => !card.hidden));
       visibleLimit += batchSize;
       applyFilters();
