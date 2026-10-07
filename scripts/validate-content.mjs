@@ -241,12 +241,12 @@ for (const filename of issueFiles) {
     } else if (String(data.rss.title).length > 90) {
       errors.push(`${relative}: rss title exceeds 90 characters`);
     } else {
-      /* The rss title is also the issue page's title, where it sits beside the issue
-         label. 90 is the right cap for a feed entry and far too loose for a search
-         result: issue 09 shipped a 55-character sentence, which assembled to 82. The
-         page title is checked on its own terms, the way an app's is. */
-      const label = String(data.number ?? '').replace(/^0+(?=\d\d)/, '');
-      const pageTitle = `${data.rss.title} \u2014 Issue ${label} \u2014 App Waypoint`;
+      /* The rss title is also the issue page's title. 90 is the right cap for a feed
+         entry and far too loose for a search result: issue 09 shipped a 55-character
+         sentence, which assembled to 82. The page title is checked on its own terms, the
+         way an app's is. It carried the issue label too until 2026-10-07, when the label
+         was dropped to give the title those 11 characters back. */
+      const pageTitle = `${data.rss.title} \u2014 App Waypoint`;
       if (pageTitle.length >= 60) {
         errors.push(`${relative}: issue page title is ${pageTitle.length} characters, must stay under 60 ("${pageTitle}")`);
       }

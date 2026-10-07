@@ -564,8 +564,8 @@ Complete every item before merging a new issue:
 - [ ] The Editor's Pick app has a reviewed `iconAccent`, or a documented reason the pick
       renders without the Struck Light treatment.
 - [ ] The `rss` title is a headline, not a sentence: title case and no full stop. It is
-      also the issue page's title, sitting beside the issue label, so the assembled
-      `{rss.title} — Issue NN — App Waypoint` stays under 60 characters. The 90-character
+      also the issue page's title, so the assembled `{rss.title} — App Waypoint`
+      stays under 60 characters (44 for the title itself). The 90-character
       schema cap is right for a feed entry and far too loose for a search result; issue
       09 shipped a 55-character sentence that assembled to 82.
 - [ ] The issue includes an `rss` block with a concise issue-specific title and the

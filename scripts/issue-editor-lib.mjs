@@ -74,13 +74,11 @@ function checkField(value, limitKey) {
   return styleProblem(trimmed, { externalTitle: limitKey === 'readingTitle' || limitKey === 'videoTitle' });
 }
 
-/* `{rss.title} — Issue {label} — App Waypoint`, the same assembly validate-content.mjs
-   checks. The label drops a leading zero while two digits remain, so 011 reads 11. */
-function pageTitleProblem(rssTitle, number) {
-  const label = String(number ?? '').replace(/^0+(?=\d\d)/, '');
-  const assembled = `${rssTitle} — Issue ${label} — App Waypoint`;
+/* `{rss.title} — App Waypoint`, the same assembly validate-content.mjs checks. */
+function pageTitleProblem(rssTitle) {
+  const assembled = `${rssTitle} — App Waypoint`;
   if (assembled.length >= 60) {
-    return `With "Issue ${label} — App Waypoint" this makes a ${assembled.length} character page title. It must stay under 60.`;
+    return `With " — App Waypoint" this makes a ${assembled.length} character page title. It must stay under 60.`;
   }
   if (/[.]$/.test(rssTitle)) return 'An issue title is a headline, not a sentence, so it takes no full stop.';
   return null;
@@ -96,7 +94,7 @@ export function validateIssueInput(input, issue) {
   /* Optional, as in the schema: empty means the dek stands in for it. */
   if (typeof input?.metaDescription !== 'string') errors.metaDescription = 'Search description must be text.';
   else if (input.metaDescription.trim()) add('metaDescription', checkField(input.metaDescription, 'metaDescription'));
-  add('rssTitle', checkField(input?.rssTitle, 'rssTitle') ?? pageTitleProblem(String(input?.rssTitle ?? '').trim(), issue.number));
+  add('rssTitle', checkField(input?.rssTitle, 'rssTitle') ?? pageTitleProblem(String(input?.rssTitle ?? '').trim()));
   /* Optional, as in the schema. Empty removes it and the homepage shows the archive box.
      Whether the name exists in the icon set is checked on save, against the files. */
   if (input?.icon !== undefined) {
