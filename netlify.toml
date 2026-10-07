@@ -140,6 +140,18 @@
     Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
     Strict-Transport-Security = "max-age=31536000; includeSubDomains"
 
+# The JSON endpoints feed site search and the homepage rows. They are data, not pages,
+# and Google was crawling the search index as one and reporting it as not indexed.
+[[headers]]
+  for = "/search-index.json"
+  [headers.values]
+    X-Robots-Tag = "noindex"
+
+[[headers]]
+  for = "/home-pools.json"
+  [headers.values]
+    X-Robots-Tag = "noindex"
+
 [[redirects]]
   from = "/apps/filemaster/"
   to = "/categories/files-research-documents/"
