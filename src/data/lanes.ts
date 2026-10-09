@@ -110,6 +110,46 @@ const collectionTaglines: Record<string, string> = {
 
 export const collectionTagline = (slug: string) => collectionTaglines[slug];
 
+/**
+ * Where a lane's own name is not the phrase people search, its page title says the phrase
+ * instead. `windows` is the case that made the map: `Windows Mac Apps` reads as Windows
+ * software running on a Mac, and it means window management. An entry is the whole title
+ * before the site name, descriptor included, so it stays under the roughly 60
+ * characters a result shows. A lane with no entry keeps `{lane} Mac Apps — {tagline}`.
+ * Headings, breadcrumbs and cards keep the lane's own name; only the title tag changes.
+ */
+const tagSearchTitles: Record<string, string[]> = {
+  windows: ['Window Management Apps for Mac'],
+  clipboard: ['Clipboard Managers for Mac', 'copy history'],
+  capture: ['Screenshot and Screen Recording Apps for Mac'],
+  ios: ['Mac Apps That Work with iPhone and iPad'],
+  local: ['On-Device Mac Apps', 'local processing'],
+  utility: ['Mac Utility Apps', 'small system tools'],
+  search: ['File and Text Search Apps for Mac'],
+  images: ['Image Apps for Mac', 'creating and finding'],
+  messages: ['Messaging Apps for Mac', 'chat and SMS tools'],
+  files: ['File Manager Apps for Mac']
+};
+
+const collectionSearchTitles: Record<string, string[]> = {
+  'free-worth-keeping': ['Free Mac Apps Worth Keeping', 'no strings'],
+  'available-on-homebrew': ['Mac Apps You Can Install with Homebrew'],
+  'hidden-gems': ['Hidden Gem Mac Apps', 'underrated tools'],
+  'community-favorites': ['Popular Mac Apps', 'community favorites']
+};
+
+/** The separator in a page title is an indexed convention, so it is written once, here. */
+const pageTitle = (parts: string[]) => {
+  const title = [...parts, 'App Waypoint'].join(' — ');
+  return title;
+};
+
+export const tagPageTitle = (tag: string) =>
+  pageTitle(tagSearchTitles[tag] ?? [`${tagTitle(tag)} Mac Apps`, tagTagline(tag)]);
+
+export const collectionPageTitle = (slug: string) =>
+  pageTitle(collectionSearchTitles[slug] ?? [`${collectionTitle(slug)} Mac Apps`, collectionTagline(slug)]);
+
 const tagDescriptions: Record<string, string> = {
   "accessibility": "Tools that make the Mac easier to see and control, whatever you need from it.",
   "agents": "Assistants that do multi-step work, and the tools for watching them do it.",
@@ -171,8 +211,24 @@ const tagDescriptions: Record<string, string> = {
 export const tagDek = (tag: string) =>
   tagDescriptions[tag] ?? `Mac apps selected for their relevance to ${tagTitle(tag).toLowerCase()} workflows.`;
 
+/**
+ * The search result's line under the title. Every tag used to end on the same sentence,
+ * which cost about half of it on words that could not differ between pages. A tag with an
+ * entry here says what it is in the phrase people search; the rest still carry the
+ * sentence until each is written. A tag's own dek is its page text and is not changed.
+ */
+const tagMetaDescriptions: Record<string, string> = {
+  windows: 'Window managers and switchers for Mac: put windows where you want them and get back to the one you need.',
+  clipboard: "Clipboard managers for Mac: everything you've copied lately, still there when you need it back.",
+  capture: 'Screenshot and screen recording apps for Mac, plus the marking up you do right after.',
+  utility: 'Small Mac utility apps that do one job well and then stay out of the way.',
+  ios: 'Mac apps that talk to your iPhone or iPad, or bring something across from it.',
+  local: "Processing that happens on your own machine rather than on someone's server."
+};
+
 export const tagMetaDescription = (tag: string) =>
-  `${tagDek(tag)} Each Mac app has a short note on what it does and a link to its developer.`;
+  tagMetaDescriptions[tag]
+    ?? `${tagDek(tag)} Each Mac app has a short note on what it does and a link to its developer.`;
 
 const collectionDescriptions: Record<string, string> = {
   'available-on-homebrew':
@@ -182,7 +238,7 @@ const collectionDescriptions: Record<string, string> = {
   "community-favorites": "Popular Mac apps the community keeps recommending, each with a short note on what it does and why people keep coming back to it.",
   'hidden-gems':
     'Explore Mac apps worth more attention than they get: small, well made tools that solve a real problem without a marketing budget behind them.',
-  "free-worth-keeping": "Mac apps that cost nothing: no trial, no paid tier, no watermark and no feature saved for an upgrade. The only thing they'll cost you is disk space.",
+  "free-worth-keeping": "Free Mac apps with no trial, no paid tier, no watermark and no feature saved for an upgrade. The only thing they'll cost you is disk space.",
 };
 
 export const collectionTitle = (slug: string) =>

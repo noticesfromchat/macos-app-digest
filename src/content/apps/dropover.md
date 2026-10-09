@@ -2,7 +2,7 @@
 name: Dropover
 description: Gather files from different windows on a temporary shelf, then drag them to wherever you need them.
 bestFor: People assembling attachments or moving files who keep losing their place between windows.
-tagline: drag-and-drop shelves
+tagline: Drag-and-drop shelves
 tags: [files, finder, utility]
 categories: [files-research-documents, mac-utilities-customization]
 collections: [editors-picks]

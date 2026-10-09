@@ -29,8 +29,8 @@ dek: Write one concise 18-45 word sentence that previews the issue without listi
 icon: flower-lotus
 rss:
   # The issue's title: a headline, not a sentence, in title case with no full stop. It is
-  # the issue page's heading and browser title, so `{title} — Issue NN — App Waypoint`
-  # must stay under 60 characters.
+  # the issue page's heading and browser title, so `{title} — App Waypoint` must stay
+  # under 60 characters, which leaves the title 44.
   title: Short issue-specific title aligned with the issue theme
   cta: Read this issue
 sections:
@@ -106,8 +106,9 @@ description: Write exactly one concrete 12-35 word sentence explaining the app's
 bestFor: Write exactly one 8-24 word sentence describing a recognizable user or workflow.
 # The differentiator in the page title: {name} for Mac — {tagline} — App Waypoint.
 # About 16-20 characters, saying what the app is. Do not repeat the app's name or
-# "Mac"; the title already carries both. See STYLE_GUIDE.md section 6.
-tagline: clipboard history
+# "Mac"; the title already carries both. Capitalize it and leave off the final
+# period; anything that displays it adds one. See STYLE_GUIDE.md section 6.
+tagline: Clipboard history
 tags: [productivity, utility, menubar]
 # Optional editorial curation. Required for Editor's Pick and Old Favorites apps;
 # preserve other values when adding either collection.

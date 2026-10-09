@@ -2,7 +2,7 @@
 name: OpenIn
 description: Send every link to the app you specify, with rules that can check and make decisions based on your current Focus mode.
 bestFor: Professionals who have clicked a work link and watched it open in a personal browser.
-tagline: link routing rules
+tagline: Link routing rules
 tags: [automation, utility, shortcuts]
 categories: [automation-shortcuts, mac-utilities-customization]
 collections: [available-on-homebrew]

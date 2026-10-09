@@ -44,6 +44,8 @@ const rssFeedUrl = new URL('/rss.xml', Astro.site).href;
 </article>
 
 <script>
+  import { track } from '../scripts/analytics';
+
   /* Bound per card rather than once per page, so a page carrying more than one of these
      still copies from whichever button was pressed. */
   const copyText = async (value) => {
@@ -77,6 +79,7 @@ const rssFeedUrl = new URL('/rss.xml', Astro.site).href;
       /* A failed copy used to look exactly like an untouched button, which left the
          only error path on the page silent. It now answers with a red cross for the
          same two seconds the tick gets. */
+      if (copied) track('RSS copy', { from: 'card' });
       button.classList.toggle('is-copied', copied);
       button.classList.toggle('is-copy-failed', !copied);
       if (label) {

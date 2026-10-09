@@ -2,7 +2,7 @@
 name: SuperDuper!
 description: Make a direct, inspectable copy of your Mac on a schedule, alongside Time Machine rather than instead of it.
 bestFor: Mac users who want inspectable file copies and resilient backup automation alongside Time Machine.
-tagline: bootable backups
+tagline: Scheduled disk copies
 tags: [backup, files, automation, utility]
 categories: [files-research-documents, automation-shortcuts, mac-utilities-customization]
 collections: [community-favorites, available-on-homebrew]

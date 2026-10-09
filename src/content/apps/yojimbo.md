@@ -2,7 +2,7 @@
 name: Yojimbo
 description: Collect notes and reference files in one searchable library, with tags to bring related material together.
 bestFor: People saving useful scraps throughout the day who need somewhere more orderly than the desktop.
-tagline: reference organizer
+tagline: Reference organizer
 tags: [notes, files, research, documents]
 categories: [writing-notes-reading, files-research-documents]
 collections: [community-favorites, available-on-homebrew]

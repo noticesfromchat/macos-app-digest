@@ -2,7 +2,7 @@
 name: LM Studio Bionic
 description: Run open-model agents locally with sandboxed tools and checkpoints you can roll back when a step goes wrong.
 bestFor: Power users who want agents running on their own models and their own hardware.
-tagline: open-model agents
+tagline: Local AI agents
 tags: [ai, local, developer, productivity]
 categories: [ai-agents, developer-tools, productivity-workflow]
 collections: [available-on-homebrew]

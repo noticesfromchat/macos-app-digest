@@ -2,7 +2,7 @@
 name: Rewisp
 description: Keep a local memory of the text that passed across your screen, and ask about it later in plain language.
 bestFor: Researchers and operators who repeatedly need to recover details seen across many apps.
-tagline: on-screen memory recall
+tagline: Screen history search
 tags: [ai, search, local, open-source]
 categories: [ai-agents]
 collections: [free-worth-keeping]

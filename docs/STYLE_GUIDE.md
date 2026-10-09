@@ -208,9 +208,21 @@ it. See Issue Subscribe Card in `DESIGN.md` for the structure and the reasoning.
   `{lane} Mac Apps — {tagline} — App Waypoint`. Tag titles ran between 26 and 37
   characters against the roughly 60 a search result shows, the widest gap of any page
   type here. Both maps live in `src/data/lanes.ts` beside the titles they extend.
-- **Categories deliberately have none.** `Mac Utilities & Customization Mac Apps —
-  App Waypoint` is already 53 characters, so four of the six have no room for one.
-  Adding it to the two that do would make the page type inconsistent for little gain.
+- **A lane's title says the phrase people search, not only its own name.** Where the
+  lane's name is not that phrase (`Windows Mac Apps` reads as Windows software), the
+  maps `tagSearchTitles` and `collectionSearchTitles` in `lanes.ts` give the whole
+  title before ` — App Waypoint`, descriptor included, under 60 characters in total.
+  Only the title tag changes: the heading, breadcrumb and social card keep the lane's
+  own name. Source: the search intent audit of 2026-10-02 in Notion.
+- **A tag's search description does not end on the shared sentence.** The line ending
+  "Each Mac app has a short note on what it does and a link to its developer." spent
+  about half of every tag's result snippet on words that could not differ between
+  pages. A tag with an entry in `tagMetaDescriptions` says what it is in the phrase
+  people search; write the rest the same way, one at a time.
+- **Categories deliberately have none.** `Mac Utilities & Customization Apps —
+  App Waypoint` is 49 characters, so four of the six have no room for a tagline. A
+  category whose name already starts with "Mac" takes `Apps`, not `Mac Apps`.
+  Adding a tagline to the two that do would make the page type inconsistent for little gain.
 - **A tag's display name is not its slug sentence-cased.** Initialisms and product
   names spelled a particular way are held in `tagDisplayNames`: `ai` is AI, `ios` is
   iOS, `quicklook` is Quick Look. Until 2026-09-04 only `rss` was handled and the rest
@@ -330,6 +342,17 @@ it. See Issue Subscribe Card in `DESIGN.md` for the structure and the reasoning.
   wastes a third of the line. Aim to land between 50 and 60 characters assembled, and
   never on 60 exactly, because the real limit is pixel width rather than a character
   count.
+- **Store it capitalized and bare: `File archiver`.** Sentence case, keeping proper nouns
+  and acronyms as they are (Apple TV, Markdown, AI, MCP), led by a word rather than a
+  numeral, so a count such as "70+" cannot go stale in the first position. A noun phrase
+  is enough; it does not need to be a sentence. There is no final period in the field:
+  the title uses it as it is, `Keka for Mac — File archiver — App Waypoint`, where a
+  period would land mid-title. Any component that shows a tagline as its own line of
+  text adds the period there. The page title is the only place a tagline appears today.
+  Apple's lowercase-first names (iPhone, iPad, macOS) are proper nouns and may lead, but
+  rephrasing usually reads better: `Touch launcher on iPhone`. The validator enforces the
+  capital and the absence of final punctuation. Adopted by the October 6, 2026 tagline
+  audit.
 
 ## 7. Weekend Reading
 
@@ -541,8 +564,8 @@ Complete every item before merging a new issue:
 - [ ] The Editor's Pick app has a reviewed `iconAccent`, or a documented reason the pick
       renders without the Struck Light treatment.
 - [ ] The `rss` title is a headline, not a sentence: title case and no full stop. It is
-      also the issue page's title, sitting beside the issue label, so the assembled
-      `{rss.title} — Issue NN — App Waypoint` stays under 60 characters. The 90-character
+      also the issue page's title, so the assembled `{rss.title} — App Waypoint`
+      stays under 60 characters (44 for the title itself). The 90-character
       schema cap is right for a feed entry and far too loose for a search result; issue
       09 shipped a 55-character sentence that assembled to 82.
 - [ ] The issue includes an `rss` block with a concise issue-specific title and the

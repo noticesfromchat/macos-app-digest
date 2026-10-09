@@ -2,7 +2,7 @@
 name: PopTask
 description: Type a thought the way you would say it and get back a scheduled task, recurrence included, from the menu bar.
 bestFor: People who capture commitments faster than they can complete traditional task forms.
-tagline: natural-language tasks
+tagline: Menu bar task planner
 tags: [tasks, menubar, productivity]
 categories: [productivity-workflow, mac-utilities-customization]
 collections: [hidden-gems]

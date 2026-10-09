@@ -71,6 +71,10 @@ import { siteCopy } from '../data/site-copy';
       </div>
     </article>
   </section>
+
+  {/* Plausible's 404 goal. Netlify serves this page at the missing URL, so the event
+      carries the broken path. The script only loads in production, hence the guard. */}
+  <script is:inline>document.addEventListener('DOMContentLoaded', function () { window.plausible && plausible('404'); });</script>
 </BaseLayout>
 
 <style>

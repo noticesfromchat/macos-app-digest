@@ -2,7 +2,7 @@
 name: Shottr
 description: Capture a whole scrolling page in one screenshot and mark it up in a small app built for quick visual notes.
 bestFor: Anyone who annotates screenshots all day and would rather not open an image editor to do it.
-tagline: screenshot annotation
+tagline: Screenshot annotation
 tags: [capture, productivity, utility, images]
 collections: [community-favorites, available-on-homebrew]
 categories: [media-capture, productivity-workflow, mac-utilities-customization]

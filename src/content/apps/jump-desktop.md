@@ -2,7 +2,7 @@
 name: Jump Desktop
 description: Connect to a remote Mac or PC over a Fluid protocol that delivers a picture sharp enough to read code in rather than a slideshow.
 bestFor: Developers and admins who spend real hours on a remote machine, not the occasional rescue mission.
-tagline: remote desktop
+tagline: Remote desktop
 tags: [remote, utility, productivity]
 categories: [mac-utilities-customization, productivity-workflow]
 collections: [available-on-homebrew]

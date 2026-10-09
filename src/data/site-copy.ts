@@ -71,7 +71,7 @@ export const siteCopy = {
   "archive.originBody": "{issue} went out on {date}. Every Friday since has been filled with great apps.",
   "archive.emptyHeading": "The first issue is on its way",
   "archive.emptyBody": "App Waypoint publishes every Friday. Nothing is in the archive yet, and this page fills in as issues go out.",
-  "archive.metaDescription": "Browse every issue of App Waypoint, a weekly editorial guide to thoughtfully selected Mac apps, automation tools, AI software and Mac-focused reading.",
+  "archive.metaDescription": "Every issue of App Waypoint, a weekly Mac app newsletter: thoughtfully selected Mac apps, automation tools, AI software and reading.",
   "archive.socialAlt": "Every published issue of App Waypoint.",
   "archive.cardTitle": "Every issue so far",
   "archive.cardDek": "Browse every published issue of App Waypoint, a weekly editorial guide to thoughtfully selected Mac apps and reading.",

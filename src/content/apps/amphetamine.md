@@ -2,7 +2,7 @@
 name: "Amphetamine"
 description: Keep your Mac awake through a super simple on/off switch, or automatically through easy-to-configure Triggers.
 bestFor: People who run long exports or presentations and are done digging through System Settings to stop the Mac from sleeping.
-tagline: keep-awake utility
+tagline: Keep-awake utility
 tags: [utility, menubar, automation]
 categories: [mac-utilities-customization, automation-shortcuts]
 collections: [community-favorites, free-worth-keeping]

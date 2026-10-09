@@ -2913,10 +2913,36 @@ h1.home-hero-number {
     white-space: nowrap;
   }
 
-  /* The filter count sits on the icon's corner as a badge. */
-  .directory-filter .directory-select-trigger { position: relative; }
-  .directory-filter-label { position: absolute; top: 6px; right: 6px; }
-  .directory-filter-count { min-width: 18px; height: 18px; padding: 0 5px; }
+  /* A changed control says so with its colour and a dot on the icon's corner, not a
+     number. The chips under the row already name every filter, so a count up here only
+     repeated them at 18px; what the icon has to answer is whether anything is set, and
+     Sort needs the same answer, which it had no way to give once its label went. The
+     count stays in the accessible name, so "Filter 2" is still announced. */
+  .directory-select-trigger { position: relative; }
+  .directory-filter-label { position: absolute; }
+  .directory-filter-count {
+    position: absolute;
+    width: 1px;
+    min-width: 0;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .directory-filter.has-custom-filters .directory-control-icon,
+  .directory-sort .has-custom-sort .directory-control-icon { color: var(--accent); }
+  .directory-filter.has-custom-filters .directory-select-trigger::after,
+  .directory-sort .has-custom-sort .directory-select-trigger::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
 
   /* The panels open under the row at the width of the whole bar: Filter's reaches left to
      the field's edge, Sort's right-aligns to the end. */

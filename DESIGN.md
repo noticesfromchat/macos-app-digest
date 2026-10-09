@@ -1243,11 +1243,28 @@ by the editor's Home tab.
   separate elements did; the second line sits under it as a paragraph. Then two buttons: the latest issue in the primary weight,
   Explore in the secondary, so the pair ranks itself without a filled button. A hyphenated word
   in the tagline never breaks at its hyphen, and each line balances on its own.
-- **Current issue:** below the water, the issue page's `.95/1.05` split. The issue's title at
-  Subhead, `Issue NN · Published <date>`, the dek, and a Read Issue button that lands on the
-  pick card's last line of text rather than its outer edge. The pick beside it keeps its reason
-  and drops Best For and the tags, which stay on the issue page. Stacked, the section is pulled
-  up so the water is followed by 32px, the same as on an issue page.
+- **Current issue:** below the water, one card split `.95/1.05` with a hairline between its
+  halves. On the left, the issue: its title at Subhead linking to the issue, `Issue NN ·
+  Published <date>` straight under it, the dek and a Read Issue button on the column's foot. On the right, the Editor's Pick: the
+  `home.pickLabel` heading in the accent Label role, then the app's standard 48px icon beside its name
+  as one link, its description, and the editor's reason under *Why it was chosen*. Best For and
+  the tags stay on the issue page. The card takes 32px of inset and corner, the pick card's.
+  **The two halves share a label line and a name row.** The title sits in a fixed 48px line
+  box, the height of an app icon, so it shares a centre line with the pick's standard 48px icon
+  and name at every width; stacked, where nothing sits opposite, it takes its ordinary leading
+  back. Under the row the pick takes an app card's 16px. The date under the title adds a line
+  opposite, so the description starts one line above the summary rather than on it. Matching
+  the summary line for line was tried twice on 2026-10-02 and dropped both times: a 36px gap
+  under the icon read as a hole, and moving the date onto the label line read worse than the
+  drift. The *Why it was chosen* label takes a whole 24px line, keeping the pick column on a
+  24px rhythm of its own.
+  Stacked, the pick comes first and the issue follows 32px below it, with no rule between
+  them (CSS order only: the markup keeps the issue first so its h2 leads the pick's h3), and the
+  section is pulled up so the water is followed by 32px, the same as on an issue page. Until
+  2026-10-02 the pick was its own lit card beside the issue copy, and the two read as separate
+  objects; one card makes them one. A table of the issue's sections was tried in the card the
+  same day and dropped for turning the homepage back into a copy of the issue. The homepage no
+  longer carries The Struck Light Rule's light; the issue page's pick still does.
 - **Four app rows, drawn daily:** Trending, Recently featured, Favorites from the community and
   Editor's Picks, three standard grid cards each. See The Daily Draw Rule below.
 - **Keep exploring:** the three largest categories with their counts, and the three issues
@@ -1429,6 +1446,16 @@ top right, the headline uses the full 1088px content width and the description f
 at 36px with the same 175-character limit. Headlines step through 72px, 60px and 50px
 so longer editorial titles stay whole. They carry no wave or footer, leaving the same
 clear lower edge for X's overlay.
+
+**The feed image shows what the text does not.** Each issue also gets
+`/og/issue-NNN-apps.png`, the lead image of its `/rss.xml` item and nobody's `og:image`.
+A reader prints the item's title and dek beside it, so the issue cover there only
+repeated them. This one has no title or dek: the issue label, then the Editor's Pick at
+196px with its name, a hairline, and the sections as labelled columns of icons in the
+issue's order. Icons are 104px and shrink only if an issue has more sections or apps than
+fit. With no Editor's Pick the columns center on the full width. Plain icons have their
+transparent margin measured and cropped at build time (3% to 12% of the side), so a row
+of fifteen reads as one set rather than fifteen frames.
 
 The homepage card, which is also the layout's default, keeps its masthead: the 112px
 wordmark over the buoy's wave, with no brand row above it. Since 2026-09-25 it follows

@@ -15,6 +15,7 @@ import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { join } from 'node:path';
 import satori from 'satori';
+import sharp from 'sharp';
 
 import { MARK_BEACON, MARK_FRAME, MARK_WATERLINE, MARK_WAVE, MARK_WAVE_VIEWBOX } from './mark';
 import { OG_SIZE, type OgAppIcon, type OgCard } from './og';
@@ -289,7 +290,78 @@ function featureDesign(card: Extract<OgCard, { layout: 'feature' }>): Node {
       h('div', { style: { fontFamily: SANS, fontSize: 32, color: MUTED, lineHeight: 1.4, marginTop: 14 } }, card.bestFor)));
 }
 
+/**
+ * The transparent margin a source draws around its icon, as a fraction of its side.
+ * Most Mac icons follow Apple's grid and carry about a tenth on every side, which on
+ * a plate reads as a white frame inside the frame. The issue image sets fifteen or
+ * more icons side by side every week, so the margin is measured here rather than
+ * passed by hand the way the one-off promos do.
+ *
+ * Opaque pixels only: a soft drop shadow is part of the margin, not the icon. Under
+ * 3% is left alone, and the crop stops at 12% so a mark that is not square to begin
+ * with keeps its own shape instead of being cut to fill.
+ */
+const insets = new Map<string, number>();
+
+async function measuredInset(icon: OgAppIcon): Promise<OgAppIcon> {
+  if (icon.kind !== 'plain' || icon.inset !== undefined) return icon;
+  let inset = insets.get(icon.src);
+  if (inset === undefined) {
+    const { data, info } = await sharp(join(process.cwd(), 'public', icon.src))
+      .ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+    const { width, height } = info;
+    let left = width, top = height, right = -1, bottom = -1;
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        if (data[(y * width + x) * 4 + 3] <= 128) continue;
+        left = Math.min(left, x); right = Math.max(right, x);
+        top = Math.min(top, y); bottom = Math.max(bottom, y);
+      }
+    }
+    const margin = right < 0 ? 0 : Math.min(left, top, width - 1 - right, height - 1 - bottom) / width;
+    inset = margin < 0.03 ? 0 : Math.min(margin, 0.12);
+    insets.set(icon.src, inset);
+  }
+  return inset ? { ...icon, inset } : icon;
+}
+
+/* The section labels and the pick's name are the only words. The title and dek sit
+   beside the image in every reader, so repeating them here is what made the issue
+   card a poor lead image. Icon size gives way to the issue's shape: five sections of
+   three is the usual issue, and six of six still fits. */
+function issueAppsDesign(card: Extract<OgCard, { layout: 'issue-apps' }>): Node {
+  const label = (copy: string, style: Record<string, unknown> = {}) =>
+    h('div', { style: { display: 'flex', fontFamily: SANS, fontWeight: 500, fontSize: 20, letterSpacing: '0.14em', color: MUTED, textTransform: 'uppercase', ...style } }, copy);
+  const plate = (icon: OgAppIcon, size: number) =>
+    h('div', { style: { display: 'flex', flexShrink: 0, borderRadius: size * 20 / ICON,
+      boxShadow: '0 0 0 1px rgba(9, 35, 66, 0.07), 0 8px 22px rgba(9, 35, 66, 0.08)' } }, iconPlate(icon, size));
+
+  const columns = card.sections.length;
+  const rows = Math.max(...card.sections.map((section) => section.icons.length));
+  const gridWidth = card.pick ? 690 : 1072;
+  const columnGap = 30, rowGap = 22, labelHeight = 56;
+  const size = Math.floor(Math.min(
+    104,
+    (gridWidth - columnGap * (columns - 1)) / columns,
+    (412 - labelHeight - rowGap * (rows - 1)) / rows
+  ));
+
+  return h('div', { style: { display: 'flex', flexDirection: 'column', width: OG_SIZE.width, height: OG_SIZE.height, backgroundColor: PAGE, padding: '52px 64px' } },
+    label(card.eyebrow),
+    h('div', { style: { display: 'flex', flexGrow: 1, alignItems: 'center', marginTop: 8 } },
+      card.pick ? h('div', { style: { display: 'flex', flexDirection: 'column', width: 300, paddingRight: 48, marginRight: 40, borderRight: `1px solid ${LINE}` } },
+        label("Editor's Pick", { fontSize: 17, color: ACCENT }),
+        h('div', { style: { display: 'flex', marginTop: 20 } }, plate(card.pick.icon, 196)),
+        h('div', { style: { fontFamily: SERIF, fontWeight: 600, fontSize: 40, color: INK, marginTop: 20, letterSpacing: '-0.02em', lineHeight: 1.1 } }, card.pick.name)) : null,
+      h('div', { style: { display: 'flex', gap: columnGap, width: gridWidth, justifyContent: card.pick ? 'flex-start' : 'center' } },
+        ...card.sections.map((section) => h('div', { style: { display: 'flex', flexDirection: 'column', alignItems: 'center', width: Math.max(size, 118) } },
+          label(section.eyebrow, { fontSize: 14, letterSpacing: '0.1em', height: labelHeight - 18, textAlign: 'center', alignItems: 'flex-end', justifyContent: 'center' }),
+          h('div', { style: { display: 'flex', flexDirection: 'column', gap: rowGap, marginTop: 18 } },
+            ...section.icons.map((icon) => plate(icon, size))))))));
+}
+
 function tree(card: OgCard): Node {
+  if (card.layout === 'issue-apps') return issueAppsDesign(card);
   if (card.layout === 'list') return listDesign(card);
   if (card.layout === 'feature') return featureDesign(card);
   if (card.layout === 'app' || card.layout === 'issue' || (card.layout === 'page' && card.icon)) return editorialDesign(card);
@@ -350,6 +422,15 @@ function tree(card: OgCard): Node {
 }
 
 export async function renderOgCard(card: OgCard): Promise<Buffer> {
+  if (card.layout === 'issue-apps') {
+    card = {
+      ...card,
+      pick: card.pick && { ...card.pick, icon: await measuredInset(card.pick.icon) },
+      sections: await Promise.all(card.sections.map(async (section) => ({
+        ...section, icons: await Promise.all(section.icons.map(measuredInset))
+      })))
+    };
+  }
   const size = card.layout === 'list' || card.layout === 'feature'
     ? { width: LIST_WIDTH, ...(card.layout === 'list' && card.height ? { height: card.height } : {}) }
     : OG_SIZE;

@@ -2,7 +2,7 @@
 name: Search (Browser)
 description: A small, fast, quiet web browser for the Mac, plus built-in ad blocking, reading mode and support for Chrome extensions.
 bestFor: People who want a minimalist browser that stays out of the way.
-tagline: minimal browser
+tagline: Minimal browser
 tags: [utility, local, open-source]
 categories: [mac-utilities-customization]
 collections: [free-worth-keeping, available-on-homebrew]

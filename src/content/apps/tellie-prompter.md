@@ -2,7 +2,7 @@
 name: Tellie Prompter
 description: Read from a Mac teleprompter that follows your pace and notices the lines you skipped.
 bestFor: Video creators and presenters who need a calmer way to stay on script while recording.
-tagline: teleprompter
+tagline: Teleprompter
 tags: [local, video, productivity]
 categories: [media-capture, productivity-workflow]
 source: Product Hunt launch listing and official Tellie homepage

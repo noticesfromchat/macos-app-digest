@@ -413,11 +413,30 @@ plausible.init({ endpoint: '/pulse/api/event' });`}
           if (event.movementX || event.movementY) results.setAttribute('data-hover', '');
         });
 
+        /* Plausible's Site search event, one per settled query rather than per keystroke:
+           reported once the query has rested for a second, or straight away when the reader
+           acts on it. window.plausible exists only on the production site. */
+        let pendingSearch = null;
+        let reportedSearch = '';
+        let searchTimer = null;
+        const reportSearch = () => {
+          clearTimeout(searchTimer);
+          if (pendingSearch && pendingSearch.query !== reportedSearch) {
+            reportedSearch = pendingSearch.query;
+            window.plausible?.('Site search', {
+              props: { query: pendingSearch.query, results: String(pendingSearch.results) }
+            });
+          }
+          pendingSearch = null;
+        };
+
         const render = () => {
           results.removeAttribute('data-hover');
           const appList = apps || [];
           const query = normalize(input.value);
           if (!query) {
+            clearTimeout(searchTimer);
+            pendingSearch = null;
             count.textContent = '';
             results.innerHTML = '';
             return;
@@ -427,6 +446,9 @@ plausible.init({ endpoint: '/pulse/api/event' });`}
             return;
           }
           const matches = appList.filter((app) => searchableText(app).includes(query));
+          pendingSearch = { query: query.slice(0, 100), results: matches.length };
+          clearTimeout(searchTimer);
+          searchTimer = setTimeout(reportSearch, 1000);
 
           count.textContent = `${matches.length} matching ${matches.length === 1 ? 'app' : 'apps'}`;
 
@@ -461,6 +483,7 @@ plausible.init({ endpoint: '/pulse/api/event' });`}
           input.value = '';
           count.textContent = '';
           results.innerHTML = '';
+          reportedSearch = '';
           try {
             input.focus({ preventScroll: true });
           } catch {
@@ -476,6 +499,7 @@ plausible.init({ endpoint: '/pulse/api/event' });`}
         };
 
         const closeSearch = () => {
+          reportSearch();
           overlay.hidden = true;
           openButtons.forEach((button) => button.setAttribute('aria-expanded', 'false'));
           previousFocus?.focus?.();
@@ -485,11 +509,13 @@ plausible.init({ endpoint: '/pulse/api/event' });`}
         mobileSearchButton?.addEventListener('click', openSearch);
         closeButtons.forEach((button) => button.addEventListener('click', closeSearch));
         input.addEventListener('input', render);
+        results.addEventListener('click', reportSearch);
         input.addEventListener('keydown', (event) => {
           if (event.key !== 'Enter' || event.isComposing) return;
           const query = input.value.trim();
           if (!query) return;
           event.preventDefault();
+          reportSearch();
           window.location.assign(`/explore/?q=${encodeURIComponent(query.slice(0, 100))}#all-apps`);
         });
         overlay.addEventListener('click', (event) => {
@@ -681,6 +707,8 @@ plausible.init({ endpoint: '/pulse/api/event' });`}
           overlay.hidden = false;
           openButtons.forEach((button) => button.setAttribute('aria-expanded', 'true'));
           setCopyState(false, openLabel);
+          /* Plausible events; the script, and so window.plausible, is production-only. */
+          window.plausible?.('Subscribe open');
           try {
             focusables()[0]?.focus({ preventScroll: true });
           } catch {
@@ -720,6 +748,7 @@ plausible.init({ endpoint: '/pulse/api/event' });`}
             return;
           }
           setCopyState(true, 'Copied RSS feed URL');
+          window.plausible?.('RSS copy', { props: { from: 'dialog' } });
           clearTimeout(resetTimer);
           resetTimer = window.setTimeout(() => setCopyState(false, openLabel), 2000);
         };

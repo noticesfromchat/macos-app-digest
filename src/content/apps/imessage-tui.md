@@ -2,7 +2,7 @@
 name: imessage-tui
 description: Search your Messages history read-only from the terminal and export any stretch of a conversation to Markdown.
 bestFor: Terminal users who need a focused, local way to inspect or archive portions of Messages history.
-tagline: Messages in terminal
+tagline: Messages CLI reader
 tags: [messages, terminal, privacy, open-source, local]
 categories: [writing-notes-reading, developer-tools, mac-utilities-customization]
 collections: [free-worth-keeping]

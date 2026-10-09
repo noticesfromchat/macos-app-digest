@@ -7,6 +7,7 @@ import {
   appOgSlug,
   categoryOgSlug,
   collectionOgSlug,
+  issueAppsOgSlug,
   issueOgSlug,
   tagOgSlug,
   type OgAppIcon,
@@ -62,6 +63,7 @@ export async function getStaticPaths() {
 
   const tags = [...new Set(apps.flatMap((app) => app.data.tags))].sort();
   const collections = [...new Set(apps.flatMap((app) => app.data.collections ?? []))].sort();
+  const byId = new Map(apps.map((app) => [app.id, app]));
   const countBy = (predicate: (app: (typeof apps)[number]) => boolean) => apps.filter(predicate).length;
 
   const pages: { slug: string; card: OgCard }[] = [
@@ -172,7 +174,27 @@ export async function getStaticPaths() {
         title: issue.data.rss.title,
         dek: issue.data.dek
       }
-    }))
+    })),
+    /* The feed item's lead image, which shows the issue's apps rather than restating
+       its title and dek. Not a page's og:image: it is linked from /rss.xml only. */
+    ...issues.map((issue) => {
+      const pick = issue.data.editorsPick && byId.get(issue.data.editorsPick.app);
+      return {
+        slug: issueAppsOgSlug(issue.data.number),
+        card: {
+          layout: 'issue-apps' as const,
+          eyebrow: `Issue ${issueLabel(issue.data.number)} · ${issue.data.date}`,
+          pick: pick ? { name: pick.data.name, icon: appIcon(pick) } : undefined,
+          sections: issue.data.sections.map((section) => ({
+            eyebrow: section.eyebrow,
+            icons: section.apps.flatMap((id) => {
+              const app = byId.get(id);
+              return app ? [appIcon(app)] : [];
+            })
+          }))
+        }
+      };
+    })
   ];
 
   return pages.map(({ slug, card }) => ({ params: { slug }, props: { card } }));

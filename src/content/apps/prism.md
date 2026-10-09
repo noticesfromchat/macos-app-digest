@@ -2,7 +2,7 @@
 name: Prism
 description: Bring multi-provider chat and local models into one native SwiftUI workspace that can also write in any app on the Mac.
 bestFor: AI power users who want one Mac-native place for all of it.
-tagline: multi-provider AI chat
+tagline: Multi-provider AI chat
 tags: [ai, local, developer]
 categories: [ai-agents, developer-tools]
 collections: [available-on-homebrew]

@@ -2,7 +2,7 @@
 name: FluidVoice
 description: Dictate into any app and have an on-device model strip the ums and fix the formatting before the text ever lands in the document.
 bestFor: Writers who think out loud faster than they type but would rather it did not read that way.
-tagline: on-device dictation
+tagline: On-device dictation
 tags: [dictation, local, ai, writing, open-source]
 categories: [writing-notes-reading, ai-agents]
 collections: [community-favorites, free-worth-keeping, available-on-homebrew]
